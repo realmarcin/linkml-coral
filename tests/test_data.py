@@ -4,7 +4,7 @@ import glob
 import pytest
 from pathlib import Path
 
-import linkml-coral.datamodel.linkml-coral
+import linkml_coral.datamodel.linkml_coral
 from linkml_runtime.loaders import yaml_loader
 
 DATA_DIR_VALID = Path(__file__).parent / "data" / "valid"
@@ -19,7 +19,7 @@ def test_valid_data_files(filepath):
     """Test loading of all valid data files."""
     target_class_name = Path(filepath).stem.split("-")[0]
     tgt_class = getattr(
-        linkml-coral.datamodel.linkml-coral,
+        linkml_coral.datamodel.linkml_coral,
         target_class_name,
     )
     obj = yaml_loader.load(filepath, target_class=tgt_class)

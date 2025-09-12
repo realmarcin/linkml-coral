@@ -1,1 +1,1 @@
-"""Tests for linkml-coral."""
+"""Tests for linkml_coral."""

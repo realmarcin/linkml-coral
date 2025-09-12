@@ -3,7 +3,7 @@ requires = ["hatchling", "uv-dynamic-versioning"]
 build-backend = "hatchling.build"
 
 [project]
-name = "linkml-coral"
+name = "linkml_coral"
 description = "linkml schema for CORAL"
 authors = [
   {name = "marcin joachimiak", email = "marcinjoachimiak@gmail.com"},
@@ -30,6 +30,9 @@ dev = [
 # See https://hatch.pypa.io/latest/config/build/#file-selection for how to
 # explicitly include files other than default into the build distributions.
 
+[tool.hatch.build.targets.wheel]
+packages = ["src/linkml_coral"]
+
 [tool.hatch.version]
 source = "uv-dynamic-versioning"
 
@@ -50,8 +53,8 @@ skip = [
   "pyproject.toml",
   "uv.lock",
   "project/*",
-  "src/linkml-coral/datamodel/linkml-coral_pydantic.py",
-  "src/linkml-coral/datamodel/linkml-coral.py",
+  "src/linkml_coral/datamodel/linkml_coral_pydantic.py",
+  "src/linkml_coral/datamodel/linkml_coral.py",
 ]
 
 # Reminder: words have to be lowercased for the ignore-words-list
@@ -67,6 +70,6 @@ extend-exclude = [
   "uv.lock",
   "pyproject.toml",
   "project/*",
-  "src/linkml-coral/datamodel/linkml-coral_pydantic.py",
-  "src/linkml-coral/datamodel/linkml-coral.py",
+  "src/linkml_coral/datamodel/linkml_coral_pydantic.py",
+  "src/linkml_coral/datamodel/linkml_coral.py",
 ]

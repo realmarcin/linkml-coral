@@ -1,0 +1,49 @@
+id: https://w3id.org/linkml_coral/simple_test
+name: simple_test
+title: Simple Test Schema
+description: A minimal test schema for verifying package structure
+version: 1.0.0
+license: MIT
+
+prefixes:
+  linkml: https://w3id.org/linkml/
+  simple_test: https://w3id.org/linkml_coral/simple_test/
+
+default_prefix: simple_test
+
+imports:
+  - linkml:types
+
+classes:
+  Person:
+    description: A person entity
+    slots:
+      - id
+      - name
+      - age
+
+  PersonCollection:
+    description: A collection of persons
+    tree_root: true
+    slots:
+      - persons
+
+slots:
+  id:
+    description: Unique identifier
+    range: string
+    identifier: true
+
+  name:
+    description: Name of the person
+    range: string
+
+  age:
+    description: Age in years
+    range: integer
+
+  persons:
+    description: List of persons
+    range: Person
+    multivalued: true
+    inlined_as_list: true
