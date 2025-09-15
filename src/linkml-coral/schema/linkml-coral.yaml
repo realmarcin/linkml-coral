@@ -443,6 +443,9 @@ slots:
     range: string
     required: true
     annotations:
+      constraint:
+        tag: constraint
+        value: PROCESS:0000001
       type_term:
         tag: type_term
         value: ME:0000204
@@ -451,6 +454,9 @@ slots:
     range: string
     required: true
     annotations:
+      constraint:
+        tag: constraint
+        value: ENIGMA:0000029
       type_term:
         tag: type_term
         value: ME:0000205
@@ -530,6 +536,9 @@ slots:
     range: string
     required: true
     annotations:
+      unique:
+        tag: unique
+        value: true
       type_term:
         tag: type_term
         value: ME:0000228
@@ -540,7 +549,7 @@ slots:
     minimum_value: -90
     maximum_value: 90
     annotations:
-      units:
+      units_term:
         tag: units
         value: UO:0000185
       type_term:
@@ -553,7 +562,7 @@ slots:
     minimum_value: -180
     maximum_value: 180
     annotations:
-      units:
+      units_term:
         tag: units
         value: UO:0000185
       type_term:
@@ -564,6 +573,9 @@ slots:
     range: string
     required: true
     annotations:
+      constraint:
+        tag: constraint
+        value: CONTINENT:0000001
       type_term:
         tag: type_term
         value: ME:0000213
@@ -572,6 +584,9 @@ slots:
     range: string
     required: true
     annotations:
+      constraint:
+        tag: constraint
+        value: COUNTRY:0000001
       type_term:
         tag: type_term
         value: ME:0000214
@@ -590,6 +605,9 @@ slots:
     range: string
     required: true
     annotations:
+      constraint:
+        tag: constraint
+        value: ENVO:01000254
       type_term:
         tag: type_term
         value: ME:0000216
@@ -597,6 +615,9 @@ slots:
     description: feature field for Location
     range: string
     annotations:
+      constraint:
+        tag: constraint
+        value: ENVO:00002297
       type_term:
         tag: type_term
         value: ME:0000217
@@ -614,6 +635,9 @@ slots:
     range: string
     required: true
     annotations:
+      unique:
+        tag: unique
+        value: true
       type_term:
         tag: type_term
         value: ME:0000102
@@ -632,7 +656,7 @@ slots:
     description: depth field for Sample
     range: float
     annotations:
-      units:
+      units_term:
         tag: units
         value: UO:0000008
       type_term:
@@ -644,7 +668,7 @@ slots:
     description: elevation field for Sample
     range: float
     annotations:
-      units:
+      units_term:
         tag: units
         value: UO:0000008
       type_term:
@@ -686,6 +710,9 @@ slots:
     description: material field for Sample
     range: string
     annotations:
+      constraint:
+        tag: constraint
+        value: ENVO:00010483
       type_term:
         tag: type_term
         value: ME:0000230
@@ -694,6 +721,9 @@ slots:
     range: string
     required: true
     annotations:
+      constraint:
+        tag: constraint
+        value: MIxS:0000002
       type_term:
         tag: type_term
         value: ME:0000229
@@ -718,6 +748,9 @@ slots:
     range: string
     required: true
     annotations:
+      unique:
+        tag: unique
+        value: true
       type_term:
         tag: type_term
         value: ME:0000047
@@ -742,6 +775,9 @@ slots:
     range: string
     required: true
     annotations:
+      unique:
+        tag: unique
+        value: true
       type_term:
         tag: type_term
         value: ME:0000222
@@ -759,6 +795,9 @@ slots:
     range: string
     required: true
     annotations:
+      unique:
+        tag: unique
+        value: true
       type_term:
         tag: type_term
         value: ME:0000200
@@ -776,6 +815,9 @@ slots:
     range: string
     required: true
     annotations:
+      unique:
+        tag: unique
+        value: true
       type_term:
         tag: type_term
         value: ME:0000044
@@ -833,6 +875,9 @@ slots:
     range: string
     required: true
     annotations:
+      unique:
+        tag: unique
+        value: true
       type_term:
         tag: type_term
         value: ME:0000233
@@ -841,6 +886,9 @@ slots:
     range: string
     required: true
     annotations:
+      constraint:
+        tag: constraint
+        value: ME:0000234
       type_term:
         tag: type_term
         value: ME:0000234
@@ -878,6 +926,9 @@ slots:
     description: defined_strains field for Community
     range: string
     multivalued: true
+    comments:
+    - typedef.json has typo \"FK\": \"[Strain.Name]\" with capital N
+    - Using lowercase \"name\" to match actual Strain field
     annotations:
       foreign_key:
         tag: foreign_key
@@ -906,6 +957,9 @@ slots:
     range: string
     required: true
     annotations:
+      unique:
+        tag: unique
+        value: true
       type_term:
         tag: type_term
         value: ME:0000248
@@ -914,7 +968,7 @@ slots:
     range: integer
     required: true
     annotations:
-      units:
+      units_term:
         tag: units
         value: UO:0000189
       type_term:
@@ -925,6 +979,9 @@ slots:
     range: string
     required: true
     annotations:
+      constraint:
+        tag: constraint
+        value: ME:0000112
       type_term:
         tag: type_term
         value: ME:0000112
@@ -933,6 +990,9 @@ slots:
     range: string
     required: true
     annotations:
+      constraint:
+        tag: constraint
+        value: ME:0000116
       type_term:
         tag: type_term
         value: ME:0000116
@@ -958,6 +1018,9 @@ slots:
     range: string
     required: true
     annotations:
+      unique:
+        tag: unique
+        value: true
       type_term:
         tag: type_term
         value: ME:0000280
@@ -976,7 +1039,7 @@ slots:
     range: integer
     required: true
     annotations:
-      units:
+      units_term:
         tag: units
         value: UO:0000189
       type_term:
@@ -1004,6 +1067,9 @@ slots:
     range: string
     required: true
     annotations:
+      unique:
+        tag: unique
+        value: true
       type_term:
         tag: type_term
         value: ME:0000246
@@ -1022,7 +1088,7 @@ slots:
     range: integer
     required: true
     annotations:
-      units:
+      units_term:
         tag: units
         value: UO:0000189
       type_term:
@@ -1033,7 +1099,7 @@ slots:
     range: integer
     required: true
     annotations:
-      units:
+      units_term:
         tag: units
         value: UO:0000189
       type_term:
@@ -1061,6 +1127,9 @@ slots:
     range: string
     required: true
     annotations:
+      unique:
+        tag: unique
+        value: true
       type_term:
         tag: type_term
         value: ME:0000224
@@ -1068,6 +1137,9 @@ slots:
     description: genome field for Gene
     range: string
     required: true
+    comments:
+    - typedef.json has "FK": "Genome" without specifying target field
+    - Assumed to reference Genome.name based on pattern
     annotations:
       foreign_key:
         tag: foreign_key
@@ -1088,7 +1160,7 @@ slots:
     range: integer
     required: true
     annotations:
-      units:
+      units_term:
         tag: units
         value: UO:0000189
       type_term:
@@ -1110,7 +1182,7 @@ slots:
     range: integer
     required: true
     annotations:
-      units:
+      units_term:
         tag: units
         value: UO:0000244
       type_term:
@@ -1123,7 +1195,7 @@ slots:
     range: integer
     required: true
     annotations:
-      units:
+      units_term:
         tag: units
         value: UO:0000244
       type_term:
@@ -1150,6 +1222,9 @@ slots:
     range: string
     required: true
     annotations:
+      unique:
+        tag: unique
+        value: true
       type_term:
         tag: type_term
         value: ME:0000330
@@ -1157,6 +1232,9 @@ slots:
     description: assembly field for Bin
     range: string
     required: true
+    comments:
+    - typedef.json has "FK": "Assembly" without specifying target field
+    - Assumed to reference Assembly.name based on pattern
     annotations:
       foreign_key:
         tag: foreign_key
@@ -1187,6 +1265,9 @@ slots:
     range: string
     required: true
     annotations:
+      unique:
+        tag: unique
+        value: true
       type_term:
         tag: type_term
         value: ME:0000328
@@ -1219,6 +1300,9 @@ slots:
     range: string
     required: true
     annotations:
+      unique:
+        tag: unique
+        value: true
       type_term:
         tag: type_term
         value: ME:0000355
@@ -1240,7 +1324,7 @@ slots:
     description: size field for Image
     range: integer
     annotations:
-      units:
+      units_term:
         tag: units
         value: UO:0000233
       type_term:
@@ -1250,7 +1334,7 @@ slots:
     description: dimensions field for Image
     range: string
     annotations:
-      units:
+      units_term:
         tag: units
         value: UO:0000236
       type_term:
@@ -1277,6 +1361,9 @@ slots:
     range: string
     required: true
     annotations:
+      unique:
+        tag: unique
+        value: true
       type_term:
         tag: type_term
         value: ME:0000262
@@ -1303,7 +1390,7 @@ slots:
     description: n_mapped_reads field for TnSeq_Library
     range: integer
     annotations:
-      units:
+      units_term:
         tag: units
         value: UO:0000189
       type_term:
@@ -1313,7 +1400,7 @@ slots:
     description: n_barcodes field for TnSeq_Library
     range: integer
     annotations:
-      units:
+      units_term:
         tag: units
         value: UO:0000189
       type_term:
@@ -1323,7 +1410,7 @@ slots:
     description: n_usable_barcodes field for TnSeq_Library
     range: integer
     annotations:
-      units:
+      units_term:
         tag: units
         value: UO:0000189
       type_term:
@@ -1333,7 +1420,7 @@ slots:
     description: n_insertion_locations field for TnSeq_Library
     range: integer
     annotations:
-      units:
+      units_term:
         tag: units
         value: UO:0000189
       type_term:
@@ -1343,7 +1430,7 @@ slots:
     description: hit_rate_essential field for TnSeq_Library
     range: float
     annotations:
-      units:
+      units_term:
         tag: units
         value: UO:0000190
       type_term:
@@ -1353,7 +1440,7 @@ slots:
     description: hit_rate_other field for TnSeq_Library
     range: float
     annotations:
-      units:
+      units_term:
         tag: units
         value: UO:0000190
       type_term:
@@ -1373,6 +1460,9 @@ slots:
     range: string
     required: true
     annotations:
+      unique:
+        tag: unique
+        value: true
       type_term:
         tag: type_term
         value: ME:0000262
@@ -1391,7 +1481,7 @@ slots:
     description: n_fragments field for DubSeq_Library
     range: integer
     annotations:
-      units:
+      units_term:
         tag: units
         value: UO:0000189
       type_term:
