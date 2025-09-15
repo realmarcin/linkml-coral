@@ -1,0 +1,2504 @@
+name: enigma-cdm
+description: LinkML schema for ENIGMA (Environmental Molecular Sciences Laboratory
+  Integrated Genomics Initiative) Common Data Model
+title: ENIGMA Common Data Model
+id: https://w3id.org/enigma/enigma-cdm
+version: 1.0.0
+imports:
+- linkml:types
+license: MIT
+prefixes:
+  linkml:
+    prefix_prefix: linkml
+    prefix_reference: https://w3id.org/linkml/
+  enigma:
+    prefix_prefix: enigma
+    prefix_reference: https://w3id.org/enigma/
+  DA:
+    prefix_prefix: DA
+    prefix_reference: http://purl.obolibrary.org/obo/DA_
+  ME:
+    prefix_prefix: ME
+    prefix_reference: http://purl.obolibrary.org/obo/ME_
+  ENVO:
+    prefix_prefix: ENVO
+    prefix_reference: http://purl.obolibrary.org/obo/ENVO_
+  UO:
+    prefix_prefix: UO
+    prefix_reference: http://purl.obolibrary.org/obo/UO_
+  PROCESS:
+    prefix_prefix: PROCESS
+    prefix_reference: http://purl.obolibrary.org/obo/PROCESS_
+  ENIGMA_TERM:
+    prefix_prefix: ENIGMA_TERM
+    prefix_reference: http://purl.obolibrary.org/obo/ENIGMA_
+  CONTINENT:
+    prefix_prefix: CONTINENT
+    prefix_reference: http://purl.obolibrary.org/obo/CONTINENT_
+  COUNTRY:
+    prefix_prefix: COUNTRY
+    prefix_reference: http://purl.obolibrary.org/obo/COUNTRY_
+  MIxS:
+    prefix_prefix: MIxS
+    prefix_reference: http://purl.obolibrary.org/obo/MIxS_
+default_prefix: enigma
+default_range: string
+types:
+  string:
+    name: string
+    definition_uri: https://w3id.org/linkml/String
+    description: A character string
+    notes:
+    - In RDF serializations, a slot with range of string is treated as a literal or
+      type xsd:string.   If you are authoring schemas in LinkML YAML, the type is
+      referenced with the lower case "string".
+    from_schema: https://w3id.org/linkml/types
+    imported_from: linkml:types
+    exact_mappings:
+    - schema:Text
+    base: str
+    uri: xsd:string
+  integer:
+    name: integer
+    definition_uri: https://w3id.org/linkml/Integer
+    description: An integer
+    notes:
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "integer".
+    from_schema: https://w3id.org/linkml/types
+    imported_from: linkml:types
+    exact_mappings:
+    - schema:Integer
+    base: int
+    uri: xsd:integer
+  boolean:
+    name: boolean
+    definition_uri: https://w3id.org/linkml/Boolean
+    description: A binary (true or false) value
+    notes:
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "boolean".
+    from_schema: https://w3id.org/linkml/types
+    imported_from: linkml:types
+    exact_mappings:
+    - schema:Boolean
+    base: Bool
+    uri: xsd:boolean
+    repr: bool
+  float:
+    name: float
+    definition_uri: https://w3id.org/linkml/Float
+    description: A real number that conforms to the xsd:float specification
+    notes:
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "float".
+    from_schema: https://w3id.org/linkml/types
+    imported_from: linkml:types
+    exact_mappings:
+    - schema:Float
+    base: float
+    uri: xsd:float
+  double:
+    name: double
+    definition_uri: https://w3id.org/linkml/Double
+    description: A real number that conforms to the xsd:double specification
+    notes:
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "double".
+    from_schema: https://w3id.org/linkml/types
+    imported_from: linkml:types
+    close_mappings:
+    - schema:Float
+    base: float
+    uri: xsd:double
+  decimal:
+    name: decimal
+    definition_uri: https://w3id.org/linkml/Decimal
+    description: A real number with arbitrary precision that conforms to the xsd:decimal
+      specification
+    notes:
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "decimal".
+    from_schema: https://w3id.org/linkml/types
+    imported_from: linkml:types
+    broad_mappings:
+    - schema:Number
+    base: Decimal
+    uri: xsd:decimal
+  time:
+    name: time
+    definition_uri: https://w3id.org/linkml/Time
+    description: A time object represents a (local) time of day, independent of any
+      particular day
+    notes:
+    - URI is dateTime because OWL reasoners do not work with straight date or time
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "time".
+    from_schema: https://w3id.org/linkml/types
+    imported_from: linkml:types
+    exact_mappings:
+    - schema:Time
+    base: XSDTime
+    uri: xsd:time
+    repr: str
+  date:
+    name: date
+    definition_uri: https://w3id.org/linkml/Date
+    description: a date (year, month and day) in an idealized calendar
+    notes:
+    - URI is dateTime because OWL reasoners don't work with straight date or time
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "date".
+    from_schema: https://w3id.org/linkml/types
+    imported_from: linkml:types
+    exact_mappings:
+    - schema:Date
+    base: XSDDate
+    uri: xsd:date
+    repr: str
+  datetime:
+    name: datetime
+    definition_uri: https://w3id.org/linkml/Datetime
+    description: The combination of a date and time
+    notes:
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "datetime".
+    from_schema: https://w3id.org/linkml/types
+    imported_from: linkml:types
+    exact_mappings:
+    - schema:DateTime
+    base: XSDDateTime
+    uri: xsd:dateTime
+    repr: str
+  date_or_datetime:
+    name: date_or_datetime
+    definition_uri: https://w3id.org/linkml/DateOrDatetime
+    description: Either a date or a datetime
+    notes:
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "date_or_datetime".
+    from_schema: https://w3id.org/linkml/types
+    imported_from: linkml:types
+    base: str
+    uri: linkml:DateOrDatetime
+    repr: str
+  uriorcurie:
+    name: uriorcurie
+    definition_uri: https://w3id.org/linkml/Uriorcurie
+    description: a URI or a CURIE
+    notes:
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "uriorcurie".
+    from_schema: https://w3id.org/linkml/types
+    imported_from: linkml:types
+    base: URIorCURIE
+    uri: xsd:anyURI
+    repr: str
+  curie:
+    name: curie
+    definition_uri: https://w3id.org/linkml/Curie
+    conforms_to: https://www.w3.org/TR/curie/
+    description: a compact URI
+    notes:
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "curie".
+    comments:
+    - in RDF serializations this MUST be expanded to a URI
+    - in non-RDF serializations MAY be serialized as the compact representation
+    from_schema: https://w3id.org/linkml/types
+    imported_from: linkml:types
+    base: Curie
+    uri: xsd:string
+    repr: str
+  uri:
+    name: uri
+    definition_uri: https://w3id.org/linkml/Uri
+    conforms_to: https://www.ietf.org/rfc/rfc3987.txt
+    description: a complete URI
+    notes:
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "uri".
+    comments:
+    - in RDF serializations a slot with range of uri is treated as a literal or type
+      xsd:anyURI unless it is an identifier or a reference to an identifier, in which
+      case it is translated directly to a node
+    from_schema: https://w3id.org/linkml/types
+    imported_from: linkml:types
+    close_mappings:
+    - schema:URL
+    base: URI
+    uri: xsd:anyURI
+    repr: str
+  ncname:
+    name: ncname
+    definition_uri: https://w3id.org/linkml/Ncname
+    description: Prefix part of CURIE
+    notes:
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "ncname".
+    from_schema: https://w3id.org/linkml/types
+    imported_from: linkml:types
+    base: NCName
+    uri: xsd:string
+    repr: str
+  objectidentifier:
+    name: objectidentifier
+    definition_uri: https://w3id.org/linkml/Objectidentifier
+    description: A URI or CURIE that represents an object in the model.
+    notes:
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "objectidentifier".
+    comments:
+    - Used for inheritance and type checking
+    from_schema: https://w3id.org/linkml/types
+    imported_from: linkml:types
+    base: ElementIdentifier
+    uri: shex:iri
+    repr: str
+  nodeidentifier:
+    name: nodeidentifier
+    definition_uri: https://w3id.org/linkml/Nodeidentifier
+    description: A URI, CURIE or BNODE that represents a node in a model.
+    notes:
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "nodeidentifier".
+    from_schema: https://w3id.org/linkml/types
+    imported_from: linkml:types
+    base: NodeIdentifier
+    uri: shex:nonLiteral
+    repr: str
+  jsonpointer:
+    name: jsonpointer
+    definition_uri: https://w3id.org/linkml/Jsonpointer
+    conforms_to: https://datatracker.ietf.org/doc/html/rfc6901
+    description: A string encoding a JSON Pointer. The value of the string MUST conform
+      to JSON Point syntax and SHOULD dereference to a valid object within the current
+      instance document when encoded in tree form.
+    notes:
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "jsonpointer".
+    from_schema: https://w3id.org/linkml/types
+    imported_from: linkml:types
+    base: str
+    uri: xsd:string
+    repr: str
+  jsonpath:
+    name: jsonpath
+    definition_uri: https://w3id.org/linkml/Jsonpath
+    conforms_to: https://www.ietf.org/archive/id/draft-goessner-dispatch-jsonpath-00.html
+    description: A string encoding a JSON Path. The value of the string MUST conform
+      to JSON Point syntax and SHOULD dereference to zero or more valid objects within
+      the current instance document when encoded in tree form.
+    notes:
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "jsonpath".
+    from_schema: https://w3id.org/linkml/types
+    imported_from: linkml:types
+    base: str
+    uri: xsd:string
+    repr: str
+  sparqlpath:
+    name: sparqlpath
+    definition_uri: https://w3id.org/linkml/Sparqlpath
+    conforms_to: https://www.w3.org/TR/sparql11-query/#propertypaths
+    description: A string encoding a SPARQL Property Path. The value of the string
+      MUST conform to SPARQL syntax and SHOULD dereference to zero or more valid objects
+      within the current instance document when encoded as RDF.
+    notes:
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "sparqlpath".
+    from_schema: https://w3id.org/linkml/types
+    imported_from: linkml:types
+    base: str
+    uri: xsd:string
+    repr: str
+slots:
+  process_id:
+    name: process_id
+    definition_uri: https://w3id.org/enigma/process_id
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000277
+    description: id field for Process
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:process_id
+    identifier: true
+    owner: Process
+    domain_of:
+    - Process
+    range: string
+    required: true
+  process_process:
+    name: process_process
+    definition_uri: https://w3id.org/enigma/process_process
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000204
+    description: process field for Process
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:process_process
+    owner: Process
+    domain_of:
+    - Process
+    range: string
+    required: true
+  process_person:
+    name: process_person
+    definition_uri: https://w3id.org/enigma/process_person
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000205
+    description: person field for Process
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:process_person
+    owner: Process
+    domain_of:
+    - Process
+    range: string
+    required: true
+  process_campaign:
+    name: process_campaign
+    definition_uri: https://w3id.org/enigma/process_campaign
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000206
+    description: campaign field for Process
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:process_campaign
+    owner: Process
+    domain_of:
+    - Process
+    range: string
+    required: true
+  process_protocol:
+    name: process_protocol
+    definition_uri: https://w3id.org/enigma/process_protocol
+    annotations:
+      foreign_key:
+        tag: foreign_key
+        value: Protocol.name
+      type_term:
+        tag: type_term
+        value: ME:0000328
+    description: protocol field for Process
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:process_protocol
+    owner: Process
+    domain_of:
+    - Process
+    range: string
+  process_date_start:
+    name: process_date_start
+    definition_uri: https://w3id.org/enigma/process_date_start
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000009
+    description: date_start field for Process
+    comments:
+    - YYYY[-MM[-DD]]
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:process_date_start
+    owner: Process
+    domain_of:
+    - Process
+    range: string
+    pattern: \d\d\d\d(-\d\d(-\d\d)?)?
+  process_date_end:
+    name: process_date_end
+    definition_uri: https://w3id.org/enigma/process_date_end
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000009
+    description: date_end field for Process
+    comments:
+    - YYYY[-MM[-DD]]
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:process_date_end
+    owner: Process
+    domain_of:
+    - Process
+    range: string
+    pattern: \d\d\d\d(-\d\d(-\d\d)?)?
+  process_input_objects:
+    name: process_input_objects
+    definition_uri: https://w3id.org/enigma/process_input_objects
+    annotations:
+      constraint:
+        tag: constraint
+        value: '[Entity|Brick]'
+      type_term:
+        tag: type_term
+        value: ME:0000207
+    description: input_objects field for Process
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:process_input_objects
+    owner: Process
+    domain_of:
+    - Process
+    range: string
+    required: true
+    multivalued: true
+  process_output_objects:
+    name: process_output_objects
+    definition_uri: https://w3id.org/enigma/process_output_objects
+    annotations:
+      constraint:
+        tag: constraint
+        value: '[Entity|Brick]'
+      type_term:
+        tag: type_term
+        value: ME:0000208
+    description: output_objects field for Process
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:process_output_objects
+    owner: Process
+    domain_of:
+    - Process
+    range: string
+    required: true
+    multivalued: true
+  location_id:
+    name: location_id
+    definition_uri: https://w3id.org/enigma/location_id
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000266
+    description: id field for Location
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:location_id
+    identifier: true
+    owner: Location
+    domain_of:
+    - Location
+    range: string
+    required: true
+  location_name:
+    name: location_name
+    definition_uri: https://w3id.org/enigma/location_name
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000228
+    description: name field for Location
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:location_name
+    owner: Location
+    domain_of:
+    - Location
+    range: string
+    required: true
+  location_latitude:
+    name: location_latitude
+    definition_uri: https://w3id.org/enigma/location_latitude
+    annotations:
+      units:
+        tag: units
+        value: UO:0000185
+      type_term:
+        tag: type_term
+        value: ME:0000211
+    description: latitude field for Location
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:location_latitude
+    owner: Location
+    domain_of:
+    - Location
+    range: float
+    required: true
+    minimum_value: -90
+    maximum_value: 90
+  location_longitude:
+    name: location_longitude
+    definition_uri: https://w3id.org/enigma/location_longitude
+    annotations:
+      units:
+        tag: units
+        value: UO:0000185
+      type_term:
+        tag: type_term
+        value: ME:0000212
+    description: longitude field for Location
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:location_longitude
+    owner: Location
+    domain_of:
+    - Location
+    range: float
+    required: true
+    minimum_value: -180
+    maximum_value: 180
+  location_continent:
+    name: location_continent
+    definition_uri: https://w3id.org/enigma/location_continent
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000213
+    description: continent field for Location
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:location_continent
+    owner: Location
+    domain_of:
+    - Location
+    range: string
+    required: true
+  location_country:
+    name: location_country
+    definition_uri: https://w3id.org/enigma/location_country
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000214
+    description: country field for Location
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:location_country
+    owner: Location
+    domain_of:
+    - Location
+    range: string
+    required: true
+  location_region:
+    name: location_region
+    definition_uri: https://w3id.org/enigma/location_region
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000215
+    description: region field for Location
+    comments:
+    - specific local region name(s)
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:location_region
+    owner: Location
+    domain_of:
+    - Location
+    range: string
+    required: true
+  location_biome:
+    name: location_biome
+    definition_uri: https://w3id.org/enigma/location_biome
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000216
+    description: biome field for Location
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:location_biome
+    owner: Location
+    domain_of:
+    - Location
+    range: string
+    required: true
+  location_feature:
+    name: location_feature
+    definition_uri: https://w3id.org/enigma/location_feature
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000217
+    description: feature field for Location
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:location_feature
+    owner: Location
+    domain_of:
+    - Location
+    range: string
+  sample_id:
+    name: sample_id
+    definition_uri: https://w3id.org/enigma/sample_id
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000267
+    description: id field for Sample
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:sample_id
+    identifier: true
+    owner: Sample
+    domain_of:
+    - Sample
+    range: string
+    required: true
+  sample_name:
+    name: sample_name
+    definition_uri: https://w3id.org/enigma/sample_name
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000102
+    description: name field for Sample
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:sample_name
+    owner: Sample
+    domain_of:
+    - Sample
+    range: string
+    required: true
+  sample_location:
+    name: sample_location
+    definition_uri: https://w3id.org/enigma/sample_location
+    annotations:
+      foreign_key:
+        tag: foreign_key
+        value: Location.name
+      type_term:
+        tag: type_term
+        value: ME:0000228
+    description: location field for Sample
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:sample_location
+    owner: Sample
+    domain_of:
+    - Sample
+    range: string
+    required: true
+  sample_depth:
+    name: sample_depth
+    definition_uri: https://w3id.org/enigma/sample_depth
+    annotations:
+      units:
+        tag: units
+        value: UO:0000008
+      type_term:
+        tag: type_term
+        value: ME:0000219
+    description: depth field for Sample
+    comments:
+    - in meters below ground level
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:sample_depth
+    owner: Sample
+    domain_of:
+    - Sample
+    range: float
+  sample_elevation:
+    name: sample_elevation
+    definition_uri: https://w3id.org/enigma/sample_elevation
+    annotations:
+      units:
+        tag: units
+        value: UO:0000008
+      type_term:
+        tag: type_term
+        value: ME:0000220
+    description: elevation field for Sample
+    comments:
+    - in meters above ground level
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:sample_elevation
+    owner: Sample
+    domain_of:
+    - Sample
+    range: float
+  sample_date:
+    name: sample_date
+    definition_uri: https://w3id.org/enigma/sample_date
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000009
+    description: date field for Sample
+    comments:
+    - YYYY[-MM[-DD]]
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:sample_date
+    owner: Sample
+    domain_of:
+    - Sample
+    range: string
+    required: true
+    pattern: \d\d\d\d(-\d\d(-\d\d)?)?
+  sample_time:
+    name: sample_time
+    definition_uri: https://w3id.org/enigma/sample_time
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000010
+    description: time field for Sample
+    comments:
+    - HH[:MM[:SS]] [AM|PM]
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:sample_time
+    owner: Sample
+    domain_of:
+    - Sample
+    range: string
+    pattern: \d(\d)?(:\d\d(:\d\d)?)?\s*([apAP][mM])?
+  sample_timezone:
+    name: sample_timezone
+    definition_uri: https://w3id.org/enigma/sample_timezone
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000201
+    description: timezone field for Sample
+    comments:
+    - ISO8601 compliant format, ie. UTC-7
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:sample_timezone
+    owner: Sample
+    domain_of:
+    - Sample
+    range: string
+  sample_material:
+    name: sample_material
+    definition_uri: https://w3id.org/enigma/sample_material
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000230
+    description: material field for Sample
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:sample_material
+    owner: Sample
+    domain_of:
+    - Sample
+    range: string
+  sample_env_package:
+    name: sample_env_package
+    definition_uri: https://w3id.org/enigma/sample_env_package
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000229
+    description: env_package field for Sample
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:sample_env_package
+    owner: Sample
+    domain_of:
+    - Sample
+    range: string
+    required: true
+  sample_description:
+    name: sample_description
+    definition_uri: https://w3id.org/enigma/sample_description
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000202
+    description: description field for Sample
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:sample_description
+    owner: Sample
+    domain_of:
+    - Sample
+    range: string
+  taxon_id:
+    name: taxon_id
+    definition_uri: https://w3id.org/enigma/taxon_id
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000268
+    description: id field for Taxon
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:taxon_id
+    identifier: true
+    owner: Taxon
+    domain_of:
+    - Taxon
+    range: string
+    required: true
+  taxon_name:
+    name: taxon_name
+    definition_uri: https://w3id.org/enigma/taxon_name
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000047
+    description: name field for Taxon
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:taxon_name
+    owner: Taxon
+    domain_of:
+    - Taxon
+    range: string
+    required: true
+  taxon_ncbi_taxid:
+    name: taxon_ncbi_taxid
+    definition_uri: https://w3id.org/enigma/taxon_ncbi_taxid
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000223
+    description: ncbi_taxid field for Taxon
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:taxon_ncbi_taxid
+    owner: Taxon
+    domain_of:
+    - Taxon
+    range: string
+  otu_id:
+    name: otu_id
+    definition_uri: https://w3id.org/enigma/otu_id
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000269
+    description: id field for OTU
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:otu_id
+    identifier: true
+    owner: OTU
+    domain_of:
+    - OTU
+    range: string
+    required: true
+  otu_name:
+    name: otu_name
+    definition_uri: https://w3id.org/enigma/otu_name
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000222
+    description: name field for OTU
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:otu_name
+    owner: OTU
+    domain_of:
+    - OTU
+    range: string
+    required: true
+  condition_id:
+    name: condition_id
+    definition_uri: https://w3id.org/enigma/condition_id
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000270
+    description: id field for Condition
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:condition_id
+    identifier: true
+    owner: Condition
+    domain_of:
+    - Condition
+    range: string
+    required: true
+  condition_name:
+    name: condition_name
+    definition_uri: https://w3id.org/enigma/condition_name
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000200
+    description: name field for Condition
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:condition_name
+    owner: Condition
+    domain_of:
+    - Condition
+    range: string
+    required: true
+  strain_id:
+    name: strain_id
+    definition_uri: https://w3id.org/enigma/strain_id
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000271
+    description: id field for Strain
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:strain_id
+    identifier: true
+    owner: Strain
+    domain_of:
+    - Strain
+    range: string
+    required: true
+  strain_name:
+    name: strain_name
+    definition_uri: https://w3id.org/enigma/strain_name
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000044
+    description: name field for Strain
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:strain_name
+    owner: Strain
+    domain_of:
+    - Strain
+    range: string
+    required: true
+  strain_description:
+    name: strain_description
+    definition_uri: https://w3id.org/enigma/strain_description
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000202
+    description: description field for Strain
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:strain_description
+    owner: Strain
+    domain_of:
+    - Strain
+    range: string
+  strain_genome:
+    name: strain_genome
+    definition_uri: https://w3id.org/enigma/strain_genome
+    annotations:
+      foreign_key:
+        tag: foreign_key
+        value: Genome.name
+      type_term:
+        tag: type_term
+        value: ME:0000246
+    description: genome field for Strain
+    comments:
+    - genome object for sequenced, WT strains
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:strain_genome
+    owner: Strain
+    domain_of:
+    - Strain
+    range: string
+  strain_derived_from:
+    name: strain_derived_from
+    definition_uri: https://w3id.org/enigma/strain_derived_from
+    annotations:
+      foreign_key:
+        tag: foreign_key
+        value: Strain.name
+      type_term:
+        tag: type_term
+        value: ME:0000044
+    description: derived_from field for Strain
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:strain_derived_from
+    owner: Strain
+    domain_of:
+    - Strain
+    range: string
+  strain_genes_changed:
+    name: strain_genes_changed
+    definition_uri: https://w3id.org/enigma/strain_genes_changed
+    annotations:
+      foreign_key:
+        tag: foreign_key
+        value: Gene.gene_id
+      type_term:
+        tag: type_term
+        value: ME:0000091
+    description: genes_changed field for Strain
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:strain_genes_changed
+    owner: Strain
+    domain_of:
+    - Strain
+    range: string
+    multivalued: true
+  community_id:
+    name: community_id
+    definition_uri: https://w3id.org/enigma/community_id
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000272
+    description: id field for Community
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:community_id
+    identifier: true
+    owner: Community
+    domain_of:
+    - Community
+    range: string
+    required: true
+  community_name:
+    name: community_name
+    definition_uri: https://w3id.org/enigma/community_name
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000233
+    description: name field for Community
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:community_name
+    owner: Community
+    domain_of:
+    - Community
+    range: string
+    required: true
+  community_community_type:
+    name: community_community_type
+    definition_uri: https://w3id.org/enigma/community_community_type
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000234
+    description: community_type field for Community
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:community_community_type
+    owner: Community
+    domain_of:
+    - Community
+    range: string
+    required: true
+  community_sample:
+    name: community_sample
+    definition_uri: https://w3id.org/enigma/community_sample
+    annotations:
+      foreign_key:
+        tag: foreign_key
+        value: Sample.name
+      type_term:
+        tag: type_term
+        value: ME:0000102
+    description: sample field for Community
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:community_sample
+    owner: Community
+    domain_of:
+    - Community
+    range: string
+  community_parent_community:
+    name: community_parent_community
+    definition_uri: https://w3id.org/enigma/community_parent_community
+    annotations:
+      foreign_key:
+        tag: foreign_key
+        value: Community.name
+      type_term:
+        tag: type_term
+        value: ME:0000233
+    description: parent_community field for Community
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:community_parent_community
+    owner: Community
+    domain_of:
+    - Community
+    range: string
+  community_condition:
+    name: community_condition
+    definition_uri: https://w3id.org/enigma/community_condition
+    annotations:
+      foreign_key:
+        tag: foreign_key
+        value: Condition.name
+      type_term:
+        tag: type_term
+        value: ME:0000200
+    description: condition field for Community
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:community_condition
+    owner: Community
+    domain_of:
+    - Community
+    range: string
+  community_defined_strains:
+    name: community_defined_strains
+    definition_uri: https://w3id.org/enigma/community_defined_strains
+    annotations:
+      foreign_key:
+        tag: foreign_key
+        value: Strain.name
+      type_term:
+        tag: type_term
+        value: ME:0000044
+    description: defined_strains field for Community
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:community_defined_strains
+    owner: Community
+    domain_of:
+    - Community
+    range: string
+    multivalued: true
+  community_description:
+    name: community_description
+    definition_uri: https://w3id.org/enigma/community_description
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000202
+    description: description field for Community
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:community_description
+    owner: Community
+    domain_of:
+    - Community
+    range: string
+  reads_id:
+    name: reads_id
+    definition_uri: https://w3id.org/enigma/reads_id
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000273
+    description: id field for Reads
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:reads_id
+    identifier: true
+    owner: Reads
+    domain_of:
+    - Reads
+    range: string
+    required: true
+  reads_name:
+    name: reads_name
+    definition_uri: https://w3id.org/enigma/reads_name
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000248
+    description: name field for Reads
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:reads_name
+    owner: Reads
+    domain_of:
+    - Reads
+    range: string
+    required: true
+  reads_read_count:
+    name: reads_read_count
+    definition_uri: https://w3id.org/enigma/reads_read_count
+    annotations:
+      units:
+        tag: units
+        value: UO:0000189
+      type_term:
+        tag: type_term
+        value: ME:0000126
+    description: read_count field for Reads
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:reads_read_count
+    owner: Reads
+    domain_of:
+    - Reads
+    range: integer
+    required: true
+  reads_read_type:
+    name: reads_read_type
+    definition_uri: https://w3id.org/enigma/reads_read_type
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000112
+    description: read_type field for Reads
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:reads_read_type
+    owner: Reads
+    domain_of:
+    - Reads
+    range: string
+    required: true
+  reads_sequencing_technology:
+    name: reads_sequencing_technology
+    definition_uri: https://w3id.org/enigma/reads_sequencing_technology
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000116
+    description: sequencing_technology field for Reads
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:reads_sequencing_technology
+    owner: Reads
+    domain_of:
+    - Reads
+    range: string
+    required: true
+  reads_link:
+    name: reads_link
+    definition_uri: https://w3id.org/enigma/reads_link
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000203
+    description: link field for Reads
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:reads_link
+    owner: Reads
+    domain_of:
+    - Reads
+    range: string
+    required: true
+  assembly_id:
+    name: assembly_id
+    definition_uri: https://w3id.org/enigma/assembly_id
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000281
+    description: id field for Assembly
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:assembly_id
+    identifier: true
+    owner: Assembly
+    domain_of:
+    - Assembly
+    range: string
+    required: true
+  assembly_name:
+    name: assembly_name
+    definition_uri: https://w3id.org/enigma/assembly_name
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000280
+    description: name field for Assembly
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:assembly_name
+    owner: Assembly
+    domain_of:
+    - Assembly
+    range: string
+    required: true
+  assembly_strain:
+    name: assembly_strain
+    definition_uri: https://w3id.org/enigma/assembly_strain
+    annotations:
+      foreign_key:
+        tag: foreign_key
+        value: Strain.name
+      type_term:
+        tag: type_term
+        value: ME:0000044
+    description: strain field for Assembly
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:assembly_strain
+    owner: Assembly
+    domain_of:
+    - Assembly
+    range: string
+  assembly_n_contigs:
+    name: assembly_n_contigs
+    definition_uri: https://w3id.org/enigma/assembly_n_contigs
+    annotations:
+      units:
+        tag: units
+        value: UO:0000189
+      type_term:
+        tag: type_term
+        value: ME:0000126
+    description: n_contigs field for Assembly
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:assembly_n_contigs
+    owner: Assembly
+    domain_of:
+    - Assembly
+    range: integer
+    required: true
+  assembly_link:
+    name: assembly_link
+    definition_uri: https://w3id.org/enigma/assembly_link
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000203
+    description: link field for Assembly
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:assembly_link
+    owner: Assembly
+    domain_of:
+    - Assembly
+    range: string
+    required: true
+  genome_id:
+    name: genome_id
+    definition_uri: https://w3id.org/enigma/genome_id
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000274
+    description: id field for Genome
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:genome_id
+    identifier: true
+    owner: Genome
+    domain_of:
+    - Genome
+    range: string
+    required: true
+  genome_name:
+    name: genome_name
+    definition_uri: https://w3id.org/enigma/genome_name
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000246
+    description: name field for Genome
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:genome_name
+    owner: Genome
+    domain_of:
+    - Genome
+    range: string
+    required: true
+  genome_strain:
+    name: genome_strain
+    definition_uri: https://w3id.org/enigma/genome_strain
+    annotations:
+      foreign_key:
+        tag: foreign_key
+        value: Strain.name
+      type_term:
+        tag: type_term
+        value: ME:0000044
+    description: strain field for Genome
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:genome_strain
+    owner: Genome
+    domain_of:
+    - Genome
+    range: string
+  genome_n_contigs:
+    name: genome_n_contigs
+    definition_uri: https://w3id.org/enigma/genome_n_contigs
+    annotations:
+      units:
+        tag: units
+        value: UO:0000189
+      type_term:
+        tag: type_term
+        value: ME:0000126
+    description: n_contigs field for Genome
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:genome_n_contigs
+    owner: Genome
+    domain_of:
+    - Genome
+    range: integer
+    required: true
+  genome_n_features:
+    name: genome_n_features
+    definition_uri: https://w3id.org/enigma/genome_n_features
+    annotations:
+      units:
+        tag: units
+        value: UO:0000189
+      type_term:
+        tag: type_term
+        value: ME:0000126
+    description: n_features field for Genome
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:genome_n_features
+    owner: Genome
+    domain_of:
+    - Genome
+    range: integer
+    required: true
+  genome_link:
+    name: genome_link
+    definition_uri: https://w3id.org/enigma/genome_link
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000203
+    description: link field for Genome
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:genome_link
+    owner: Genome
+    domain_of:
+    - Genome
+    range: string
+    required: true
+  gene_id:
+    name: gene_id
+    definition_uri: https://w3id.org/enigma/gene_id
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000275
+    description: id field for Gene
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:gene_id
+    identifier: true
+    owner: Gene
+    domain_of:
+    - Gene
+    range: string
+    required: true
+  gene_gene_id:
+    name: gene_gene_id
+    definition_uri: https://w3id.org/enigma/gene_gene_id
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000224
+    description: gene_id field for Gene
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:gene_gene_id
+    owner: Gene
+    domain_of:
+    - Gene
+    range: string
+    required: true
+  gene_genome:
+    name: gene_genome
+    definition_uri: https://w3id.org/enigma/gene_genome
+    annotations:
+      foreign_key:
+        tag: foreign_key
+        value: Genome.name
+      type_term:
+        tag: type_term
+        value: ME:0000246
+    description: genome field for Gene
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:gene_genome
+    owner: Gene
+    domain_of:
+    - Gene
+    range: string
+    required: true
+  gene_aliases:
+    name: gene_aliases
+    definition_uri: https://w3id.org/enigma/gene_aliases
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000060
+    description: aliases field for Gene
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:gene_aliases
+    owner: Gene
+    domain_of:
+    - Gene
+    range: string
+    multivalued: true
+  gene_contig_number:
+    name: gene_contig_number
+    definition_uri: https://w3id.org/enigma/gene_contig_number
+    annotations:
+      units:
+        tag: units
+        value: UO:0000189
+      type_term:
+        tag: type_term
+        value: ME:0000126
+    description: contig_number field for Gene
+    comments:
+    - indexed starting at 1, as in KBase
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:gene_contig_number
+    owner: Gene
+    domain_of:
+    - Gene
+    range: integer
+    required: true
+  gene_strand:
+    name: gene_strand
+    definition_uri: https://w3id.org/enigma/gene_strand
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000186
+    description: strand field for Gene
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:gene_strand
+    owner: Gene
+    domain_of:
+    - Gene
+    range: string
+    required: true
+    pattern: '[+-]'
+  gene_start:
+    name: gene_start
+    definition_uri: https://w3id.org/enigma/gene_start
+    annotations:
+      units:
+        tag: units
+        value: UO:0000244
+      type_term:
+        tag: type_term
+        value: ME:0000242
+    description: start field for Gene
+    comments:
+    - indexed starting at 1, as in KBase
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:gene_start
+    owner: Gene
+    domain_of:
+    - Gene
+    range: integer
+    required: true
+  gene_stop:
+    name: gene_stop
+    definition_uri: https://w3id.org/enigma/gene_stop
+    annotations:
+      units:
+        tag: units
+        value: UO:0000244
+      type_term:
+        tag: type_term
+        value: ME:0000243
+    description: stop field for Gene
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:gene_stop
+    owner: Gene
+    domain_of:
+    - Gene
+    range: integer
+    required: true
+  gene_function:
+    name: gene_function
+    definition_uri: https://w3id.org/enigma/gene_function
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000250
+    description: function field for Gene
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:gene_function
+    owner: Gene
+    domain_of:
+    - Gene
+    range: string
+  bin_id:
+    name: bin_id
+    definition_uri: https://w3id.org/enigma/bin_id
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000331
+    description: id field for Bin
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:bin_id
+    identifier: true
+    owner: Bin
+    domain_of:
+    - Bin
+    range: string
+    required: true
+  bin_name:
+    name: bin_name
+    definition_uri: https://w3id.org/enigma/bin_name
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000330
+    description: name field for Bin
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:bin_name
+    owner: Bin
+    domain_of:
+    - Bin
+    range: string
+    required: true
+  bin_assembly:
+    name: bin_assembly
+    definition_uri: https://w3id.org/enigma/bin_assembly
+    annotations:
+      foreign_key:
+        tag: foreign_key
+        value: Assembly.name
+      type_term:
+        tag: type_term
+        value: ME:0000280
+    description: assembly field for Bin
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:bin_assembly
+    owner: Bin
+    domain_of:
+    - Bin
+    range: string
+    required: true
+  bin_contigs:
+    name: bin_contigs
+    definition_uri: https://w3id.org/enigma/bin_contigs
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000240
+    description: contigs field for Bin
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:bin_contigs
+    owner: Bin
+    domain_of:
+    - Bin
+    range: string
+    required: true
+    multivalued: true
+  protocol_id:
+    name: protocol_id
+    definition_uri: https://w3id.org/enigma/protocol_id
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000332
+    description: id field for Protocol
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:protocol_id
+    identifier: true
+    owner: Protocol
+    domain_of:
+    - Protocol
+    range: string
+    required: true
+  protocol_name:
+    name: protocol_name
+    definition_uri: https://w3id.org/enigma/protocol_name
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000328
+    description: name field for Protocol
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:protocol_name
+    owner: Protocol
+    domain_of:
+    - Protocol
+    range: string
+    required: true
+  protocol_description:
+    name: protocol_description
+    definition_uri: https://w3id.org/enigma/protocol_description
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000202
+    description: description field for Protocol
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:protocol_description
+    owner: Protocol
+    domain_of:
+    - Protocol
+    range: string
+  protocol_link:
+    name: protocol_link
+    definition_uri: https://w3id.org/enigma/protocol_link
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000203
+    description: link field for Protocol
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:protocol_link
+    owner: Protocol
+    domain_of:
+    - Protocol
+    range: string
+    pattern: http.*
+  image_id:
+    name: image_id
+    definition_uri: https://w3id.org/enigma/image_id
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000356
+    description: id field for Image
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:image_id
+    identifier: true
+    owner: Image
+    domain_of:
+    - Image
+    range: string
+    required: true
+  image_name:
+    name: image_name
+    definition_uri: https://w3id.org/enigma/image_name
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000355
+    description: name field for Image
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:image_name
+    owner: Image
+    domain_of:
+    - Image
+    range: string
+    required: true
+  image_description:
+    name: image_description
+    definition_uri: https://w3id.org/enigma/image_description
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000202
+    description: description field for Image
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:image_description
+    owner: Image
+    domain_of:
+    - Image
+    range: string
+  image_MIME type:
+    name: image_MIME type
+    definition_uri: https://w3id.org/enigma/image_MIME_type
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000357
+    description: MIME type field for Image
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:image_MIME_type
+    owner: Image
+    domain_of:
+    - Image
+    range: string
+  image_size:
+    name: image_size
+    definition_uri: https://w3id.org/enigma/image_size
+    annotations:
+      units:
+        tag: units
+        value: UO:0000233
+      type_term:
+        tag: type_term
+        value: ME:0000128
+    description: size field for Image
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:image_size
+    owner: Image
+    domain_of:
+    - Image
+    range: integer
+  image_dimensions:
+    name: image_dimensions
+    definition_uri: https://w3id.org/enigma/image_dimensions
+    annotations:
+      units:
+        tag: units
+        value: UO:0000236
+      type_term:
+        tag: type_term
+        value: ME:0000292
+    description: dimensions field for Image
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:image_dimensions
+    owner: Image
+    domain_of:
+    - Image
+    range: string
+  image_link:
+    name: image_link
+    definition_uri: https://w3id.org/enigma/image_link
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000203
+    description: link field for Image
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:image_link
+    owner: Image
+    domain_of:
+    - Image
+    range: string
+  tnseq_library_id:
+    name: tnseq_library_id
+    definition_uri: https://w3id.org/enigma/tnseq_library_id
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000276
+    description: id field for TnSeq_Library
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:tnseq_library_id
+    identifier: true
+    owner: TnSeq_Library
+    domain_of:
+    - TnSeq_Library
+    range: string
+    required: true
+  tnseq_library_name:
+    name: tnseq_library_name
+    definition_uri: https://w3id.org/enigma/tnseq_library_name
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000262
+    description: name field for TnSeq_Library
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:tnseq_library_name
+    owner: TnSeq_Library
+    domain_of:
+    - TnSeq_Library
+    range: string
+    required: true
+  tnseq_library_genome:
+    name: tnseq_library_genome
+    definition_uri: https://w3id.org/enigma/tnseq_library_genome
+    annotations:
+      foreign_key:
+        tag: foreign_key
+        value: Genome.name
+      type_term:
+        tag: type_term
+        value: ME:0000246
+    description: genome field for TnSeq_Library
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:tnseq_library_genome
+    owner: TnSeq_Library
+    domain_of:
+    - TnSeq_Library
+    range: string
+    required: true
+  tnseq_library_primers_model:
+    name: tnseq_library_primers_model
+    definition_uri: https://w3id.org/enigma/tnseq_library_primers_model
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000263
+    description: primers_model field for TnSeq_Library
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:tnseq_library_primers_model
+    owner: TnSeq_Library
+    domain_of:
+    - TnSeq_Library
+    range: string
+    required: true
+  tnseq_library_n_mapped_reads:
+    name: tnseq_library_n_mapped_reads
+    definition_uri: https://w3id.org/enigma/tnseq_library_n_mapped_reads
+    annotations:
+      units:
+        tag: units
+        value: UO:0000189
+      type_term:
+        tag: type_term
+        value: ME:0000126
+    description: n_mapped_reads field for TnSeq_Library
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:tnseq_library_n_mapped_reads
+    owner: TnSeq_Library
+    domain_of:
+    - TnSeq_Library
+    range: integer
+  tnseq_library_n_barcodes:
+    name: tnseq_library_n_barcodes
+    definition_uri: https://w3id.org/enigma/tnseq_library_n_barcodes
+    annotations:
+      units:
+        tag: units
+        value: UO:0000189
+      type_term:
+        tag: type_term
+        value: ME:0000126
+    description: n_barcodes field for TnSeq_Library
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:tnseq_library_n_barcodes
+    owner: TnSeq_Library
+    domain_of:
+    - TnSeq_Library
+    range: integer
+  tnseq_library_n_usable_barcodes:
+    name: tnseq_library_n_usable_barcodes
+    definition_uri: https://w3id.org/enigma/tnseq_library_n_usable_barcodes
+    annotations:
+      units:
+        tag: units
+        value: UO:0000189
+      type_term:
+        tag: type_term
+        value: ME:0000126
+    description: n_usable_barcodes field for TnSeq_Library
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:tnseq_library_n_usable_barcodes
+    owner: TnSeq_Library
+    domain_of:
+    - TnSeq_Library
+    range: integer
+  tnseq_library_n_insertion_locations:
+    name: tnseq_library_n_insertion_locations
+    definition_uri: https://w3id.org/enigma/tnseq_library_n_insertion_locations
+    annotations:
+      units:
+        tag: units
+        value: UO:0000189
+      type_term:
+        tag: type_term
+        value: ME:0000126
+    description: n_insertion_locations field for TnSeq_Library
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:tnseq_library_n_insertion_locations
+    owner: TnSeq_Library
+    domain_of:
+    - TnSeq_Library
+    range: integer
+  tnseq_library_hit_rate_essential:
+    name: tnseq_library_hit_rate_essential
+    definition_uri: https://w3id.org/enigma/tnseq_library_hit_rate_essential
+    annotations:
+      units:
+        tag: units
+        value: UO:0000190
+      type_term:
+        tag: type_term
+        value: ME:0000264
+    description: hit_rate_essential field for TnSeq_Library
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:tnseq_library_hit_rate_essential
+    owner: TnSeq_Library
+    domain_of:
+    - TnSeq_Library
+    range: float
+  tnseq_library_hit_rate_other:
+    name: tnseq_library_hit_rate_other
+    definition_uri: https://w3id.org/enigma/tnseq_library_hit_rate_other
+    annotations:
+      units:
+        tag: units
+        value: UO:0000190
+      type_term:
+        tag: type_term
+        value: ME:0000264
+    description: hit_rate_other field for TnSeq_Library
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:tnseq_library_hit_rate_other
+    owner: TnSeq_Library
+    domain_of:
+    - TnSeq_Library
+    range: float
+  dubseq_library_id:
+    name: dubseq_library_id
+    definition_uri: https://w3id.org/enigma/dubseq_library_id
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000276
+    description: id field for DubSeq_Library
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:dubseq_library_id
+    identifier: true
+    owner: DubSeq_Library
+    domain_of:
+    - DubSeq_Library
+    range: string
+    required: true
+  dubseq_library_name:
+    name: dubseq_library_name
+    definition_uri: https://w3id.org/enigma/dubseq_library_name
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000262
+    description: name field for DubSeq_Library
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:dubseq_library_name
+    owner: DubSeq_Library
+    domain_of:
+    - DubSeq_Library
+    range: string
+    required: true
+  dubseq_library_genome:
+    name: dubseq_library_genome
+    definition_uri: https://w3id.org/enigma/dubseq_library_genome
+    annotations:
+      foreign_key:
+        tag: foreign_key
+        value: Genome.name
+      type_term:
+        tag: type_term
+        value: ME:0000246
+    description: genome field for DubSeq_Library
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:dubseq_library_genome
+    owner: DubSeq_Library
+    domain_of:
+    - DubSeq_Library
+    range: string
+    required: true
+  dubseq_library_n_fragments:
+    name: dubseq_library_n_fragments
+    definition_uri: https://w3id.org/enigma/dubseq_library_n_fragments
+    annotations:
+      units:
+        tag: units
+        value: UO:0000189
+      type_term:
+        tag: type_term
+        value: ME:0000126
+    description: n_fragments field for DubSeq_Library
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slot_uri: enigma:dubseq_library_n_fragments
+    owner: DubSeq_Library
+    domain_of:
+    - DubSeq_Library
+    range: integer
+classes:
+  Process:
+    name: Process
+    definition_uri: https://w3id.org/enigma/Process
+    annotations:
+      term:
+        tag: term
+        value: DA:0000061
+      used_for_provenance:
+        tag: used_for_provenance
+        value: true
+    description: Process entity in the ENIGMA data model
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slots:
+    - process_id
+    - process_process
+    - process_person
+    - process_campaign
+    - process_protocol
+    - process_date_start
+    - process_date_end
+    - process_input_objects
+    - process_output_objects
+    class_uri: enigma:Process
+  Location:
+    name: Location
+    definition_uri: https://w3id.org/enigma/Location
+    annotations:
+      term:
+        tag: term
+        value: DA:0000041
+      used_for_provenance:
+        tag: used_for_provenance
+        value: true
+      process_types:
+        tag: process_types
+        value:
+        - PROCESS:0000028
+      process_inputs:
+        tag: process_inputs
+        value:
+        - - ENIGMA
+    description: Location entity in the ENIGMA data model
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slots:
+    - location_id
+    - location_name
+    - location_latitude
+    - location_longitude
+    - location_continent
+    - location_country
+    - location_region
+    - location_biome
+    - location_feature
+    class_uri: enigma:Location
+  Sample:
+    name: Sample
+    definition_uri: https://w3id.org/enigma/Sample
+    annotations:
+      term:
+        tag: term
+        value: DA:0000042
+      used_for_provenance:
+        tag: used_for_provenance
+        value: true
+      process_types:
+        tag: process_types
+        value:
+        - PROCESS:0000002
+      process_inputs:
+        tag: process_inputs
+        value:
+        - - Location
+    description: Sample entity in the ENIGMA data model
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slots:
+    - sample_id
+    - sample_name
+    - sample_location
+    - sample_depth
+    - sample_elevation
+    - sample_date
+    - sample_time
+    - sample_timezone
+    - sample_material
+    - sample_env_package
+    - sample_description
+    class_uri: enigma:Sample
+  Taxon:
+    name: Taxon
+    definition_uri: https://w3id.org/enigma/Taxon
+    annotations:
+      term:
+        tag: term
+        value: DA:0000037
+      process_types:
+        tag: process_types
+        value:
+        - PROCESS:0000029
+      process_inputs:
+        tag: process_inputs
+        value:
+        - - ENIGMA
+    description: Taxon entity in the ENIGMA data model
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slots:
+    - taxon_id
+    - taxon_name
+    - taxon_ncbi_taxid
+    class_uri: enigma:Taxon
+  OTU:
+    name: OTU
+    definition_uri: https://w3id.org/enigma/OTU
+    annotations:
+      term:
+        tag: term
+        value: DA:0000063
+      process_types:
+        tag: process_types
+        value:
+        - PROCESS:0000031
+      process_inputs:
+        tag: process_inputs
+        value:
+        - - Reads
+    description: OTU entity in the ENIGMA data model
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slots:
+    - otu_id
+    - otu_name
+    class_uri: enigma:OTU
+  Condition:
+    name: Condition
+    definition_uri: https://w3id.org/enigma/Condition
+    annotations:
+      term:
+        tag: term
+        value: DA:0000045
+      process_types:
+        tag: process_types
+        value:
+        - PROCESS:0000032
+      process_inputs:
+        tag: process_inputs
+        value:
+        - - ENIGMA
+    description: Condition entity in the ENIGMA data model
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slots:
+    - condition_id
+    - condition_name
+    class_uri: enigma:Condition
+  Strain:
+    name: Strain
+    definition_uri: https://w3id.org/enigma/Strain
+    annotations:
+      term:
+        tag: term
+        value: DA:0000062
+      used_for_provenance:
+        tag: used_for_provenance
+        value: true
+      process_types:
+        tag: process_types
+        value:
+        - PROCESS:0000015
+        - PROCESS:0000030
+      process_inputs:
+        tag: process_inputs
+        value:
+        - - Sample
+        - - Strain
+    description: Strain entity in the ENIGMA data model
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slots:
+    - strain_id
+    - strain_name
+    - strain_description
+    - strain_genome
+    - strain_derived_from
+    - strain_genes_changed
+    class_uri: enigma:Strain
+  Community:
+    name: Community
+    definition_uri: https://w3id.org/enigma/Community
+    annotations:
+      term:
+        tag: term
+        value: DA:0000048
+      used_for_provenance:
+        tag: used_for_provenance
+        value: true
+      process_types:
+        tag: process_types
+        value:
+        - PROCESS:0000015
+        - PROCESS:0000016
+        - PROCESS:0000011
+      process_inputs:
+        tag: process_inputs
+        value:
+        - - Sample
+        - - Community
+    description: Community entity in the ENIGMA data model
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slots:
+    - community_id
+    - community_name
+    - community_community_type
+    - community_sample
+    - community_parent_community
+    - community_condition
+    - community_defined_strains
+    - community_description
+    class_uri: enigma:Community
+  Reads:
+    name: Reads
+    definition_uri: https://w3id.org/enigma/Reads
+    annotations:
+      term:
+        tag: term
+        value: DA:0000054
+      used_for_provenance:
+        tag: used_for_provenance
+        value: true
+      process_types:
+        tag: process_types
+        value:
+        - PROCESS:0000017
+      process_inputs:
+        tag: process_inputs
+        value:
+        - - Sample
+        - - Community
+    description: Reads entity in the ENIGMA data model
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slots:
+    - reads_id
+    - reads_name
+    - reads_read_count
+    - reads_read_type
+    - reads_sequencing_technology
+    - reads_link
+    class_uri: enigma:Reads
+  Assembly:
+    name: Assembly
+    definition_uri: https://w3id.org/enigma/Assembly
+    annotations:
+      term:
+        tag: term
+        value: DA:0000066
+      used_for_provenance:
+        tag: used_for_provenance
+        value: true
+      process_types:
+        tag: process_types
+        value:
+        - PROCESS:0000023
+        - PROCESS:0000024
+      process_inputs:
+        tag: process_inputs
+        value:
+        - - Reads
+        - - Reads
+    description: Assembly entity in the ENIGMA data model
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slots:
+    - assembly_id
+    - assembly_name
+    - assembly_strain
+    - assembly_n_contigs
+    - assembly_link
+    class_uri: enigma:Assembly
+  Genome:
+    name: Genome
+    definition_uri: https://w3id.org/enigma/Genome
+    annotations:
+      term:
+        tag: term
+        value: DA:0000039
+      used_for_provenance:
+        tag: used_for_provenance
+        value: true
+      process_types:
+        tag: process_types
+        value:
+        - PROCESS:0000034
+        - PROCESS:0000045
+      process_inputs:
+        tag: process_inputs
+        value:
+        - - Assembly
+        - - Bin
+    description: Genome entity in the ENIGMA data model
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slots:
+    - genome_id
+    - genome_name
+    - genome_strain
+    - genome_n_contigs
+    - genome_n_features
+    - genome_link
+    class_uri: enigma:Genome
+  Gene:
+    name: Gene
+    definition_uri: https://w3id.org/enigma/Gene
+    annotations:
+      term:
+        tag: term
+        value: DA:0000040
+      process_types:
+        tag: process_types
+        value:
+        - PROCESS:0000034
+      process_inputs:
+        tag: process_inputs
+        value:
+        - - Assembly
+    description: Gene entity in the ENIGMA data model
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slots:
+    - gene_id
+    - gene_gene_id
+    - gene_genome
+    - gene_aliases
+    - gene_contig_number
+    - gene_strand
+    - gene_start
+    - gene_stop
+    - gene_function
+    class_uri: enigma:Gene
+  Bin:
+    name: Bin
+    definition_uri: https://w3id.org/enigma/Bin
+    annotations:
+      term:
+        tag: term
+        value: DA:0000072
+      used_for_provenance:
+        tag: used_for_provenance
+        value: true
+      process_types:
+        tag: process_types
+        value:
+        - PROCESS:0000039
+      process_inputs:
+        tag: process_inputs
+        value:
+        - - Assembly
+    description: Bin entity in the ENIGMA data model
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slots:
+    - bin_id
+    - bin_name
+    - bin_assembly
+    - bin_contigs
+    class_uri: enigma:Bin
+  Protocol:
+    name: Protocol
+    definition_uri: https://w3id.org/enigma/Protocol
+    annotations:
+      term:
+        tag: term
+        value: DA:0000073
+      used_for_provenance:
+        tag: used_for_provenance
+        value: true
+      process_types:
+        tag: process_types
+        value:
+        - PROCESS:0000044
+      process_inputs:
+        tag: process_inputs
+        value:
+        - - ENIGMA
+    description: Protocol entity in the ENIGMA data model
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slots:
+    - protocol_id
+    - protocol_name
+    - protocol_description
+    - protocol_link
+    class_uri: enigma:Protocol
+  Image:
+    name: Image
+    definition_uri: https://w3id.org/enigma/Image
+    annotations:
+      term:
+        tag: term
+        value: DA:0000074
+      used_for_provenance:
+        tag: used_for_provenance
+        value: true
+      process_types:
+        tag: process_types
+        value:
+        - PROCESS:0000044
+      process_inputs:
+        tag: process_inputs
+        value:
+        - - ENIGMA
+    description: Image entity in the ENIGMA data model
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slots:
+    - image_id
+    - image_name
+    - image_description
+    - image_MIME type
+    - image_size
+    - image_dimensions
+    - image_link
+    class_uri: enigma:Image
+  TnSeq_Library:
+    name: TnSeq_Library
+    definition_uri: https://w3id.org/enigma/TnSeqLibrary
+    annotations:
+      term:
+        tag: term
+        value: DA:0000060
+      used_for_provenance:
+        tag: used_for_provenance
+        value: true
+      process_types:
+        tag: process_types
+        value:
+        - PROCESS:0000027
+      process_inputs:
+        tag: process_inputs
+        value:
+        - - Genome
+    description: TnSeq_Library entity in the ENIGMA data model
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slots:
+    - tnseq_library_id
+    - tnseq_library_name
+    - tnseq_library_genome
+    - tnseq_library_primers_model
+    - tnseq_library_n_mapped_reads
+    - tnseq_library_n_barcodes
+    - tnseq_library_n_usable_barcodes
+    - tnseq_library_n_insertion_locations
+    - tnseq_library_hit_rate_essential
+    - tnseq_library_hit_rate_other
+    class_uri: enigma:TnSeqLibrary
+  DubSeq_Library:
+    name: DubSeq_Library
+    definition_uri: https://w3id.org/enigma/DubSeqLibrary
+    annotations:
+      term:
+        tag: term
+        value: DA:0000075
+      used_for_provenance:
+        tag: used_for_provenance
+        value: true
+      process_types:
+        tag: process_types
+        value:
+        - PROCESS:0000049
+      process_inputs:
+        tag: process_inputs
+        value:
+        - - Genome
+    description: DubSeq_Library entity in the ENIGMA data model
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    slots:
+    - dubseq_library_id
+    - dubseq_library_name
+    - dubseq_library_genome
+    - dubseq_library_n_fragments
+    class_uri: enigma:DubSeqLibrary
+  ENIGMA:
+    name: ENIGMA
+    definition_uri: https://w3id.org/enigma/ENIGMA
+    annotations:
+      static_type:
+        tag: static_type
+        value: true
+    description: ENIGMA static type entity
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    class_uri: enigma:ENIGMA
+metamodel_version: 1.7.0
+source_file: linkml-coral.yaml
+source_file_date: '2025-09-15T23:05:14'
+source_file_size: 32160
+generation_date: '2025-09-15T23:05:24'
+

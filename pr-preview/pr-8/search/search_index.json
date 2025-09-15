@@ -1,1 +1,0 @@
-{"config":{"lang":["en"],"separator":"[\\s\\-]+","pipeline":["stopWordFilter"]},"docs":[{"location":"","title":"linkml-coral","text":"<p>linkml schema for CORAL</p> <ul> <li>Auto-generated schema documentation</li> </ul>"},{"location":"about/","title":"About linkml-coral","text":"<p>linkml schema for CORAL</p>"}]}
