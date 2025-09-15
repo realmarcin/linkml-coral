@@ -422,6 +422,12 @@ classes:
     - dubseq_library_name
     - dubseq_library_genome
     - dubseq_library_n_fragments
+  ENIGMA:
+    description: ENIGMA static type entity
+    annotations:
+      static_type:
+        tag: static_type
+        value: true
 slots:
   process_id:
     description: id field for Process
@@ -458,15 +464,18 @@ slots:
         value: ME:0000206
   process_protocol:
     description: protocol field for Process
-    range: Protocol
+    range: string
     annotations:
+      foreign_key:
+        tag: foreign_key
+        value: Protocol.name
       type_term:
         tag: type_term
         value: ME:0000328
   process_date_start:
     description: date_start field for Process
     range: string
-    pattern: \d\d\d\d(-\d\d(-\d\d)?)?
+    pattern: "\\d\\d\\d\\d(-\\d\\d(-\\d\\d)?)?"
     comments:
     - YYYY[-MM[-DD]]
     annotations:
@@ -476,7 +485,7 @@ slots:
   process_date_end:
     description: date_end field for Process
     range: string
-    pattern: \d\d\d\d(-\d\d(-\d\d)?)?
+    pattern: "\\d\\d\\d\\d(-\\d\\d(-\\d\\d)?)?"
     comments:
     - YYYY[-MM[-DD]]
     annotations:
@@ -489,6 +498,9 @@ slots:
     required: true
     multivalued: true
     annotations:
+      constraint:
+        tag: constraint
+        value: "[Entity|Brick]"
       type_term:
         tag: type_term
         value: ME:0000207
@@ -498,6 +510,9 @@ slots:
     required: true
     multivalued: true
     annotations:
+      constraint:
+        tag: constraint
+        value: "[Entity|Brick]"
       type_term:
         tag: type_term
         value: ME:0000208
@@ -514,7 +529,6 @@ slots:
     description: name field for Location
     range: string
     required: true
-    key: true
     annotations:
       type_term:
         tag: type_term
@@ -523,6 +537,8 @@ slots:
     description: latitude field for Location
     range: float
     required: true
+    minimum_value: -90
+    maximum_value: 90
     annotations:
       units:
         tag: units
@@ -534,6 +550,8 @@ slots:
     description: longitude field for Location
     range: float
     required: true
+    minimum_value: -180
+    maximum_value: 180
     annotations:
       units:
         tag: units
@@ -595,16 +613,18 @@ slots:
     description: name field for Sample
     range: string
     required: true
-    key: true
     annotations:
       type_term:
         tag: type_term
         value: ME:0000102
   sample_location:
     description: location field for Sample
-    range: Location
+    range: string
     required: true
     annotations:
+      foreign_key:
+        tag: foreign_key
+        value: Location.name
       type_term:
         tag: type_term
         value: ME:0000228
@@ -636,7 +656,7 @@ slots:
     description: date field for Sample
     range: string
     required: true
-    pattern: \d\d\d\d(-\d\d(-\d\d)?)?
+    pattern: "\\d\\d\\d\\d(-\\d\\d(-\\d\\d)?)?"
     comments:
     - YYYY[-MM[-DD]]
     annotations:
@@ -646,7 +666,7 @@ slots:
   sample_time:
     description: time field for Sample
     range: string
-    pattern: \d(\d)?(:\d\d(:\d\d)?)?\s*([apAP][mM])?
+    pattern: "\\d(\\d)?(:\\d\\d(:\\d\\d)?)?\\s*([apAP][mM])?"
     comments:
     - HH[:MM[:SS]] [AM|PM]
     annotations:
@@ -697,7 +717,6 @@ slots:
     description: name field for Taxon
     range: string
     required: true
-    key: true
     annotations:
       type_term:
         tag: type_term
@@ -722,7 +741,6 @@ slots:
     description: name field for OTU
     range: string
     required: true
-    key: true
     annotations:
       type_term:
         tag: type_term
@@ -740,7 +758,6 @@ slots:
     description: name field for Condition
     range: string
     required: true
-    key: true
     annotations:
       type_term:
         tag: type_term
@@ -758,7 +775,6 @@ slots:
     description: name field for Strain
     range: string
     required: true
-    key: true
     annotations:
       type_term:
         tag: type_term
@@ -772,25 +788,34 @@ slots:
         value: ME:0000202
   strain_genome:
     description: genome field for Strain
-    range: Genome
+    range: string
     comments:
     - genome object for sequenced, WT strains
     annotations:
+      foreign_key:
+        tag: foreign_key
+        value: Genome.name
       type_term:
         tag: type_term
         value: ME:0000246
   strain_derived_from:
     description: derived_from field for Strain
-    range: Strain
+    range: string
     annotations:
+      foreign_key:
+        tag: foreign_key
+        value: Strain.name
       type_term:
         tag: type_term
         value: ME:0000044
   strain_genes_changed:
     description: genes_changed field for Strain
-    range: Gene
+    range: string
     multivalued: true
     annotations:
+      foreign_key:
+        tag: foreign_key
+        value: Gene.gene_id
       type_term:
         tag: type_term
         value: ME:0000091
@@ -807,7 +832,6 @@ slots:
     description: name field for Community
     range: string
     required: true
-    key: true
     annotations:
       type_term:
         tag: type_term
@@ -822,30 +846,42 @@ slots:
         value: ME:0000234
   community_sample:
     description: sample field for Community
-    range: Sample
+    range: string
     annotations:
+      foreign_key:
+        tag: foreign_key
+        value: Sample.name
       type_term:
         tag: type_term
         value: ME:0000102
   community_parent_community:
     description: parent_community field for Community
-    range: Community
+    range: string
     annotations:
+      foreign_key:
+        tag: foreign_key
+        value: Community.name
       type_term:
         tag: type_term
         value: ME:0000233
   community_condition:
     description: condition field for Community
-    range: Condition
+    range: string
     annotations:
+      foreign_key:
+        tag: foreign_key
+        value: Condition.name
       type_term:
         tag: type_term
         value: ME:0000200
   community_defined_strains:
     description: defined_strains field for Community
-    range: Strain
+    range: string
     multivalued: true
     annotations:
+      foreign_key:
+        tag: foreign_key
+        value: Strain.name
       type_term:
         tag: type_term
         value: ME:0000044
@@ -869,7 +905,6 @@ slots:
     description: name field for Reads
     range: string
     required: true
-    key: true
     annotations:
       type_term:
         tag: type_term
@@ -922,15 +957,17 @@ slots:
     description: name field for Assembly
     range: string
     required: true
-    key: true
     annotations:
       type_term:
         tag: type_term
         value: ME:0000280
   assembly_strain:
     description: strain field for Assembly
-    range: Strain
+    range: string
     annotations:
+      foreign_key:
+        tag: foreign_key
+        value: Strain.name
       type_term:
         tag: type_term
         value: ME:0000044
@@ -966,15 +1003,17 @@ slots:
     description: name field for Genome
     range: string
     required: true
-    key: true
     annotations:
       type_term:
         tag: type_term
         value: ME:0000246
   genome_strain:
     description: strain field for Genome
-    range: Strain
+    range: string
     annotations:
+      foreign_key:
+        tag: foreign_key
+        value: Strain.name
       type_term:
         tag: type_term
         value: ME:0000044
@@ -1021,16 +1060,18 @@ slots:
     description: gene_id field for Gene
     range: string
     required: true
-    key: true
     annotations:
       type_term:
         tag: type_term
         value: ME:0000224
   gene_genome:
     description: genome field for Gene
-    range: Genome
+    range: string
     required: true
     annotations:
+      foreign_key:
+        tag: foreign_key
+        value: Genome.name
       type_term:
         tag: type_term
         value: ME:0000246
@@ -1059,6 +1100,7 @@ slots:
     description: strand field for Gene
     range: string
     required: true
+    pattern: "[+-]"
     annotations:
       type_term:
         tag: type_term
@@ -1107,16 +1149,18 @@ slots:
     description: name field for Bin
     range: string
     required: true
-    key: true
     annotations:
       type_term:
         tag: type_term
         value: ME:0000330
   bin_assembly:
     description: assembly field for Bin
-    range: Assembly
+    range: string
     required: true
     annotations:
+      foreign_key:
+        tag: foreign_key
+        value: Assembly.name
       type_term:
         tag: type_term
         value: ME:0000280
@@ -1142,7 +1186,6 @@ slots:
     description: name field for Protocol
     range: string
     required: true
-    key: true
     annotations:
       type_term:
         tag: type_term
@@ -1157,6 +1200,7 @@ slots:
   protocol_link:
     description: link field for Protocol
     range: string
+    pattern: "http.*"
     annotations:
       type_term:
         tag: type_term
@@ -1174,7 +1218,6 @@ slots:
     description: name field for Image
     range: string
     required: true
-    key: true
     annotations:
       type_term:
         tag: type_term
@@ -1233,16 +1276,18 @@ slots:
     description: name field for TnSeq_Library
     range: string
     required: true
-    key: true
     annotations:
       type_term:
         tag: type_term
         value: ME:0000262
   tnseq_library_genome:
     description: genome field for TnSeq_Library
-    range: Genome
+    range: string
     required: true
     annotations:
+      foreign_key:
+        tag: foreign_key
+        value: Genome.name
       type_term:
         tag: type_term
         value: ME:0000246
@@ -1327,16 +1372,18 @@ slots:
     description: name field for DubSeq_Library
     range: string
     required: true
-    key: true
     annotations:
       type_term:
         tag: type_term
         value: ME:0000262
   dubseq_library_genome:
     description: genome field for DubSeq_Library
-    range: Genome
+    range: string
     required: true
     annotations:
+      foreign_key:
+        tag: foreign_key
+        value: Genome.name
       type_term:
         tag: type_term
         value: ME:0000246
