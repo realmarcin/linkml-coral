@@ -1,0 +1,9 @@
+location_id: "LOC001"
+location_name: "Test Location"
+location_latitude: 37.7749
+location_longitude: -122.4194
+location_continent: "North America"
+location_country: "United States"
+location_region: "California"
+location_biome: "urban"
+location_feature: "city"
