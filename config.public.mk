@@ -6,10 +6,10 @@
 
 # Note:
 # - just works fine with quoted variables of dot-env files like this one
-LINKML_SCHEMA_NAME="linkml-coral"
+LINKML_SCHEMA_NAME="linkml_coral"
 LINKML_SCHEMA_AUTHOR="marcin joachimiak <marcinjoachimiak@gmail.com>"
 LINKML_SCHEMA_DESCRIPTION="linkml schema for CORAL"
-LINKML_SCHEMA_SOURCE_DIR="src/linkml-coral/schema"
+LINKML_SCHEMA_SOURCE_DIR="src/linkml_coral/schema"
 
 ###### linkml generator variables, used by justfile
 

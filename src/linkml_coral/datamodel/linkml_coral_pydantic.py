@@ -90,7 +90,7 @@ linkml_meta = LinkMLMeta({'default_prefix': 'enigma',
                              'prefix_reference': 'https://w3id.org/enigma/'},
                   'linkml': {'prefix_prefix': 'linkml',
                              'prefix_reference': 'https://w3id.org/linkml/'}},
-     'source_file': 'src/linkml-coral/schema/linkml-coral.yaml',
+     'source_file': 'src/linkml_coral/schema/linkml_coral.yaml',
      'title': 'ENIGMA Common Data Model'} )
 
 

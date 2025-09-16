@@ -28,11 +28,11 @@ Never use `pip` directly - this project uses `uv` for dependency management.
 ## Repository Structure
 
 **Core schema files (edit these):**
-- `src/linkml-coral/schema/linkml-coral.yaml` - Basic example schema
-- `src/linkml-coral/schema/enigma_cdm_schema.yaml` - ENIGMA Common Data Model schema
+- `src/linkml_coral/schema/linkml_coral.yaml` - Basic example schema
+- `src/linkml_coral/schema/enigma_cdm_schema.yaml` - ENIGMA Common Data Model schema
 
 **Generated files (do not edit):**
-- `src/linkml-coral/datamodel/` - Python dataclasses and Pydantic models
+- `src/linkml_coral/datamodel/` - Python dataclasses and Pydantic models
 - `project/` - Other generated formats (Java, TypeScript, OWL, etc.)
 - `docs/` - Generated documentation
 - `examples/` - Generated examples

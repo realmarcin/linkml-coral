@@ -15,10 +15,10 @@ linkml schema for CORAL
 * [examples/](examples/) - Examples of using the schema
 * [project/](project/) - project files (these files are auto-generated, do not edit)
 * [src/](src/) - source files (edit these)
-  * [linkml-coral](src/linkml-coral)
-    * [schema/](src/linkml-coral/schema) -- LinkML schema
+  * [linkml_coral](src/linkml_coral)
+    * [schema/](src/linkml_coral/schema) -- LinkML schema
       (edit this)
-    * [datamodel/](src/linkml-coral/datamodel) -- generated
+    * [datamodel/](src/linkml_coral/datamodel) -- generated
       Python datamodel
 * [tests/](tests/) - Python tests
   * [data/](tests/data) - Example data
