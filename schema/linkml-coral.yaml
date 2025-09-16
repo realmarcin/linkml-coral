@@ -333,6 +333,9 @@ slots:
     name: process_process
     definition_uri: https://w3id.org/enigma/process_process
     annotations:
+      constraint:
+        tag: constraint
+        value: PROCESS:0000001
       type_term:
         tag: type_term
         value: ME:0000204
@@ -348,6 +351,9 @@ slots:
     name: process_person
     definition_uri: https://w3id.org/enigma/process_person
     annotations:
+      constraint:
+        tag: constraint
+        value: ENIGMA:0000029
       type_term:
         tag: type_term
         value: ME:0000205
@@ -483,6 +489,9 @@ slots:
     name: location_name
     definition_uri: https://w3id.org/enigma/location_name
     annotations:
+      unique:
+        tag: unique
+        value: true
       type_term:
         tag: type_term
         value: ME:0000228
@@ -498,8 +507,8 @@ slots:
     name: location_latitude
     definition_uri: https://w3id.org/enigma/location_latitude
     annotations:
-      units:
-        tag: units
+      units_term:
+        tag: units_term
         value: UO:0000185
       type_term:
         tag: type_term
@@ -518,8 +527,8 @@ slots:
     name: location_longitude
     definition_uri: https://w3id.org/enigma/location_longitude
     annotations:
-      units:
-        tag: units
+      units_term:
+        tag: units_term
         value: UO:0000185
       type_term:
         tag: type_term
@@ -538,6 +547,9 @@ slots:
     name: location_continent
     definition_uri: https://w3id.org/enigma/location_continent
     annotations:
+      constraint:
+        tag: constraint
+        value: CONTINENT:0000001
       type_term:
         tag: type_term
         value: ME:0000213
@@ -553,6 +565,9 @@ slots:
     name: location_country
     definition_uri: https://w3id.org/enigma/location_country
     annotations:
+      constraint:
+        tag: constraint
+        value: COUNTRY:0000001
       type_term:
         tag: type_term
         value: ME:0000214
@@ -585,6 +600,9 @@ slots:
     name: location_biome
     definition_uri: https://w3id.org/enigma/location_biome
     annotations:
+      constraint:
+        tag: constraint
+        value: ENVO:01000254
       type_term:
         tag: type_term
         value: ME:0000216
@@ -600,6 +618,9 @@ slots:
     name: location_feature
     definition_uri: https://w3id.org/enigma/location_feature
     annotations:
+      constraint:
+        tag: constraint
+        value: ENVO:00002297
       type_term:
         tag: type_term
         value: ME:0000217
@@ -630,6 +651,9 @@ slots:
     name: sample_name
     definition_uri: https://w3id.org/enigma/sample_name
     annotations:
+      unique:
+        tag: unique
+        value: true
       type_term:
         tag: type_term
         value: ME:0000102
@@ -663,8 +687,8 @@ slots:
     name: sample_depth
     definition_uri: https://w3id.org/enigma/sample_depth
     annotations:
-      units:
-        tag: units
+      units_term:
+        tag: units_term
         value: UO:0000008
       type_term:
         tag: type_term
@@ -682,8 +706,8 @@ slots:
     name: sample_elevation
     definition_uri: https://w3id.org/enigma/sample_elevation
     annotations:
-      units:
-        tag: units
+      units_term:
+        tag: units_term
         value: UO:0000008
       type_term:
         tag: type_term
@@ -752,6 +776,9 @@ slots:
     name: sample_material
     definition_uri: https://w3id.org/enigma/sample_material
     annotations:
+      constraint:
+        tag: constraint
+        value: ENVO:00010483
       type_term:
         tag: type_term
         value: ME:0000230
@@ -766,6 +793,9 @@ slots:
     name: sample_env_package
     definition_uri: https://w3id.org/enigma/sample_env_package
     annotations:
+      constraint:
+        tag: constraint
+        value: MIxS:0000002
       type_term:
         tag: type_term
         value: ME:0000229
@@ -811,6 +841,9 @@ slots:
     name: taxon_name
     definition_uri: https://w3id.org/enigma/taxon_name
     annotations:
+      unique:
+        tag: unique
+        value: true
       type_term:
         tag: type_term
         value: ME:0000047
@@ -856,6 +889,9 @@ slots:
     name: otu_name
     definition_uri: https://w3id.org/enigma/otu_name
     annotations:
+      unique:
+        tag: unique
+        value: true
       type_term:
         tag: type_term
         value: ME:0000222
@@ -887,6 +923,9 @@ slots:
     name: condition_name
     definition_uri: https://w3id.org/enigma/condition_name
     annotations:
+      unique:
+        tag: unique
+        value: true
       type_term:
         tag: type_term
         value: ME:0000200
@@ -918,6 +957,9 @@ slots:
     name: strain_name
     definition_uri: https://w3id.org/enigma/strain_name
     annotations:
+      unique:
+        tag: unique
+        value: true
       type_term:
         tag: type_term
         value: ME:0000044
@@ -1017,6 +1059,9 @@ slots:
     name: community_name
     definition_uri: https://w3id.org/enigma/community_name
     annotations:
+      unique:
+        tag: unique
+        value: true
       type_term:
         tag: type_term
         value: ME:0000233
@@ -1032,6 +1077,9 @@ slots:
     name: community_community_type
     definition_uri: https://w3id.org/enigma/community_community_type
     annotations:
+      constraint:
+        tag: constraint
+        value: ME:0000234
       type_term:
         tag: type_term
         value: ME:0000234
@@ -1105,6 +1153,9 @@ slots:
         tag: type_term
         value: ME:0000044
     description: defined_strains field for Community
+    comments:
+    - typedef.json has typo with FK pointing to [Strain.Name] with capital N
+    - Using lowercase name to match actual Strain field
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:community_defined_strains
     owner: Community
@@ -1146,6 +1197,9 @@ slots:
     name: reads_name
     definition_uri: https://w3id.org/enigma/reads_name
     annotations:
+      unique:
+        tag: unique
+        value: true
       type_term:
         tag: type_term
         value: ME:0000248
@@ -1161,8 +1215,8 @@ slots:
     name: reads_read_count
     definition_uri: https://w3id.org/enigma/reads_read_count
     annotations:
-      units:
-        tag: units
+      units_term:
+        tag: units_term
         value: UO:0000189
       type_term:
         tag: type_term
@@ -1179,6 +1233,9 @@ slots:
     name: reads_read_type
     definition_uri: https://w3id.org/enigma/reads_read_type
     annotations:
+      constraint:
+        tag: constraint
+        value: ME:0000112
       type_term:
         tag: type_term
         value: ME:0000112
@@ -1194,6 +1251,9 @@ slots:
     name: reads_sequencing_technology
     definition_uri: https://w3id.org/enigma/reads_sequencing_technology
     annotations:
+      constraint:
+        tag: constraint
+        value: ME:0000116
       type_term:
         tag: type_term
         value: ME:0000116
@@ -1240,6 +1300,9 @@ slots:
     name: assembly_name
     definition_uri: https://w3id.org/enigma/assembly_name
     annotations:
+      unique:
+        tag: unique
+        value: true
       type_term:
         tag: type_term
         value: ME:0000280
@@ -1272,8 +1335,8 @@ slots:
     name: assembly_n_contigs
     definition_uri: https://w3id.org/enigma/assembly_n_contigs
     annotations:
-      units:
-        tag: units
+      units_term:
+        tag: units_term
         value: UO:0000189
       type_term:
         tag: type_term
@@ -1321,6 +1384,9 @@ slots:
     name: genome_name
     definition_uri: https://w3id.org/enigma/genome_name
     annotations:
+      unique:
+        tag: unique
+        value: true
       type_term:
         tag: type_term
         value: ME:0000246
@@ -1353,8 +1419,8 @@ slots:
     name: genome_n_contigs
     definition_uri: https://w3id.org/enigma/genome_n_contigs
     annotations:
-      units:
-        tag: units
+      units_term:
+        tag: units_term
         value: UO:0000189
       type_term:
         tag: type_term
@@ -1371,8 +1437,8 @@ slots:
     name: genome_n_features
     definition_uri: https://w3id.org/enigma/genome_n_features
     annotations:
-      units:
-        tag: units
+      units_term:
+        tag: units_term
         value: UO:0000189
       type_term:
         tag: type_term
@@ -1420,6 +1486,9 @@ slots:
     name: gene_gene_id
     definition_uri: https://w3id.org/enigma/gene_gene_id
     annotations:
+      unique:
+        tag: unique
+        value: true
       type_term:
         tag: type_term
         value: ME:0000224
@@ -1442,6 +1511,9 @@ slots:
         tag: type_term
         value: ME:0000246
     description: genome field for Gene
+    comments:
+    - typedef.json has FK pointing to Genome without specifying target field
+    - Assumed to reference Genome.name based on pattern
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:gene_genome
     owner: Gene
@@ -1468,8 +1540,8 @@ slots:
     name: gene_contig_number
     definition_uri: https://w3id.org/enigma/gene_contig_number
     annotations:
-      units:
-        tag: units
+      units_term:
+        tag: units_term
         value: UO:0000189
       type_term:
         tag: type_term
@@ -1504,8 +1576,8 @@ slots:
     name: gene_start
     definition_uri: https://w3id.org/enigma/gene_start
     annotations:
-      units:
-        tag: units
+      units_term:
+        tag: units_term
         value: UO:0000244
       type_term:
         tag: type_term
@@ -1524,8 +1596,8 @@ slots:
     name: gene_stop
     definition_uri: https://w3id.org/enigma/gene_stop
     annotations:
-      units:
-        tag: units
+      units_term:
+        tag: units_term
         value: UO:0000244
       type_term:
         tag: type_term
@@ -1572,6 +1644,9 @@ slots:
     name: bin_name
     definition_uri: https://w3id.org/enigma/bin_name
     annotations:
+      unique:
+        tag: unique
+        value: true
       type_term:
         tag: type_term
         value: ME:0000330
@@ -1594,6 +1669,9 @@ slots:
         tag: type_term
         value: ME:0000280
     description: assembly field for Bin
+    comments:
+    - typedef.json has FK pointing to Assembly without specifying target field
+    - Assumed to reference Assembly.name based on pattern
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:bin_assembly
     owner: Bin
@@ -1637,6 +1715,9 @@ slots:
     name: protocol_name
     definition_uri: https://w3id.org/enigma/protocol_name
     annotations:
+      unique:
+        tag: unique
+        value: true
       type_term:
         tag: type_term
         value: ME:0000328
@@ -1697,6 +1778,9 @@ slots:
     name: image_name
     definition_uri: https://w3id.org/enigma/image_name
     annotations:
+      unique:
+        tag: unique
+        value: true
       type_term:
         tag: type_term
         value: ME:0000355
@@ -1722,8 +1806,8 @@ slots:
     domain_of:
     - Image
     range: string
-  image_MIME type:
-    name: image_MIME type
+  image_MIME_type:
+    name: image_MIME_type
     definition_uri: https://w3id.org/enigma/image_MIME_type
     annotations:
       type_term:
@@ -1740,8 +1824,8 @@ slots:
     name: image_size
     definition_uri: https://w3id.org/enigma/image_size
     annotations:
-      units:
-        tag: units
+      units_term:
+        tag: units_term
         value: UO:0000233
       type_term:
         tag: type_term
@@ -1757,8 +1841,8 @@ slots:
     name: image_dimensions
     definition_uri: https://w3id.org/enigma/image_dimensions
     annotations:
-      units:
-        tag: units
+      units_term:
+        tag: units_term
         value: UO:0000236
       type_term:
         tag: type_term
@@ -1804,6 +1888,9 @@ slots:
     name: tnseq_library_name
     definition_uri: https://w3id.org/enigma/tnseq_library_name
     annotations:
+      unique:
+        tag: unique
+        value: true
       type_term:
         tag: type_term
         value: ME:0000262
@@ -1852,8 +1939,8 @@ slots:
     name: tnseq_library_n_mapped_reads
     definition_uri: https://w3id.org/enigma/tnseq_library_n_mapped_reads
     annotations:
-      units:
-        tag: units
+      units_term:
+        tag: units_term
         value: UO:0000189
       type_term:
         tag: type_term
@@ -1869,8 +1956,8 @@ slots:
     name: tnseq_library_n_barcodes
     definition_uri: https://w3id.org/enigma/tnseq_library_n_barcodes
     annotations:
-      units:
-        tag: units
+      units_term:
+        tag: units_term
         value: UO:0000189
       type_term:
         tag: type_term
@@ -1886,8 +1973,8 @@ slots:
     name: tnseq_library_n_usable_barcodes
     definition_uri: https://w3id.org/enigma/tnseq_library_n_usable_barcodes
     annotations:
-      units:
-        tag: units
+      units_term:
+        tag: units_term
         value: UO:0000189
       type_term:
         tag: type_term
@@ -1903,8 +1990,8 @@ slots:
     name: tnseq_library_n_insertion_locations
     definition_uri: https://w3id.org/enigma/tnseq_library_n_insertion_locations
     annotations:
-      units:
-        tag: units
+      units_term:
+        tag: units_term
         value: UO:0000189
       type_term:
         tag: type_term
@@ -1920,8 +2007,8 @@ slots:
     name: tnseq_library_hit_rate_essential
     definition_uri: https://w3id.org/enigma/tnseq_library_hit_rate_essential
     annotations:
-      units:
-        tag: units
+      units_term:
+        tag: units_term
         value: UO:0000190
       type_term:
         tag: type_term
@@ -1937,8 +2024,8 @@ slots:
     name: tnseq_library_hit_rate_other
     definition_uri: https://w3id.org/enigma/tnseq_library_hit_rate_other
     annotations:
-      units:
-        tag: units
+      units_term:
+        tag: units_term
         value: UO:0000190
       type_term:
         tag: type_term
@@ -1970,6 +2057,9 @@ slots:
     name: dubseq_library_name
     definition_uri: https://w3id.org/enigma/dubseq_library_name
     annotations:
+      unique:
+        tag: unique
+        value: true
       type_term:
         tag: type_term
         value: ME:0000262
@@ -2003,8 +2093,8 @@ slots:
     name: dubseq_library_n_fragments
     definition_uri: https://w3id.org/enigma/dubseq_library_n_fragments
     annotations:
-      units:
-        tag: units
+      units_term:
+        tag: units_term
         value: UO:0000189
       type_term:
         tag: type_term
@@ -2423,7 +2513,7 @@ classes:
     - image_id
     - image_name
     - image_description
-    - image_MIME type
+    - image_MIME_type
     - image_size
     - image_dimensions
     - image_link
@@ -2486,19 +2576,9 @@ classes:
     - dubseq_library_genome
     - dubseq_library_n_fragments
     class_uri: enigma:DubSeqLibrary
-  ENIGMA:
-    name: ENIGMA
-    definition_uri: https://w3id.org/enigma/ENIGMA
-    annotations:
-      static_type:
-        tag: static_type
-        value: true
-    description: ENIGMA static type entity
-    from_schema: https://w3id.org/enigma/enigma-cdm
-    class_uri: enigma:ENIGMA
 metamodel_version: 1.7.0
 source_file: linkml-coral.yaml
-source_file_date: '2025-09-15T23:05:14'
-source_file_size: 32160
-generation_date: '2025-09-15T23:05:24'
+source_file_date: '2025-09-16T02:17:04'
+source_file_size: 34315
+generation_date: '2025-09-16T02:17:12'
 

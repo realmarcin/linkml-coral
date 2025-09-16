@@ -439,6 +439,9 @@ attributes:
   gene_gene_id:
     name: gene_gene_id
     annotations:
+      unique:
+        tag: unique
+        value: true
       type_term:
         tag: type_term
         value: ME:0000224
@@ -461,6 +464,9 @@ attributes:
         tag: type_term
         value: ME:0000246
     description: genome field for Gene
+    comments:
+    - typedef.json has FK pointing to Genome without specifying target field
+    - Assumed to reference Genome.name based on pattern
     from_schema: https://w3id.org/enigma/enigma-cdm
     rank: 1000
     alias: gene_genome
@@ -487,8 +493,8 @@ attributes:
   gene_contig_number:
     name: gene_contig_number
     annotations:
-      units:
-        tag: units
+      units_term:
+        tag: units_term
         value: UO:0000189
       type_term:
         tag: type_term
@@ -523,8 +529,8 @@ attributes:
   gene_start:
     name: gene_start
     annotations:
-      units:
-        tag: units
+      units_term:
+        tag: units_term
         value: UO:0000244
       type_term:
         tag: type_term
@@ -543,8 +549,8 @@ attributes:
   gene_stop:
     name: gene_stop
     annotations:
-      units:
-        tag: units
+      units_term:
+        tag: units_term
         value: UO:0000244
       type_term:
         tag: type_term

@@ -467,6 +467,9 @@ attributes:
   sample_name:
     name: sample_name
     annotations:
+      unique:
+        tag: unique
+        value: true
       type_term:
         tag: type_term
         value: ME:0000102
@@ -500,8 +503,8 @@ attributes:
   sample_depth:
     name: sample_depth
     annotations:
-      units:
-        tag: units
+      units_term:
+        tag: units_term
         value: UO:0000008
       type_term:
         tag: type_term
@@ -519,8 +522,8 @@ attributes:
   sample_elevation:
     name: sample_elevation
     annotations:
-      units:
-        tag: units
+      units_term:
+        tag: units_term
         value: UO:0000008
       type_term:
         tag: type_term
@@ -589,6 +592,9 @@ attributes:
   sample_material:
     name: sample_material
     annotations:
+      constraint:
+        tag: constraint
+        value: ENVO:00010483
       type_term:
         tag: type_term
         value: ME:0000230
@@ -603,6 +609,9 @@ attributes:
   sample_env_package:
     name: sample_env_package
     annotations:
+      constraint:
+        tag: constraint
+        value: MIxS:0000002
       type_term:
         tag: type_term
         value: ME:0000229

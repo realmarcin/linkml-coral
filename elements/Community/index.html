@@ -446,6 +446,9 @@ attributes:
   community_name:
     name: community_name
     annotations:
+      unique:
+        tag: unique
+        value: true
       type_term:
         tag: type_term
         value: ME:0000233
@@ -461,6 +464,9 @@ attributes:
   community_community_type:
     name: community_community_type
     annotations:
+      constraint:
+        tag: constraint
+        value: ME:0000234
       type_term:
         tag: type_term
         value: ME:0000234
@@ -534,6 +540,9 @@ attributes:
         tag: type_term
         value: ME:0000044
     description: defined_strains field for Community
+    comments:
+    - typedef.json has typo with FK pointing to [Strain.Name] with capital N
+    - Using lowercase name to match actual Strain field
     from_schema: https://w3id.org/enigma/enigma-cdm
     rank: 1000
     alias: community_defined_strains

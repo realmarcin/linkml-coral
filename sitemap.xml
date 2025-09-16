@@ -2,586 +2,582 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/about/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/Assembly/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/Bin/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/Boolean/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/Community/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/Condition/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/Curie/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/Date/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/DateOrDatetime/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/Datetime/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/Decimal/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/Double/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/DubSeqLibrary/</loc>
-         <lastmod>2025-09-15</lastmod>
-    </url>
-    <url>
-         <loc>https://realmarcin.github.io/linkml-coral/elements/ENIGMA/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/Float/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/Gene/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/Genome/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/Image/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/Integer/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/Jsonpath/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/Jsonpointer/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/Location/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/Ncname/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/Nodeidentifier/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/OTU/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/Objectidentifier/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/Process/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/Protocol/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/Reads/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/Sample/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/Sparqlpath/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/Strain/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/String/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/Taxon/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/Time/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/TnSeqLibrary/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/Uri/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/Uriorcurie/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/assembly_id/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/assembly_link/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/assembly_n_contigs/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/assembly_name/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/assembly_strain/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/bin_assembly/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/bin_contigs/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/bin_id/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/bin_name/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/community_community_type/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/community_condition/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/community_defined_strains/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/community_description/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/community_id/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/community_name/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/community_parent_community/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/community_sample/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/condition_id/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/condition_name/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/dubseq_library_genome/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/dubseq_library_id/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/dubseq_library_n_fragments/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/dubseq_library_name/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/enigma-cdm/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/gene_aliases/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/gene_contig_number/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/gene_function/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/gene_gene_id/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/gene_genome/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/gene_id/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/gene_start/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/gene_stop/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/gene_strand/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/genome_id/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/genome_link/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/genome_n_contigs/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/genome_n_features/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/genome_name/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/genome_strain/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/image_MIME_type/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/image_description/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/image_dimensions/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/image_id/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/image_link/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/image_name/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/image_size/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/location_biome/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/location_continent/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/location_country/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/location_feature/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/location_id/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/location_latitude/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/location_longitude/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/location_name/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/location_region/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/otu_id/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/otu_name/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/process_campaign/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/process_date_end/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/process_date_start/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/process_id/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/process_input_objects/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/process_output_objects/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/process_person/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/process_process/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/process_protocol/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/protocol_description/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/protocol_id/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/protocol_link/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/protocol_name/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/reads_id/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/reads_link/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/reads_name/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/reads_read_count/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/reads_read_type/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/reads_sequencing_technology/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/sample_date/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/sample_depth/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/sample_description/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/sample_elevation/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/sample_env_package/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/sample_id/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/sample_location/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/sample_material/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/sample_name/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/sample_time/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/sample_timezone/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/strain_derived_from/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/strain_description/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/strain_genes_changed/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/strain_genome/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/strain_id/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/strain_name/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/taxon_id/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/taxon_name/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/taxon_ncbi_taxid/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/tnseq_library_genome/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/tnseq_library_hit_rate_essential/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/tnseq_library_hit_rate_other/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/tnseq_library_id/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/tnseq_library_n_barcodes/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/tnseq_library_n_insertion_locations/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/tnseq_library_n_mapped_reads/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/tnseq_library_n_usable_barcodes/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/tnseq_library_name/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
     <url>
          <loc>https://realmarcin.github.io/linkml-coral/elements/tnseq_library_primers_model/</loc>
-         <lastmod>2025-09-15</lastmod>
+         <lastmod>2025-09-16</lastmod>
     </url>
 </urlset>

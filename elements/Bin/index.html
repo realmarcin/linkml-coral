@@ -404,6 +404,9 @@ attributes:
   bin_name:
     name: bin_name
     annotations:
+      unique:
+        tag: unique
+        value: true
       type_term:
         tag: type_term
         value: ME:0000330
@@ -426,6 +429,9 @@ attributes:
         tag: type_term
         value: ME:0000280
     description: assembly field for Bin
+    comments:
+    - typedef.json has FK pointing to Assembly without specifying target field
+    - Assumed to reference Assembly.name based on pattern
     from_schema: https://w3id.org/enigma/enigma-cdm
     rank: 1000
     alias: bin_assembly

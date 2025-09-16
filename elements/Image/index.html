@@ -384,7 +384,7 @@ slots:
 - image_id
 - image_name
 - image_description
-- image_MIME type
+- image_MIME_type
 - image_size
 - image_dimensions
 - image_link
@@ -431,6 +431,9 @@ attributes:
   image_name:
     name: image_name
     annotations:
+      unique:
+        tag: unique
+        value: true
       type_term:
         tag: type_term
         value: ME:0000355
@@ -457,8 +460,8 @@ attributes:
     domain_of:
     - Image
     range: string
-  image_MIME type:
-    name: image_MIME type
+  image_MIME_type:
+    name: image_MIME_type
     annotations:
       type_term:
         tag: type_term
@@ -474,8 +477,8 @@ attributes:
   image_size:
     name: image_size
     annotations:
-      units:
-        tag: units
+      units_term:
+        tag: units_term
         value: UO:0000233
       type_term:
         tag: type_term
@@ -491,8 +494,8 @@ attributes:
   image_dimensions:
     name: image_dimensions
     annotations:
-      units:
-        tag: units
+      units_term:
+        tag: units_term
         value: UO:0000236
       type_term:
         tag: type_term

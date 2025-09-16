@@ -449,6 +449,9 @@ attributes:
   location_name:
     name: location_name
     annotations:
+      unique:
+        tag: unique
+        value: true
       type_term:
         tag: type_term
         value: ME:0000228
@@ -464,8 +467,8 @@ attributes:
   location_latitude:
     name: location_latitude
     annotations:
-      units:
-        tag: units
+      units_term:
+        tag: units_term
         value: UO:0000185
       type_term:
         tag: type_term
@@ -484,8 +487,8 @@ attributes:
   location_longitude:
     name: location_longitude
     annotations:
-      units:
-        tag: units
+      units_term:
+        tag: units_term
         value: UO:0000185
       type_term:
         tag: type_term
@@ -504,6 +507,9 @@ attributes:
   location_continent:
     name: location_continent
     annotations:
+      constraint:
+        tag: constraint
+        value: CONTINENT:0000001
       type_term:
         tag: type_term
         value: ME:0000213
@@ -519,6 +525,9 @@ attributes:
   location_country:
     name: location_country
     annotations:
+      constraint:
+        tag: constraint
+        value: COUNTRY:0000001
       type_term:
         tag: type_term
         value: ME:0000214
@@ -551,6 +560,9 @@ attributes:
   location_biome:
     name: location_biome
     annotations:
+      constraint:
+        tag: constraint
+        value: ENVO:01000254
       type_term:
         tag: type_term
         value: ME:0000216
@@ -566,6 +578,9 @@ attributes:
   location_feature:
     name: location_feature
     annotations:
+      constraint:
+        tag: constraint
+        value: ENVO:00002297
       type_term:
         tag: type_term
         value: ME:0000217

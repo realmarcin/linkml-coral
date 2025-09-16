@@ -424,6 +424,9 @@ attributes:
   reads_name:
     name: reads_name
     annotations:
+      unique:
+        tag: unique
+        value: true
       type_term:
         tag: type_term
         value: ME:0000248
@@ -439,8 +442,8 @@ attributes:
   reads_read_count:
     name: reads_read_count
     annotations:
-      units:
-        tag: units
+      units_term:
+        tag: units_term
         value: UO:0000189
       type_term:
         tag: type_term
@@ -457,6 +460,9 @@ attributes:
   reads_read_type:
     name: reads_read_type
     annotations:
+      constraint:
+        tag: constraint
+        value: ME:0000112
       type_term:
         tag: type_term
         value: ME:0000112
@@ -472,6 +478,9 @@ attributes:
   reads_sequencing_technology:
     name: reads_sequencing_technology
     annotations:
+      constraint:
+        tag: constraint
+        value: ME:0000116
       type_term:
         tag: type_term
         value: ME:0000116
