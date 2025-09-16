@@ -1,5 +1,5 @@
 # Auto generated from linkml-coral.yaml by pythongen.py version: 0.0.1
-# Generation date: 2025-09-15T17:59:01
+# Generation date: 2025-09-15T18:08:50
 # Schema: enigma-cdm
 #
 # id: https://w3id.org/enigma/enigma-cdm
@@ -1270,7 +1270,7 @@ slots.image_name = Slot(uri=ENIGMA.image_name, name="image_name", curie=ENIGMA.c
 slots.image_description = Slot(uri=ENIGMA.image_description, name="image_description", curie=ENIGMA.curie('image_description'),
                    model_uri=ENIGMA.image_description, domain=None, range=Optional[str])
 
-slots.image_MIME_type = Slot(uri=ENIGMA.image_MIME_type, name="image_MIME type", curie=ENIGMA.curie('image_MIME_type'),
+slots.image_MIME_type = Slot(uri=ENIGMA.image_MIME_type, name="image_MIME_type", curie=ENIGMA.curie('image_MIME_type'),
                    model_uri=ENIGMA.image_MIME_type, domain=None, range=Optional[str])
 
 slots.image_size = Slot(uri=ENIGMA.image_size, name="image_size", curie=ENIGMA.curie('image_size'),

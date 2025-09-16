@@ -368,7 +368,7 @@ classes:
     - image_id
     - image_name
     - image_description
-    - image_MIME type
+    - image_MIME_type
     - image_size
     - image_dimensions
     - image_link
@@ -1307,7 +1307,7 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000202
-  image_MIME type:
+  image_MIME_type:
     description: MIME type field for Image
     range: string
     annotations:
