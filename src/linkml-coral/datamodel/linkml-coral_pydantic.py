@@ -107,10 +107,13 @@ class Process(ConfiguredBaseModel):
          'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000277'}},
          'domain_of': ['Process']} })
     process_process: str = Field(default=..., description="""process field for Process""", json_schema_extra = { "linkml_meta": {'alias': 'process_process',
-         'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000204'}},
+         'annotations': {'constraint': {'tag': 'constraint',
+                                        'value': 'PROCESS:0000001'},
+                         'type_term': {'tag': 'type_term', 'value': 'ME:0000204'}},
          'domain_of': ['Process']} })
     process_person: str = Field(default=..., description="""person field for Process""", json_schema_extra = { "linkml_meta": {'alias': 'process_person',
-         'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000205'}},
+         'annotations': {'constraint': {'tag': 'constraint', 'value': 'ENIGMA:0000029'},
+                         'type_term': {'tag': 'type_term', 'value': 'ME:0000205'}},
          'domain_of': ['Process']} })
     process_campaign: str = Field(default=..., description="""campaign field for Process""", json_schema_extra = { "linkml_meta": {'alias': 'process_campaign',
          'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000206'}},
@@ -181,31 +184,38 @@ class Location(ConfiguredBaseModel):
          'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000266'}},
          'domain_of': ['Location']} })
     location_name: str = Field(default=..., description="""name field for Location""", json_schema_extra = { "linkml_meta": {'alias': 'location_name',
-         'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000228'}},
+         'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000228'},
+                         'unique': {'tag': 'unique', 'value': True}},
          'domain_of': ['Location']} })
     location_latitude: float = Field(default=..., description="""latitude field for Location""", ge=-90, le=90, json_schema_extra = { "linkml_meta": {'alias': 'location_latitude',
          'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000211'},
-                         'units': {'tag': 'units', 'value': 'UO:0000185'}},
+                         'units_term': {'tag': 'units_term', 'value': 'UO:0000185'}},
          'domain_of': ['Location']} })
     location_longitude: float = Field(default=..., description="""longitude field for Location""", ge=-180, le=180, json_schema_extra = { "linkml_meta": {'alias': 'location_longitude',
          'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000212'},
-                         'units': {'tag': 'units', 'value': 'UO:0000185'}},
+                         'units_term': {'tag': 'units_term', 'value': 'UO:0000185'}},
          'domain_of': ['Location']} })
     location_continent: str = Field(default=..., description="""continent field for Location""", json_schema_extra = { "linkml_meta": {'alias': 'location_continent',
-         'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000213'}},
+         'annotations': {'constraint': {'tag': 'constraint',
+                                        'value': 'CONTINENT:0000001'},
+                         'type_term': {'tag': 'type_term', 'value': 'ME:0000213'}},
          'domain_of': ['Location']} })
     location_country: str = Field(default=..., description="""country field for Location""", json_schema_extra = { "linkml_meta": {'alias': 'location_country',
-         'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000214'}},
+         'annotations': {'constraint': {'tag': 'constraint',
+                                        'value': 'COUNTRY:0000001'},
+                         'type_term': {'tag': 'type_term', 'value': 'ME:0000214'}},
          'domain_of': ['Location']} })
     location_region: str = Field(default=..., description="""region field for Location""", json_schema_extra = { "linkml_meta": {'alias': 'location_region',
          'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000215'}},
          'comments': ['specific local region name(s)'],
          'domain_of': ['Location']} })
     location_biome: str = Field(default=..., description="""biome field for Location""", json_schema_extra = { "linkml_meta": {'alias': 'location_biome',
-         'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000216'}},
+         'annotations': {'constraint': {'tag': 'constraint', 'value': 'ENVO:01000254'},
+                         'type_term': {'tag': 'type_term', 'value': 'ME:0000216'}},
          'domain_of': ['Location']} })
     location_feature: Optional[str] = Field(default=None, description="""feature field for Location""", json_schema_extra = { "linkml_meta": {'alias': 'location_feature',
-         'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000217'}},
+         'annotations': {'constraint': {'tag': 'constraint', 'value': 'ENVO:00002297'},
+                         'type_term': {'tag': 'type_term', 'value': 'ME:0000217'}},
          'domain_of': ['Location']} })
 
 
@@ -226,7 +236,8 @@ class Sample(ConfiguredBaseModel):
          'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000267'}},
          'domain_of': ['Sample']} })
     sample_name: str = Field(default=..., description="""name field for Sample""", json_schema_extra = { "linkml_meta": {'alias': 'sample_name',
-         'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000102'}},
+         'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000102'},
+                         'unique': {'tag': 'unique', 'value': True}},
          'domain_of': ['Sample']} })
     sample_location: str = Field(default=..., description="""location field for Sample""", json_schema_extra = { "linkml_meta": {'alias': 'sample_location',
          'annotations': {'foreign_key': {'tag': 'foreign_key',
@@ -235,12 +246,12 @@ class Sample(ConfiguredBaseModel):
          'domain_of': ['Sample']} })
     sample_depth: Optional[float] = Field(default=None, description="""depth field for Sample""", json_schema_extra = { "linkml_meta": {'alias': 'sample_depth',
          'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000219'},
-                         'units': {'tag': 'units', 'value': 'UO:0000008'}},
+                         'units_term': {'tag': 'units_term', 'value': 'UO:0000008'}},
          'comments': ['in meters below ground level'],
          'domain_of': ['Sample']} })
     sample_elevation: Optional[float] = Field(default=None, description="""elevation field for Sample""", json_schema_extra = { "linkml_meta": {'alias': 'sample_elevation',
          'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000220'},
-                         'units': {'tag': 'units', 'value': 'UO:0000008'}},
+                         'units_term': {'tag': 'units_term', 'value': 'UO:0000008'}},
          'comments': ['in meters above ground level'],
          'domain_of': ['Sample']} })
     sample_date: str = Field(default=..., description="""date field for Sample""", json_schema_extra = { "linkml_meta": {'alias': 'sample_date',
@@ -256,10 +267,12 @@ class Sample(ConfiguredBaseModel):
          'comments': ['ISO8601 compliant format, ie. UTC-7'],
          'domain_of': ['Sample']} })
     sample_material: Optional[str] = Field(default=None, description="""material field for Sample""", json_schema_extra = { "linkml_meta": {'alias': 'sample_material',
-         'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000230'}},
+         'annotations': {'constraint': {'tag': 'constraint', 'value': 'ENVO:00010483'},
+                         'type_term': {'tag': 'type_term', 'value': 'ME:0000230'}},
          'domain_of': ['Sample']} })
     sample_env_package: str = Field(default=..., description="""env_package field for Sample""", json_schema_extra = { "linkml_meta": {'alias': 'sample_env_package',
-         'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000229'}},
+         'annotations': {'constraint': {'tag': 'constraint', 'value': 'MIxS:0000002'},
+                         'type_term': {'tag': 'type_term', 'value': 'ME:0000229'}},
          'domain_of': ['Sample']} })
     sample_description: Optional[str] = Field(default=None, description="""description field for Sample""", json_schema_extra = { "linkml_meta": {'alias': 'sample_description',
          'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000202'}},
@@ -307,7 +320,8 @@ class Taxon(ConfiguredBaseModel):
          'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000268'}},
          'domain_of': ['Taxon']} })
     taxon_name: str = Field(default=..., description="""name field for Taxon""", json_schema_extra = { "linkml_meta": {'alias': 'taxon_name',
-         'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000047'}},
+         'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000047'},
+                         'unique': {'tag': 'unique', 'value': True}},
          'domain_of': ['Taxon']} })
     taxon_ncbi_taxid: Optional[str] = Field(default=None, description="""ncbi_taxid field for Taxon""", json_schema_extra = { "linkml_meta": {'alias': 'taxon_ncbi_taxid',
          'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000223'}},
@@ -329,7 +343,8 @@ class OTU(ConfiguredBaseModel):
          'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000269'}},
          'domain_of': ['OTU']} })
     otu_name: str = Field(default=..., description="""name field for OTU""", json_schema_extra = { "linkml_meta": {'alias': 'otu_name',
-         'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000222'}},
+         'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000222'},
+                         'unique': {'tag': 'unique', 'value': True}},
          'domain_of': ['OTU']} })
 
 
@@ -348,7 +363,8 @@ class Condition(ConfiguredBaseModel):
          'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000270'}},
          'domain_of': ['Condition']} })
     condition_name: str = Field(default=..., description="""name field for Condition""", json_schema_extra = { "linkml_meta": {'alias': 'condition_name',
-         'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000200'}},
+         'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000200'},
+                         'unique': {'tag': 'unique', 'value': True}},
          'domain_of': ['Condition']} })
 
 
@@ -370,7 +386,8 @@ class Strain(ConfiguredBaseModel):
          'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000271'}},
          'domain_of': ['Strain']} })
     strain_name: str = Field(default=..., description="""name field for Strain""", json_schema_extra = { "linkml_meta": {'alias': 'strain_name',
-         'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000044'}},
+         'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000044'},
+                         'unique': {'tag': 'unique', 'value': True}},
          'domain_of': ['Strain']} })
     strain_description: Optional[str] = Field(default=None, description="""description field for Strain""", json_schema_extra = { "linkml_meta": {'alias': 'strain_description',
          'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000202'}},
@@ -409,10 +426,12 @@ class Community(ConfiguredBaseModel):
          'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000272'}},
          'domain_of': ['Community']} })
     community_name: str = Field(default=..., description="""name field for Community""", json_schema_extra = { "linkml_meta": {'alias': 'community_name',
-         'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000233'}},
+         'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000233'},
+                         'unique': {'tag': 'unique', 'value': True}},
          'domain_of': ['Community']} })
     community_community_type: str = Field(default=..., description="""community_type field for Community""", json_schema_extra = { "linkml_meta": {'alias': 'community_community_type',
-         'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000234'}},
+         'annotations': {'constraint': {'tag': 'constraint', 'value': 'ME:0000234'},
+                         'type_term': {'tag': 'type_term', 'value': 'ME:0000234'}},
          'domain_of': ['Community']} })
     community_sample: Optional[str] = Field(default=None, description="""sample field for Community""", json_schema_extra = { "linkml_meta": {'alias': 'community_sample',
          'annotations': {'foreign_key': {'tag': 'foreign_key', 'value': 'Sample.name'},
@@ -431,6 +450,9 @@ class Community(ConfiguredBaseModel):
     community_defined_strains: Optional[list[str]] = Field(default=None, description="""defined_strains field for Community""", json_schema_extra = { "linkml_meta": {'alias': 'community_defined_strains',
          'annotations': {'foreign_key': {'tag': 'foreign_key', 'value': 'Strain.name'},
                          'type_term': {'tag': 'type_term', 'value': 'ME:0000044'}},
+         'comments': ['typedef.json has typo with FK pointing to [Strain.Name] with '
+                      'capital N',
+                      'Using lowercase name to match actual Strain field'],
          'domain_of': ['Community']} })
     community_description: Optional[str] = Field(default=None, description="""description field for Community""", json_schema_extra = { "linkml_meta": {'alias': 'community_description',
          'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000202'}},
@@ -454,17 +476,20 @@ class Reads(ConfiguredBaseModel):
          'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000273'}},
          'domain_of': ['Reads']} })
     reads_name: str = Field(default=..., description="""name field for Reads""", json_schema_extra = { "linkml_meta": {'alias': 'reads_name',
-         'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000248'}},
+         'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000248'},
+                         'unique': {'tag': 'unique', 'value': True}},
          'domain_of': ['Reads']} })
     reads_read_count: int = Field(default=..., description="""read_count field for Reads""", json_schema_extra = { "linkml_meta": {'alias': 'reads_read_count',
          'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000126'},
-                         'units': {'tag': 'units', 'value': 'UO:0000189'}},
+                         'units_term': {'tag': 'units_term', 'value': 'UO:0000189'}},
          'domain_of': ['Reads']} })
     reads_read_type: str = Field(default=..., description="""read_type field for Reads""", json_schema_extra = { "linkml_meta": {'alias': 'reads_read_type',
-         'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000112'}},
+         'annotations': {'constraint': {'tag': 'constraint', 'value': 'ME:0000112'},
+                         'type_term': {'tag': 'type_term', 'value': 'ME:0000112'}},
          'domain_of': ['Reads']} })
     reads_sequencing_technology: str = Field(default=..., description="""sequencing_technology field for Reads""", json_schema_extra = { "linkml_meta": {'alias': 'reads_sequencing_technology',
-         'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000116'}},
+         'annotations': {'constraint': {'tag': 'constraint', 'value': 'ME:0000116'},
+                         'type_term': {'tag': 'type_term', 'value': 'ME:0000116'}},
          'domain_of': ['Reads']} })
     reads_link: str = Field(default=..., description="""link field for Reads""", json_schema_extra = { "linkml_meta": {'alias': 'reads_link',
          'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000203'}},
@@ -489,7 +514,8 @@ class Assembly(ConfiguredBaseModel):
          'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000281'}},
          'domain_of': ['Assembly']} })
     assembly_name: str = Field(default=..., description="""name field for Assembly""", json_schema_extra = { "linkml_meta": {'alias': 'assembly_name',
-         'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000280'}},
+         'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000280'},
+                         'unique': {'tag': 'unique', 'value': True}},
          'domain_of': ['Assembly']} })
     assembly_strain: Optional[str] = Field(default=None, description="""strain field for Assembly""", json_schema_extra = { "linkml_meta": {'alias': 'assembly_strain',
          'annotations': {'foreign_key': {'tag': 'foreign_key', 'value': 'Strain.name'},
@@ -497,7 +523,7 @@ class Assembly(ConfiguredBaseModel):
          'domain_of': ['Assembly']} })
     assembly_n_contigs: int = Field(default=..., description="""n_contigs field for Assembly""", json_schema_extra = { "linkml_meta": {'alias': 'assembly_n_contigs',
          'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000126'},
-                         'units': {'tag': 'units', 'value': 'UO:0000189'}},
+                         'units_term': {'tag': 'units_term', 'value': 'UO:0000189'}},
          'domain_of': ['Assembly']} })
     assembly_link: str = Field(default=..., description="""link field for Assembly""", json_schema_extra = { "linkml_meta": {'alias': 'assembly_link',
          'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000203'}},
@@ -522,7 +548,8 @@ class Genome(ConfiguredBaseModel):
          'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000274'}},
          'domain_of': ['Genome']} })
     genome_name: str = Field(default=..., description="""name field for Genome""", json_schema_extra = { "linkml_meta": {'alias': 'genome_name',
-         'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000246'}},
+         'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000246'},
+                         'unique': {'tag': 'unique', 'value': True}},
          'domain_of': ['Genome']} })
     genome_strain: Optional[str] = Field(default=None, description="""strain field for Genome""", json_schema_extra = { "linkml_meta": {'alias': 'genome_strain',
          'annotations': {'foreign_key': {'tag': 'foreign_key', 'value': 'Strain.name'},
@@ -530,11 +557,11 @@ class Genome(ConfiguredBaseModel):
          'domain_of': ['Genome']} })
     genome_n_contigs: int = Field(default=..., description="""n_contigs field for Genome""", json_schema_extra = { "linkml_meta": {'alias': 'genome_n_contigs',
          'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000126'},
-                         'units': {'tag': 'units', 'value': 'UO:0000189'}},
+                         'units_term': {'tag': 'units_term', 'value': 'UO:0000189'}},
          'domain_of': ['Genome']} })
     genome_n_features: int = Field(default=..., description="""n_features field for Genome""", json_schema_extra = { "linkml_meta": {'alias': 'genome_n_features',
          'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000126'},
-                         'units': {'tag': 'units', 'value': 'UO:0000189'}},
+                         'units_term': {'tag': 'units_term', 'value': 'UO:0000189'}},
          'domain_of': ['Genome']} })
     genome_link: str = Field(default=..., description="""link field for Genome""", json_schema_extra = { "linkml_meta": {'alias': 'genome_link',
          'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000203'}},
@@ -556,18 +583,22 @@ class Gene(ConfiguredBaseModel):
          'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000275'}},
          'domain_of': ['Gene']} })
     gene_gene_id: str = Field(default=..., description="""gene_id field for Gene""", json_schema_extra = { "linkml_meta": {'alias': 'gene_gene_id',
-         'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000224'}},
+         'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000224'},
+                         'unique': {'tag': 'unique', 'value': True}},
          'domain_of': ['Gene']} })
     gene_genome: str = Field(default=..., description="""genome field for Gene""", json_schema_extra = { "linkml_meta": {'alias': 'gene_genome',
          'annotations': {'foreign_key': {'tag': 'foreign_key', 'value': 'Genome.name'},
                          'type_term': {'tag': 'type_term', 'value': 'ME:0000246'}},
+         'comments': ['typedef.json has FK pointing to Genome without specifying '
+                      'target field',
+                      'Assumed to reference Genome.name based on pattern'],
          'domain_of': ['Gene']} })
     gene_aliases: Optional[list[str]] = Field(default=None, description="""aliases field for Gene""", json_schema_extra = { "linkml_meta": {'alias': 'gene_aliases',
          'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000060'}},
          'domain_of': ['Gene']} })
     gene_contig_number: int = Field(default=..., description="""contig_number field for Gene""", json_schema_extra = { "linkml_meta": {'alias': 'gene_contig_number',
          'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000126'},
-                         'units': {'tag': 'units', 'value': 'UO:0000189'}},
+                         'units_term': {'tag': 'units_term', 'value': 'UO:0000189'}},
          'comments': ['indexed starting at 1, as in KBase'],
          'domain_of': ['Gene']} })
     gene_strand: str = Field(default=..., description="""strand field for Gene""", json_schema_extra = { "linkml_meta": {'alias': 'gene_strand',
@@ -575,12 +606,12 @@ class Gene(ConfiguredBaseModel):
          'domain_of': ['Gene']} })
     gene_start: int = Field(default=..., description="""start field for Gene""", json_schema_extra = { "linkml_meta": {'alias': 'gene_start',
          'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000242'},
-                         'units': {'tag': 'units', 'value': 'UO:0000244'}},
+                         'units_term': {'tag': 'units_term', 'value': 'UO:0000244'}},
          'comments': ['indexed starting at 1, as in KBase'],
          'domain_of': ['Gene']} })
     gene_stop: int = Field(default=..., description="""stop field for Gene""", json_schema_extra = { "linkml_meta": {'alias': 'gene_stop',
          'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000243'},
-                         'units': {'tag': 'units', 'value': 'UO:0000244'}},
+                         'units_term': {'tag': 'units_term', 'value': 'UO:0000244'}},
          'domain_of': ['Gene']} })
     gene_function: Optional[str] = Field(default=None, description="""function field for Gene""", json_schema_extra = { "linkml_meta": {'alias': 'gene_function',
          'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000250'}},
@@ -617,12 +648,16 @@ class Bin(ConfiguredBaseModel):
          'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000331'}},
          'domain_of': ['Bin']} })
     bin_name: str = Field(default=..., description="""name field for Bin""", json_schema_extra = { "linkml_meta": {'alias': 'bin_name',
-         'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000330'}},
+         'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000330'},
+                         'unique': {'tag': 'unique', 'value': True}},
          'domain_of': ['Bin']} })
     bin_assembly: str = Field(default=..., description="""assembly field for Bin""", json_schema_extra = { "linkml_meta": {'alias': 'bin_assembly',
          'annotations': {'foreign_key': {'tag': 'foreign_key',
                                          'value': 'Assembly.name'},
                          'type_term': {'tag': 'type_term', 'value': 'ME:0000280'}},
+         'comments': ['typedef.json has FK pointing to Assembly without specifying '
+                      'target field',
+                      'Assumed to reference Assembly.name based on pattern'],
          'domain_of': ['Bin']} })
     bin_contigs: list[str] = Field(default=..., description="""contigs field for Bin""", json_schema_extra = { "linkml_meta": {'alias': 'bin_contigs',
          'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000240'}},
@@ -646,7 +681,8 @@ class Protocol(ConfiguredBaseModel):
          'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000332'}},
          'domain_of': ['Protocol']} })
     protocol_name: str = Field(default=..., description="""name field for Protocol""", json_schema_extra = { "linkml_meta": {'alias': 'protocol_name',
-         'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000328'}},
+         'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000328'},
+                         'unique': {'tag': 'unique', 'value': True}},
          'domain_of': ['Protocol']} })
     protocol_description: Optional[str] = Field(default=None, description="""description field for Protocol""", json_schema_extra = { "linkml_meta": {'alias': 'protocol_description',
          'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000202'}},
@@ -686,7 +722,8 @@ class Image(ConfiguredBaseModel):
          'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000356'}},
          'domain_of': ['Image']} })
     image_name: str = Field(default=..., description="""name field for Image""", json_schema_extra = { "linkml_meta": {'alias': 'image_name',
-         'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000355'}},
+         'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000355'},
+                         'unique': {'tag': 'unique', 'value': True}},
          'domain_of': ['Image']} })
     image_description: Optional[str] = Field(default=None, description="""description field for Image""", json_schema_extra = { "linkml_meta": {'alias': 'image_description',
          'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000202'}},
@@ -696,11 +733,11 @@ class Image(ConfiguredBaseModel):
          'domain_of': ['Image']} })
     image_size: Optional[int] = Field(default=None, description="""size field for Image""", json_schema_extra = { "linkml_meta": {'alias': 'image_size',
          'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000128'},
-                         'units': {'tag': 'units', 'value': 'UO:0000233'}},
+                         'units_term': {'tag': 'units_term', 'value': 'UO:0000233'}},
          'domain_of': ['Image']} })
     image_dimensions: Optional[str] = Field(default=None, description="""dimensions field for Image""", json_schema_extra = { "linkml_meta": {'alias': 'image_dimensions',
          'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000292'},
-                         'units': {'tag': 'units', 'value': 'UO:0000236'}},
+                         'units_term': {'tag': 'units_term', 'value': 'UO:0000236'}},
          'domain_of': ['Image']} })
     image_link: Optional[str] = Field(default=None, description="""link field for Image""", json_schema_extra = { "linkml_meta": {'alias': 'image_link',
          'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000203'}},
@@ -724,7 +761,8 @@ class TnSeqLibrary(ConfiguredBaseModel):
          'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000276'}},
          'domain_of': ['TnSeq_Library']} })
     tnseq_library_name: str = Field(default=..., description="""name field for TnSeq_Library""", json_schema_extra = { "linkml_meta": {'alias': 'tnseq_library_name',
-         'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000262'}},
+         'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000262'},
+                         'unique': {'tag': 'unique', 'value': True}},
          'domain_of': ['TnSeq_Library']} })
     tnseq_library_genome: str = Field(default=..., description="""genome field for TnSeq_Library""", json_schema_extra = { "linkml_meta": {'alias': 'tnseq_library_genome',
          'annotations': {'foreign_key': {'tag': 'foreign_key', 'value': 'Genome.name'},
@@ -735,27 +773,27 @@ class TnSeqLibrary(ConfiguredBaseModel):
          'domain_of': ['TnSeq_Library']} })
     tnseq_library_n_mapped_reads: Optional[int] = Field(default=None, description="""n_mapped_reads field for TnSeq_Library""", json_schema_extra = { "linkml_meta": {'alias': 'tnseq_library_n_mapped_reads',
          'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000126'},
-                         'units': {'tag': 'units', 'value': 'UO:0000189'}},
+                         'units_term': {'tag': 'units_term', 'value': 'UO:0000189'}},
          'domain_of': ['TnSeq_Library']} })
     tnseq_library_n_barcodes: Optional[int] = Field(default=None, description="""n_barcodes field for TnSeq_Library""", json_schema_extra = { "linkml_meta": {'alias': 'tnseq_library_n_barcodes',
          'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000126'},
-                         'units': {'tag': 'units', 'value': 'UO:0000189'}},
+                         'units_term': {'tag': 'units_term', 'value': 'UO:0000189'}},
          'domain_of': ['TnSeq_Library']} })
     tnseq_library_n_usable_barcodes: Optional[int] = Field(default=None, description="""n_usable_barcodes field for TnSeq_Library""", json_schema_extra = { "linkml_meta": {'alias': 'tnseq_library_n_usable_barcodes',
          'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000126'},
-                         'units': {'tag': 'units', 'value': 'UO:0000189'}},
+                         'units_term': {'tag': 'units_term', 'value': 'UO:0000189'}},
          'domain_of': ['TnSeq_Library']} })
     tnseq_library_n_insertion_locations: Optional[int] = Field(default=None, description="""n_insertion_locations field for TnSeq_Library""", json_schema_extra = { "linkml_meta": {'alias': 'tnseq_library_n_insertion_locations',
          'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000126'},
-                         'units': {'tag': 'units', 'value': 'UO:0000189'}},
+                         'units_term': {'tag': 'units_term', 'value': 'UO:0000189'}},
          'domain_of': ['TnSeq_Library']} })
     tnseq_library_hit_rate_essential: Optional[float] = Field(default=None, description="""hit_rate_essential field for TnSeq_Library""", json_schema_extra = { "linkml_meta": {'alias': 'tnseq_library_hit_rate_essential',
          'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000264'},
-                         'units': {'tag': 'units', 'value': 'UO:0000190'}},
+                         'units_term': {'tag': 'units_term', 'value': 'UO:0000190'}},
          'domain_of': ['TnSeq_Library']} })
     tnseq_library_hit_rate_other: Optional[float] = Field(default=None, description="""hit_rate_other field for TnSeq_Library""", json_schema_extra = { "linkml_meta": {'alias': 'tnseq_library_hit_rate_other',
          'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000264'},
-                         'units': {'tag': 'units', 'value': 'UO:0000190'}},
+                         'units_term': {'tag': 'units_term', 'value': 'UO:0000190'}},
          'domain_of': ['TnSeq_Library']} })
 
 
@@ -776,7 +814,8 @@ class DubSeqLibrary(ConfiguredBaseModel):
          'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000276'}},
          'domain_of': ['DubSeq_Library']} })
     dubseq_library_name: str = Field(default=..., description="""name field for DubSeq_Library""", json_schema_extra = { "linkml_meta": {'alias': 'dubseq_library_name',
-         'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000262'}},
+         'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000262'},
+                         'unique': {'tag': 'unique', 'value': True}},
          'domain_of': ['DubSeq_Library']} })
     dubseq_library_genome: str = Field(default=..., description="""genome field for DubSeq_Library""", json_schema_extra = { "linkml_meta": {'alias': 'dubseq_library_genome',
          'annotations': {'foreign_key': {'tag': 'foreign_key', 'value': 'Genome.name'},
@@ -784,18 +823,8 @@ class DubSeqLibrary(ConfiguredBaseModel):
          'domain_of': ['DubSeq_Library']} })
     dubseq_library_n_fragments: Optional[int] = Field(default=None, description="""n_fragments field for DubSeq_Library""", json_schema_extra = { "linkml_meta": {'alias': 'dubseq_library_n_fragments',
          'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000126'},
-                         'units': {'tag': 'units', 'value': 'UO:0000189'}},
+                         'units_term': {'tag': 'units_term', 'value': 'UO:0000189'}},
          'domain_of': ['DubSeq_Library']} })
-
-
-class ENIGMA(ConfiguredBaseModel):
-    """
-    ENIGMA static type entity
-    """
-    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'annotations': {'static_type': {'tag': 'static_type', 'value': True}},
-         'from_schema': 'https://w3id.org/enigma/enigma-cdm'})
-
-    pass
 
 
 # Model rebuild
@@ -817,5 +846,4 @@ Protocol.model_rebuild()
 Image.model_rebuild()
 TnSeqLibrary.model_rebuild()
 DubSeqLibrary.model_rebuild()
-ENIGMA.model_rebuild()
 
