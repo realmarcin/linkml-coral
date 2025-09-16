@@ -422,12 +422,6 @@ classes:
     - dubseq_library_name
     - dubseq_library_genome
     - dubseq_library_n_fragments
-  ENIGMA:
-    description: ENIGMA static type entity
-    annotations:
-      static_type:
-        tag: static_type
-        value: true
 slots:
   process_id:
     description: id field for Process
@@ -550,7 +544,7 @@ slots:
     maximum_value: 90
     annotations:
       units_term:
-        tag: units
+        tag: units_term
         value: UO:0000185
       type_term:
         tag: type_term
@@ -563,7 +557,7 @@ slots:
     maximum_value: 180
     annotations:
       units_term:
-        tag: units
+        tag: units_term
         value: UO:0000185
       type_term:
         tag: type_term
@@ -657,7 +651,7 @@ slots:
     range: float
     annotations:
       units_term:
-        tag: units
+        tag: units_term
         value: UO:0000008
       type_term:
         tag: type_term
@@ -669,7 +663,7 @@ slots:
     range: float
     annotations:
       units_term:
-        tag: units
+        tag: units_term
         value: UO:0000008
       type_term:
         tag: type_term
@@ -927,8 +921,8 @@ slots:
     range: string
     multivalued: true
     comments:
-    - typedef.json has typo \"FK\": \"[Strain.Name]\" with capital N
-    - Using lowercase \"name\" to match actual Strain field
+    - typedef.json has typo with FK pointing to [Strain.Name] with capital N
+    - Using lowercase name to match actual Strain field
     annotations:
       foreign_key:
         tag: foreign_key
@@ -969,7 +963,7 @@ slots:
     required: true
     annotations:
       units_term:
-        tag: units
+        tag: units_term
         value: UO:0000189
       type_term:
         tag: type_term
@@ -1040,7 +1034,7 @@ slots:
     required: true
     annotations:
       units_term:
-        tag: units
+        tag: units_term
         value: UO:0000189
       type_term:
         tag: type_term
@@ -1089,7 +1083,7 @@ slots:
     required: true
     annotations:
       units_term:
-        tag: units
+        tag: units_term
         value: UO:0000189
       type_term:
         tag: type_term
@@ -1100,7 +1094,7 @@ slots:
     required: true
     annotations:
       units_term:
-        tag: units
+        tag: units_term
         value: UO:0000189
       type_term:
         tag: type_term
@@ -1138,7 +1132,7 @@ slots:
     range: string
     required: true
     comments:
-    - typedef.json has "FK": "Genome" without specifying target field
+    - typedef.json has FK pointing to Genome without specifying target field
     - Assumed to reference Genome.name based on pattern
     annotations:
       foreign_key:
@@ -1161,7 +1155,7 @@ slots:
     required: true
     annotations:
       units_term:
-        tag: units
+        tag: units_term
         value: UO:0000189
       type_term:
         tag: type_term
@@ -1183,7 +1177,7 @@ slots:
     required: true
     annotations:
       units_term:
-        tag: units
+        tag: units_term
         value: UO:0000244
       type_term:
         tag: type_term
@@ -1196,7 +1190,7 @@ slots:
     required: true
     annotations:
       units_term:
-        tag: units
+        tag: units_term
         value: UO:0000244
       type_term:
         tag: type_term
@@ -1233,7 +1227,7 @@ slots:
     range: string
     required: true
     comments:
-    - typedef.json has "FK": "Assembly" without specifying target field
+    - typedef.json has FK pointing to Assembly without specifying target field
     - Assumed to reference Assembly.name based on pattern
     annotations:
       foreign_key:
@@ -1325,7 +1319,7 @@ slots:
     range: integer
     annotations:
       units_term:
-        tag: units
+        tag: units_term
         value: UO:0000233
       type_term:
         tag: type_term
@@ -1335,7 +1329,7 @@ slots:
     range: string
     annotations:
       units_term:
-        tag: units
+        tag: units_term
         value: UO:0000236
       type_term:
         tag: type_term
@@ -1391,7 +1385,7 @@ slots:
     range: integer
     annotations:
       units_term:
-        tag: units
+        tag: units_term
         value: UO:0000189
       type_term:
         tag: type_term
@@ -1401,7 +1395,7 @@ slots:
     range: integer
     annotations:
       units_term:
-        tag: units
+        tag: units_term
         value: UO:0000189
       type_term:
         tag: type_term
@@ -1411,7 +1405,7 @@ slots:
     range: integer
     annotations:
       units_term:
-        tag: units
+        tag: units_term
         value: UO:0000189
       type_term:
         tag: type_term
@@ -1421,7 +1415,7 @@ slots:
     range: integer
     annotations:
       units_term:
-        tag: units
+        tag: units_term
         value: UO:0000189
       type_term:
         tag: type_term
@@ -1431,7 +1425,7 @@ slots:
     range: float
     annotations:
       units_term:
-        tag: units
+        tag: units_term
         value: UO:0000190
       type_term:
         tag: type_term
@@ -1441,7 +1435,7 @@ slots:
     range: float
     annotations:
       units_term:
-        tag: units
+        tag: units_term
         value: UO:0000190
       type_term:
         tag: type_term
@@ -1482,7 +1476,7 @@ slots:
     range: integer
     annotations:
       units_term:
-        tag: units
+        tag: units_term
         value: UO:0000189
       type_term:
         tag: type_term

@@ -1,5 +1,5 @@
 # Auto generated from linkml-coral.yaml by pythongen.py version: 0.0.1
-# Generation date: 2025-09-15T13:23:34
+# Generation date: 2025-09-15T17:59:01
 # Schema: enigma-cdm
 #
 # id: https://w3id.org/enigma/enigma-cdm
@@ -994,18 +994,6 @@ class DubSeqLibrary(YAMLRoot):
             self.dubseq_library_n_fragments = int(self.dubseq_library_n_fragments)
 
         super().__post_init__(**kwargs)
-
-
-class ENIGMA(YAMLRoot):
-    """
-    ENIGMA static type entity
-    """
-    _inherited_slots: ClassVar[list[str]] = []
-
-    class_class_uri: ClassVar[URIRef] = ENIGMA["ENIGMA"]
-    class_class_curie: ClassVar[str] = "enigma:ENIGMA"
-    class_name: ClassVar[str] = "ENIGMA"
-    class_model_uri: ClassVar[URIRef] = ENIGMA.ENIGMA
 
 
 # Enumerations
