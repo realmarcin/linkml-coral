@@ -328,13 +328,13 @@ def print_mapping_report(mapping_report: Dict[str, Any], filename: str):
             print(f"      (and {len(mapping_report['unmapped_columns']) - 3} more)")
 
 
-def print_validation_errors(errors: List[str], max_errors: int = 10):
+def print_validation_errors(errors: List[str], max_errors: int = 10, temp_file_path: str = None):
     """Print validation errors in a readable format."""
     print(f"  ❌ Found {len(errors)} validation errors:")
     
     for i, error in enumerate(errors[:max_errors]):
         # Clean up error message for better readability
-        clean_error = error.replace(temp_file_path, 'record') if 'temp_file_path' in locals() else error
+        clean_error = error.replace(temp_file_path, 'record') if temp_file_path else error
         print(f"    • {clean_error}")
     
     if len(errors) > max_errors:
