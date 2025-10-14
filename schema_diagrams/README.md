@@ -6,9 +6,13 @@ Entity-Relationship diagrams for the ENIGMA Common Data Model.
 
 - **CORAL Complete Schema** - Complete ENIGMA Common Data Model
   - [Mermaid](./full_schema.mmd)
+  - [PNG](./full_schema.png)
+  - [SVG](./full_schema.svg)
 
 - **CORAL Schema Overview (No Attributes)** - High-level view of all entities without field details
   - [Mermaid](./schema_overview.mmd)
+  - [PNG](./schema_overview.png)
+  - [SVG](./schema_overview.svg)
 
 ## Viewing Options
 
