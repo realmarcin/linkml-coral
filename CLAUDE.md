@@ -31,7 +31,8 @@ Never use `pip` directly - this project uses `uv` for dependency management.
 
 **Core schema files (edit these):**
 - `src/linkml_coral/schema/linkml_coral.yaml` - Main ENIGMA Common Data Model schema (primary schema)
-- Original CORAL typedef JSON source: `/Users/marcin/Documents/KBase/CDM/ENIGMA/CORAL-LinkML/data/typedef.json`
+- `data/typedef.json` - Original CORAL typedef JSON source
+- `data/coral_enigma_schema.yaml` - CORAL ENIGMA schema in YAML format (derived from typedef.json)
 
 **Generated files (do not edit):**
 - `src/linkml_coral/datamodel/` - Python dataclasses and Pydantic models
