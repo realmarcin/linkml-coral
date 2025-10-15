@@ -1,5 +1,5 @@
 # Auto generated from linkml_coral.yaml by pythongen.py version: 0.0.1
-# Generation date: 2025-09-15T19:54:48
+# Generation date: 2025-10-14T18:56:15
 # Schema: enigma-cdm
 #
 # id: https://w3id.org/enigma/enigma-cdm
