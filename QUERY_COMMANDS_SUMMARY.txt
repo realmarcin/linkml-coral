@@ -1,0 +1,80 @@
+# ENIGMA Database Query Commands - Quick Summary
+
+## Setup (One-time)
+just load-store
+# Creates enigma_data.db (13 MB) with 281,813 records
+
+## Main Query: Unused "Good" Reads
+# All reads (terminal output with statistics and top 20 results):
+just query-unused-reads 50000
+
+# Isolate genome reads only (exclude 16S/metagenome):
+just query-unused-isolates 50000
+
+# Metagenome/16S reads only:
+just query-unused-metagenomes 50000
+
+# JSON export with all results:
+uv run python enigma_query.py unused-reads --min-count 50000 --export results.json
+uv run python enigma_query.py unused-reads --min-count 50000 --exclude-16s --export isolates.json
+uv run python enigma_query.py unused-reads --min-count 50000 --read-type ME:0000113 --export metagenomes.json
+
+## Database Statistics
+just query-stats
+
+## Provenance Lineage
+just query-lineage Assembly Assembly0000001
+uv run python enigma_query.py lineage Assembly Assembly0000001 --export lineage.json
+
+## Entity Search
+just query-find Reads --query read_count_category=high
+uv run python enigma_query.py find Reads --query read_count_category=very_high --export high_reads.json
+
+## JSON Export Format
+{
+  "query": "unused_reads",
+  "parameters": {"min_count": 50000},
+  "summary": {
+    "total_good_reads": 14418,
+    "reads_used_in_assemblies": 2994,
+    "unused_good_reads": 11608,
+    "utilization_rate": 0.2077,
+    "unused_stats": {
+      "min_count": 50003,
+      "max_count": 549479714,
+      "avg_count": 3729317.79,
+      "total_wasted_reads": 43289920880
+    }
+  },
+  "results": [/* 11,608 read records */]
+}
+
+## Current Results (50K threshold)
+All Reads:
+- Total "good" reads: 14,418
+- Used in assemblies: 2,994 (20.8%)
+- UNUSED: 11,608 (79.2%)
+- Wasted reads: 43 BILLION
+
+Isolate Genomes Only (ME:0000114 - Single End):
+- Total "good" reads: 1,840
+- UNUSED: 1,836 (99.8%!)
+- Wasted reads: 230 MILLION
+- Avg read count: 125,553
+
+Metagenomes Only (ME:0000113 - Paired End):
+- Total "good" reads: 9,640
+- UNUSED: 7,768 (80.6%)
+- Wasted reads: 25 BILLION
+- Avg read count: 3,219,918
+
+## File Naming Convention
+unused_reads_50000_2025-01-14.json
+lineage_Assembly_ID_2025-01-14.json
+stats_report_2025-01-14.txt
+
+## See Full Documentation
+- QUERY_REFERENCE.md - Complete command reference
+- REFINED_QUERY_ANALYSIS.md - Read type analysis and isolate genome filtering
+- LINKML_STORE_USAGE.md - Detailed usage guide
+- DEPLOYMENT_PROVENANCE.md - Provenance tracking guide
