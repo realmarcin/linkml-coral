@@ -23,6 +23,27 @@
         .mermaid {
             text-align: center;
         }
+        .nav {
+            background-color: #333;
+            padding: 10px;
+            margin: -20px -20px 20px -20px;
+            border-radius: 8px 8px 0 0;
+        }
+        .nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+        }
+        .nav a:hover {
+            text-decoration: underline;
+        }
+        .image-diagram {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
     </style>
     <script>
         mermaid.initialize({ startOnLoad: true });
@@ -32,8 +53,15 @@
     <h1>CORAL LinkML Schema Visualization</h1>
     <p>Entity-Relationship diagrams for the ENIGMA Common Data Model</p>
 
+    <div class="nav">
+        <a href="#schema">Schema Structure</a>
+        <a href="#relationships">Entity Relationships</a>
+    </div>
+
+    <h2 id="schema">Schema Structure</h2>
+
     <div class="diagram-container">
-        <h2>CORAL Complete Schema</h2>
+        <h3>CORAL Complete Schema</h3>
         <div class="mermaid">
 erDiagram
 Assembly {
@@ -179,7 +207,7 @@ TnSeqLibrary {
     </div>
 
     <div class="diagram-container">
-        <h2>CORAL Schema Overview (No Attributes)</h2>
+        <h3>CORAL Schema Overview (No Attributes)</h3>
         <div class="mermaid">
 erDiagram
 Assembly {
@@ -217,6 +245,37 @@ Taxon {
 TnSeqLibrary {
 }
         </div>
+    </div>
+
+    <h2 id="relationships">Entity Relationships</h2>
+
+    <div class="diagram-container">
+        <h3>Entity Relationship Diagram</h3>
+        <p>Shows foreign key relationships, hierarchies, and cardinality between entities.</p>
+        <div class="mermaid">
+erDiagram
+    Assembly |o--|| Strain : "assembly_strain"
+    Bin ||--|| Assembly : "bin_assembly"
+    Community |o--|| Condition : "community_condition"
+    Community |o--|| Sample : "community_sample"
+    DubSeq_Library ||--|| Genome : "dubseq_library_genome"
+    Gene ||--|| Genome : "gene_genome"
+    Genome |o--|| Strain : "genome_strain"
+    Process |o--|| Protocol : "process_protocol"
+    Sample ||--|| Location : "sample_location"
+    Strain |o--|| Genome : "strain_genome"
+    TnSeq_Library ||--|| Genome : "tnseq_library_genome"
+    Community |o--o{ Strain : "community_defined_strains"
+    Strain |o--o{ Gene : "strain_genes_changed"
+    Community |o--o{ Community : "community_parent_community"
+    Strain |o--o{ Strain : "strain_derived_from"
+        </div>
+    </div>
+
+    <div class="diagram-container">
+        <h3>Entity Relationship Graph (Graphviz)</h3>
+        <p>Alternative view showing relationship types. Solid lines = required, dashed = optional, blue = many-to-many, green = self-referential.</p>
+        <img src="../relationship_diagrams/relationships.png" alt="Entity Relationship Graph" class="image-diagram">
     </div>
 
 </body>
