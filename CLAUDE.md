@@ -222,6 +222,37 @@ uv run python enigma_query.py --help
 - All queries support JSON export for standardized output
 - All queries automatically create provenance records in `query_provenance/`
 
+## CDM Table Naming Conventions
+
+**Convert LinkML schema to CDM table definitions:**
+```bash
+# Generate CDM schema with naming conventions
+python linkml_to_cdm.py src/linkml_coral/schema/linkml_coral.yaml \
+  --typedef data/typedef.json \
+  --json-output cdm_schema.json \
+  --report-output cdm_report.txt
+
+# Check for schema issues only
+python linkml_to_cdm.py src/linkml_coral/schema/linkml_coral.yaml --check-only
+```
+
+**CDM Naming Rules:**
+- Tables: `sdt_<snake_case_name>` (e.g., `Location` → `sdt_location`)
+- Primary keys: `<table>_id` (e.g., `sample_id`)
+- Foreign keys: `<referenced_table>_id` or `_ids` for arrays
+- All columns: lowercase snake_case with underscores only
+- Preferred names: If typedef.json defines `preferred_name`, use it (e.g., `OTU` → `ASV` → `sdt_asv`)
+
+**Outputs:**
+- `cdm_schema.json` - Machine-readable JSON schema with full metadata
+- `cdm_report.txt` - Human-readable report with table/column details
+- No changes required to LinkML schema
+
+**Documentation:**
+- [CDM_NAMING_CONVENTIONS.md](CDM_NAMING_CONVENTIONS.md) - Complete specification
+- [CDM_CONVERSION_SUMMARY.md](CDM_CONVERSION_SUMMARY.md) - Summary and examples
+- [linkml_to_cdm.py](linkml_to_cdm.py) - Conversion tool source code
+
 ## Common Development Tasks
 
 ```bash
