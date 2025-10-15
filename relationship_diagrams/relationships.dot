@@ -1,0 +1,26 @@
+digraph Relationships {
+    rankdir=LR;
+    node [shape=box, style=rounded];
+    edge [fontsize=10];
+
+    // One-to-one and many-to-one relationships
+    Assembly -> Strain [label="strain", style=dashed];
+    Bin -> Assembly [label="assembly", style=solid];
+    Community -> Condition [label="condition", style=dashed];
+    Community -> Sample [label="sample", style=dashed];
+    DubSeq_Library -> Genome [label="genome", style=solid];
+    Gene -> Genome [label="genome", style=solid];
+    Genome -> Strain [label="strain", style=dashed];
+    Process -> Protocol [label="protocol", style=dashed];
+    Sample -> Location [label="location", style=solid];
+    Strain -> Genome [label="genome", style=dashed];
+    TnSeq_Library -> Genome [label="genome", style=solid];
+
+    // Many-to-many relationships
+    Community -> Strain [label="defined_strains", style=dashed, color=blue, arrowhead=crow];
+    Strain -> Gene [label="genes_changed", style=dashed, color=blue, arrowhead=crow];
+
+    // Self-referential relationships
+    Community -> Community [label="parent_community", style=dashed, color=green];
+    Strain -> Strain [label="derived_from", style=dashed, color=green];
+}

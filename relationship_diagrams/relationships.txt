@@ -1,0 +1,151 @@
+================================================================================
+CORAL LinkML Schema - Relationship Analysis
+================================================================================
+
+## Summary
+
+Total relationships: 15
+  - One-to-one/Many-to-one: 11
+  - Many-to-many: 2
+  - Self-referential: 2
+  - Provenance-tracked entities: 0
+
+## One-to-One and Many-to-One Relationships
+
+  Assembly.assembly_strain → Strain.name [OPTIONAL]
+  Bin.bin_assembly → Assembly.name [REQUIRED]
+  Community.community_condition → Condition.name [OPTIONAL]
+  Community.community_sample → Sample.name [OPTIONAL]
+  DubSeq_Library.dubseq_library_genome → Genome.name [REQUIRED]
+  Gene.gene_genome → Genome.name [REQUIRED]
+  Genome.genome_strain → Strain.name [OPTIONAL]
+  Process.process_protocol → Protocol.name [OPTIONAL]
+  Sample.sample_location → Location.name [REQUIRED]
+  Strain.strain_genome → Genome.name [OPTIONAL]
+  TnSeq_Library.tnseq_library_genome → Genome.name [REQUIRED]
+
+## Many-to-Many Relationships
+
+  Community.community_defined_strains → Strain.name [OPTIONAL]
+  Strain.strain_genes_changed → Gene.gene_id [OPTIONAL]
+
+## Self-Referential Relationships
+
+Entities that reference themselves (hierarchies):
+  Community.community_parent_community → Community.name [OPTIONAL]
+  Strain.strain_derived_from → Strain.name [OPTIONAL]
+
+## Entity Relationship Graph
+
+Outgoing relationships from each entity:
+
+Assembly:
+  → Strain via assembly_strain
+
+Bin:
+  → Assembly via bin_assembly
+
+Community:
+  → Sample via community_sample
+  → Community via community_parent_community (self)
+  → Condition via community_condition
+  ⟹ Strain via community_defined_strains
+
+DubSeq_Library:
+  → Genome via dubseq_library_genome
+
+Gene:
+  → Genome via gene_genome
+
+Genome:
+  → Strain via genome_strain
+
+Process:
+  → Protocol via process_protocol
+
+Sample:
+  → Location via sample_location
+
+Strain:
+  → Genome via strain_genome
+  → Strain via strain_derived_from (self)
+  ⟹ Gene via strain_genes_changed
+
+TnSeq_Library:
+  → Genome via tnseq_library_genome
+
+## Provenance Workflow Relationships
+
+Derived from process_inputs annotations:
+
+Location:
+  Inputs: [['ENIGMA']]
+  Process types: ['PROCESS:0000028']
+
+Sample:
+  Inputs: [['Location']]
+  Process types: ['PROCESS:0000002']
+
+Taxon:
+  Inputs: [['ENIGMA']]
+  Process types: ['PROCESS:0000029']
+
+OTU:
+  Inputs: [['Reads']]
+  Process types: ['PROCESS:0000031']
+
+Condition:
+  Inputs: [['ENIGMA']]
+  Process types: ['PROCESS:0000032']
+
+Strain:
+  Inputs: [['Sample'], ['Strain']]
+  Process types: ['PROCESS:0000015', 'PROCESS:0000030']
+
+Community:
+  Inputs: [['Sample'], ['Community']]
+  Process types: ['PROCESS:0000015', 'PROCESS:0000016', 'PROCESS:0000011']
+
+Reads:
+  Inputs: [['Sample'], ['Community']]
+  Process types: ['PROCESS:0000017']
+
+Assembly:
+  Inputs: [['Reads'], ['Reads']]
+  Process types: ['PROCESS:0000023', 'PROCESS:0000024']
+
+Genome:
+  Inputs: [['Assembly'], ['Bin']]
+  Process types: ['PROCESS:0000034', 'PROCESS:0000045']
+
+Gene:
+  Inputs: [['Assembly']]
+  Process types: ['PROCESS:0000034']
+
+Bin:
+  Inputs: [['Assembly']]
+  Process types: ['PROCESS:0000039']
+
+Protocol:
+  Inputs: [['ENIGMA']]
+  Process types: ['PROCESS:0000044']
+
+Image:
+  Inputs: [['ENIGMA']]
+  Process types: ['PROCESS:0000044']
+
+TnSeq_Library:
+  Inputs: [['Genome']]
+  Process types: ['PROCESS:0000027']
+
+DubSeq_Library:
+  Inputs: [['Genome']]
+  Process types: ['PROCESS:0000049']
+
+================================================================================
+Legend:
+  → : one-to-one or many-to-one relationship
+  ⟹ : many-to-many relationship (multivalued)
+  [REQUIRED] : relationship is required
+  [OPTIONAL] : relationship is optional
+================================================================================
