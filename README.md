@@ -4,6 +4,22 @@
 
 linkml schema for CORAL
 
+## Getting Started
+
+When cloning linkml-coral:
+```bash
+git clone https://github.com/realmarcin/linkml-coral
+cd linkml-coral
+git submodule update --init --recursive
+uv sync
+```
+
+To update CORAL and sync typedef.json:
+```bash
+git submodule update --remote CORAL
+cp CORAL/back_end/python/var/typedef.json data/
+```
+
 ## Documentation Website
 
 [https://realmarcin.github.io/linkml-coral](https://realmarcin.github.io/linkml-coral)
