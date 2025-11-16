@@ -392,7 +392,7 @@ def validate_enums_in_data(
         enum_validator: EnumValidator instance
 
     Returns:
-        List of RecordValidationResult for each record
+        List of RecordValidationResult for records with issues only
     """
     record_results = []
 
@@ -409,6 +409,10 @@ def validate_enums_in_data(
             if enum_def:
                 enum_slots[slot_name_str] = slot.range
 
+    # Early exit if no enum fields
+    if not enum_slots:
+        return record_results
+
     # Validate each record
     for line_num, record in enumerate(mapped_data, start=2):  # Line 2 is first data row (after header)
         validation_results = []
@@ -424,12 +428,13 @@ def validate_enums_in_data(
                 if result.status != ValidationStatus.PASS:
                     validation_results.append(result)
 
-        # Create record result
-        record_results.append(RecordValidationResult(
-            record_line=line_num,
-            entity_id=str(entity_id) if entity_id else None,
-            results=validation_results
-        ))
+        # Only create record result if there are issues
+        if validation_results:
+            record_results.append(RecordValidationResult(
+                record_line=line_num,
+                entity_id=str(entity_id) if entity_id else None,
+                results=validation_results
+            ))
 
     return record_results
 
@@ -439,7 +444,7 @@ def validate_foreign_keys_in_data(
     class_name: str,
     schema_view: SchemaView,
     fk_validator: ForeignKeyValidator
-) -> List[RecordValidationResult]:
+) -> Dict[int, RecordValidationResult]:
     """
     Validate foreign key references in the data.
 
@@ -450,9 +455,9 @@ def validate_foreign_keys_in_data(
         fk_validator: ForeignKeyValidator instance
 
     Returns:
-        List of RecordValidationResult for each record
+        Dictionary mapping line number to RecordValidationResult (only for records with issues)
     """
-    record_results = []
+    record_results = {}
 
     # Get all slots for the class
     class_slots = schema_view.class_slots(class_name)
@@ -467,6 +472,10 @@ def validate_foreign_keys_in_data(
             range_class = schema_view.get_class(slot.range)
             if range_class:
                 fk_slots[slot_name_str] = slot.range
+
+    # Early exit if no FK fields
+    if not fk_slots:
+        return record_results
 
     # Validate each record
     for line_num, record in enumerate(mapped_data, start=2):  # Line 2 is first data row (after header)
@@ -483,12 +492,13 @@ def validate_foreign_keys_in_data(
                 if result.status != ValidationStatus.PASS:
                     validation_results.append(result)
 
-        # Create record result
-        record_results.append(RecordValidationResult(
-            record_line=line_num,
-            entity_id=str(entity_id) if entity_id else None,
-            results=validation_results
-        ))
+        # Only store record result if there are issues
+        if validation_results:
+            record_results[line_num] = RecordValidationResult(
+                record_line=line_num,
+                entity_id=str(entity_id) if entity_id else None,
+                results=validation_results
+            )
 
     return record_results
 
@@ -729,13 +739,17 @@ def main():
             )
 
             # Enhanced validations
-            all_record_results = []
+            # Use a dict to merge results by line number
+            record_results_dict = {}
 
             # 1. Enum validation
             if enum_validator:
                 print(f"  🔍 Validating enums...")
                 enum_results = validate_enums_in_data(mapped_data, class_name, schema_view, enum_validator)
-                all_record_results.extend(enum_results)
+
+                # Add to dict
+                for result in enum_results:
+                    record_results_dict[result.record_line] = result
 
                 # Count enum issues
                 enum_errors = sum(1 for r in enum_results if r.error_count > 0)
@@ -751,19 +765,24 @@ def main():
                 fk_results = validate_foreign_keys_in_data(mapped_data, class_name, schema_view, fk_validator)
 
                 # Merge FK results with existing results
-                for i, fk_result in enumerate(fk_results):
-                    if i < len(all_record_results):
-                        all_record_results[i].results.extend(fk_result.results)
+                for line_num, fk_result in fk_results.items():
+                    if line_num in record_results_dict:
+                        # Extend existing result
+                        record_results_dict[line_num].results.extend(fk_result.results)
                     else:
-                        all_record_results.append(fk_result)
+                        # Add new result
+                        record_results_dict[line_num] = fk_result
 
                 # Count FK issues
-                fk_errors = sum(1 for r in fk_results if r.error_count > 0)
-                fk_warnings = sum(1 for r in fk_results if r.warning_count > 0)
+                fk_errors = sum(1 for r in fk_results.values() if r.error_count > 0)
+                fk_warnings = sum(1 for r in fk_results.values() if r.warning_count > 0)
                 if fk_errors > 0:
                     print(f"    ⚠️  Found {fk_errors} records with FK errors")
                 if fk_warnings > 0:
                     print(f"    ⚠️  Found {fk_warnings} records with FK warnings")
+
+            # Convert dict to sorted list
+            all_record_results = [record_results_dict[line] for line in sorted(record_results_dict.keys())]
 
             # 3. Quality metrics
             if args.quality_metrics:
