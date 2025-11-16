@@ -846,7 +846,7 @@ slots:
         value: true
       type_term:
         tag: type_term
-        value: ME:0000047
+        value: ME:0000046
     description: name field for Taxon
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:taxon_name
@@ -861,7 +861,7 @@ slots:
     annotations:
       type_term:
         tag: type_term
-        value: ME:0000223
+        value: ME:0000047
     description: ncbi_taxid field for Taxon
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:taxon_ncbi_taxid
@@ -894,7 +894,7 @@ slots:
         value: true
       type_term:
         tag: type_term
-        value: ME:0000222
+        value: ME:0000221
     description: name field for OTU
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:otu_name
@@ -2577,8 +2577,8 @@ classes:
     - dubseq_library_n_fragments
     class_uri: enigma:DubSeqLibrary
 metamodel_version: 1.7.0
-source_file: linkml-coral.yaml
-source_file_date: '2025-10-01T20:23:22'
+source_file: linkml_coral.yaml
+source_file_date: '2025-11-16T02:55:06'
 source_file_size: 34315
-generation_date: '2025-10-01T20:23:31'
+generation_date: '2025-11-16T02:55:17'
 
