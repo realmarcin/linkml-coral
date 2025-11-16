@@ -6,6 +6,18 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 LinkML schema repository for CORAL, implementing the ENIGMA Common Data Model using the LinkML (Linked Data Modeling Language) framework. This project converts CORAL typedef JSON definitions into semantic LinkML schemas with enhanced validation and ontology integration.
 
+## Initial Setup
+
+**First-time setup requires initializing the CORAL submodule:**
+```bash
+git clone https://github.com/realmarcin/linkml-coral
+cd linkml-coral
+git submodule update --init --recursive
+uv sync
+```
+
+The CORAL repository is included as a git submodule at `CORAL/` containing the source `typedef.json` file.
+
 ## Essential Commands
 
 **Development workflow:**
@@ -31,7 +43,10 @@ Never use `pip` directly - this project uses `uv` for dependency management.
 
 **Core schema files (edit these):**
 - `src/linkml_coral/schema/linkml_coral.yaml` - **PRIMARY SCHEMA - THE source of truth for all schema modifications**
-- `data/typedef.json` - Original CORAL typedef JSON source (reference only)
+
+**Source data from CORAL submodule:**
+- `CORAL/back_end/python/var/typedef.json` - Original CORAL typedef JSON (from git submodule)
+- `data/typedef.json` - Convenience copy of typedef.json (reference only, sync from submodule when needed)
 - `data/coral_enigma_schema.yaml` - CORAL ENIGMA schema in YAML format (derived from typedef.json, reference only)
 
 **Generated files (do not edit):**
@@ -264,6 +279,10 @@ python linkml_to_cdm.py src/linkml_coral/schema/linkml_coral.yaml --check-only
 ## Common Development Tasks
 
 ```bash
+# Update CORAL submodule and sync typedef.json:
+git submodule update --remote CORAL                # Pull latest CORAL changes
+cp CORAL/back_end/python/var/typedef.json data/    # Sync typedef.json to data/
+
 # After modifying schema:
 just gen-project    # Regenerate all derived files
 just test          # Verify changes don't break anything

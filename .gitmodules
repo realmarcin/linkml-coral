@@ -1,0 +1,3 @@
+[submodule "CORAL"]
+	path = CORAL
+	url = https://github.com/jmchandonia/CORAL
