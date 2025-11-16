@@ -1,0 +1,1862 @@
+enums:
+  ExperimentalContextEnum:
+    description: Context describing experimental design.
+    annotations:
+      microtype:
+        tag: microtype
+        value: ME:0000002
+      microtype_data_type:
+        tag: microtype_data_type
+        value: oterm_ref
+    permissible_values:
+      series_type:
+        title: Series Type
+        description: Context describing the purpose of a series.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000003
+      condition:
+        title: Condition
+        description: A human-readable description of an experimental condition.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000006
+      method:
+        title: Method
+        description: A description of one or more methods used in an experiment.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000007
+      algorithm_parameter:
+        title: Algorithm Parameter
+        description: A description of one or more algorithm parameters.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000008
+      date:
+        title: Date
+        description: A date, formatted as YYYY-MM-DD.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000009
+      time:
+        title: Time
+        description: A time, formatted as HH:MM (see DateTime to include the date).
+        annotations:
+          term:
+            tag: term
+            value: ME:0000010
+      comment:
+        title: Comment
+        description: A human-readable comment.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000011
+      instrument:
+        title: Instrument
+        description: A description of instrument(s) used.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000012
+      category:
+        title: Category
+        description: A human-readable description of a category.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000013
+      homogenized:
+        title: Homogenized
+        description: Homogenized.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000014
+      anaerobic:
+        title: Anaerobic
+        description: Anaerobic.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000015
+      aerobic:
+        title: Aerobic
+        description: Aerobic.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000016
+      undisturbed:
+        title: Undisturbed
+        description: Undisturbed.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000017
+      datetime:
+        title: DateTime
+        description: DateTime.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000180
+      time_zone:
+        title: Time Zone
+        description: Time Zone, e.g., PDT
+        annotations:
+          term:
+            tag: term
+            value: ME:0000201
+      description:
+        title: Description
+        description: Description.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000202
+      link:
+        title: Link
+        description: Link to other data, e.g., a DOI or URL.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000203
+      experimental_process:
+        title: Experimental Process
+        description: Category of experimental process used to create a dataset.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000204
+      person:
+        title: Person
+        description: Name of a person.  Note that ENIGMA people should be listed as 'ENIGMA personnel' instead.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000205
+      campaign:
+        title: Campaign
+        description: Campaign.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000206
+      input:
+        title: Input
+        description: Input.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000207
+      output:
+        title: Output
+        description: Output.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000208
+      control:
+        title: Control
+        description: Control.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000283
+      replicate:
+        title: Replicate
+        description: Replicate.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000286
+      subsample:
+        title: Subsample
+        description: Subsample.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000289
+      protocol:
+        title: Protocol
+        description: Protocol.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000327
+      availability:
+        title: Availability
+        description: Boolean property indicating whether something is available.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000333
+      ionization_mode:
+        title: Ionization Mode
+        description: Ionization mode used in a mass spec experiment.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000385
+      usability:
+        title: Usability
+        description: Usability.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000388
+      barcode:
+        title: Barcode
+        description: Barcode.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000394
+      microplate_name:
+        title: Microplate Name
+        description: Microplate Name.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000409
+      microplate_well_name:
+        title: Microplate Well Name
+        description: Microplate Well Name.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000410
+      microplate:
+        title: Microplate
+        description: Microplate.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000411
+      publication:
+        title: Publication
+        description: Publication.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000432
+      database:
+        title: Database
+        description: Database.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000435
+      obsolete:
+        title: Obsolete
+        description: Obsolete.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000436
+      index:
+        title: Index
+        description: Index.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000468
+      internal_standard:
+        title: Internal Standard
+        description: Internal Standard.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000469
+  SeriesTypeEnum:
+    description: Context describing the purpose of a series.
+    annotations:
+      microtype:
+        tag: microtype
+        value: ME:0000003
+      microtype_data_type:
+        tag: microtype_data_type
+        value: oterm_ref
+    permissible_values:
+      time_series:
+        title: Time Series
+        description: A time series, in which a series of measurements was taken at different timepoints.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000004
+      replicate_series:
+        title: Replicate Series
+        description: A replicate series, e.g., biological or technical replicates.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000005
+  MathematicalContextEnum:
+    description: Microtypes that provide mathematical context.
+    annotations:
+      microtype:
+        tag: microtype
+        value: ME:0000018
+      microtype_data_type:
+        tag: microtype_data_type
+        value: oterm_ref
+    permissible_values:
+      normalized:
+        title: Normalized
+        description: Normalized; describe how in the Method or Protocol.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000019
+      relative:
+        title: Relative
+        description: Human-readable context saying what another microtype is measured relative to.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000020
+      increase:
+        title: Increase
+        description: Increase.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000021
+      decrease:
+        title: Decrease
+        description: Decrease.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000022
+      gain:
+        title: Gain
+        description: Gain.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000023
+      loss:
+        title: Loss
+        description: Loss.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000024
+      nearest:
+        title: Nearest
+        description: Nearest.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000025
+      variable_name:
+        title: Variable Name
+        description: Variable Name.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000290
+      variable_type:
+        title: Variable Type
+        description: Variable Type.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000291
+      dimension:
+        title: Dimension
+        description: Dimension.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000292
+      high:
+        title: High
+        description: High.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000375
+      low:
+        title: Low
+        description: Low.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000376
+      numerator:
+        title: Numerator
+        description: Numerator.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000401
+      denominator:
+        title: Denominator
+        description: Denominator.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000402
+      cumulative:
+        title: Cumulative
+        description: Cumulative.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000477
+  ChemicalContextEnum:
+    description: Describes the context of a molecule in a chemical reaction or experiment.
+    annotations:
+      microtype:
+        tag: microtype
+        value: ME:0000026
+      microtype_data_type:
+        tag: microtype_data_type
+        value: oterm_ref
+    permissible_values:
+      molecule:
+        title: Molecule
+        description: Use when the type of molecule varies along a dimension.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000027
+      reaction:
+        title: Reaction
+        description: Human-readable description of a chemical reaction.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000028
+      surface_type:
+        title: Surface Type
+        description: Human-readable description of a type of surface.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000029
+      bead_type:
+        title: Bead Type
+        description: Human-readable description of the type of bead used in a (geo)chemical experiment.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000030
+      bead_size:
+        title: Bead Size
+        description: Size of a bead used in a (geo)chemical experiment.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000031
+      thermodynamic_context:
+        title: Thermodynamic Context
+        description: Thermodynamic context for a reaction.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000032
+      specific_activity:
+        title: Specific Activity
+        description: Rate of reaction multiplied by the volume, divided by mass of protein.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000035
+      wavelength:
+        title: Wavelength
+        description: Wavelength of radiation.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000036
+      physiochemical_state:
+        title: Physiochemical State
+        description: Human-readable context for the state or type of matter, e.g., dissolved, or in soil
+        annotations:
+          term:
+            tag: term
+            value: ME:0000037
+      detection_limit:
+        title: Detection Limit
+        description: Detection limit for an instrument or experiment.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000038
+      reagent:
+        title: Reagent
+        description: Reagent.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000183
+      organic:
+        title: Organic
+        description: Use as context, for example, to label inorganic or organic carbon.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000346
+      molecular_weight:
+        title: Molecular Weight
+        description: Molecular Weight.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000350
+      reference_compound:
+        title: Reference Compound
+        description: Reference Compound.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000389
+      isotope:
+        title: Isotope
+        description: Isotope.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000408
+      redox:
+        title: Redox
+        description: Redox.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000437
+      exact_mass:
+        title: Exact Mass
+        description: Exact Mass.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000470
+  BiologicalContextEnum:
+    description: Biological Context.
+    annotations:
+      microtype:
+        tag: microtype
+        value: ME:0000039
+      microtype_data_type:
+        tag: microtype_data_type
+        value: oterm_ref
+    permissible_values:
+      cell:
+        title: Cell
+        description: Cell.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000040
+      colony:
+        title: Colony
+        description: Colony.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000041
+      strain:
+        title: Strain
+        description: Strain of microbe, or isolate ID.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000042
+      taxon:
+        title: Taxon
+        description: Taxon.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000045
+      media:
+        title: Media
+        description: Media type.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000048
+      metabolite:
+        title: Metabolite
+        description: Metabolite.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000053
+      enzyme_substrate:
+        title: Enzyme Substrate
+        description: Enzyme Substrate.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000054
+      gene:
+        title: Gene
+        description: Gene.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000059
+      protein:
+        title: Protein
+        description: Protein.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000066
+      protein_annotation:
+        title: Protein Annotation
+        description: Protein Annotation.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000067
+      operon:
+        title: Operon
+        description: Operon.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000076
+      ribosome:
+        title: Ribosome
+        description: Ribosome.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000077
+      growth_parameter:
+        title: Growth Parameter
+        description: Growth Parameter.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000078
+      gene_regulation:
+        title: Gene Regulation
+        description: Gene Regulation.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000083
+      taxonomic_level:
+        title: Taxonomic Level
+        description: Taxonomic Level.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000090
+      strain_change:
+        title: Strain Change
+        description: Strain Change.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000091
+      knockout:
+        title: Knockout
+        description: Knockout.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000097
+      environment:
+        title: Environment
+        description: Environment.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000098
+      ecology:
+        title: Ecology
+        description: Ecology.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000104
+      sequencing:
+        title: Sequencing
+        description: Sequencing.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000111
+      asv:
+        title: ASV
+        description: Amplicon Sequence Variant.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000184
+      esv:
+        title: ESV
+        description: ESV.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000185
+      community:
+        title: Community
+        description: Community.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000231
+      genome:
+        title: Genome
+        description: Genome.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000245
+      gene_annotation:
+        title: Gene Annotation
+        description: Gene Annotation.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000250
+      knockout_library:
+        title: Knockout Library
+        description: Knockout Library.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000260
+      assembly:
+        title: Assembly
+        description: Assembly.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000279
+      bin:
+        title: Bin
+        description: Bin (metagenomic).
+        annotations:
+          term:
+            tag: term
+            value: ME:0000329
+      overexpression_library:
+        title: Overexpression Library
+        description: Overexpression Library.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000395
+      growth_stage:
+        title: Growth Stage
+        description: Growth Stage.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000416
+      otu:
+        title: OTU
+        description: OTU.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000479
+  TaxonomicLevelEnum:
+    description: Taxonomic Level.
+    annotations:
+      microtype:
+        tag: microtype
+        value: ME:0000090
+      microtype_data_type:
+        tag: microtype_data_type
+        value: oterm_ref
+    permissible_values:
+      kingdom:
+        title: Kingdom
+        description: Kingdom.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000251
+      phylum:
+        title: Phylum
+        description: Phylum.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000252
+      class:
+        title: Class
+        description: Class.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000253
+      order:
+        title: Order
+        description: Order.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000254
+      family:
+        title: Family
+        description: Family.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000255
+      genus:
+        title: Genus
+        description: Genus.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000256
+      species:
+        title: Species
+        description: Species.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000257
+      taxonomic_domain:
+        title: Taxonomic Domain
+        description: Taxonomic Domain.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000351
+  StrainChangeEffectEnum:
+    description: Strain Change Effect.
+    annotations:
+      microtype:
+        tag: microtype
+        value: ME:0000092
+      microtype_data_type:
+        tag: microtype_data_type
+        value: oterm_ref
+    permissible_values:
+      synonymous:
+        title: Synonymous
+        description: Synonymous.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000093
+      non_synonymous:
+        title: Non-Synonymous
+        description: Non-Synonymous.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000094
+      frameshift:
+        title: Frameshift
+        description: Frameshift.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000095
+      stop:
+        title: Stop
+        description: Stop.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000096
+  CommunityAssemblyProcessEnum:
+    description: Community Assembly Process.
+    annotations:
+      microtype:
+        tag: microtype
+        value: ME:0000105
+      microtype_data_type:
+        tag: microtype_data_type
+        value: oterm_ref
+    permissible_values:
+      variable_selection:
+        title: Variable Selection
+        description: Variable Selection.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000106
+      homogenous_selection:
+        title: Homogenous Selection
+        description: Homogenous Selection.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000107
+      dispersal_limitation:
+        title: Dispersal Limitation
+        description: Dispersal Limitation.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000108
+      homogenizing_dispersal:
+        title: Homogenizing Dispersal
+        description: Homogenizing Dispersal.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000109
+      undominated:
+        title: Undominated
+        description: Undominated.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000110
+  ReadTypeEnum:
+    description: Read Type.
+    annotations:
+      microtype:
+        tag: microtype
+        value: ME:0000112
+      microtype_data_type:
+        tag: microtype_data_type
+        value: oterm_ref
+    permissible_values:
+      paired_end_read:
+        title: Paired End Read
+        description: Paired End Read.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000113
+      single_end_read:
+        title: Single End Read
+        description: Single End Read.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000114
+  SequencingTechnologyEnum:
+    description: Sequencing Technology.
+    annotations:
+      microtype:
+        tag: microtype
+        value: ME:0000116
+      microtype_data_type:
+        tag: microtype_data_type
+        value: oterm_ref
+    permissible_values:
+      illumina:
+        title: Illumina
+        description: Illumina.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000117
+      pacbio:
+        title: Pacbio
+        description: Pacbio.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000118
+      oxford_nanopore:
+        title: Oxford Nanopore
+        description: Oxford Nanopore.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000474
+  MeasurementEnum:
+    description: Measurement.
+    annotations:
+      microtype:
+        tag: microtype
+        value: ME:0000120
+      microtype_data_type:
+        tag: microtype_data_type
+        value: oterm_ref
+    permissible_values:
+      ph:
+        title: pH
+        description: pH.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000121
+      time_elapsed:
+        title: Time Elapsed
+        description: Time Elapsed.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000122
+      temperature:
+        title: Temperature
+        description: Temperature.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000123
+      conductivity:
+        title: Conductivity
+        description: Conductivity.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000124
+      redox_potential:
+        title: Redox Potential
+        description: Redox Potential.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000125
+      count:
+        title: Count
+        description: Count.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000126
+      optical_density:
+        title: Optical Density
+        description: Optical Density.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000127
+      size:
+        title: Size
+        description: Size.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000128
+      concentration:
+        title: Concentration
+        description: Concentration.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000129
+      hybridization_intensity:
+        title: Hybridization Intensity
+        description: Hybridization Intensity.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000130
+      expression_level:
+        title: Expression Level
+        description: Expression Level.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000131
+      enzyme_activity:
+        title: Enzyme Activity
+        description: Enzyme Activity.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000132
+      absorbance:
+        title: Absorbance
+        description: Absorbance.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000133
+      heat:
+        title: Heat
+        description: Heat.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000134
+      mass:
+        title: Mass
+        description: Mass.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000135
+      fitness_score:
+        title: Fitness Score
+        description: Fitness Score.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000137
+      genetic_interaction_score:
+        title: Genetic Interaction Score
+        description: Genetic Interaction Score.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000138
+      stoichiometric_ratio:
+        title: Stoichiometric Ratio
+        description: Stoichiometric Ratio.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000139
+      relative_abundance:
+        title: Relative Abundance
+        description: Relative amounts of multiple categories of the same object.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000140
+      binary:
+        title: Binary
+        description: Binary.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000141
+      pressure:
+        title: Pressure
+        description: Pressure.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000181
+      turbidity:
+        title: Turbidity
+        description: Turbidity.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000182
+      rate:
+        title: Rate
+        description: Rate.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000264
+      sequence:
+        title: Sequence
+        description: Sequence.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000282
+      salinity:
+        title: Salinity
+        description: Salinity.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000302
+      resistivity:
+        title: Resistivity
+        description: Resistivity.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000303
+      saturation:
+        title: Saturation
+        description: Saturation.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000304
+      density:
+        title: Density
+        description: Density.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000305
+      charge:
+        title: Charge
+        description: Charge.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000313
+      wind_speed:
+        title: Wind Speed
+        description: Wind Speed.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000316
+      solar_radiation:
+        title: Solar Radiation
+        description: Solar Radiation.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000318
+      rainfall:
+        title: Rainfall
+        description: Rainfall.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000319
+      wind_direction:
+        title: Wind Direction
+        description: Wind Direction.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000320
+      relative_humidity:
+        title: Relative Humidity
+        description: Relative Humidity.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000321
+      error_range:
+        title: Error Range
+        description: Error Range.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000371
+      ion_intensity:
+        title: Ion Intensity
+        description: Ion Intensity.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000390
+      amount:
+        title: Amount
+        description: 'Absolute amount of a substance, such as an element.  See also: concentration.'
+        annotations:
+          term:
+            tag: term
+            value: ME:0000391
+      isotope_ratio:
+        title: Isotope Ratio
+        description: Isotope Ratio.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000403
+      sequence_identity:
+        title: Sequence Identity
+        description: Sequence Identity.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000429
+      sequence_similarity:
+        title: Sequence Similarity
+        description: Sequence Similarity.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000430
+      relative_evolutionary_divergence:
+        title: Relative Evolutionary Divergence
+        description: Relative Evolutionary Divergence.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000431
+      genome_quality:
+        title: Genome Quality
+        description: Genome Quality.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000463
+      jukes_cantor_distance:
+        title: Jukes-Cantor Distance
+        description: Jukes-Cantor Distance.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000472
+      dew_point:
+        title: Dew Point
+        description: Dew Point.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000475
+      fluorescence:
+        title: Fluorescence
+        description: Fluorescence.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000478
+  StatisticEnum:
+    description: Statistic.
+    annotations:
+      microtype:
+        tag: microtype
+        value: ME:0000146
+      microtype_data_type:
+        tag: microtype_data_type
+        value: oterm_ref
+    permissible_values:
+      average:
+        title: Average
+        description: Average.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000147
+      difference:
+        title: Difference
+        description: Difference.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000148
+      standard_deviation:
+        title: Standard Deviation
+        description: Standard Deviation.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000149
+      standard_error:
+        title: Standard Error
+        description: Standard Error.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000150
+      minimum:
+        title: Minimum
+        description: Minimum.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000151
+      maximum:
+        title: Maximum
+        description: Maximum.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000152
+      median:
+        title: Median
+        description: Median.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000153
+      ratio:
+        title: Ratio
+        description: Ratio.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000154
+      log_ratio:
+        title: Log Ratio
+        description: Log Ratio.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000155
+      p_value:
+        title: p Value
+        description: p Value.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000156
+      t_score:
+        title: T Score
+        description: T Score.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000157
+      frequency:
+        title: Frequency
+        description: Frequency.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000158
+      fold_enrichment:
+        title: Fold Enrichment
+        description: Fold Enrichment.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000159
+      confidence:
+        title: Confidence
+        description: Confidence.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000160
+      evaluation:
+        title: Evaluation
+        description: Evaluation.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000161
+      correlation:
+        title: Correlation
+        description: Correlation.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000168
+      multivariate_analysis:
+        title: Multivariate Analysis
+        description: Multivariate Analysis.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000173
+      coefficient_of_variation:
+        title: Coefficient of Variation
+        description: Coefficient of Variation.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000358
+  StrandEnum:
+    description: Strand of DNA
+    annotations:
+      microtype:
+        tag: microtype
+        value: ME:0000186
+      microtype_data_type:
+        tag: microtype_data_type
+        value: oterm_ref
+    permissible_values:
+      forward:
+        title: Forward
+        description: Forward.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000187
+      reverse_complement:
+        title: Reverse Complement
+        description: Reverse Complement.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000188
+  SequenceTypeEnum:
+    description: Sequence Type.
+    annotations:
+      microtype:
+        tag: microtype
+        value: ME:0000189
+      microtype_data_type:
+        tag: microtype_data_type
+        value: oterm_ref
+    permissible_values:
+      16s_sequence:
+        title: 16S Sequence
+        description: 16S Sequence.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000190
+      18s_sequence:
+        title: 18S Sequence
+        description: 18S Sequence.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000191
+      its_sequence:
+        title: ITS Sequence
+        description: ITS Sequence.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000192
+      genome_sequence:
+        title: Genome Sequence
+        description: Genome Sequence.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000195
+  StrainChangeTypeEnum:
+    description: Strain Change Type.
+    annotations:
+      microtype:
+        tag: microtype
+        value: ME:0000227
+      microtype_data_type:
+        tag: microtype_data_type
+        value: oterm_ref
+    permissible_values:
+      insertion:
+        title: Insertion
+        description: Insertion.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000196
+      deletion:
+        title: Deletion
+        description: Deletion.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000197
+      substitution:
+        title: Substitution
+        description: Substitution.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000198
+  CommunityTypeEnum:
+    description: Community Type.
+    annotations:
+      microtype:
+        tag: microtype
+        value: ME:0000234
+      microtype_data_type:
+        tag: microtype_data_type
+        value: oterm_ref
+    permissible_values:
+      isolate_community:
+        title: Isolate Community
+        description: Isolate Community.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000235
+      enrichment:
+        title: Enrichment
+        description: Enrichment.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000236
+      assemblage:
+        title: Assemblage
+        description: Assemblage.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000238
+      environmental_community:
+        title: Environmental Community
+        description: Environmental Community.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000326
+  ControlEnum:
+    description: Control.
+    annotations:
+      microtype:
+        tag: microtype
+        value: ME:0000283
+      microtype_data_type:
+        tag: microtype_data_type
+        value: oterm_ref
+    permissible_values:
+      negative_control:
+        title: Negative Control
+        description: Negative Control.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000284
+      positive_control:
+        title: Positive Control
+        description: Positive Control.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000285
+      low_control:
+        title: Low Control
+        description: Low Control.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000480
+      high_control:
+        title: High Control
+        description: High Control.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000481
+      control_name:
+        title: Control Name
+        description: Control Name.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000482
+  PositionEnum:
+    description: Position.
+    annotations:
+      microtype:
+        tag: microtype
+        value: ME:0000339
+      microtype_data_type:
+        tag: microtype_data_type
+        value: oterm_ref
+    permissible_values:
+      top:
+        title: Top
+        description: Use as context for locations, e.g., the top end of a depth measurement.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000311
+      bottom:
+        title: Bottom
+        description: Use as context for locations, e.g., the bottom end of a depth measurement.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000312
+      upper:
+        title: Upper
+        description: Upper.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000340
+      lower:
+        title: Lower
+        description: Lower.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000341
+      middle:
+        title: Middle
+        description: Middle.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000342
+  IonizationModeEnum:
+    description: Ionization mode used in a mass spec experiment.
+    annotations:
+      microtype:
+        tag: microtype
+        value: ME:0000385
+      microtype_data_type:
+        tag: microtype_data_type
+        value: oterm_ref
+    permissible_values:
+      positive_polarity:
+        title: Positive Polarity
+        description: Positive Polarity (ionization mode for MS experiment).
+        annotations:
+          term:
+            tag: term
+            value: ME:0000386
+      negative_polarity:
+        title: Negative Polarity
+        description: Negative Polarity (ionization mode for MS experiment).
+        annotations:
+          term:
+            tag: term
+            value: ME:0000387
+  GeologicZoneEnum:
+    description: Geologic Zone.
+    annotations:
+      microtype:
+        tag: microtype
+        value: ME:0000404
+      microtype_data_type:
+        tag: microtype_data_type
+        value: oterm_ref
+    permissible_values:
+      vadose_zone:
+        title: Vadose Zone
+        description: Vadose Zone.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000405
+      variably_saturated_zone:
+        title: Variably Saturated Zone
+        description: Variably Saturated Zone.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000406
+      saturated_zone:
+        title: Saturated Zone
+        description: Saturated Zone.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000407
+  GrowthStageEnum:
+    description: Growth Stage.
+    annotations:
+      microtype:
+        tag: microtype
+        value: ME:0000416
+      microtype_data_type:
+        tag: microtype_data_type
+        value: oterm_ref
+    permissible_values:
+      enrichment_growth:
+        title: Enrichment Growth
+        description: Preincubation or enrichment of a microbial sample before plating for colony picking/isolation.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000417
+      inoculation:
+        title: Inoculation
+        description: Inoculation.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000418
+      lag_phase:
+        title: Lag Phase
+        description: Lag Phase.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000419
+      exponential_phase:
+        title: Exponential Phase
+        description: Exponential Phase.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000420
+      stationary_phase:
+        title: Stationary Phase
+        description: Stationary Phase.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000421
+      colony_formation_on_solid_media:
+        title: Colony Formation on Solid Media
+        description: Colony formation on solid media, during the process of microbial isolation
+        annotations:
+          term:
+            tag: term
+            value: ME:0000484
+      single_colony_growth_in_liquid_media:
+        title: Single Colony Growth in Liquid Media
+        description: Single colony growth in liquid media, after microbial isolation
+        annotations:
+          term:
+            tag: term
+            value: ME:0000485
+  FlagellarArrangementEnum:
+    description: Flagellar Arrangement.
+    annotations:
+      microtype:
+        tag: microtype
+        value: ME:0000447
+      microtype_data_type:
+        tag: microtype_data_type
+        value: oterm_ref
+    permissible_values:
+      monotrichous:
+        title: Monotrichous
+        description: A single flagellum extending from one end of the cell.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000448
+      amphitrichous:
+        title: Amphitrichous
+        description: Single or multiple flagella extending from both ends of the cell.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000449
+      lophotrichous:
+        title: Lophotrichous
+        description: Tuft of flagella extending from one end or both ends of the cell.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000450
+      peritrichous:
+        title: Peritrichous
+        description: Multiple flagella distributed over the entire cell.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000451
+  CellShapeEnum:
+    description: Cell Shape.
+    annotations:
+      microtype:
+        tag: microtype
+        value: ME:0000455
+      microtype_data_type:
+        tag: microtype_data_type
+        value: oterm_ref
+    permissible_values:
+      rod:
+        title: Rod
+        description: Rod.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000456
+      rod_vibrio:
+        title: Rod-vibrio
+        description: Rod-vibrio.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000457
+      oval:
+        title: Oval
+        description: Oval.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000458
+      irregular_oval:
+        title: Irregular Oval
+        description: Irregular Oval.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000459
+      spherical:
+        title: Spherical
+        description: Spherical.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000460
+      pleomorphic:
+        title: Pleomorphic
+        description: Pleomorphic.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000461

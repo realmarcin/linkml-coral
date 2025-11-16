@@ -71,7 +71,12 @@ Never use `pip` directly - this project uses `uv` for dependency management.
 - `analyze_schema.py`, `visualize_schema.py`, `visualize_relationships.py` - Production schema analysis tools
 - `load_tsv_to_store.py`, `enigma_query.py`, `query_provenance_tracker.py` - Database and query tools
 - `linkml_to_cdm.py` - CDM table naming converter
+- `generate_enums_from_obo.py` - Auto-generate LinkML enums from OBO microtypes
+- `update_schema_with_microtypes.py` - Update schema with semantic types and enums
 - `test_*.py`, `debug_*.py`, `fix_*.py` - Exploratory/debug scripts (not part of test suite)
+
+**Utility modules (src/linkml_coral/utils/):**
+- `obo_parser.py` - OBO file parser for extracting microtypes and ontology terms
 
 ## Architecture Overview
 
@@ -88,6 +93,52 @@ This is a LinkML project that:
 - Enhances validation with patterns, constraints, and type checking
 - Maps CORAL scalar types: "text"→string, "int"→integer, "float"→float, "[text]"→multivalued
 - Preserves provenance workflow annotations from typedef process_types/process_inputs
+
+## OBO Microtype Integration
+
+The schema integrates semantic type definitions from CORAL's `context_measurement_ontology.obo`, which defines **298 microtypes** with the `ME:` prefix. Microtypes provide semantic meaning and validation rules for data fields.
+
+**Microtype categories:**
+- **oterm_ref**: Controlled vocabulary types (enums) - e.g., ReadType, SequencingTechnology, Strand
+- **string**: Text with patterns - e.g., Date (YYYY-MM-DD), Time (HH:MM:SS), Link (URLs)
+- **int/float**: Numeric measurements - e.g., Count, Depth, Elevation, Rate
+- **object_ref**: Foreign key references to other entities
+
+**Schema components derived from OBO:**
+
+1. **Semantic Types** (10 reusable types in `types:` section):
+   - `Date`, `Time`, `Link` - String-based with patterns
+   - `Latitude`, `Longitude` - Float with range constraints
+   - `Count`, `Size`, `Rate` - Numeric with constraints
+   - `Depth`, `Elevation` - Measurement types with units
+
+2. **Enums** (23 auto-generated from OBO in `enums:` section):
+   - `ReadTypeEnum` (Paired End, Single End)
+   - `SequencingTechnologyEnum` (Illumina, Pacbio, Nanopore)
+   - `StrandEnum` (Forward, Reverse Complement)
+   - `CommunityTypeEnum` (Isolate Community, Enrichment, Assemblage, Environmental Community)
+   - ...and 19 more covering biological, chemical, and experimental contexts
+
+3. **Microtype Annotations** (on all 105 slots):
+   - `microtype`: ME: term defining semantic meaning
+   - `microtype_data_type`: Data type category (string, int, float, oterm_ref, object_ref)
+   - `type_term`: Original ME: term from typedef.json
+
+**Regenerating enums from OBO:**
+```bash
+# Auto-generate enum definitions from OBO file
+uv run python generate_enums_from_obo.py --obo CORAL/example/enigma/ontologies/context_measurement_ontology.obo --output generated_enums.yaml
+
+# Update schema with new enums and types
+uv run python update_schema_with_microtypes.py --dry-run  # Preview changes
+uv run python update_schema_with_microtypes.py            # Apply changes
+```
+
+**OBO Parser Utility** (`src/linkml_coral/utils/obo_parser.py`):
+- Parses OBO format ontology files
+- Extracts microtypes and their properties (data_type, valid_units, etc.)
+- Builds term hierarchies and relationships
+- Used by enum generator and schema update scripts
 
 ## Testing Strategy
 
