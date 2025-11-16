@@ -90,7 +90,7 @@ linkml_meta = LinkMLMeta({'default_prefix': 'enigma',
                              'prefix_reference': 'https://w3id.org/enigma/'},
                   'linkml': {'prefix_prefix': 'linkml',
                              'prefix_reference': 'https://w3id.org/linkml/'}},
-     'source_file': 'src/linkml-coral/schema/linkml-coral.yaml',
+     'source_file': 'src/linkml_coral/schema/linkml_coral.yaml',
      'title': 'ENIGMA Common Data Model'} )
 
 
@@ -320,11 +320,11 @@ class Taxon(ConfiguredBaseModel):
          'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000268'}},
          'domain_of': ['Taxon']} })
     taxon_name: str = Field(default=..., description="""name field for Taxon""", json_schema_extra = { "linkml_meta": {'alias': 'taxon_name',
-         'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000047'},
+         'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000046'},
                          'unique': {'tag': 'unique', 'value': True}},
          'domain_of': ['Taxon']} })
     taxon_ncbi_taxid: Optional[str] = Field(default=None, description="""ncbi_taxid field for Taxon""", json_schema_extra = { "linkml_meta": {'alias': 'taxon_ncbi_taxid',
-         'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000223'}},
+         'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000047'}},
          'domain_of': ['Taxon']} })
 
 
@@ -343,7 +343,7 @@ class OTU(ConfiguredBaseModel):
          'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000269'}},
          'domain_of': ['OTU']} })
     otu_name: str = Field(default=..., description="""name field for OTU""", json_schema_extra = { "linkml_meta": {'alias': 'otu_name',
-         'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000222'},
+         'annotations': {'type_term': {'tag': 'type_term', 'value': 'ME:0000221'},
                          'unique': {'tag': 'unique', 'value': True}},
          'domain_of': ['OTU']} })
 

@@ -209,8 +209,8 @@ class TypedefToLinkMLConverter:
 def main():
     """Main conversion function."""
     converter = TypedefToLinkMLConverter(
-        input_file="data/typedef.json",
-        output_file="data/enigma_cdm_schema.yaml"
+        input_file="CORAL/back_end/python/var/typedef.json",
+        output_file="data/coral_enigma_schema.yaml"
     )
     converter.convert()
 

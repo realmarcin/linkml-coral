@@ -13,7 +13,7 @@ This repo uses `uv` for managing dependencies. Never use commands like `pip` to 
 
 Layout:
 
- * `src/linkml-coral/schema/linkml-coral.yaml` - LinkML source schema (edit this)
+ * `src/linkml_coral/schema/linkml_coral.yaml` - LinkML source schema (edit this)
  * `project` - derived files (do not edit these directly, they are derived from the LinkML)
  * `src/docs` - source markdown for documentation
  * `docs` - derived docs - do not edit these directly
@@ -45,7 +45,7 @@ Best practice:
 
 Layout:
 
- * `src/linkml-coral/` - Code goes here
+ * `src/linkml_coral/` - Code goes here
  * `docs` - mkdocs docs
  * `mkdocs.yml` - index of docs
  * `tests/input` - example files
