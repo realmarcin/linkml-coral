@@ -30,9 +30,9 @@ Never use `pip` directly - this project uses `uv` for dependency management.
 ## Repository Structure
 
 **Core schema files (edit these):**
-- `src/linkml_coral/schema/linkml_coral.yaml` - Main ENIGMA Common Data Model schema (primary schema)
-- `data/typedef.json` - Original CORAL typedef JSON source
-- `data/coral_enigma_schema.yaml` - CORAL ENIGMA schema in YAML format (derived from typedef.json)
+- `src/linkml_coral/schema/linkml_coral.yaml` - **PRIMARY SCHEMA - THE source of truth for all schema modifications**
+- `data/typedef.json` - Original CORAL typedef JSON source (reference only)
+- `data/coral_enigma_schema.yaml` - CORAL ENIGMA schema in YAML format (derived from typedef.json, reference only)
 
 **Generated files (do not edit):**
 - `src/linkml_coral/datamodel/` - Python dataclasses and Pydantic models
@@ -41,8 +41,9 @@ Never use `pip` directly - this project uses `uv` for dependency management.
 - `examples/` - Generated examples
 
 **Test data:**
-- `tests/data/valid/` - Valid example data (format: `ClassName-{name}.yaml`)
-- `tests/data/invalid/` - Invalid examples for negative testing
+- `tests/` - Unit tests directory (pytest-based tests in `tests/test_*.py`)
+- `tests/data/valid/` - Valid example data files (naming: `ClassName-{name}.yaml`, e.g., `Sample-001.yaml`)
+- `tests/data/invalid/` - Invalid examples for negative testing (used to verify validation catches errors)
 
 **TSV validation tools:**
 - `validate_tsv_linkml.py` - Main TSV validation script using linkml-validate
@@ -50,6 +51,12 @@ Never use `pip` directly - this project uses `uv` for dependency management.
 - `validate_large_files.sh` - Validation for large TSV files with timeout handling
 - `validate_all.sh` - Comprehensive validation of all TSV files
 - Target data: `/Users/marcin/Documents/KBase/CDM/ENIGMA/ENIGMA_ASV_export/*.tsv`
+
+**Utility scripts (root directory):**
+- `analyze_schema.py`, `visualize_schema.py`, `visualize_relationships.py` - Production schema analysis tools
+- `load_tsv_to_store.py`, `enigma_query.py`, `query_provenance_tracker.py` - Database and query tools
+- `linkml_to_cdm.py` - CDM table naming converter
+- `test_*.py`, `debug_*.py`, `fix_*.py` - Exploratory/debug scripts (not part of test suite)
 
 ## Architecture Overview
 
