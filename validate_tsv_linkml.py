@@ -577,7 +577,7 @@ def export_results_csv(
                             record_result.entity_id,
                             record_result.record_line,
                             validation_result.status.value,
-                            validation_result.field,
+                            validation_result.field_name,
                             validation_result.value,
                             validation_result.message
                         ])
