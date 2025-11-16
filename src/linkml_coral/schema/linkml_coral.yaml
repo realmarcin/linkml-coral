@@ -747,14 +747,14 @@ slots:
         value: true
       type_term:
         tag: type_term
-        value: ME:0000047
+        value: ME:0000046
   taxon_ncbi_taxid:
     description: ncbi_taxid field for Taxon
     range: string
     annotations:
       type_term:
         tag: type_term
-        value: ME:0000223
+        value: ME:0000047
   otu_id:
     description: id field for OTU
     range: string
@@ -774,7 +774,7 @@ slots:
         value: true
       type_term:
         tag: type_term
-        value: ME:0000222
+        value: ME:0000221
   condition_id:
     description: id field for Condition
     range: string

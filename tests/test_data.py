@@ -15,7 +15,7 @@ VALID_EXAMPLE_FILES = glob.glob(os.path.join(DATA_DIR_VALID, '*.yaml'))
 INVALID_EXAMPLE_FILES = glob.glob(os.path.join(DATA_DIR_INVALID, '*.yaml'))
 
 # Import the datamodel module using importlib.util.spec_from_file_location
-datamodel_path = Path(__file__).parent.parent / "src" / "linkml-coral" / "datamodel" / "linkml-coral.py"
+datamodel_path = Path(__file__).parent.parent / "src" / "linkml_coral" / "datamodel" / "linkml_coral.py"
 spec = importlib.util.spec_from_file_location("datamodel", datamodel_path)
 datamodel = importlib.util.module_from_spec(spec)
 sys.modules["datamodel"] = datamodel

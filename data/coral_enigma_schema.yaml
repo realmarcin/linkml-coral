@@ -1,0 +1,1354 @@
+id: https://w3id.org/enigma/enigma-cdm
+name: enigma-cdm
+title: ENIGMA Common Data Model
+description: LinkML schema for ENIGMA (Environmental Molecular Sciences Laboratory Integrated Genomics Initiative) Common
+  Data Model
+version: 1.0.0
+license: MIT
+prefixes:
+  linkml: https://w3id.org/linkml/
+  enigma: https://w3id.org/enigma/
+  DA: http://purl.obolibrary.org/obo/DA_
+  ME: http://purl.obolibrary.org/obo/ME_
+  ENVO: http://purl.obolibrary.org/obo/ENVO_
+  UO: http://purl.obolibrary.org/obo/UO_
+  PROCESS: http://purl.obolibrary.org/obo/PROCESS_
+  ENIGMA_TERM: http://purl.obolibrary.org/obo/ENIGMA_
+  CONTINENT: http://purl.obolibrary.org/obo/CONTINENT_
+  COUNTRY: http://purl.obolibrary.org/obo/COUNTRY_
+  MIxS: http://purl.obolibrary.org/obo/MIxS_
+default_prefix: enigma
+imports:
+- linkml:types
+classes:
+  Process:
+    description: Process entity in the ENIGMA data model
+    annotations:
+      term:
+        tag: term
+        value: DA:0000061
+      used_for_provenance:
+        tag: used_for_provenance
+        value: true
+    slots:
+    - process_id
+    - process_process
+    - process_person
+    - process_campaign
+    - process_protocol
+    - process_date_start
+    - process_date_end
+    - process_input_objects
+    - process_output_objects
+  Location:
+    description: Location entity in the ENIGMA data model
+    annotations:
+      term:
+        tag: term
+        value: DA:0000041
+      used_for_provenance:
+        tag: used_for_provenance
+        value: true
+      process_types:
+        tag: process_types
+        value:
+        - PROCESS:0000028
+      process_inputs:
+        tag: process_inputs
+        value:
+        - - ENIGMA
+    slots:
+    - location_id
+    - location_name
+    - location_latitude
+    - location_longitude
+    - location_continent
+    - location_country
+    - location_region
+    - location_biome
+    - location_feature
+  Sample:
+    description: Sample entity in the ENIGMA data model
+    annotations:
+      term:
+        tag: term
+        value: DA:0000042
+      used_for_provenance:
+        tag: used_for_provenance
+        value: true
+      process_types:
+        tag: process_types
+        value:
+        - PROCESS:0000002
+      process_inputs:
+        tag: process_inputs
+        value:
+        - - Location
+    slots:
+    - sample_id
+    - sample_name
+    - sample_location
+    - sample_depth
+    - sample_elevation
+    - sample_date
+    - sample_time
+    - sample_timezone
+    - sample_material
+    - sample_env_package
+    - sample_description
+  Taxon:
+    description: Taxon entity in the ENIGMA data model
+    annotations:
+      term:
+        tag: term
+        value: DA:0000037
+      process_types:
+        tag: process_types
+        value:
+        - PROCESS:0000029
+      process_inputs:
+        tag: process_inputs
+        value:
+        - - ENIGMA
+    slots:
+    - taxon_id
+    - taxon_name
+    - taxon_ncbi_taxid
+  OTU:
+    description: OTU entity in the ENIGMA data model
+    annotations:
+      term:
+        tag: term
+        value: DA:0000063
+      process_types:
+        tag: process_types
+        value:
+        - PROCESS:0000031
+      process_inputs:
+        tag: process_inputs
+        value:
+        - - Reads
+    slots:
+    - otu_id
+    - otu_name
+  Condition:
+    description: Condition entity in the ENIGMA data model
+    annotations:
+      term:
+        tag: term
+        value: DA:0000045
+      process_types:
+        tag: process_types
+        value:
+        - PROCESS:0000032
+      process_inputs:
+        tag: process_inputs
+        value:
+        - - ENIGMA
+    slots:
+    - condition_id
+    - condition_name
+  Strain:
+    description: Strain entity in the ENIGMA data model
+    annotations:
+      term:
+        tag: term
+        value: DA:0000062
+      used_for_provenance:
+        tag: used_for_provenance
+        value: true
+      process_types:
+        tag: process_types
+        value:
+        - PROCESS:0000015
+        - PROCESS:0000030
+      process_inputs:
+        tag: process_inputs
+        value:
+        - - Sample
+        - - Strain
+    slots:
+    - strain_id
+    - strain_name
+    - strain_description
+    - strain_genome
+    - strain_derived_from
+    - strain_genes_changed
+  Community:
+    description: Community entity in the ENIGMA data model
+    annotations:
+      term:
+        tag: term
+        value: DA:0000048
+      used_for_provenance:
+        tag: used_for_provenance
+        value: true
+      process_types:
+        tag: process_types
+        value:
+        - PROCESS:0000015
+        - PROCESS:0000016
+        - PROCESS:0000011
+      process_inputs:
+        tag: process_inputs
+        value:
+        - - Sample
+        - - Community
+    slots:
+    - community_id
+    - community_name
+    - community_community_type
+    - community_sample
+    - community_parent_community
+    - community_condition
+    - community_defined_strains
+    - community_description
+  Reads:
+    description: Reads entity in the ENIGMA data model
+    annotations:
+      term:
+        tag: term
+        value: DA:0000054
+      used_for_provenance:
+        tag: used_for_provenance
+        value: true
+      process_types:
+        tag: process_types
+        value:
+        - PROCESS:0000017
+      process_inputs:
+        tag: process_inputs
+        value:
+        - - Sample
+        - - Community
+    slots:
+    - reads_id
+    - reads_name
+    - reads_read_count
+    - reads_read_type
+    - reads_sequencing_technology
+    - reads_link
+  Assembly:
+    description: Assembly entity in the ENIGMA data model
+    annotations:
+      term:
+        tag: term
+        value: DA:0000066
+      used_for_provenance:
+        tag: used_for_provenance
+        value: true
+      process_types:
+        tag: process_types
+        value:
+        - PROCESS:0000023
+        - PROCESS:0000024
+      process_inputs:
+        tag: process_inputs
+        value:
+        - - Reads
+        - - Reads
+    slots:
+    - assembly_id
+    - assembly_name
+    - assembly_strain
+    - assembly_n_contigs
+    - assembly_link
+  Genome:
+    description: Genome entity in the ENIGMA data model
+    annotations:
+      term:
+        tag: term
+        value: DA:0000039
+      used_for_provenance:
+        tag: used_for_provenance
+        value: true
+      process_types:
+        tag: process_types
+        value:
+        - PROCESS:0000034
+        - PROCESS:0000045
+      process_inputs:
+        tag: process_inputs
+        value:
+        - - Assembly
+        - - Bin
+    slots:
+    - genome_id
+    - genome_name
+    - genome_strain
+    - genome_n_contigs
+    - genome_n_features
+    - genome_link
+  Gene:
+    description: Gene entity in the ENIGMA data model
+    annotations:
+      term:
+        tag: term
+        value: DA:0000040
+      process_types:
+        tag: process_types
+        value:
+        - PROCESS:0000034
+      process_inputs:
+        tag: process_inputs
+        value:
+        - - Assembly
+    slots:
+    - gene_id
+    - gene_gene_id
+    - gene_genome
+    - gene_aliases
+    - gene_contig_number
+    - gene_strand
+    - gene_start
+    - gene_stop
+    - gene_function
+  Bin:
+    description: Bin entity in the ENIGMA data model
+    annotations:
+      term:
+        tag: term
+        value: DA:0000072
+      used_for_provenance:
+        tag: used_for_provenance
+        value: true
+      process_types:
+        tag: process_types
+        value:
+        - PROCESS:0000039
+      process_inputs:
+        tag: process_inputs
+        value:
+        - - Assembly
+    slots:
+    - bin_id
+    - bin_name
+    - bin_assembly
+    - bin_contigs
+  Protocol:
+    description: Protocol entity in the ENIGMA data model
+    annotations:
+      term:
+        tag: term
+        value: DA:0000073
+      used_for_provenance:
+        tag: used_for_provenance
+        value: true
+      process_types:
+        tag: process_types
+        value:
+        - PROCESS:0000044
+      process_inputs:
+        tag: process_inputs
+        value:
+        - - ENIGMA
+    slots:
+    - protocol_id
+    - protocol_name
+    - protocol_description
+    - protocol_link
+  Image:
+    description: Image entity in the ENIGMA data model
+    annotations:
+      term:
+        tag: term
+        value: DA:0000074
+      used_for_provenance:
+        tag: used_for_provenance
+        value: true
+      process_types:
+        tag: process_types
+        value:
+        - PROCESS:0000044
+      process_inputs:
+        tag: process_inputs
+        value:
+        - - ENIGMA
+    slots:
+    - image_id
+    - image_name
+    - image_description
+    - image_MIME type
+    - image_size
+    - image_dimensions
+    - image_link
+  TnSeq_Library:
+    description: TnSeq_Library entity in the ENIGMA data model
+    annotations:
+      term:
+        tag: term
+        value: DA:0000060
+      used_for_provenance:
+        tag: used_for_provenance
+        value: true
+      process_types:
+        tag: process_types
+        value:
+        - PROCESS:0000027
+      process_inputs:
+        tag: process_inputs
+        value:
+        - - Genome
+    slots:
+    - tnseq_library_id
+    - tnseq_library_name
+    - tnseq_library_genome
+    - tnseq_library_primers_model
+    - tnseq_library_n_mapped_reads
+    - tnseq_library_n_barcodes
+    - tnseq_library_n_usable_barcodes
+    - tnseq_library_n_insertion_locations
+    - tnseq_library_hit_rate_essential
+    - tnseq_library_hit_rate_other
+  DubSeq_Library:
+    description: DubSeq_Library entity in the ENIGMA data model
+    annotations:
+      term:
+        tag: term
+        value: DA:0000075
+      used_for_provenance:
+        tag: used_for_provenance
+        value: true
+      process_types:
+        tag: process_types
+        value:
+        - PROCESS:0000049
+      process_inputs:
+        tag: process_inputs
+        value:
+        - - Genome
+    slots:
+    - dubseq_library_id
+    - dubseq_library_name
+    - dubseq_library_genome
+    - dubseq_library_n_fragments
+slots:
+  process_id:
+    description: id field for Process
+    range: string
+    required: true
+    identifier: true
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000277
+  process_process:
+    description: process field for Process
+    range: string
+    required: true
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000204
+  process_person:
+    description: person field for Process
+    range: string
+    required: true
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000205
+  process_campaign:
+    description: campaign field for Process
+    range: string
+    required: true
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000206
+  process_protocol:
+    description: protocol field for Process
+    range: Protocol
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000328
+  process_date_start:
+    description: date_start field for Process
+    range: string
+    pattern: \d\d\d\d(-\d\d(-\d\d)?)?
+    comments:
+    - YYYY[-MM[-DD]]
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000009
+  process_date_end:
+    description: date_end field for Process
+    range: string
+    pattern: \d\d\d\d(-\d\d(-\d\d)?)?
+    comments:
+    - YYYY[-MM[-DD]]
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000009
+  process_input_objects:
+    description: input_objects field for Process
+    range: string
+    required: true
+    multivalued: true
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000207
+  process_output_objects:
+    description: output_objects field for Process
+    range: string
+    required: true
+    multivalued: true
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000208
+  location_id:
+    description: id field for Location
+    range: string
+    required: true
+    identifier: true
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000266
+  location_name:
+    description: name field for Location
+    range: string
+    required: true
+    key: true
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000228
+  location_latitude:
+    description: latitude field for Location
+    range: float
+    required: true
+    annotations:
+      units:
+        tag: units
+        value: UO:0000185
+      type_term:
+        tag: type_term
+        value: ME:0000211
+  location_longitude:
+    description: longitude field for Location
+    range: float
+    required: true
+    annotations:
+      units:
+        tag: units
+        value: UO:0000185
+      type_term:
+        tag: type_term
+        value: ME:0000212
+  location_continent:
+    description: continent field for Location
+    range: string
+    required: true
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000213
+  location_country:
+    description: country field for Location
+    range: string
+    required: true
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000214
+  location_region:
+    description: region field for Location
+    range: string
+    required: true
+    comments:
+    - specific local region name(s)
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000215
+  location_biome:
+    description: biome field for Location
+    range: string
+    required: true
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000216
+  location_feature:
+    description: feature field for Location
+    range: string
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000217
+  sample_id:
+    description: id field for Sample
+    range: string
+    required: true
+    identifier: true
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000267
+  sample_name:
+    description: name field for Sample
+    range: string
+    required: true
+    key: true
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000102
+  sample_location:
+    description: location field for Sample
+    range: Location
+    required: true
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000228
+  sample_depth:
+    description: depth field for Sample
+    range: float
+    annotations:
+      units:
+        tag: units
+        value: UO:0000008
+      type_term:
+        tag: type_term
+        value: ME:0000219
+    comments:
+    - in meters below ground level
+  sample_elevation:
+    description: elevation field for Sample
+    range: float
+    annotations:
+      units:
+        tag: units
+        value: UO:0000008
+      type_term:
+        tag: type_term
+        value: ME:0000220
+    comments:
+    - in meters above ground level
+  sample_date:
+    description: date field for Sample
+    range: string
+    required: true
+    pattern: \d\d\d\d(-\d\d(-\d\d)?)?
+    comments:
+    - YYYY[-MM[-DD]]
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000009
+  sample_time:
+    description: time field for Sample
+    range: string
+    pattern: \d(\d)?(:\d\d(:\d\d)?)?\s*([apAP][mM])?
+    comments:
+    - HH[:MM[:SS]] [AM|PM]
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000010
+  sample_timezone:
+    description: timezone field for Sample
+    range: string
+    comments:
+    - ISO8601 compliant format, ie. UTC-7
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000201
+  sample_material:
+    description: material field for Sample
+    range: string
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000230
+  sample_env_package:
+    description: env_package field for Sample
+    range: string
+    required: true
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000229
+  sample_description:
+    description: description field for Sample
+    range: string
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000202
+  taxon_id:
+    description: id field for Taxon
+    range: string
+    required: true
+    identifier: true
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000268
+  taxon_name:
+    description: name field for Taxon
+    range: string
+    required: true
+    key: true
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000046
+  taxon_ncbi_taxid:
+    description: ncbi_taxid field for Taxon
+    range: string
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000047
+  otu_id:
+    description: id field for OTU
+    range: string
+    required: true
+    identifier: true
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000269
+  otu_name:
+    description: name field for OTU
+    range: string
+    required: true
+    key: true
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000221
+  condition_id:
+    description: id field for Condition
+    range: string
+    required: true
+    identifier: true
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000270
+  condition_name:
+    description: name field for Condition
+    range: string
+    required: true
+    key: true
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000200
+  strain_id:
+    description: id field for Strain
+    range: string
+    required: true
+    identifier: true
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000271
+  strain_name:
+    description: name field for Strain
+    range: string
+    required: true
+    key: true
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000044
+  strain_description:
+    description: description field for Strain
+    range: string
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000202
+  strain_genome:
+    description: genome field for Strain
+    range: Genome
+    comments:
+    - genome object for sequenced, WT strains
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000246
+  strain_derived_from:
+    description: derived_from field for Strain
+    range: Strain
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000044
+  strain_genes_changed:
+    description: genes_changed field for Strain
+    range: Gene
+    multivalued: true
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000091
+  community_id:
+    description: id field for Community
+    range: string
+    required: true
+    identifier: true
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000272
+  community_name:
+    description: name field for Community
+    range: string
+    required: true
+    key: true
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000233
+  community_community_type:
+    description: community_type field for Community
+    range: string
+    required: true
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000234
+  community_sample:
+    description: sample field for Community
+    range: Sample
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000102
+  community_parent_community:
+    description: parent_community field for Community
+    range: Community
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000233
+  community_condition:
+    description: condition field for Community
+    range: Condition
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000200
+  community_defined_strains:
+    description: defined_strains field for Community
+    range: Strain
+    multivalued: true
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000044
+  community_description:
+    description: description field for Community
+    range: string
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000202
+  reads_id:
+    description: id field for Reads
+    range: string
+    required: true
+    identifier: true
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000273
+  reads_name:
+    description: name field for Reads
+    range: string
+    required: true
+    key: true
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000248
+  reads_read_count:
+    description: read_count field for Reads
+    range: integer
+    required: true
+    annotations:
+      units:
+        tag: units
+        value: UO:0000189
+      type_term:
+        tag: type_term
+        value: ME:0000126
+  reads_read_type:
+    description: read_type field for Reads
+    range: string
+    required: true
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000112
+  reads_sequencing_technology:
+    description: sequencing_technology field for Reads
+    range: string
+    required: true
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000116
+  reads_link:
+    description: link field for Reads
+    range: string
+    required: true
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000203
+  assembly_id:
+    description: id field for Assembly
+    range: string
+    required: true
+    identifier: true
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000281
+  assembly_name:
+    description: name field for Assembly
+    range: string
+    required: true
+    key: true
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000280
+  assembly_strain:
+    description: strain field for Assembly
+    range: Strain
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000044
+  assembly_n_contigs:
+    description: n_contigs field for Assembly
+    range: integer
+    required: true
+    annotations:
+      units:
+        tag: units
+        value: UO:0000189
+      type_term:
+        tag: type_term
+        value: ME:0000126
+  assembly_link:
+    description: link field for Assembly
+    range: string
+    required: true
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000203
+  genome_id:
+    description: id field for Genome
+    range: string
+    required: true
+    identifier: true
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000274
+  genome_name:
+    description: name field for Genome
+    range: string
+    required: true
+    key: true
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000246
+  genome_strain:
+    description: strain field for Genome
+    range: Strain
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000044
+  genome_n_contigs:
+    description: n_contigs field for Genome
+    range: integer
+    required: true
+    annotations:
+      units:
+        tag: units
+        value: UO:0000189
+      type_term:
+        tag: type_term
+        value: ME:0000126
+  genome_n_features:
+    description: n_features field for Genome
+    range: integer
+    required: true
+    annotations:
+      units:
+        tag: units
+        value: UO:0000189
+      type_term:
+        tag: type_term
+        value: ME:0000126
+  genome_link:
+    description: link field for Genome
+    range: string
+    required: true
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000203
+  gene_id:
+    description: id field for Gene
+    range: string
+    required: true
+    identifier: true
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000275
+  gene_gene_id:
+    description: gene_id field for Gene
+    range: string
+    required: true
+    key: true
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000224
+  gene_genome:
+    description: genome field for Gene
+    range: Genome
+    required: true
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000246
+  gene_aliases:
+    description: aliases field for Gene
+    range: string
+    multivalued: true
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000060
+  gene_contig_number:
+    description: contig_number field for Gene
+    range: integer
+    required: true
+    annotations:
+      units:
+        tag: units
+        value: UO:0000189
+      type_term:
+        tag: type_term
+        value: ME:0000126
+    comments:
+    - indexed starting at 1, as in KBase
+  gene_strand:
+    description: strand field for Gene
+    range: string
+    required: true
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000186
+  gene_start:
+    description: start field for Gene
+    range: integer
+    required: true
+    annotations:
+      units:
+        tag: units
+        value: UO:0000244
+      type_term:
+        tag: type_term
+        value: ME:0000242
+    comments:
+    - indexed starting at 1, as in KBase
+  gene_stop:
+    description: stop field for Gene
+    range: integer
+    required: true
+    annotations:
+      units:
+        tag: units
+        value: UO:0000244
+      type_term:
+        tag: type_term
+        value: ME:0000243
+  gene_function:
+    description: function field for Gene
+    range: string
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000250
+  bin_id:
+    description: id field for Bin
+    range: string
+    required: true
+    identifier: true
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000331
+  bin_name:
+    description: name field for Bin
+    range: string
+    required: true
+    key: true
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000330
+  bin_assembly:
+    description: assembly field for Bin
+    range: Assembly
+    required: true
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000280
+  bin_contigs:
+    description: contigs field for Bin
+    range: string
+    required: true
+    multivalued: true
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000240
+  protocol_id:
+    description: id field for Protocol
+    range: string
+    required: true
+    identifier: true
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000332
+  protocol_name:
+    description: name field for Protocol
+    range: string
+    required: true
+    key: true
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000328
+  protocol_description:
+    description: description field for Protocol
+    range: string
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000202
+  protocol_link:
+    description: link field for Protocol
+    range: string
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000203
+  image_id:
+    description: id field for Image
+    range: string
+    required: true
+    identifier: true
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000356
+  image_name:
+    description: name field for Image
+    range: string
+    required: true
+    key: true
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000355
+  image_description:
+    description: description field for Image
+    range: string
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000202
+  image_MIME type:
+    description: MIME type field for Image
+    range: string
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000357
+  image_size:
+    description: size field for Image
+    range: integer
+    annotations:
+      units:
+        tag: units
+        value: UO:0000233
+      type_term:
+        tag: type_term
+        value: ME:0000128
+  image_dimensions:
+    description: dimensions field for Image
+    range: string
+    annotations:
+      units:
+        tag: units
+        value: UO:0000236
+      type_term:
+        tag: type_term
+        value: ME:0000292
+  image_link:
+    description: link field for Image
+    range: string
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000203
+  tnseq_library_id:
+    description: id field for TnSeq_Library
+    range: string
+    required: true
+    identifier: true
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000276
+  tnseq_library_name:
+    description: name field for TnSeq_Library
+    range: string
+    required: true
+    key: true
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000262
+  tnseq_library_genome:
+    description: genome field for TnSeq_Library
+    range: Genome
+    required: true
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000246
+  tnseq_library_primers_model:
+    description: primers_model field for TnSeq_Library
+    range: string
+    required: true
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000263
+  tnseq_library_n_mapped_reads:
+    description: n_mapped_reads field for TnSeq_Library
+    range: integer
+    annotations:
+      units:
+        tag: units
+        value: UO:0000189
+      type_term:
+        tag: type_term
+        value: ME:0000126
+  tnseq_library_n_barcodes:
+    description: n_barcodes field for TnSeq_Library
+    range: integer
+    annotations:
+      units:
+        tag: units
+        value: UO:0000189
+      type_term:
+        tag: type_term
+        value: ME:0000126
+  tnseq_library_n_usable_barcodes:
+    description: n_usable_barcodes field for TnSeq_Library
+    range: integer
+    annotations:
+      units:
+        tag: units
+        value: UO:0000189
+      type_term:
+        tag: type_term
+        value: ME:0000126
+  tnseq_library_n_insertion_locations:
+    description: n_insertion_locations field for TnSeq_Library
+    range: integer
+    annotations:
+      units:
+        tag: units
+        value: UO:0000189
+      type_term:
+        tag: type_term
+        value: ME:0000126
+  tnseq_library_hit_rate_essential:
+    description: hit_rate_essential field for TnSeq_Library
+    range: float
+    annotations:
+      units:
+        tag: units
+        value: UO:0000190
+      type_term:
+        tag: type_term
+        value: ME:0000264
+  tnseq_library_hit_rate_other:
+    description: hit_rate_other field for TnSeq_Library
+    range: float
+    annotations:
+      units:
+        tag: units
+        value: UO:0000190
+      type_term:
+        tag: type_term
+        value: ME:0000264
+  dubseq_library_id:
+    description: id field for DubSeq_Library
+    range: string
+    required: true
+    identifier: true
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000276
+  dubseq_library_name:
+    description: name field for DubSeq_Library
+    range: string
+    required: true
+    key: true
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000262
+  dubseq_library_genome:
+    description: genome field for DubSeq_Library
+    range: Genome
+    required: true
+    annotations:
+      type_term:
+        tag: type_term
+        value: ME:0000246
+  dubseq_library_n_fragments:
+    description: n_fragments field for DubSeq_Library
+    range: integer
+    annotations:
+      units:
+        tag: units
+        value: UO:0000189
+      type_term:
+        tag: type_term
+        value: ME:0000126
+types: {}
+enums: {}

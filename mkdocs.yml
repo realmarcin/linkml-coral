@@ -22,7 +22,7 @@ plugins:
   #       - gen_pages.py  # or any other name or path
 
 watch:
-  - src/linkml-coral/schema
+  - src/linkml_coral/schema
 
 nav:
   - Home: index.md

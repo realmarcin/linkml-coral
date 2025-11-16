@@ -1,8 +1,8 @@
 generators:
   python:
-    target_directory: src/linkml-coral/datamodel
+    target_directory: src/linkml_coral/datamodel
   pydantic:
-    target_directory: src/linkml-coral/datamodel
-    filename: linkml-coral_pydantic.py
+    target_directory: src/linkml_coral/datamodel
+    filename: linkml_coral_pydantic.py
   docs:
     target_directory: docs/elements

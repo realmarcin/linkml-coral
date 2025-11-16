@@ -3,7 +3,7 @@ requires = ["hatchling", "uv-dynamic-versioning"]
 build-backend = "hatchling.build"
 
 [project]
-name = "linkml-coral"
+name = "linkml_coral"
 description = "linkml schema for CORAL"
 authors = [
   {name = "marcin joachimiak", email = "marcinjoachimiak@gmail.com"},
@@ -21,6 +21,9 @@ dependencies = [
 [dependency-groups]
 dev = [
     "linkml>=1.9.3",
+    "linkml-store>=0.2.0",
+    "numpy>=1.24.0",
+    "pandas>=2.0.0",
     "mkdocs-material>=8.2.8",
     "mkdocs-mermaid2-plugin>=1.1.1",
     "jupyter>=1.0.0",
@@ -31,7 +34,7 @@ dev = [
 # explicitly include files other than default into the build distributions.
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/linkml-coral"]
+packages = ["src/linkml_coral"]
 
 [tool.hatch.version]
 source = "uv-dynamic-versioning"
@@ -53,8 +56,8 @@ skip = [
   "pyproject.toml",
   "uv.lock",
   "project/*",
-  "src/linkml-coral/datamodel/linkml-coral_pydantic.py",
-  "src/linkml-coral/datamodel/linkml-coral.py",
+  "src/linkml_coral/datamodel/linkml_coral_pydantic.py",
+  "src/linkml_coral/datamodel/linkml_coral.py",
 ]
 
 # Reminder: words have to be lowercased for the ignore-words-list
@@ -70,6 +73,6 @@ extend-exclude = [
   "uv.lock",
   "pyproject.toml",
   "project/*",
-  "src/linkml-coral/datamodel/linkml-coral_pydantic.py",
-  "src/linkml-coral/datamodel/linkml-coral.py",
+  "src/linkml_coral/datamodel/linkml_coral_pydantic.py",
+  "src/linkml_coral/datamodel/linkml_coral.py",
 ]
