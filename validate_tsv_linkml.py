@@ -8,6 +8,7 @@ vocabularies, foreign keys, and all schema constraints.
 """
 
 import argparse
+import ast
 import csv
 import json
 import subprocess
@@ -164,7 +165,6 @@ def map_tsv_to_schema_fields(data: List[Dict[str, Any]], class_name: str, schema
             # Handle multivalued fields (convert string lists to actual lists)
             if value and isinstance(value, str) and value.startswith('[') and value.endswith(']'):
                 try:
-                    import ast
                     value = ast.literal_eval(value)
                 except (ValueError, SyntaxError):
                     # If parsing fails, treat as single item list
