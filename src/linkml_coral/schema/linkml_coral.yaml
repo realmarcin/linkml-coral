@@ -3668,6 +3668,10 @@ enums:
           term:
             tag: term
             value: ME:0000187
+      "+":
+        title: Forward (symbol notation)
+        description: Forward strand using + symbol notation.
+        meaning: ME:0000187
       reverse_complement:
         title: Reverse Complement
         description: Reverse Complement.
@@ -3675,6 +3679,10 @@ enums:
           term:
             tag: term
             value: ME:0000188
+      "-":
+        title: Reverse Complement (symbol notation)
+        description: Reverse complement strand using - symbol notation.
+        meaning: ME:0000188
   SequenceTypeEnum:
     description: Sequence Type.
     annotations:
