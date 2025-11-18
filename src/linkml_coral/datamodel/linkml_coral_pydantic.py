@@ -148,10 +148,12 @@ linkml_meta = LinkMLMeta({'default_prefix': 'enigma',
                                                       'value': 'ME:0000203'},
                                         'microtype_data_type': {'tag': 'microtype_data_type',
                                                                 'value': 'string'}},
-                        'description': 'HTTP/HTTPS URL',
+                        'comments': ['Pattern relaxed to allow file paths in '
+                                     'addition to HTTP URLs to match real data'],
+                        'description': 'HTTP/HTTPS URL or file path',
                         'from_schema': 'https://w3id.org/enigma/enigma-cdm',
                         'name': 'Link',
-                        'pattern': 'http.*',
+                        'pattern': '^(http.*|/.*)$',
                         'typeof': 'string'},
                'Longitude': {'annotations': {'microtype': {'tag': 'microtype',
                                                            'value': 'ME:0000212'},
@@ -1027,9 +1029,17 @@ class StrandEnum(str, Enum):
     """
     Forward.
     """
+    Forward_LEFT_PARENTHESISsymbol_notationRIGHT_PARENTHESIS = "+"
+    """
+    Forward strand using + symbol notation.
+    """
     Reverse_Complement = "reverse_complement"
     """
     Reverse Complement.
+    """
+    Reverse_Complement_LEFT_PARENTHESISsymbol_notationRIGHT_PARENTHESIS = "-"
+    """
+    Reverse complement strand using - symbol notation.
     """
 
 
@@ -1084,6 +1094,10 @@ class CommunityTypeEnum(str, Enum):
     Enrichment = "enrichment"
     """
     Enrichment.
+    """
+    Active_Fraction = "active_fraction"
+    """
+    Active Fraction.
     """
     Assemblage = "assemblage"
     """
@@ -1708,13 +1722,17 @@ class Community(ConfiguredBaseModel):
                                                  'value': 'object_ref'},
                          'type_term': {'tag': 'type_term', 'value': 'ME:0000200'}},
          'domain_of': ['Community']} })
-    community_defined_strains: Optional[list[str]] = Field(default=None, description="""defined_strains field for Community""", json_schema_extra = { "linkml_meta": {'alias': 'community_defined_strains',
+    community_defined_strains: Optional[str] = Field(default=None, description="""defined_strains field for Community""", json_schema_extra = { "linkml_meta": {'alias': 'community_defined_strains',
          'annotations': {'foreign_key': {'tag': 'foreign_key', 'value': 'Strain.name'},
                          'microtype': {'tag': 'microtype', 'value': 'ME:0000044'},
                          'microtype_data_type': {'tag': 'microtype_data_type',
                                                  'value': 'object_ref'},
                          'type_term': {'tag': 'type_term', 'value': 'ME:0000044'}},
-         'comments': ['typedef.json has typo with FK pointing to [Strain.Name] with '
+         'comments': ['typedef.json specifies array ([text]), but actual data contains '
+                      'single values only',
+                      "{'Changed to multivalued': 'false to match data reality (0% "
+                      "have multiple strains)'}",
+                      'typedef.json has typo with FK pointing to [Strain.Name] with '
                       'capital N',
                       'Using lowercase name to match actual Strain field'],
          'domain_of': ['Community']} })
@@ -1820,11 +1838,13 @@ class Assembly(ConfiguredBaseModel):
                          'type_term': {'tag': 'type_term', 'value': 'ME:0000126'},
                          'units_term': {'tag': 'units_term', 'value': 'UO:0000189'}},
          'domain_of': ['Assembly']} })
-    assembly_link: str = Field(default=..., description="""link field for Assembly""", json_schema_extra = { "linkml_meta": {'alias': 'assembly_link',
+    assembly_link: Optional[str] = Field(default=None, description="""link field for Assembly""", json_schema_extra = { "linkml_meta": {'alias': 'assembly_link',
          'annotations': {'microtype': {'tag': 'microtype', 'value': 'ME:0000203'},
                          'microtype_data_type': {'tag': 'microtype_data_type',
                                                  'value': 'string'},
                          'type_term': {'tag': 'type_term', 'value': 'ME:0000203'}},
+         'comments': ['Made optional because many Assembly records have empty or file '
+                      'path values instead of HTTP URLs'],
          'domain_of': ['Assembly']} })
 
 
@@ -1957,19 +1977,6 @@ class Gene(ConfiguredBaseModel):
          'annotations': {'microtype': {'tag': 'microtype', 'value': 'ME:0000250'},
                          'type_term': {'tag': 'type_term', 'value': 'ME:0000250'}},
          'domain_of': ['Gene']} })
-
-    @field_validator('gene_strand')
-    def pattern_gene_strand(cls, v):
-        pattern=re.compile(r"[+-]")
-        if isinstance(v, list):
-            for element in v:
-                if isinstance(element, str) and not pattern.match(element):
-                    err_msg = f"Invalid gene_strand format: {element}"
-                    raise ValueError(err_msg)
-        elif isinstance(v, str) and not pattern.match(v):
-            err_msg = f"Invalid gene_strand format: {v}"
-            raise ValueError(err_msg)
-        return v
 
 
 class Bin(ConfiguredBaseModel):

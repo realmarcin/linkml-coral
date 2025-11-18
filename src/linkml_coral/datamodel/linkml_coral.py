@@ -1,5 +1,5 @@
 # Auto generated from linkml_coral.yaml by pythongen.py version: 0.0.1
-# Generation date: 2025-11-15T19:00:31
+# Generation date: 2025-11-17T23:27:20
 # Schema: enigma-cdm
 #
 # id: https://w3id.org/enigma/enigma-cdm
@@ -95,7 +95,7 @@ class Time(String):
 
 
 class Link(String):
-    """ HTTP/HTTPS URL """
+    """ HTTP/HTTPS URL or file path """
     type_class_uri = XSD["string"]
     type_class_curie = "xsd:string"
     type_name = "Link"
@@ -589,7 +589,7 @@ class Community(YAMLRoot):
     community_sample: Optional[Union[str, SampleSampleId]] = None
     community_parent_community: Optional[Union[str, CommunityCommunityId]] = None
     community_condition: Optional[Union[str, ConditionConditionId]] = None
-    community_defined_strains: Optional[Union[Union[str, StrainStrainId], list[Union[str, StrainStrainId]]]] = empty_list()
+    community_defined_strains: Optional[Union[str, StrainStrainId]] = None
     community_description: Optional[str] = None
 
     def __post_init__(self, *_: str, **kwargs: Any):
@@ -617,9 +617,8 @@ class Community(YAMLRoot):
         if self.community_condition is not None and not isinstance(self.community_condition, ConditionConditionId):
             self.community_condition = ConditionConditionId(self.community_condition)
 
-        if not isinstance(self.community_defined_strains, list):
-            self.community_defined_strains = [self.community_defined_strains] if self.community_defined_strains is not None else []
-        self.community_defined_strains = [v if isinstance(v, StrainStrainId) else StrainStrainId(v) for v in self.community_defined_strains]
+        if self.community_defined_strains is not None and not isinstance(self.community_defined_strains, StrainStrainId):
+            self.community_defined_strains = StrainStrainId(self.community_defined_strains)
 
         if self.community_description is not None and not isinstance(self.community_description, str):
             self.community_description = str(self.community_description)
@@ -695,8 +694,8 @@ class Assembly(YAMLRoot):
     assembly_id: Union[str, AssemblyAssemblyId] = None
     assembly_name: str = None
     assembly_n_contigs: Union[int, Count] = None
-    assembly_link: Union[str, Link] = None
     assembly_strain: Optional[Union[str, StrainStrainId]] = None
+    assembly_link: Optional[Union[str, Link]] = None
 
     def __post_init__(self, *_: str, **kwargs: Any):
         if self._is_empty(self.assembly_id):
@@ -714,13 +713,11 @@ class Assembly(YAMLRoot):
         if not isinstance(self.assembly_n_contigs, Count):
             self.assembly_n_contigs = Count(self.assembly_n_contigs)
 
-        if self._is_empty(self.assembly_link):
-            self.MissingRequiredField("assembly_link")
-        if not isinstance(self.assembly_link, Link):
-            self.assembly_link = Link(self.assembly_link)
-
         if self.assembly_strain is not None and not isinstance(self.assembly_strain, StrainStrainId):
             self.assembly_strain = StrainStrainId(self.assembly_strain)
+
+        if self.assembly_link is not None and not isinstance(self.assembly_link, Link):
+            self.assembly_link = Link(self.assembly_link)
 
         super().__post_init__(**kwargs)
 
@@ -1971,6 +1968,21 @@ class StrandEnum(EnumDefinitionImpl):
         description="Strand of DNA",
     )
 
+    @classmethod
+    def _addvals(cls):
+        setattr(cls, "+",
+            PermissibleValue(
+                text="+",
+                title="Forward (symbol notation)",
+                description="Forward strand using + symbol notation.",
+                meaning=ME["0000187"]))
+        setattr(cls, "-",
+            PermissibleValue(
+                text="-",
+                title="Reverse Complement (symbol notation)",
+                description="Reverse complement strand using - symbol notation.",
+                meaning=ME["0000188"]))
+
 class SequenceTypeEnum(EnumDefinitionImpl):
     """
     Sequence Type.
@@ -2036,6 +2048,10 @@ class CommunityTypeEnum(EnumDefinitionImpl):
         text="enrichment",
         title="Enrichment",
         description="Enrichment.")
+    active_fraction = PermissibleValue(
+        text="active_fraction",
+        title="Active Fraction",
+        description="Active Fraction.")
     assemblage = PermissibleValue(
         text="assemblage",
         title="Assemblage",
@@ -2397,7 +2413,7 @@ slots.community_condition = Slot(uri=ENIGMA.community_condition, name="community
                    model_uri=ENIGMA.community_condition, domain=None, range=Optional[Union[str, ConditionConditionId]])
 
 slots.community_defined_strains = Slot(uri=ENIGMA.community_defined_strains, name="community_defined_strains", curie=ENIGMA.curie('community_defined_strains'),
-                   model_uri=ENIGMA.community_defined_strains, domain=None, range=Optional[Union[Union[str, StrainStrainId], list[Union[str, StrainStrainId]]]])
+                   model_uri=ENIGMA.community_defined_strains, domain=None, range=Optional[Union[str, StrainStrainId]])
 
 slots.community_description = Slot(uri=ENIGMA.community_description, name="community_description", curie=ENIGMA.curie('community_description'),
                    model_uri=ENIGMA.community_description, domain=None, range=Optional[str])
@@ -2433,7 +2449,7 @@ slots.assembly_n_contigs = Slot(uri=ENIGMA.assembly_n_contigs, name="assembly_n_
                    model_uri=ENIGMA.assembly_n_contigs, domain=None, range=Union[int, Count])
 
 slots.assembly_link = Slot(uri=ENIGMA.assembly_link, name="assembly_link", curie=ENIGMA.curie('assembly_link'),
-                   model_uri=ENIGMA.assembly_link, domain=None, range=Union[str, Link])
+                   model_uri=ENIGMA.assembly_link, domain=None, range=Optional[Union[str, Link]])
 
 slots.genome_id = Slot(uri=ENIGMA.genome_id, name="genome_id", curie=ENIGMA.curie('genome_id'),
                    model_uri=ENIGMA.genome_id, domain=None, range=URIRef)
@@ -2469,8 +2485,7 @@ slots.gene_contig_number = Slot(uri=ENIGMA.gene_contig_number, name="gene_contig
                    model_uri=ENIGMA.gene_contig_number, domain=None, range=int)
 
 slots.gene_strand = Slot(uri=ENIGMA.gene_strand, name="gene_strand", curie=ENIGMA.curie('gene_strand'),
-                   model_uri=ENIGMA.gene_strand, domain=None, range=Union[str, "StrandEnum"],
-                   pattern=re.compile(r'[+-]'))
+                   model_uri=ENIGMA.gene_strand, domain=None, range=Union[str, "StrandEnum"])
 
 slots.gene_start = Slot(uri=ENIGMA.gene_start, name="gene_start", curie=ENIGMA.curie('gene_start'),
                    model_uri=ENIGMA.gene_start, domain=None, range=int)
