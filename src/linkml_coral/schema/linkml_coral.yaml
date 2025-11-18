@@ -1197,8 +1197,10 @@ slots:
   community_defined_strains:
     description: defined_strains field for Community
     range: Strain
-    multivalued: true
+    multivalued: false
     comments:
+    - typedef.json specifies array ([text]), but actual data contains single values only
+    - Changed to multivalued: false to match data reality (0% have multiple strains)
     - typedef.json has typo with FK pointing to [Strain.Name] with capital N
     - Using lowercase name to match actual Strain field
     annotations:
@@ -1386,7 +1388,9 @@ slots:
   assembly_link:
     description: link field for Assembly
     range: Link
-    required: true
+    required: false
+    comments:
+    - Made optional because many Assembly records have empty or file path values instead of HTTP URLs
     annotations:
       type_term:
         tag: type_term
@@ -2112,8 +2116,10 @@ types:
         value: string
   Link:
     typeof: string
-    pattern: http.*
-    description: HTTP/HTTPS URL
+    pattern: ^(http.*|/.*)$
+    description: HTTP/HTTPS URL or file path
+    comments:
+    - Pattern relaxed to allow file paths in addition to HTTP URLs to match real data
     annotations:
       microtype:
         tag: microtype
@@ -3776,6 +3782,13 @@ enums:
           term:
             tag: term
             value: ME:0000236
+      active_fraction:
+        title: Active Fraction
+        description: Active Fraction.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000237
       assemblage:
         title: Assemblage
         description: Assemblage.

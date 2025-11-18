@@ -101,20 +101,36 @@ def map_tsv_to_schema_fields(data: List[Dict[str, Any]], class_name: str, schema
     # Create comprehensive mapping strategy
     slot_mapping = {}
     
+    # Get the identifier slot for this class to avoid mapping conflicts
+    identifier_slot = None
+    for slot_name in slots:
+        slot_def = schema_view.get_slot(str(slot_name))
+        if slot_def and slot_def.identifier:
+            identifier_slot = str(slot_name)
+            break
+
     # 1. Direct mappings (TSV column matches schema slot exactly)
     for slot_name in slots:
         # Convert SlotDefinitionName objects to strings
         # SlotDefinitionName objects have string representation but aren't isinstance(str)
         slot_name_str = str(slot_name)
-        
+
         # Ensure we have a valid string slot name
         if slot_name_str and isinstance(slot_name_str, str):
-            slot_mapping[slot_name_str] = slot_name_str
-            
+            # SKIP direct mapping for identifier slots - these should come from 'id' column via special mappings
+            # For example, don't map TSV's 'community_id' column directly if it's the identifier
+            if slot_name_str != identifier_slot:
+                slot_mapping[slot_name_str] = slot_name_str
+
             # Also map without class prefix
             if slot_name_str.startswith(class_name.lower() + '_'):
                 tsv_field = slot_name_str.replace(class_name.lower() + '_', '', 1)
-                slot_mapping[tsv_field] = slot_name_str
+
+                # SKIP direct mapping for TSV columns that will be handled by special mappings
+                # For example, TSV has both 'id' and 'community_id' columns,
+                # but only 'id' should map to the schema's 'community_id' field
+                if tsv_field not in ['id', 'name', 'description', 'link'] and slot_name_str != identifier_slot:
+                    slot_mapping[tsv_field] = slot_name_str
     
     # 2. Special mappings for ENIGMA data format
     special_mappings = {
@@ -126,6 +142,9 @@ def map_tsv_to_schema_fields(data: List[Dict[str, Any]], class_name: str, schema
         'strain': f'{class_name.lower()}_strain',
         'n_contigs': f'{class_name.lower()}_n_contigs',
         'n_features': f'{class_name.lower()}_n_features',
+
+        # Gene-specific mappings (special case: name → gene_id, genome_id → genome)
+        **({'name': 'gene_gene_id', 'genome_id': 'gene_genome'} if class_name == 'Gene' else {}),
         
         # Sample-specific mappings
         'location': 'sample_location',
@@ -205,21 +224,47 @@ def map_tsv_to_schema_fields(data: List[Dict[str, Any]], class_name: str, schema
                     # If parsing fails, treat as single item list
                     value = [value.strip('[]')]
             
-            # Convert numeric values for proper LinkML validation
+            # Convert numeric values and enum ontology terms for proper LinkML validation
             # Check slot definition to determine expected type
             slot = schema_view.get_slot(mapped_field)
             if slot and value is not None and isinstance(value, str):
-                if slot.range == 'float':
+                # Check if range is a numeric type (or subtype)
+                range_type = schema_view.get_type(slot.range) if slot.range else None
+
+                if slot.range == 'float' or (range_type and range_type.typeof == 'float'):
                     try:
                         value = float(value)
                     except (ValueError, TypeError):
                         pass  # Keep as string for validation error
-                elif slot.range == 'integer':
+                elif slot.range == 'integer' or (range_type and range_type.typeof == 'integer'):
                     try:
                         value = int(value)
                     except (ValueError, TypeError):
                         pass  # Keep as string for validation error
-            
+                # Check if this is an enum field with ontology term format
+                elif schema_view.get_enum(slot.range):
+                    # Try to map ontology term format to enum key
+                    import re
+                    match = re.match(r'^(.+?)\s+<([A-Z_]+):(\d+)>$', value.strip())
+                    if match:
+                        label, prefix, term_id = match.groups()
+                        full_term = f"{prefix}:{term_id}"
+
+                        # Find permissible value with matching meaning/term annotation
+                        enum_def = schema_view.get_enum(slot.range)
+                        if enum_def and enum_def.permissible_values:
+                            for pv_key, pv_def in enum_def.permissible_values.items():
+                                # Check meaning field
+                                if pv_def.meaning and pv_def.meaning == full_term:
+                                    value = pv_key
+                                    break
+                                # Check annotations dict for 'term' key
+                                if pv_def.annotations and 'term' in pv_def.annotations:
+                                    ann = pv_def.annotations['term']
+                                    if ann.value == full_term:
+                                        value = pv_key
+                                        break
+
             mapped_row[mapped_field] = value
         
         mapped_data.append(mapped_row)
