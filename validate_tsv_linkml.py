@@ -188,8 +188,23 @@ def map_tsv_to_schema_fields(data: List[Dict[str, Any]], class_name: str, schema
         'parent_community': 'community_parent_community',
         'condition': 'community_condition',
         'defined_strains': 'community_defined_strains',
+
+        # Bin mappings
+        'assembly_id': 'bin_assembly',
+        'contigs': 'bin_contigs',
+
+        # Sample mappings
+        'location_id': 'sample_location',
     }
-    
+
+    # Library-specific mappings (DubSeq, TnSeq) - only add if class is a Library
+    if 'Library' in class_name:
+        special_mappings['genome_id'] = f'{class_name.lower()}_genome'
+
+    # Strain-specific mapping for genome_id
+    if class_name == 'Strain':
+        special_mappings['genome_id'] = 'strain_genome'
+
     # Update slot mapping with special mappings
     slot_mapping.update(special_mappings)
     
@@ -215,18 +230,30 @@ def map_tsv_to_schema_fields(data: List[Dict[str, Any]], class_name: str, schema
             if not isinstance(mapped_field, str):
                 continue
             
+            # Get slot definition early to check if multivalued
+            slot = schema_view.get_slot(mapped_field)
+
             # Handle multivalued fields (convert string lists to actual lists)
-            if value and isinstance(value, str) and value.startswith('[') and value.endswith(']'):
-                try:
-                    import ast
-                    value = ast.literal_eval(value)
-                except (ValueError, SyntaxError):
-                    # If parsing fails, treat as single item list
-                    value = [value.strip('[]')]
-            
+            if value and isinstance(value, str):
+                # Check if field is multivalued in schema
+                if slot and slot.multivalued:
+                    # Handle bracket notation: [item1, item2]
+                    if value.startswith('[') and value.endswith(']'):
+                        try:
+                            import ast
+                            value = ast.literal_eval(value)
+                        except (ValueError, SyntaxError):
+                            # If parsing fails, treat as single item list
+                            value = [value.strip('[]')]
+                    # Handle comma-separated values: item1, item2, item3
+                    elif ', ' in value:
+                        value = [item.strip() for item in value.split(', ')]
+                    # Single value for multivalued field - wrap in list
+                    else:
+                        value = [value]
+
             # Convert numeric values and enum ontology terms for proper LinkML validation
             # Check slot definition to determine expected type
-            slot = schema_view.get_slot(mapped_field)
             if slot and value is not None and isinstance(value, str):
                 # Check if range is a numeric type (or subtype)
                 range_type = schema_view.get_type(slot.range) if slot.range else None
