@@ -95,7 +95,7 @@ validate-report-html json_path:
 [group('model development')]
 validate-quick tsv_path:
   @echo "⚡ Quick validation: {{tsv_path}}"
-  uv run python validate_tsv_linkml.py {{tsv_path}}
+  uv run python validate_tsv_linkml.py "{{tsv_path}}"
 
 # Load ENIGMA TSV data into linkml-store database
 [group('data management')]
