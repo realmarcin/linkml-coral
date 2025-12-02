@@ -51,13 +51,13 @@ schema-stats:
 [group('model development')]
 validate-tsv tsv_path:
   @echo "🔍 Validating TSV file: {{tsv_path}}"
-  uv run python validate_tsv_linkml.py {{tsv_path}} --verbose
+  uv run python validate_tsv_linkml.py '{{tsv_path}}' --verbose
 
 # Validate TSV with enhanced enum/FK validation and quality metrics
 [group('model development')]
 validate-tsv-enhanced tsv_path tsv_dir='data/export/exported_tsvs':
   @echo "🔍 Validating with enhanced checks: {{tsv_path}}"
-  uv run python validate_tsv_linkml.py {{tsv_path}} \
+  uv run python validate_tsv_linkml.py '{{tsv_path}}' \
     --enum-validate \
     --fk-validate \
     --quality-metrics \
