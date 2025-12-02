@@ -5,8 +5,8 @@
 This document describes the relationships between entities in the ENIGMA Common Data Model.
 
 - **Total relationships**: 15
-- **One-to-one/Many-to-one**: 11
-- **Many-to-many**: 2
+- **One-to-one/Many-to-one**: 12
+- **Many-to-many**: 1
 - **Self-referential**: 2
 - **Provenance-tracked entities**: 0
 
@@ -20,6 +20,7 @@ This document describes the relationships between entities in the ENIGMA Common 
 | `Bin` | `bin_assembly` | `Assembly` | `name` | ✓ |
 | `Community` | `community_condition` | `Condition` | `name` |  |
 | `Community` | `community_sample` | `Sample` | `name` |  |
+| `Community` | `community_defined_strains` | `Strain` | `name` |  |
 | `DubSeq_Library` | `dubseq_library_genome` | `Genome` | `name` | ✓ |
 | `Gene` | `gene_genome` | `Genome` | `name` | ✓ |
 | `Genome` | `genome_strain` | `Strain` | `name` |  |
@@ -32,7 +33,6 @@ This document describes the relationships between entities in the ENIGMA Common 
 
 | Source Entity | Slot | Target Entity | Target Field | Required |
 |---------------|------|---------------|--------------|----------|
-| `Community` | `community_defined_strains` | `Strain` | `name` |  |
 | `Strain` | `strain_genes_changed` | `Gene` | `gene_id` |  |
 
 ### Self-Referential Relationships
@@ -55,7 +55,7 @@ Community
   --> Sample [community_sample]
   --> Community [community_parent_community] (self-reference)
   --> Condition [community_condition]
-  ==> Strain [community_defined_strains]
+  --> Strain [community_defined_strains]
 DubSeq_Library
   --> Genome [dubseq_library_genome]
 Gene

@@ -8,6 +8,7 @@ digraph Relationships {
     Bin -> Assembly [label="assembly", style=solid];
     Community -> Condition [label="condition", style=dashed];
     Community -> Sample [label="sample", style=dashed];
+    Community -> Strain [label="defined_strains", style=dashed];
     DubSeq_Library -> Genome [label="genome", style=solid];
     Gene -> Genome [label="genome", style=solid];
     Genome -> Strain [label="strain", style=dashed];
@@ -17,7 +18,6 @@ digraph Relationships {
     TnSeq_Library -> Genome [label="genome", style=solid];
 
     // Many-to-many relationships
-    Community -> Strain [label="defined_strains", style=dashed, color=blue, arrowhead=crow];
     Strain -> Gene [label="genes_changed", style=dashed, color=blue, arrowhead=crow];
 
     // Self-referential relationships

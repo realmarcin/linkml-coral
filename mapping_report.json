@@ -1,0 +1,392 @@
+{
+  "ASV.tsv": {
+    "class_name": "OTU",
+    "tsv_columns": [
+      "",
+      "ASV_id",
+      "OTU_name"
+    ],
+    "schema_slots": [
+      "otu_id",
+      "otu_name"
+    ],
+    "direct_mappings": {},
+    "special_mappings": {
+      "ASV_id": "otu_id",
+      "OTU_name": "otu_name"
+    },
+    "generic_prefix_mappings": {},
+    "unmapped_columns": [
+      ""
+    ],
+    "missing_required_fields": [],
+    "mapping_summary": "Applied 2 mappings: 2 special mappings",
+    "status": "success"
+  },
+  "ASV_count.tsv": {
+    "status": "no_class_mapping",
+    "message": "No corresponding class in schema"
+  },
+  "Assembly.tsv": {
+    "class_name": "Assembly",
+    "tsv_columns": [
+      "id",
+      "link",
+      "n_contigs",
+      "name",
+      "strain"
+    ],
+    "schema_slots": [
+      "assembly_id",
+      "assembly_link",
+      "assembly_n_contigs",
+      "assembly_name",
+      "assembly_strain"
+    ],
+    "direct_mappings": {
+      "strain": "assembly_strain",
+      "n_contigs": "assembly_n_contigs",
+      "link": "assembly_link"
+    },
+    "special_mappings": {
+      "id": "assembly_id",
+      "name": "assembly_name"
+    },
+    "generic_prefix_mappings": {},
+    "unmapped_columns": [],
+    "missing_required_fields": [],
+    "mapping_summary": "Applied 5 mappings: 3 direct mappings, 2 special mappings",
+    "status": "success"
+  },
+  "Community.tsv": {
+    "class_name": "Community",
+    "tsv_columns": [
+      "community_type_term_id",
+      "community_type_term_name",
+      "condition",
+      "defined_strains",
+      "description",
+      "id",
+      "name",
+      "parent_community",
+      "sample"
+    ],
+    "schema_slots": [
+      "community_community_type",
+      "community_condition",
+      "community_defined_strains",
+      "community_description",
+      "community_id",
+      "community_name",
+      "community_parent_community",
+      "community_sample"
+    ],
+    "direct_mappings": {},
+    "special_mappings": {
+      "id": "community_id",
+      "name": "community_name",
+      "community_type_term_id": "community_community_type",
+      "sample": "community_sample",
+      "parent_community": "community_parent_community",
+      "condition": "community_condition",
+      "defined_strains": "community_defined_strains",
+      "description": "community_description"
+    },
+    "generic_prefix_mappings": {},
+    "unmapped_columns": [
+      "community_type_term_name"
+    ],
+    "missing_required_fields": [],
+    "mapping_summary": "Applied 8 mappings: 8 special mappings",
+    "status": "success"
+  },
+  "Genome.tsv": {
+    "class_name": "Genome",
+    "tsv_columns": [
+      "id",
+      "link",
+      "n_contigs",
+      "n_features",
+      "name",
+      "strain"
+    ],
+    "schema_slots": [
+      "genome_id",
+      "genome_link",
+      "genome_n_contigs",
+      "genome_n_features",
+      "genome_name",
+      "genome_strain"
+    ],
+    "direct_mappings": {
+      "strain": "genome_strain",
+      "n_contigs": "genome_n_contigs",
+      "n_features": "genome_n_features",
+      "link": "genome_link"
+    },
+    "special_mappings": {
+      "id": "genome_id",
+      "name": "genome_name"
+    },
+    "generic_prefix_mappings": {},
+    "unmapped_columns": [],
+    "missing_required_fields": [],
+    "mapping_summary": "Applied 6 mappings: 4 direct mappings, 2 special mappings",
+    "status": "success"
+  },
+  "Location.tsv": {
+    "class_name": "Location",
+    "tsv_columns": [
+      "biome_term_id",
+      "biome_term_name",
+      "continent_term_id",
+      "continent_term_name",
+      "country_term_id",
+      "country_term_name",
+      "feature_term_id",
+      "feature_term_name",
+      "id",
+      "latitude",
+      "longitude",
+      "name",
+      "region"
+    ],
+    "schema_slots": [
+      "location_biome",
+      "location_continent",
+      "location_country",
+      "location_feature",
+      "location_id",
+      "location_latitude",
+      "location_longitude",
+      "location_name",
+      "location_region"
+    ],
+    "direct_mappings": {},
+    "special_mappings": {
+      "id": "location_id",
+      "name": "location_name",
+      "latitude": "location_latitude",
+      "longitude": "location_longitude",
+      "continent_term_id": "location_continent",
+      "country_term_id": "location_country",
+      "region": "location_region",
+      "biome_term_id": "location_biome",
+      "feature_term_id": "location_feature"
+    },
+    "generic_prefix_mappings": {},
+    "unmapped_columns": [
+      "biome_term_name",
+      "continent_term_name",
+      "country_term_name",
+      "feature_term_name"
+    ],
+    "missing_required_fields": [],
+    "mapping_summary": "Applied 9 mappings: 9 special mappings",
+    "status": "success"
+  },
+  "Process.tsv": {
+    "class_name": "Process",
+    "tsv_columns": [
+      "campaign_term_id",
+      "campaign_term_name",
+      "date_end",
+      "date_start",
+      "id",
+      "input_objects",
+      "output_objects",
+      "person_term_id",
+      "person_term_name",
+      "process_term_id",
+      "process_term_name",
+      "protocol"
+    ],
+    "schema_slots": [
+      "process_campaign",
+      "process_date_end",
+      "process_date_start",
+      "process_id",
+      "process_input_objects",
+      "process_output_objects",
+      "process_person",
+      "process_process",
+      "process_protocol"
+    ],
+    "direct_mappings": {
+      "date_start": "process_date_start",
+      "date_end": "process_date_end"
+    },
+    "special_mappings": {
+      "id": "process_id",
+      "process_term_id": "process_process",
+      "person_term_id": "process_person",
+      "campaign_term_id": "process_campaign",
+      "protocol": "process_protocol",
+      "input_objects": "process_input_objects",
+      "output_objects": "process_output_objects"
+    },
+    "generic_prefix_mappings": {},
+    "unmapped_columns": [
+      "campaign_term_name",
+      "person_term_name",
+      "process_term_name"
+    ],
+    "missing_required_fields": [],
+    "mapping_summary": "Applied 9 mappings: 2 direct mappings, 7 special mappings",
+    "status": "success"
+  },
+  "Protocol.tsv": {
+    "class_name": "Protocol",
+    "tsv_columns": [
+      "description",
+      "id",
+      "link",
+      "name"
+    ],
+    "schema_slots": [
+      "protocol_description",
+      "protocol_id",
+      "protocol_link",
+      "protocol_name"
+    ],
+    "direct_mappings": {
+      "link": "protocol_link"
+    },
+    "special_mappings": {
+      "id": "protocol_id",
+      "name": "protocol_name",
+      "description": "protocol_description"
+    },
+    "generic_prefix_mappings": {},
+    "unmapped_columns": [],
+    "missing_required_fields": [],
+    "mapping_summary": "Applied 4 mappings: 1 direct mappings, 3 special mappings",
+    "status": "success"
+  },
+  "Reads.tsv": {
+    "class_name": "Reads",
+    "tsv_columns": [
+      "id",
+      "link",
+      "name",
+      "read_count",
+      "read_type_term_id",
+      "read_type_term_name",
+      "sequencing_technology_term_id",
+      "sequencing_technology_term_name"
+    ],
+    "schema_slots": [
+      "reads_id",
+      "reads_link",
+      "reads_name",
+      "reads_read_count",
+      "reads_read_type",
+      "reads_sequencing_technology"
+    ],
+    "direct_mappings": {
+      "link": "reads_link"
+    },
+    "special_mappings": {
+      "id": "reads_id",
+      "name": "reads_name",
+      "read_count": "reads_read_count",
+      "read_type_term_id": "reads_read_type",
+      "sequencing_technology_term_id": "reads_sequencing_technology"
+    },
+    "generic_prefix_mappings": {},
+    "unmapped_columns": [
+      "read_type_term_name",
+      "sequencing_technology_term_name"
+    ],
+    "missing_required_fields": [],
+    "mapping_summary": "Applied 6 mappings: 1 direct mappings, 5 special mappings",
+    "status": "success"
+  },
+  "Sample.tsv": {
+    "class_name": "Sample",
+    "tsv_columns": [
+      "date",
+      "depth",
+      "description",
+      "elevation",
+      "env_package_term_id",
+      "env_package_term_name",
+      "id",
+      "location",
+      "material_term_id",
+      "material_term_name",
+      "name",
+      "time",
+      "timezone"
+    ],
+    "schema_slots": [
+      "sample_date",
+      "sample_depth",
+      "sample_description",
+      "sample_elevation",
+      "sample_env_package",
+      "sample_id",
+      "sample_location",
+      "sample_material",
+      "sample_name",
+      "sample_time",
+      "sample_timezone"
+    ],
+    "direct_mappings": {},
+    "special_mappings": {
+      "id": "sample_id",
+      "name": "sample_name",
+      "location": "sample_location",
+      "depth": "sample_depth",
+      "elevation": "sample_elevation",
+      "date": "sample_date",
+      "time": "sample_time",
+      "timezone": "sample_timezone",
+      "material_term_id": "sample_material",
+      "env_package_term_id": "sample_env_package",
+      "description": "sample_description"
+    },
+    "generic_prefix_mappings": {},
+    "unmapped_columns": [
+      "env_package_term_name",
+      "material_term_name"
+    ],
+    "missing_required_fields": [],
+    "mapping_summary": "Applied 11 mappings: 11 special mappings",
+    "status": "success"
+  },
+  "Strain.tsv": {
+    "class_name": "Strain",
+    "tsv_columns": [
+      "derived_from",
+      "description",
+      "genes_changed",
+      "genome",
+      "id",
+      "name"
+    ],
+    "schema_slots": [
+      "strain_derived_from",
+      "strain_description",
+      "strain_genes_changed",
+      "strain_genome",
+      "strain_id",
+      "strain_name"
+    ],
+    "direct_mappings": {
+      "genome": "strain_genome",
+      "derived_from": "strain_derived_from",
+      "genes_changed": "strain_genes_changed"
+    },
+    "special_mappings": {
+      "id": "strain_id",
+      "name": "strain_name",
+      "description": "strain_description"
+    },
+    "generic_prefix_mappings": {},
+    "unmapped_columns": [],
+    "missing_required_fields": [],
+    "mapping_summary": "Applied 6 mappings: 3 direct mappings, 3 special mappings",
+    "status": "success"
+  }
+}

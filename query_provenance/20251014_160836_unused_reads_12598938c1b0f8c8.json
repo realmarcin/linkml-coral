@@ -1,0 +1,69 @@
+{
+  "execution": {
+    "execution_id": "12598938c1b0f8c8",
+    "start_time": "2025-10-14T16:07:56.320768",
+    "query_type": "unused_reads",
+    "description": "Find unused reads with >= 50000 raw reads (isolate genome reads only)",
+    "parameters": {
+      "min_count": 50000,
+      "top_n": 10,
+      "ids_only": false,
+      "exclude_16s": true
+    },
+    "end_time": "2025-10-14T16:08:36.506025",
+    "duration_seconds": 40.185257,
+    "status": "success"
+  },
+  "user": {
+    "username": "marcin",
+    "hostname": "marcins-MacBook-Pro.local",
+    "platform": "macOS-13.7.8-arm64-arm-64bit-Mach-O",
+    "python_version": "3.13.8 (main, Oct 10 2025, 06:30:18) [Clang 14.0.3 (clang-1403.0.22.14.1)]"
+  },
+  "database": {
+    "path": "enigma_data.db",
+    "size_bytes": 13643776,
+    "size_mb": 13.01,
+    "last_modified": "2025-10-14T12:29:25.287121",
+    "checksum": "057c70e695ae94c3cd783a14acdf07d8262e589eea0c70a1b806b32756308e40"
+  },
+  "environment": {
+    "python_executable": "/Users/marcin/Documents/KBase/CDM/ENIGMA/linkml-coral/.venv/bin/python3",
+    "python_path": [
+      "/Users/marcin/Documents/KBase/CDM/ENIGMA/linkml-coral",
+      "/opt/homebrew/Cellar/python@3.13/3.13.8/Frameworks/Python.framework/Versions/3.13/lib/python313.zip",
+      "/opt/homebrew/Cellar/python@3.13/3.13.8/Frameworks/Python.framework/Versions/3.13/lib/python3.13"
+    ],
+    "platform_info": {
+      "system": "Darwin",
+      "release": "22.6.0",
+      "machine": "arm64",
+      "processor": "arm"
+    },
+    "key_packages": {
+      "duckdb": "1.4.1",
+      "linkml-runtime": "1.9.5",
+      "linkml-store": "0.2.11",
+      "numpy": "2.3.3",
+      "pandas": "2.3.3"
+    }
+  },
+  "database_stats": {
+    "total_reads": 19307,
+    "total_assemblies": 3427,
+    "total_processes": 130560
+  },
+  "results": {
+    "min_count_threshold": 50000,
+    "total_good_reads": 1840,
+    "reads_used_in_assemblies": 2994,
+    "unused_good_reads": 1836,
+    "utilization_rate": 1.6271739130434784,
+    "unused_stats": {
+      "min_count": 50003,
+      "max_count": 4078972,
+      "avg_count": 125552.69117647059,
+      "total_wasted_reads": 230514741
+    }
+  }
+}

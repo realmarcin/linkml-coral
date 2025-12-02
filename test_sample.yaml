@@ -1,0 +1,7 @@
+sample_id: "test001"
+sample_name: "test sample"
+sample_date: "invalid-date"
+sample_time: "25:99"
+sample_depth: "not-a-number"
+sample_env_package: "some_package"
+sample_location: "test_location"
