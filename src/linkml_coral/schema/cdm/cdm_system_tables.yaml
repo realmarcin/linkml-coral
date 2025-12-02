@@ -1,0 +1,428 @@
+id: https://w3id.org/enigma/kbase-cdm-system-tables
+name: kbase-cdm-system-tables
+title: KBase CDM System Tables Schema
+description: |
+  System table classes for KBase Common Data Model (CDM).
+
+  This module defines 6 sys_* (system table) classes that provide:
+  - Type definitions and schema metadata (sys_typedef, sys_ddt_typedef)
+  - Centralized ontology catalog (sys_oterm)
+  - Provenance tracking (sys_process, sys_process_input, sys_process_output)
+
+  System tables support the static and dynamic data infrastructure but are
+  not directly linked to experimental entities. They enable:
+  - Schema validation and documentation
+  - Ontology term management and evolution
+  - Complete provenance lineage tracking
+  - Query optimization through denormalization
+
+version: 1.0.0
+license: MIT
+
+prefixes:
+  linkml: https://w3id.org/linkml/
+  kbase_cdm: https://w3id.org/enigma/kbase-cdm/
+  DA: http://purl.obolibrary.org/obo/DA_
+  ME: http://purl.obolibrary.org/obo/ME_
+  ENVO: http://purl.obolibrary.org/obo/ENVO_
+  UO: http://purl.obolibrary.org/obo/UO_
+  PROCESS: http://purl.obolibrary.org/obo/PROCESS_
+
+default_prefix: kbase_cdm
+
+imports:
+  - linkml:types
+  - ./cdm_base
+
+# ============================================================
+# SYSTEM TABLE CLASSES (sys_*)
+# ============================================================
+
+classes:
+  SystemTypedef:
+    mixins:
+      - SystemEntity
+    description: |
+      Type definitions for static entity tables (equivalent to typedef.json).
+
+      Maps CORAL entity types and fields to CDM table/column names with
+      constraints, data types, and ontology references.
+
+      This table documents the schema transformation from CORAL to CDM and
+      enables automated validation and migration.
+    class_uri: kbase_cdm:SystemTypedef
+    slots:
+      - type_name
+      - field_name
+      - cdm_column_name
+      - scalar_type
+      - pk
+      - upk
+      - fk
+      - constraint
+      - units_sys_oterm_id
+      - type_sys_oterm_id
+
+  SystemDDTTypedef:
+    mixins:
+      - SystemEntity
+    description: |
+      Type definitions for dynamic data tables (bricks).
+
+      Defines schema for N-dimensional measurement arrays including:
+      - Dimension semantics (Environmental Sample, Molecule, State, Statistic)
+      - Variable semantics (Concentration, Molecular Weight, etc.)
+      - Data types and units
+      - Brick structure metadata
+
+      Each brick can have different dimensionality and variable sets,
+      enabling flexible storage of heterogeneous measurement data.
+    class_uri: kbase_cdm:SystemDDTTypedef
+    slots:
+      - ddt_ndarray_id
+      - cdm_column_name
+      - cdm_column_data_type
+      - scalar_type
+      - dimension_number
+      - variable_number
+      - dimension_oterm_id
+      - dimension_oterm_name
+      - variable_oterm_id
+      - variable_oterm_name
+      - unit_sys_oterm_id
+      - unit_sys_oterm_name
+
+  SystemOntologyTerm:
+    mixins:
+      - SystemEntity
+    description: |
+      Centralized ontology term catalog.
+
+      Stores all ontology terms used across the CDM with:
+      - CURIE identifiers (ME:, ENVO:, UO:, etc.)
+      - Human-readable names
+      - Hierarchical relationships (parent terms)
+      - Definitions, synonyms, and external links
+
+      Benefits:
+      - Single source of truth for ontology terms
+      - Supports ontology evolution without data migration
+      - Enables semantic queries and reasoning
+      - Foreign key target for all *_sys_oterm_id columns
+    class_uri: kbase_cdm:SystemOntologyTerm
+    slots:
+      - sys_oterm_id
+      - sys_oterm_name
+      - sys_oterm_ontology
+      - parent_sys_oterm_id
+      - sys_oterm_definition
+      - sys_oterm_synonyms
+      - sys_oterm_links
+      - sys_oterm_properties
+    slot_usage:
+      sys_oterm_id:
+        identifier: true
+        required: true
+
+  SystemProcess:
+    mixins:
+      - SystemEntity
+    description: |
+      Provenance tracking for all data transformations.
+
+      Records experimental processes with:
+      - Process type (Assay Growth, Sequencing, etc.)
+      - People, protocols, campaigns
+      - Temporal metadata (start/end dates)
+      - Input/output relationships (denormalized arrays)
+
+      Enables complete lineage tracing from raw samples to final analyses.
+    class_uri: kbase_cdm:SystemProcess
+    slots:
+      - sys_process_id
+      - process_type_sys_oterm_id
+      - process_type_sys_oterm_name
+      - person_sys_oterm_id
+      - person_sys_oterm_name
+      - campaign_sys_oterm_id
+      - campaign_sys_oterm_name
+      - sdt_protocol_name
+      - date_start
+      - date_end
+      - input_objects
+      - output_objects
+    slot_usage:
+      sys_process_id:
+        identifier: true
+        required: true
+
+  SystemProcessInput:
+    mixins:
+      - SystemEntity
+    description: |
+      Normalized process input relationships.
+
+      Denormalizes the input_objects array from sys_process for efficient
+      querying. Each row represents one input entity to one process.
+
+      Enables queries like:
+      - "Find all processes that used this sample"
+      - "What samples were used in sequencing processes?"
+    class_uri: kbase_cdm:SystemProcessInput
+    slots:
+      - sys_process_id
+      - input_object_type
+      - input_object_name
+      - input_index
+
+  SystemProcessOutput:
+    mixins:
+      - SystemEntity
+    description: |
+      Normalized process output relationships.
+
+      Denormalizes the output_objects array from sys_process for efficient
+      querying. Each row represents one output entity from one process.
+
+      Enables queries like:
+      - "What process created this assembly?"
+      - "Find all assemblies from sequencing processes"
+    class_uri: kbase_cdm:SystemProcessOutput
+    slots:
+      - sys_process_id
+      - output_object_type
+      - output_object_name
+      - output_index
+
+# ============================================================
+# SLOTS - System table-specific slots
+# ============================================================
+
+slots:
+  # SystemTypedef slots
+  type_name:
+    description: CORAL entity type name (e.g., "Gene", "Sample")
+    range: string
+    required: true
+
+  field_name:
+    description: Original CORAL field name
+    range: string
+    required: true
+
+  cdm_column_name:
+    description: Mapped CDM column name (snake_case with prefixes)
+    range: string
+    required: true
+
+  scalar_type:
+    description: Data type (text, int, float, [text] for arrays)
+    range: string
+    required: false
+
+  pk:
+    description: Primary key flag
+    range: boolean
+    required: false
+
+  upk:
+    description: Unique key flag
+    range: boolean
+    required: false
+
+  fk:
+    description: Foreign key reference
+    range: string
+    required: false
+
+  constraint:
+    description: Validation pattern or ontology constraint
+    range: string
+    required: false
+
+  units_sys_oterm_id:
+    description: Ontology term for measurement units
+    range: OntologyTermID
+    required: false
+
+  type_sys_oterm_id:
+    description: Ontology term for data type
+    range: OntologyTermID
+    required: false
+
+  # SystemDDTTypedef slots
+  ddt_ndarray_id:
+    description: Brick identifier (e.g., "Brick0000010")
+    range: string
+    required: true
+
+  cdm_column_data_type:
+    description: Column type (variable, dimension_variable, or dimension_index)
+    range: string
+    required: false
+    pattern: '^(variable|dimension_variable|dimension_index)$'
+
+  dimension_number:
+    description: Position in N-dimensional array (0-indexed)
+    range: integer
+    required: false
+    minimum_value: 0
+
+  variable_number:
+    description: Variable index in brick
+    range: integer
+    required: false
+    minimum_value: 0
+
+  dimension_oterm_id:
+    description: Dimension semantic ontology term ID
+    range: OntologyTermID
+    required: false
+
+  dimension_oterm_name:
+    description: Dimension semantic ontology term name
+    range: string
+    required: false
+
+  variable_oterm_id:
+    description: Variable semantic ontology term ID
+    range: OntologyTermID
+    required: false
+
+  variable_oterm_name:
+    description: Variable semantic ontology term name
+    range: string
+    required: false
+
+  unit_sys_oterm_id:
+    description: Measurement unit ontology term ID
+    range: OntologyTermID
+    required: false
+
+  unit_sys_oterm_name:
+    description: Measurement unit ontology term name
+    range: string
+    required: false
+
+  # SystemOntologyTerm slots
+  sys_oterm_ontology:
+    description: Source ontology name
+    range: string
+    required: false
+
+  parent_sys_oterm_id:
+    description: Parent term in ontology hierarchy (FK to sys_oterm)
+    range: OntologyTermID
+    required: false
+
+  sys_oterm_definition:
+    description: Formal term definition
+    range: string
+    required: false
+
+  sys_oterm_synonyms:
+    description: Alternative term names (pipe-separated)
+    range: string
+    required: false
+
+  sys_oterm_links:
+    description: External links (URLs, pipe-separated)
+    range: string
+    required: false
+
+  sys_oterm_properties:
+    description: Additional term properties (JSON or key=value pairs)
+    range: string
+    required: false
+
+  # SystemProcess slots
+  sys_process_id:
+    description: Unique process identifier
+    range: string
+    required: true
+    pattern: '^Process\d{7}$'
+
+  process_type_sys_oterm_id:
+    description: Process type ontology term ID
+    range: OntologyTermID
+    required: false
+
+  process_type_sys_oterm_name:
+    description: Process type ontology term name
+    range: string
+    required: false
+
+  person_sys_oterm_id:
+    description: Person who performed process (ontology term ID)
+    range: OntologyTermID
+    required: false
+
+  person_sys_oterm_name:
+    description: Person who performed process (ontology term name)
+    range: string
+    required: false
+
+  campaign_sys_oterm_id:
+    description: Research campaign ontology term ID
+    range: OntologyTermID
+    required: false
+
+  campaign_sys_oterm_name:
+    description: Research campaign ontology term name
+    range: string
+    required: false
+
+  date_start:
+    description: Process start date
+    range: Date
+    required: false
+
+  date_end:
+    description: Process end date
+    range: Date
+    required: false
+
+  input_objects:
+    description: Array of input entity references (type:name format)
+    range: string
+    required: false
+    multivalued: true
+
+  output_objects:
+    description: Array of output entity references (type:name format)
+    range: string
+    required: false
+    multivalued: true
+
+  # SystemProcessInput/Output slots
+  input_object_type:
+    description: Type of input entity (e.g., "Sample", "Reads")
+    range: string
+    required: false
+
+  input_object_name:
+    description: Name of input entity
+    range: EntityName
+    required: false
+
+  input_index:
+    description: Index in input_objects array
+    range: integer
+    required: false
+    minimum_value: 0
+
+  output_object_type:
+    description: Type of output entity (e.g., "Assembly", "Genome")
+    range: string
+    required: false
+
+  output_object_name:
+    description: Name of output entity
+    range: EntityName
+    required: false
+
+  output_index:
+    description: Index in output_objects array
+    range: integer
+    required: false
+    minimum_value: 0

@@ -1,0 +1,310 @@
+id: https://w3id.org/enigma/kbase-cdm
+name: kbase-cdm
+title: KBase Common Data Model (CDM) for ENIGMA CORAL
+description: |
+  LinkML schema for KBase Common Data Model (CDM) representing ENIGMA CORAL data.
+
+  This schema is derived from the original CORAL LinkML schema but includes
+  transformations specific to the KBase CDM implementation:
+
+  **Key CDM Patterns:**
+
+  1. **Ontology Term Splitting**
+     - CORAL: Single field with ontology constraint
+     - CDM: Two fields (ID + name) for each ontology term
+     - Example: `material` → `material_sys_oterm_id` + `material_sys_oterm_name`
+     - Enables FK validation + human-readable labels without joins
+
+  2. **CDM Naming Conventions**
+     - Tables: `sdt_*` (static), `ddt_*` (dynamic), `sys_*` (system)
+     - IDs: `sdt_{entity}_id` with pattern `EntityName\d{7}`
+     - Names: `sdt_{entity}_name` (unique, used for FK references)
+     - All columns: snake_case with entity prefix
+
+  3. **Centralized Ontology Catalog**
+     - All ontology terms stored in `sys_oterm` table
+     - 10,594 terms from multiple ontologies (ME, ENVO, UO, etc.)
+     - Hierarchical relationships via `parent_sys_oterm_id`
+     - Single source of truth for semantic metadata
+
+  4. **Denormalized Provenance Model**
+     - Process workflows stored in `sys_process` table
+     - Input/output relationships in `sys_process_input`, `sys_process_output`
+     - Complete lineage tracing from samples to analyses
+     - 142,958 process records documenting all transformations
+
+  5. **Dynamic Data Bricks**
+     - N-dimensional measurement arrays in `ddt_brick*` tables
+     - Flexible schema defined in `sys_ddt_typedef`
+     - Semantic dimensions and variables via ontology terms
+     - 82.6M rows across 20 brick tables
+
+  **Schema Organization:**
+
+  This schema is modular, organized into:
+  - `cdm_base.yaml`: Common types, mixins, validation patterns
+  - `cdm_static_entities.yaml`: 17 sdt_* entity classes
+  - `cdm_system_tables.yaml`: 6 sys_* system classes
+  - `cdm_dynamic_data.yaml`: Brick infrastructure (ddt_*)
+  - `linkml_coral_cdm.yaml`: Main schema (this file)
+
+  **Data Volume:**
+  - 272,934 rows across 17 static entity tables
+  - 142,958 process records (provenance)
+  - 10,594 ontology terms
+  - 82.6M rows in dynamic data tables
+
+  **Comparison to Original CORAL:**
+  - Maintains same 17 core entity types
+  - Adds 6 new system table classes
+  - Preserves provenance annotations
+  - Extends with CDM-specific patterns
+
+  **Documentation:**
+  - Analysis Report: `docs/cdm_analysis/CDM_PARQUET_ANALYSIS_REPORT.md`
+  - Schema Comparison: `docs/CORAL_TO_CDM_MAPPING.md`
+  - Validation Guide: `docs/CDM_VALIDATION_GUIDE.md`
+
+version: 1.0.0
+license: MIT
+
+prefixes:
+  linkml: https://w3id.org/linkml/
+  enigma: https://w3id.org/enigma/
+  kbase_cdm: https://w3id.org/enigma/kbase-cdm/
+  DA: http://purl.obolibrary.org/obo/DA_
+  ME: http://purl.obolibrary.org/obo/ME_
+  ENVO: http://purl.obolibrary.org/obo/ENVO_
+  UO: http://purl.obolibrary.org/obo/UO_
+  PROCESS: http://purl.obolibrary.org/obo/PROCESS_
+  ENIGMA_TERM: http://purl.obolibrary.org/obo/ENIGMA_
+  CONTINENT: http://purl.obolibrary.org/obo/CONTINENT_
+  COUNTRY: http://purl.obolibrary.org/obo/COUNTRY_
+  MIxS: http://purl.obolibrary.org/obo/MIxS_
+
+default_prefix: kbase_cdm
+
+# ============================================================
+# IMPORTS - Modular schema organization
+# ============================================================
+
+imports:
+  - linkml:types
+  - ./cdm_base
+  - ./cdm_static_entities
+  - ./cdm_system_tables
+  - ./cdm_dynamic_data
+
+# ============================================================
+# SCHEMA METADATA
+# ============================================================
+
+default_range: string
+
+# ============================================================
+# ENUMS - Reused from original CORAL schema
+# ============================================================
+
+# Note: The CDM stores enum values as ontology term ID+name pairs,
+# but the underlying permissible values remain the same.
+# These enums are included for documentation and validation.
+
+enums:
+  StrandEnum:
+    description: DNA strand orientation
+    permissible_values:
+      forward:
+        description: Forward strand (+)
+        meaning: ME:0000193
+        annotations:
+          symbol:
+            tag: symbol
+            value: "+"
+      reverse_complement:
+        description: Reverse complement strand (-)
+        meaning: ME:0000194
+        annotations:
+          symbol:
+            tag: symbol
+            value: "-"
+
+  ReadTypeEnum:
+    description: Sequencing read type
+    permissible_values:
+      paired_end:
+        description: Paired-end reads
+        meaning: ME:0000113
+      single_end:
+        description: Single-end reads
+        meaning: ME:0000114
+
+  SequencingTechnologyEnum:
+    description: Sequencing platform technology
+    permissible_values:
+      illumina:
+        description: Illumina sequencing
+        meaning: ME:0000115
+      pacbio:
+        description: PacBio sequencing
+        meaning: ME:0000116
+      nanopore:
+        description: Oxford Nanopore sequencing
+        meaning: ME:0000117
+      sanger:
+        description: Sanger sequencing
+        meaning: ME:0000118
+
+  CommunityTypeEnum:
+    description: Microbial community type
+    permissible_values:
+      isolate_community:
+        description: Isolated single strain
+        meaning: ME:0000200
+      enrichment:
+        description: Enrichment culture
+        meaning: ME:0000201
+      assemblage:
+        description: Defined assemblage of strains
+        meaning: ME:0000202
+      environmental_community:
+        description: Environmental community (metagenome)
+        meaning: ME:0000203
+      active_fraction:
+        description: Active fraction
+        meaning: ME:0000237
+
+  MaterialEnum:
+    description: Sample material type
+    permissible_values:
+      soil:
+        description: Soil
+        meaning: ENVO:00001998
+      sediment:
+        description: Sediment
+        meaning: ENVO:00002007
+      water:
+        description: Water
+        meaning: ENVO:00002006
+      biofilm:
+        description: Biofilm
+        meaning: ENVO:00002034
+
+  BiomeEnum:
+    description: Environmental biome
+    permissible_values:
+      terrestrial:
+        description: Terrestrial biome
+        meaning: ENVO:00000446
+      aquatic:
+        description: Aquatic biome
+        meaning: ENVO:00002030
+      marine:
+        description: Marine biome
+        meaning: ENVO:00000447
+
+# ============================================================
+# ANNOTATIONS - Schema-level annotations
+# ============================================================
+
+annotations:
+  source_schema:
+    tag: source_schema
+    value: "https://w3id.org/enigma/enigma-cdm (original CORAL LinkML schema)"
+
+  cdm_version:
+    tag: cdm_version
+    value: "1.0.0"
+
+  parquet_database:
+    tag: parquet_database
+    value: "/Users/marcin/Documents/VIMSS/ENIGMA/KBase/ENIGMA_in_CDM/minio/jmc_coral.db"
+
+  analysis_date:
+    tag: analysis_date
+    value: "2025-12-01"
+
+  total_static_rows:
+    tag: total_static_rows
+    value: "272,934"
+
+  total_dynamic_rows:
+    tag: total_dynamic_rows
+    value: "82,643,066"
+
+  n_system_tables:
+    tag: n_system_tables
+    value: "6"
+
+  n_static_tables:
+    tag: n_static_tables
+    value: "17"
+
+  n_dynamic_tables:
+    tag: n_dynamic_tables
+    value: "21"
+
+  n_ontology_terms:
+    tag: n_ontology_terms
+    value: "10,594"
+
+  n_processes:
+    tag: n_processes
+    value: "142,958"
+
+# ============================================================
+# COMMENTS - Implementation Notes
+# ============================================================
+
+comments:
+  - |
+    This schema represents the KBase CDM implementation of ENIGMA CORAL data.
+    It maintains compatibility with the original CORAL schema while adding
+    CDM-specific patterns for ontology management, provenance tracking, and
+    dynamic data storage.
+
+  - |
+    Validation Strategy:
+    1. Static entities: Validate against cdm_static_entities.yaml classes
+    2. System tables: Validate against cdm_system_tables.yaml classes
+    3. Dynamic bricks: Validate against sys_ddt_typedef at runtime
+
+  - |
+    Foreign Key References:
+    - All FK references in CDM use _name columns (not _id)
+    - Example: Sample.sdt_location_name → Location.sdt_location_name
+    - Self-referential FKs: Community.parent, Strain.derived_from
+
+  - |
+    Ontology Term Splitting:
+    - 15 fields affected across 5 entity types
+    - Location: 4 fields (continent, country, biome, feature)
+    - Sample: 2 fields (material, env_package)
+    - Reads: 2 fields (read_type, sequencing_technology)
+    - Community: 1 field (community_type)
+    - Process: 6 fields (process_type, person, campaign, etc.)
+
+  - |
+    Migration from CORAL to CDM:
+    - Original CORAL data can be transformed to CDM format
+    - Key transformations documented in docs/CORAL_TO_CDM_MAPPING.md
+    - Migration scripts available in scripts/cdm_analysis/
+
+  - |
+    Provenance Lineage Examples:
+    - Sample → Reads → Assembly → Genome → Gene
+    - Sample → Community → (defined strains)
+    - Location → Sample → (multiple downstream entities)
+
+  - |
+    Brick System Usage:
+    - Store measurements too diverse for static schema
+    - Examples: metabolomics, proteomics, time series, spatial arrays
+    - Each brick defines its own N-dimensional structure
+    - Semantic metadata enables cross-brick queries
+
+  - |
+    Reproducible Analysis:
+    - All analysis scripts in scripts/cdm_analysis/
+    - Justfile targets: just analyze-cdm, just cdm-report
+    - Analysis outputs in docs/cdm_analysis/
+    - Machine-readable schema in cdm_schema_report.json
