@@ -34,7 +34,6 @@ sys.path.insert(0, str(Path(__file__).parent / 'src'))
 try:
     from linkml_coral.utils.validation_utils import (
         ValidationStatus,
-        ValidationResult,
         RecordValidationResult,
         FileValidationResult,
         EnumValidator,
@@ -46,7 +45,6 @@ except ImportError:
     # Fallback for when running from different directory
     from src.linkml_coral.utils.validation_utils import (
         ValidationStatus,
-        ValidationResult,
         RecordValidationResult,
         FileValidationResult,
         EnumValidator,
