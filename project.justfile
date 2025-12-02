@@ -77,10 +77,10 @@ validate-batch tsv_dir='data/export/exported_tsvs':
 # Batch validate with specific files
 [group('model development')]
 validate-batch-files tsv_dir='data/export/exported_tsvs' *files='':
-  @echo "📦 Batch validating selected files: {{files}}"
+  @echo "📦 Batch validating selected files: \"{{files}}\""
   uv run python validate_all_exported_tsvs.py \
     --tsv-dir {{tsv_dir}} \
-    --include {{files}} \
+    --include {{files}}... \
     --report-format all \
     --verbose
 
