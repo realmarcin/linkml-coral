@@ -421,7 +421,7 @@ Alias: reads_read_type</p>
 <h2 id="properties">Properties</h2>
 <ul>
 <li>
-<p>Range: <a href="../String/">String</a></p>
+<p>Range: <a href="../ReadTypeEnum/">ReadTypeEnum</a></p>
 </li>
 <li>
 <p>Required: True</p>
@@ -438,12 +438,16 @@ Alias: reads_read_type</p>
 </thead>
 <tbody>
 <tr>
-<td>constraint</td>
+<td>type_term</td>
 <td>ME:0000112</td>
 </tr>
 <tr>
-<td>type_term</td>
+<td>microtype</td>
 <td>ME:0000112</td>
+</tr>
+<tr>
+<td>microtype_data_type</td>
+<td>oterm_ref</td>
 </tr>
 </tbody>
 </table>
@@ -475,19 +479,22 @@ Alias: reads_read_type</p>
 
 <pre><code class="language-yaml">name: reads_read_type
 annotations:
-  constraint:
-    tag: constraint
-    value: ME:0000112
   type_term:
     tag: type_term
     value: ME:0000112
+  microtype:
+    tag: microtype
+    value: ME:0000112
+  microtype_data_type:
+    tag: microtype_data_type
+    value: oterm_ref
 description: read_type field for Reads
 from_schema: https://w3id.org/enigma/enigma-cdm
 rank: 1000
 alias: reads_read_type
 domain_of:
 - Reads
-range: string
+range: ReadTypeEnum
 required: true
 
 </code></pre>

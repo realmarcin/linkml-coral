@@ -245,7 +245,25 @@
 
       Reads : reads_read_type
 
+
+
+
+
+        Reads --&gt; "1" ReadTypeEnum : reads_read_type
+        click ReadTypeEnum href "../ReadTypeEnum/"
+
+
+
       Reads : reads_sequencing_technology
+
+
+
+
+
+        Reads --&gt; "1" SequencingTechnologyEnum : reads_sequencing_technology
+        click SequencingTechnologyEnum href "../SequencingTechnologyEnum/"
+
+
 
 
 </div>
@@ -275,25 +293,25 @@
 </tr>
 <tr>
 <td><a href="../reads_read_count/">reads_read_count</a></td>
-<td>1 <br/> <a href="../Integer/">Integer</a></td>
+<td>1 <br/> <a href="../Count/">Count</a></td>
 <td>read_count field for Reads</td>
 <td>direct</td>
 </tr>
 <tr>
 <td><a href="../reads_read_type/">reads_read_type</a></td>
-<td>1 <br/> <a href="../String/">String</a></td>
+<td>1 <br/> <a href="../ReadTypeEnum/">ReadTypeEnum</a></td>
 <td>read_type field for Reads</td>
 <td>direct</td>
 </tr>
 <tr>
 <td><a href="../reads_sequencing_technology/">reads_sequencing_technology</a></td>
-<td>1 <br/> <a href="../String/">String</a></td>
+<td>1 <br/> <a href="../SequencingTechnologyEnum/">SequencingTechnologyEnum</a></td>
 <td>sequencing_technology field for Reads</td>
 <td>direct</td>
 </tr>
 <tr>
 <td><a href="../reads_link/">reads_link</a></td>
-<td>1 <br/> <a href="../String/">String</a></td>
+<td>1 <br/> <a href="../Link/">Link</a></td>
 <td>link field for Reads</td>
 <td>direct</td>
 </tr>
@@ -411,6 +429,12 @@ attributes:
       type_term:
         tag: type_term
         value: ME:0000273
+      microtype:
+        tag: microtype
+        value: ME:0000273
+      microtype_data_type:
+        tag: microtype_data_type
+        value: object_ref
     description: id field for Reads
     from_schema: https://w3id.org/enigma/enigma-cdm
     rank: 1000
@@ -430,6 +454,12 @@ attributes:
       type_term:
         tag: type_term
         value: ME:0000248
+      microtype:
+        tag: microtype
+        value: ME:0000248
+      microtype_data_type:
+        tag: microtype_data_type
+        value: object_ref
     description: name field for Reads
     from_schema: https://w3id.org/enigma/enigma-cdm
     rank: 1000
@@ -448,6 +478,12 @@ attributes:
       type_term:
         tag: type_term
         value: ME:0000126
+      microtype:
+        tag: microtype
+        value: ME:0000126
+      microtype_data_type:
+        tag: microtype_data_type
+        value: int
     description: read_count field for Reads
     from_schema: https://w3id.org/enigma/enigma-cdm
     rank: 1000
@@ -455,17 +491,20 @@ attributes:
     owner: Reads
     domain_of:
     - Reads
-    range: integer
+    range: Count
     required: true
   reads_read_type:
     name: reads_read_type
     annotations:
-      constraint:
-        tag: constraint
-        value: ME:0000112
       type_term:
         tag: type_term
         value: ME:0000112
+      microtype:
+        tag: microtype
+        value: ME:0000112
+      microtype_data_type:
+        tag: microtype_data_type
+        value: oterm_ref
     description: read_type field for Reads
     from_schema: https://w3id.org/enigma/enigma-cdm
     rank: 1000
@@ -473,17 +512,20 @@ attributes:
     owner: Reads
     domain_of:
     - Reads
-    range: string
+    range: ReadTypeEnum
     required: true
   reads_sequencing_technology:
     name: reads_sequencing_technology
     annotations:
-      constraint:
-        tag: constraint
-        value: ME:0000116
       type_term:
         tag: type_term
         value: ME:0000116
+      microtype:
+        tag: microtype
+        value: ME:0000116
+      microtype_data_type:
+        tag: microtype_data_type
+        value: oterm_ref
     description: sequencing_technology field for Reads
     from_schema: https://w3id.org/enigma/enigma-cdm
     rank: 1000
@@ -491,7 +533,7 @@ attributes:
     owner: Reads
     domain_of:
     - Reads
-    range: string
+    range: SequencingTechnologyEnum
     required: true
   reads_link:
     name: reads_link
@@ -499,6 +541,12 @@ attributes:
       type_term:
         tag: type_term
         value: ME:0000203
+      microtype:
+        tag: microtype
+        value: ME:0000203
+      microtype_data_type:
+        tag: microtype_data_type
+        value: string
     description: link field for Reads
     from_schema: https://w3id.org/enigma/enigma-cdm
     rank: 1000
@@ -506,7 +554,7 @@ attributes:
     owner: Reads
     domain_of:
     - Reads
-    range: string
+    range: Link
     required: true
 
 </code></pre>

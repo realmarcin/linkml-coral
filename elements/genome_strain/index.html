@@ -420,7 +420,7 @@ Alias: genome_strain</p>
 </table>
 <h2 id="properties">Properties</h2>
 <ul>
-<li>Range: <a href="../String/">String</a></li>
+<li>Range: <a href="../Strain/">Strain</a></li>
 </ul>
 <h2 id="identifier-and-mapping-information">Identifier and Mapping Information</h2>
 <h3 id="annotations">Annotations</h3>
@@ -439,6 +439,14 @@ Alias: genome_strain</p>
 <tr>
 <td>type_term</td>
 <td>ME:0000044</td>
+</tr>
+<tr>
+<td>microtype</td>
+<td>ME:0000044</td>
+</tr>
+<tr>
+<td>microtype_data_type</td>
+<td>object_ref</td>
 </tr>
 </tbody>
 </table>
@@ -476,13 +484,19 @@ annotations:
   type_term:
     tag: type_term
     value: ME:0000044
+  microtype:
+    tag: microtype
+    value: ME:0000044
+  microtype_data_type:
+    tag: microtype_data_type
+    value: object_ref
 description: strain field for Genome
 from_schema: https://w3id.org/enigma/enigma-cdm
 rank: 1000
 alias: genome_strain
 domain_of:
 - Genome
-range: string
+range: Strain
 
 </code></pre>
 

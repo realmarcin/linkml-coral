@@ -237,6 +237,15 @@
     click DubSeqLibrary href "../DubSeqLibrary/"
       DubSeqLibrary : dubseq_library_genome
 
+
+
+
+
+        DubSeqLibrary --&gt; "1" Genome : dubseq_library_genome
+        click Genome href "../Genome/"
+
+
+
       DubSeqLibrary : dubseq_library_id
 
       DubSeqLibrary : dubseq_library_n_fragments
@@ -271,13 +280,13 @@
 </tr>
 <tr>
 <td><a href="../dubseq_library_genome/">dubseq_library_genome</a></td>
-<td>1 <br/> <a href="../String/">String</a></td>
+<td>1 <br/> <a href="../Genome/">Genome</a></td>
 <td>genome field for DubSeq_Library</td>
 <td>direct</td>
 </tr>
 <tr>
 <td><a href="../dubseq_library_n_fragments/">dubseq_library_n_fragments</a></td>
-<td>0..1 <br/> <a href="../Integer/">Integer</a></td>
+<td>0..1 <br/> <a href="../Count/">Count</a></td>
 <td>n_fragments field for DubSeq_Library</td>
 <td>direct</td>
 </tr>
@@ -391,6 +400,12 @@ attributes:
       type_term:
         tag: type_term
         value: ME:0000276
+      microtype:
+        tag: microtype
+        value: ME:0000276
+      microtype_data_type:
+        tag: microtype_data_type
+        value: object_ref
     description: id field for DubSeq_Library
     from_schema: https://w3id.org/enigma/enigma-cdm
     rank: 1000
@@ -410,6 +425,12 @@ attributes:
       type_term:
         tag: type_term
         value: ME:0000262
+      microtype:
+        tag: microtype
+        value: ME:0000262
+      microtype_data_type:
+        tag: microtype_data_type
+        value: object_ref
     description: name field for DubSeq_Library
     from_schema: https://w3id.org/enigma/enigma-cdm
     rank: 1000
@@ -428,6 +449,12 @@ attributes:
       type_term:
         tag: type_term
         value: ME:0000246
+      microtype:
+        tag: microtype
+        value: ME:0000246
+      microtype_data_type:
+        tag: microtype_data_type
+        value: object_ref
     description: genome field for DubSeq_Library
     from_schema: https://w3id.org/enigma/enigma-cdm
     rank: 1000
@@ -435,7 +462,7 @@ attributes:
     owner: DubSeq_Library
     domain_of:
     - DubSeq_Library
-    range: string
+    range: Genome
     required: true
   dubseq_library_n_fragments:
     name: dubseq_library_n_fragments
@@ -446,6 +473,12 @@ attributes:
       type_term:
         tag: type_term
         value: ME:0000126
+      microtype:
+        tag: microtype
+        value: ME:0000126
+      microtype_data_type:
+        tag: microtype_data_type
+        value: int
     description: n_fragments field for DubSeq_Library
     from_schema: https://w3id.org/enigma/enigma-cdm
     rank: 1000
@@ -453,7 +486,7 @@ attributes:
     owner: DubSeq_Library
     domain_of:
     - DubSeq_Library
-    range: integer
+    range: Count
 
 </code></pre>
 </details>

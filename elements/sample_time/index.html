@@ -429,12 +429,7 @@ Alias: sample_time</p>
 </table>
 <h2 id="properties">Properties</h2>
 <ul>
-<li>
-<p>Range: <a href="../String/">String</a></p>
-</li>
-<li>
-<p>Regex pattern: <code>\d(\d)?(:\d\d(:\d\d)?)?\s*([apAP][mM])?</code></p>
-</li>
+<li>Range: <a href="../Time/">Time</a></li>
 </ul>
 <h2 id="comments">Comments</h2>
 <ul>
@@ -453,6 +448,14 @@ Alias: sample_time</p>
 <tr>
 <td>type_term</td>
 <td>ME:0000010</td>
+</tr>
+<tr>
+<td>microtype</td>
+<td>ME:0000010</td>
+</tr>
+<tr>
+<td>microtype_data_type</td>
+<td>string</td>
 </tr>
 </tbody>
 </table>
@@ -487,6 +490,12 @@ annotations:
   type_term:
     tag: type_term
     value: ME:0000010
+  microtype:
+    tag: microtype
+    value: ME:0000010
+  microtype_data_type:
+    tag: microtype_data_type
+    value: string
 description: time field for Sample
 comments:
 - HH[:MM[:SS]] [AM|PM]
@@ -495,8 +504,7 @@ rank: 1000
 alias: sample_time
 domain_of:
 - Sample
-range: string
-pattern: \d(\d)?(:\d\d(:\d\d)?)?\s*([apAP][mM])?
+range: Time
 
 </code></pre>
 

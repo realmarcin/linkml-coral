@@ -429,12 +429,7 @@ Alias: process_date_start</p>
 </table>
 <h2 id="properties">Properties</h2>
 <ul>
-<li>
-<p>Range: <a href="../String/">String</a></p>
-</li>
-<li>
-<p>Regex pattern: <code>\d\d\d\d(-\d\d(-\d\d)?)?</code></p>
-</li>
+<li>Range: <a href="../Date/">Date</a></li>
 </ul>
 <h2 id="comments">Comments</h2>
 <ul>
@@ -453,6 +448,14 @@ Alias: process_date_start</p>
 <tr>
 <td>type_term</td>
 <td>ME:0000009</td>
+</tr>
+<tr>
+<td>microtype</td>
+<td>ME:0000009</td>
+</tr>
+<tr>
+<td>microtype_data_type</td>
+<td>string</td>
 </tr>
 </tbody>
 </table>
@@ -487,6 +490,12 @@ annotations:
   type_term:
     tag: type_term
     value: ME:0000009
+  microtype:
+    tag: microtype
+    value: ME:0000009
+  microtype_data_type:
+    tag: microtype_data_type
+    value: string
 description: date_start field for Process
 comments:
 - YYYY[-MM[-DD]]
@@ -495,8 +504,7 @@ rank: 1000
 alias: process_date_start
 domain_of:
 - Process
-range: string
-pattern: \d\d\d\d(-\d\d(-\d\d)?)?
+range: Date
 
 </code></pre>
 

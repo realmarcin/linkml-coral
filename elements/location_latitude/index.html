@@ -421,7 +421,7 @@ Alias: location_latitude</p>
 <h2 id="properties">Properties</h2>
 <ul>
 <li>
-<p>Range: <a href="../Float/">Float</a></p>
+<p>Range: <a href="../Latitude/">Latitude</a></p>
 </li>
 <li>
 <p>Required: True</p>
@@ -450,6 +450,14 @@ Alias: location_latitude</p>
 <tr>
 <td>type_term</td>
 <td>ME:0000211</td>
+</tr>
+<tr>
+<td>microtype</td>
+<td>ME:0000211</td>
+</tr>
+<tr>
+<td>microtype_data_type</td>
+<td>float</td>
 </tr>
 </tbody>
 </table>
@@ -487,13 +495,19 @@ annotations:
   type_term:
     tag: type_term
     value: ME:0000211
+  microtype:
+    tag: microtype
+    value: ME:0000211
+  microtype_data_type:
+    tag: microtype_data_type
+    value: float
 description: latitude field for Location
 from_schema: https://w3id.org/enigma/enigma-cdm
 rank: 1000
 alias: location_latitude
 domain_of:
 - Location
-range: float
+range: Latitude
 required: true
 minimum_value: -90
 maximum_value: 90

@@ -429,7 +429,7 @@ Alias: sample_depth</p>
 </table>
 <h2 id="properties">Properties</h2>
 <ul>
-<li>Range: <a href="../Float/">Float</a></li>
+<li>Range: <a href="../Depth/">Depth</a></li>
 </ul>
 <h2 id="comments">Comments</h2>
 <ul>
@@ -452,6 +452,14 @@ Alias: sample_depth</p>
 <tr>
 <td>type_term</td>
 <td>ME:0000219</td>
+</tr>
+<tr>
+<td>microtype</td>
+<td>ME:0000219</td>
+</tr>
+<tr>
+<td>microtype_data_type</td>
+<td>float</td>
 </tr>
 </tbody>
 </table>
@@ -489,6 +497,12 @@ annotations:
   type_term:
     tag: type_term
     value: ME:0000219
+  microtype:
+    tag: microtype
+    value: ME:0000219
+  microtype_data_type:
+    tag: microtype_data_type
+    value: float
 description: depth field for Sample
 comments:
 - in meters below ground level
@@ -497,7 +511,7 @@ rank: 1000
 alias: sample_depth
 domain_of:
 - Sample
-range: float
+range: Depth
 
 </code></pre>
 

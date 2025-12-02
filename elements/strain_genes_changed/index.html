@@ -421,7 +421,7 @@ Alias: strain_genes_changed</p>
 <h2 id="properties">Properties</h2>
 <ul>
 <li>
-<p>Range: <a href="../String/">String</a></p>
+<p>Range: <a href="../Gene/">Gene</a></p>
 </li>
 <li>
 <p>Multivalued: True</p>
@@ -443,6 +443,10 @@ Alias: strain_genes_changed</p>
 </tr>
 <tr>
 <td>type_term</td>
+<td>ME:0000091</td>
+</tr>
+<tr>
+<td>microtype</td>
 <td>ME:0000091</td>
 </tr>
 </tbody>
@@ -481,13 +485,16 @@ annotations:
   type_term:
     tag: type_term
     value: ME:0000091
+  microtype:
+    tag: microtype
+    value: ME:0000091
 description: genes_changed field for Strain
 from_schema: https://w3id.org/enigma/enigma-cdm
 rank: 1000
 alias: strain_genes_changed
 domain_of:
 - Strain
-range: string
+range: Gene
 multivalued: true
 
 </code></pre>

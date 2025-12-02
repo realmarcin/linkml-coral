@@ -44,6 +44,184 @@ prefixes:
 default_prefix: enigma
 default_range: string
 types:
+  Date:
+    name: Date
+    definition_uri: https://w3id.org/enigma/Date
+    annotations:
+      microtype:
+        tag: microtype
+        value: ME:0000009
+      microtype_data_type:
+        tag: microtype_data_type
+        value: string
+    description: Date in YYYY-MM-DD format
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    typeof: string
+    base: str
+    uri: xsd:string
+    pattern: \d\d\d\d(-\d\d(-\d\d)?)?
+  Time:
+    name: Time
+    definition_uri: https://w3id.org/enigma/Time
+    annotations:
+      microtype:
+        tag: microtype
+        value: ME:0000010
+      microtype_data_type:
+        tag: microtype_data_type
+        value: string
+    description: Time in HH:MM:SS format
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    typeof: string
+    base: str
+    uri: xsd:string
+    pattern: \d(\d)?(:\d\d(:\d\d)?)?\s*([apAP][mM])?
+  Link:
+    name: Link
+    definition_uri: https://w3id.org/enigma/Link
+    annotations:
+      microtype:
+        tag: microtype
+        value: ME:0000203
+      microtype_data_type:
+        tag: microtype_data_type
+        value: string
+    description: HTTP/HTTPS URL or file path
+    comments:
+    - Pattern relaxed to allow file paths in addition to HTTP URLs to match real data
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    typeof: string
+    base: str
+    uri: xsd:string
+    pattern: ^(http.*|/.*)$
+  Latitude:
+    name: Latitude
+    definition_uri: https://w3id.org/enigma/Latitude
+    annotations:
+      microtype:
+        tag: microtype
+        value: ME:0000211
+      microtype_data_type:
+        tag: microtype_data_type
+        value: float
+      units_term:
+        tag: units_term
+        value: UO:0000185
+    description: Geographic latitude in decimal degrees
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    typeof: float
+    base: float
+    uri: xsd:float
+    minimum_value: -90
+    maximum_value: 90
+  Longitude:
+    name: Longitude
+    definition_uri: https://w3id.org/enigma/Longitude
+    annotations:
+      microtype:
+        tag: microtype
+        value: ME:0000212
+      microtype_data_type:
+        tag: microtype_data_type
+        value: float
+      units_term:
+        tag: units_term
+        value: UO:0000185
+    description: Geographic longitude in decimal degrees
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    typeof: float
+    base: float
+    uri: xsd:float
+    minimum_value: -180
+    maximum_value: 180
+  Count:
+    name: Count
+    definition_uri: https://w3id.org/enigma/Count
+    annotations:
+      microtype:
+        tag: microtype
+        value: ME:0000126
+      microtype_data_type:
+        tag: microtype_data_type
+        value: int
+      units_term:
+        tag: units_term
+        value: UO:0000189
+    description: Non-negative integer count
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    typeof: integer
+    base: int
+    uri: xsd:integer
+    minimum_value: 0
+  Size:
+    name: Size
+    definition_uri: https://w3id.org/enigma/Size
+    annotations:
+      microtype:
+        tag: microtype
+        value: ME:0000128
+      microtype_data_type:
+        tag: microtype_data_type
+        value: float
+    description: Size measurement (non-negative)
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    typeof: float
+    base: float
+    uri: xsd:float
+    minimum_value: 0
+  Depth:
+    name: Depth
+    definition_uri: https://w3id.org/enigma/Depth
+    annotations:
+      microtype:
+        tag: microtype
+        value: ME:0000219
+      microtype_data_type:
+        tag: microtype_data_type
+        value: float
+      units_term:
+        tag: units_term
+        value: UO:0000008
+    description: Depth measurement
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    typeof: float
+    base: float
+    uri: xsd:float
+  Elevation:
+    name: Elevation
+    definition_uri: https://w3id.org/enigma/Elevation
+    annotations:
+      microtype:
+        tag: microtype
+        value: ME:0000220
+      microtype_data_type:
+        tag: microtype_data_type
+        value: float
+      units_term:
+        tag: units_term
+        value: UO:0000008
+    description: Elevation measurement
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    typeof: float
+    base: float
+    uri: xsd:float
+  Rate:
+    name: Rate
+    definition_uri: https://w3id.org/enigma/Rate
+    annotations:
+      microtype:
+        tag: microtype
+        value: ME:0000264
+      microtype_data_type:
+        tag: microtype_data_type
+        value: float
+    description: Rate as a fraction between 0 and 1
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    typeof: float
+    base: float
+    uri: xsd:float
+    minimum_value: 0
+    maximum_value: 1
   string:
     name: string
     definition_uri: https://w3id.org/linkml/String
@@ -312,6 +490,2198 @@ types:
     base: str
     uri: xsd:string
     repr: str
+enums:
+  ExperimentalContextEnum:
+    name: ExperimentalContextEnum
+    definition_uri: https://w3id.org/enigma/ExperimentalContextEnum
+    annotations:
+      microtype:
+        tag: microtype
+        value: ME:0000002
+      microtype_data_type:
+        tag: microtype_data_type
+        value: oterm_ref
+    description: Context describing experimental design.
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    permissible_values:
+      series_type:
+        text: series_type
+        description: Context describing the purpose of a series.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000003
+        title: Series Type
+      condition:
+        text: condition
+        description: A human-readable description of an experimental condition.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000006
+        title: Condition
+      method:
+        text: method
+        description: A description of one or more methods used in an experiment.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000007
+        title: Method
+      algorithm_parameter:
+        text: algorithm_parameter
+        description: A description of one or more algorithm parameters.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000008
+        title: Algorithm Parameter
+      date:
+        text: date
+        description: A date, formatted as YYYY-MM-DD.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000009
+        title: Date
+      time:
+        text: time
+        description: A time, formatted as HH:MM (see DateTime to include the date).
+        annotations:
+          term:
+            tag: term
+            value: ME:0000010
+        title: Time
+      comment:
+        text: comment
+        description: A human-readable comment.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000011
+        title: Comment
+      instrument:
+        text: instrument
+        description: A description of instrument(s) used.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000012
+        title: Instrument
+      category:
+        text: category
+        description: A human-readable description of a category.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000013
+        title: Category
+      homogenized:
+        text: homogenized
+        description: Homogenized.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000014
+        title: Homogenized
+      anaerobic:
+        text: anaerobic
+        description: Anaerobic.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000015
+        title: Anaerobic
+      aerobic:
+        text: aerobic
+        description: Aerobic.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000016
+        title: Aerobic
+      undisturbed:
+        text: undisturbed
+        description: Undisturbed.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000017
+        title: Undisturbed
+      datetime:
+        text: datetime
+        description: DateTime.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000180
+        title: DateTime
+      time_zone:
+        text: time_zone
+        description: Time Zone, e.g., PDT
+        annotations:
+          term:
+            tag: term
+            value: ME:0000201
+        title: Time Zone
+      description:
+        text: description
+        description: Description.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000202
+        title: Description
+      link:
+        text: link
+        description: Link to other data, e.g., a DOI or URL.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000203
+        title: Link
+      experimental_process:
+        text: experimental_process
+        description: Category of experimental process used to create a dataset.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000204
+        title: Experimental Process
+      person:
+        text: person
+        description: Name of a person.  Note that ENIGMA people should be listed as
+          'ENIGMA personnel' instead.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000205
+        title: Person
+      campaign:
+        text: campaign
+        description: Campaign.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000206
+        title: Campaign
+      input:
+        text: input
+        description: Input.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000207
+        title: Input
+      output:
+        text: output
+        description: Output.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000208
+        title: Output
+      control:
+        text: control
+        description: Control.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000283
+        title: Control
+      replicate:
+        text: replicate
+        description: Replicate.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000286
+        title: Replicate
+      subsample:
+        text: subsample
+        description: Subsample.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000289
+        title: Subsample
+      protocol:
+        text: protocol
+        description: Protocol.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000327
+        title: Protocol
+      availability:
+        text: availability
+        description: Boolean property indicating whether something is available.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000333
+        title: Availability
+      ionization_mode:
+        text: ionization_mode
+        description: Ionization mode used in a mass spec experiment.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000385
+        title: Ionization Mode
+      usability:
+        text: usability
+        description: Usability.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000388
+        title: Usability
+      barcode:
+        text: barcode
+        description: Barcode.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000394
+        title: Barcode
+      microplate_name:
+        text: microplate_name
+        description: Microplate Name.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000409
+        title: Microplate Name
+      microplate_well_name:
+        text: microplate_well_name
+        description: Microplate Well Name.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000410
+        title: Microplate Well Name
+      microplate:
+        text: microplate
+        description: Microplate.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000411
+        title: Microplate
+      publication:
+        text: publication
+        description: Publication.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000432
+        title: Publication
+      database:
+        text: database
+        description: Database.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000435
+        title: Database
+      obsolete:
+        text: obsolete
+        description: Obsolete.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000436
+        title: Obsolete
+      index:
+        text: index
+        description: Index.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000468
+        title: Index
+      internal_standard:
+        text: internal_standard
+        description: Internal Standard.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000469
+        title: Internal Standard
+  SeriesTypeEnum:
+    name: SeriesTypeEnum
+    definition_uri: https://w3id.org/enigma/SeriesTypeEnum
+    annotations:
+      microtype:
+        tag: microtype
+        value: ME:0000003
+      microtype_data_type:
+        tag: microtype_data_type
+        value: oterm_ref
+    description: Context describing the purpose of a series.
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    permissible_values:
+      time_series:
+        text: time_series
+        description: A time series, in which a series of measurements was taken at
+          different timepoints.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000004
+        title: Time Series
+      replicate_series:
+        text: replicate_series
+        description: A replicate series, e.g., biological or technical replicates.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000005
+        title: Replicate Series
+  MathematicalContextEnum:
+    name: MathematicalContextEnum
+    definition_uri: https://w3id.org/enigma/MathematicalContextEnum
+    annotations:
+      microtype:
+        tag: microtype
+        value: ME:0000018
+      microtype_data_type:
+        tag: microtype_data_type
+        value: oterm_ref
+    description: Microtypes that provide mathematical context.
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    permissible_values:
+      normalized:
+        text: normalized
+        description: Normalized; describe how in the Method or Protocol.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000019
+        title: Normalized
+      relative:
+        text: relative
+        description: Human-readable context saying what another microtype is measured
+          relative to.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000020
+        title: Relative
+      increase:
+        text: increase
+        description: Increase.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000021
+        title: Increase
+      decrease:
+        text: decrease
+        description: Decrease.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000022
+        title: Decrease
+      gain:
+        text: gain
+        description: Gain.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000023
+        title: Gain
+      loss:
+        text: loss
+        description: Loss.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000024
+        title: Loss
+      nearest:
+        text: nearest
+        description: Nearest.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000025
+        title: Nearest
+      variable_name:
+        text: variable_name
+        description: Variable Name.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000290
+        title: Variable Name
+      variable_type:
+        text: variable_type
+        description: Variable Type.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000291
+        title: Variable Type
+      dimension:
+        text: dimension
+        description: Dimension.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000292
+        title: Dimension
+      high:
+        text: high
+        description: High.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000375
+        title: High
+      low:
+        text: low
+        description: Low.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000376
+        title: Low
+      numerator:
+        text: numerator
+        description: Numerator.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000401
+        title: Numerator
+      denominator:
+        text: denominator
+        description: Denominator.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000402
+        title: Denominator
+      cumulative:
+        text: cumulative
+        description: Cumulative.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000477
+        title: Cumulative
+  ChemicalContextEnum:
+    name: ChemicalContextEnum
+    definition_uri: https://w3id.org/enigma/ChemicalContextEnum
+    annotations:
+      microtype:
+        tag: microtype
+        value: ME:0000026
+      microtype_data_type:
+        tag: microtype_data_type
+        value: oterm_ref
+    description: Describes the context of a molecule in a chemical reaction or experiment.
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    permissible_values:
+      molecule:
+        text: molecule
+        description: Use when the type of molecule varies along a dimension.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000027
+        title: Molecule
+      reaction:
+        text: reaction
+        description: Human-readable description of a chemical reaction.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000028
+        title: Reaction
+      surface_type:
+        text: surface_type
+        description: Human-readable description of a type of surface.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000029
+        title: Surface Type
+      bead_type:
+        text: bead_type
+        description: Human-readable description of the type of bead used in a (geo)chemical
+          experiment.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000030
+        title: Bead Type
+      bead_size:
+        text: bead_size
+        description: Size of a bead used in a (geo)chemical experiment.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000031
+        title: Bead Size
+      thermodynamic_context:
+        text: thermodynamic_context
+        description: Thermodynamic context for a reaction.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000032
+        title: Thermodynamic Context
+      specific_activity:
+        text: specific_activity
+        description: Rate of reaction multiplied by the volume, divided by mass of
+          protein.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000035
+        title: Specific Activity
+      wavelength:
+        text: wavelength
+        description: Wavelength of radiation.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000036
+        title: Wavelength
+      physiochemical_state:
+        text: physiochemical_state
+        description: Human-readable context for the state or type of matter, e.g.,
+          dissolved, or in soil
+        annotations:
+          term:
+            tag: term
+            value: ME:0000037
+        title: Physiochemical State
+      detection_limit:
+        text: detection_limit
+        description: Detection limit for an instrument or experiment.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000038
+        title: Detection Limit
+      reagent:
+        text: reagent
+        description: Reagent.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000183
+        title: Reagent
+      organic:
+        text: organic
+        description: Use as context, for example, to label inorganic or organic carbon.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000346
+        title: Organic
+      molecular_weight:
+        text: molecular_weight
+        description: Molecular Weight.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000350
+        title: Molecular Weight
+      reference_compound:
+        text: reference_compound
+        description: Reference Compound.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000389
+        title: Reference Compound
+      isotope:
+        text: isotope
+        description: Isotope.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000408
+        title: Isotope
+      redox:
+        text: redox
+        description: Redox.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000437
+        title: Redox
+      exact_mass:
+        text: exact_mass
+        description: Exact Mass.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000470
+        title: Exact Mass
+  BiologicalContextEnum:
+    name: BiologicalContextEnum
+    definition_uri: https://w3id.org/enigma/BiologicalContextEnum
+    annotations:
+      microtype:
+        tag: microtype
+        value: ME:0000039
+      microtype_data_type:
+        tag: microtype_data_type
+        value: oterm_ref
+    description: Biological Context.
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    permissible_values:
+      cell:
+        text: cell
+        description: Cell.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000040
+        title: Cell
+      colony:
+        text: colony
+        description: Colony.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000041
+        title: Colony
+      strain:
+        text: strain
+        description: Strain of microbe, or isolate ID.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000042
+        title: Strain
+      taxon:
+        text: taxon
+        description: Taxon.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000045
+        title: Taxon
+      media:
+        text: media
+        description: Media type.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000048
+        title: Media
+      metabolite:
+        text: metabolite
+        description: Metabolite.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000053
+        title: Metabolite
+      enzyme_substrate:
+        text: enzyme_substrate
+        description: Enzyme Substrate.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000054
+        title: Enzyme Substrate
+      gene:
+        text: gene
+        description: Gene.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000059
+        title: Gene
+      protein:
+        text: protein
+        description: Protein.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000066
+        title: Protein
+      protein_annotation:
+        text: protein_annotation
+        description: Protein Annotation.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000067
+        title: Protein Annotation
+      operon:
+        text: operon
+        description: Operon.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000076
+        title: Operon
+      ribosome:
+        text: ribosome
+        description: Ribosome.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000077
+        title: Ribosome
+      growth_parameter:
+        text: growth_parameter
+        description: Growth Parameter.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000078
+        title: Growth Parameter
+      gene_regulation:
+        text: gene_regulation
+        description: Gene Regulation.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000083
+        title: Gene Regulation
+      taxonomic_level:
+        text: taxonomic_level
+        description: Taxonomic Level.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000090
+        title: Taxonomic Level
+      strain_change:
+        text: strain_change
+        description: Strain Change.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000091
+        title: Strain Change
+      knockout:
+        text: knockout
+        description: Knockout.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000097
+        title: Knockout
+      environment:
+        text: environment
+        description: Environment.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000098
+        title: Environment
+      ecology:
+        text: ecology
+        description: Ecology.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000104
+        title: Ecology
+      sequencing:
+        text: sequencing
+        description: Sequencing.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000111
+        title: Sequencing
+      asv:
+        text: asv
+        description: Amplicon Sequence Variant.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000184
+        title: ASV
+      esv:
+        text: esv
+        description: ESV.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000185
+        title: ESV
+      community:
+        text: community
+        description: Community.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000231
+        title: Community
+      genome:
+        text: genome
+        description: Genome.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000245
+        title: Genome
+      gene_annotation:
+        text: gene_annotation
+        description: Gene Annotation.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000250
+        title: Gene Annotation
+      knockout_library:
+        text: knockout_library
+        description: Knockout Library.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000260
+        title: Knockout Library
+      assembly:
+        text: assembly
+        description: Assembly.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000279
+        title: Assembly
+      bin:
+        text: bin
+        description: Bin (metagenomic).
+        annotations:
+          term:
+            tag: term
+            value: ME:0000329
+        title: Bin
+      overexpression_library:
+        text: overexpression_library
+        description: Overexpression Library.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000395
+        title: Overexpression Library
+      growth_stage:
+        text: growth_stage
+        description: Growth Stage.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000416
+        title: Growth Stage
+      otu:
+        text: otu
+        description: OTU.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000479
+        title: OTU
+  TaxonomicLevelEnum:
+    name: TaxonomicLevelEnum
+    definition_uri: https://w3id.org/enigma/TaxonomicLevelEnum
+    annotations:
+      microtype:
+        tag: microtype
+        value: ME:0000090
+      microtype_data_type:
+        tag: microtype_data_type
+        value: oterm_ref
+    description: Taxonomic Level.
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    permissible_values:
+      kingdom:
+        text: kingdom
+        description: Kingdom.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000251
+        title: Kingdom
+      phylum:
+        text: phylum
+        description: Phylum.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000252
+        title: Phylum
+      class:
+        text: class
+        description: Class.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000253
+        title: Class
+      order:
+        text: order
+        description: Order.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000254
+        title: Order
+      family:
+        text: family
+        description: Family.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000255
+        title: Family
+      genus:
+        text: genus
+        description: Genus.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000256
+        title: Genus
+      species:
+        text: species
+        description: Species.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000257
+        title: Species
+      taxonomic_domain:
+        text: taxonomic_domain
+        description: Taxonomic Domain.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000351
+        title: Taxonomic Domain
+  StrainChangeEffectEnum:
+    name: StrainChangeEffectEnum
+    definition_uri: https://w3id.org/enigma/StrainChangeEffectEnum
+    annotations:
+      microtype:
+        tag: microtype
+        value: ME:0000092
+      microtype_data_type:
+        tag: microtype_data_type
+        value: oterm_ref
+    description: Strain Change Effect.
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    permissible_values:
+      synonymous:
+        text: synonymous
+        description: Synonymous.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000093
+        title: Synonymous
+      non_synonymous:
+        text: non_synonymous
+        description: Non-Synonymous.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000094
+        title: Non-Synonymous
+      frameshift:
+        text: frameshift
+        description: Frameshift.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000095
+        title: Frameshift
+      stop:
+        text: stop
+        description: Stop.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000096
+        title: Stop
+  CommunityAssemblyProcessEnum:
+    name: CommunityAssemblyProcessEnum
+    definition_uri: https://w3id.org/enigma/CommunityAssemblyProcessEnum
+    annotations:
+      microtype:
+        tag: microtype
+        value: ME:0000105
+      microtype_data_type:
+        tag: microtype_data_type
+        value: oterm_ref
+    description: Community Assembly Process.
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    permissible_values:
+      variable_selection:
+        text: variable_selection
+        description: Variable Selection.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000106
+        title: Variable Selection
+      homogenous_selection:
+        text: homogenous_selection
+        description: Homogenous Selection.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000107
+        title: Homogenous Selection
+      dispersal_limitation:
+        text: dispersal_limitation
+        description: Dispersal Limitation.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000108
+        title: Dispersal Limitation
+      homogenizing_dispersal:
+        text: homogenizing_dispersal
+        description: Homogenizing Dispersal.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000109
+        title: Homogenizing Dispersal
+      undominated:
+        text: undominated
+        description: Undominated.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000110
+        title: Undominated
+  ReadTypeEnum:
+    name: ReadTypeEnum
+    definition_uri: https://w3id.org/enigma/ReadTypeEnum
+    annotations:
+      microtype:
+        tag: microtype
+        value: ME:0000112
+      microtype_data_type:
+        tag: microtype_data_type
+        value: oterm_ref
+    description: Read Type.
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    permissible_values:
+      paired_end_read:
+        text: paired_end_read
+        description: Paired End Read.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000113
+        title: Paired End Read
+      single_end_read:
+        text: single_end_read
+        description: Single End Read.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000114
+        title: Single End Read
+  SequencingTechnologyEnum:
+    name: SequencingTechnologyEnum
+    definition_uri: https://w3id.org/enigma/SequencingTechnologyEnum
+    annotations:
+      microtype:
+        tag: microtype
+        value: ME:0000116
+      microtype_data_type:
+        tag: microtype_data_type
+        value: oterm_ref
+    description: Sequencing Technology.
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    permissible_values:
+      illumina:
+        text: illumina
+        description: Illumina.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000117
+        title: Illumina
+      pacbio:
+        text: pacbio
+        description: Pacbio.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000118
+        title: Pacbio
+      oxford_nanopore:
+        text: oxford_nanopore
+        description: Oxford Nanopore.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000474
+        title: Oxford Nanopore
+  MeasurementEnum:
+    name: MeasurementEnum
+    definition_uri: https://w3id.org/enigma/MeasurementEnum
+    annotations:
+      microtype:
+        tag: microtype
+        value: ME:0000120
+      microtype_data_type:
+        tag: microtype_data_type
+        value: oterm_ref
+    description: Measurement.
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    permissible_values:
+      ph:
+        text: ph
+        description: pH.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000121
+        title: pH
+      time_elapsed:
+        text: time_elapsed
+        description: Time Elapsed.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000122
+        title: Time Elapsed
+      temperature:
+        text: temperature
+        description: Temperature.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000123
+        title: Temperature
+      conductivity:
+        text: conductivity
+        description: Conductivity.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000124
+        title: Conductivity
+      redox_potential:
+        text: redox_potential
+        description: Redox Potential.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000125
+        title: Redox Potential
+      count:
+        text: count
+        description: Count.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000126
+        title: Count
+      optical_density:
+        text: optical_density
+        description: Optical Density.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000127
+        title: Optical Density
+      size:
+        text: size
+        description: Size.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000128
+        title: Size
+      concentration:
+        text: concentration
+        description: Concentration.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000129
+        title: Concentration
+      hybridization_intensity:
+        text: hybridization_intensity
+        description: Hybridization Intensity.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000130
+        title: Hybridization Intensity
+      expression_level:
+        text: expression_level
+        description: Expression Level.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000131
+        title: Expression Level
+      enzyme_activity:
+        text: enzyme_activity
+        description: Enzyme Activity.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000132
+        title: Enzyme Activity
+      absorbance:
+        text: absorbance
+        description: Absorbance.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000133
+        title: Absorbance
+      heat:
+        text: heat
+        description: Heat.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000134
+        title: Heat
+      mass:
+        text: mass
+        description: Mass.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000135
+        title: Mass
+      fitness_score:
+        text: fitness_score
+        description: Fitness Score.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000137
+        title: Fitness Score
+      genetic_interaction_score:
+        text: genetic_interaction_score
+        description: Genetic Interaction Score.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000138
+        title: Genetic Interaction Score
+      stoichiometric_ratio:
+        text: stoichiometric_ratio
+        description: Stoichiometric Ratio.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000139
+        title: Stoichiometric Ratio
+      relative_abundance:
+        text: relative_abundance
+        description: Relative amounts of multiple categories of the same object.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000140
+        title: Relative Abundance
+      binary:
+        text: binary
+        description: Binary.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000141
+        title: Binary
+      pressure:
+        text: pressure
+        description: Pressure.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000181
+        title: Pressure
+      turbidity:
+        text: turbidity
+        description: Turbidity.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000182
+        title: Turbidity
+      rate:
+        text: rate
+        description: Rate.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000264
+        title: Rate
+      sequence:
+        text: sequence
+        description: Sequence.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000282
+        title: Sequence
+      salinity:
+        text: salinity
+        description: Salinity.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000302
+        title: Salinity
+      resistivity:
+        text: resistivity
+        description: Resistivity.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000303
+        title: Resistivity
+      saturation:
+        text: saturation
+        description: Saturation.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000304
+        title: Saturation
+      density:
+        text: density
+        description: Density.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000305
+        title: Density
+      charge:
+        text: charge
+        description: Charge.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000313
+        title: Charge
+      wind_speed:
+        text: wind_speed
+        description: Wind Speed.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000316
+        title: Wind Speed
+      solar_radiation:
+        text: solar_radiation
+        description: Solar Radiation.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000318
+        title: Solar Radiation
+      rainfall:
+        text: rainfall
+        description: Rainfall.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000319
+        title: Rainfall
+      wind_direction:
+        text: wind_direction
+        description: Wind Direction.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000320
+        title: Wind Direction
+      relative_humidity:
+        text: relative_humidity
+        description: Relative Humidity.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000321
+        title: Relative Humidity
+      error_range:
+        text: error_range
+        description: Error Range.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000371
+        title: Error Range
+      ion_intensity:
+        text: ion_intensity
+        description: Ion Intensity.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000390
+        title: Ion Intensity
+      amount:
+        text: amount
+        description: 'Absolute amount of a substance, such as an element.  See also:
+          concentration.'
+        annotations:
+          term:
+            tag: term
+            value: ME:0000391
+        title: Amount
+      isotope_ratio:
+        text: isotope_ratio
+        description: Isotope Ratio.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000403
+        title: Isotope Ratio
+      sequence_identity:
+        text: sequence_identity
+        description: Sequence Identity.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000429
+        title: Sequence Identity
+      sequence_similarity:
+        text: sequence_similarity
+        description: Sequence Similarity.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000430
+        title: Sequence Similarity
+      relative_evolutionary_divergence:
+        text: relative_evolutionary_divergence
+        description: Relative Evolutionary Divergence.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000431
+        title: Relative Evolutionary Divergence
+      genome_quality:
+        text: genome_quality
+        description: Genome Quality.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000463
+        title: Genome Quality
+      jukes_cantor_distance:
+        text: jukes_cantor_distance
+        description: Jukes-Cantor Distance.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000472
+        title: Jukes-Cantor Distance
+      dew_point:
+        text: dew_point
+        description: Dew Point.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000475
+        title: Dew Point
+      fluorescence:
+        text: fluorescence
+        description: Fluorescence.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000478
+        title: Fluorescence
+  StatisticEnum:
+    name: StatisticEnum
+    definition_uri: https://w3id.org/enigma/StatisticEnum
+    annotations:
+      microtype:
+        tag: microtype
+        value: ME:0000146
+      microtype_data_type:
+        tag: microtype_data_type
+        value: oterm_ref
+    description: Statistic.
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    permissible_values:
+      average:
+        text: average
+        description: Average.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000147
+        title: Average
+      difference:
+        text: difference
+        description: Difference.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000148
+        title: Difference
+      standard_deviation:
+        text: standard_deviation
+        description: Standard Deviation.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000149
+        title: Standard Deviation
+      standard_error:
+        text: standard_error
+        description: Standard Error.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000150
+        title: Standard Error
+      minimum:
+        text: minimum
+        description: Minimum.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000151
+        title: Minimum
+      maximum:
+        text: maximum
+        description: Maximum.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000152
+        title: Maximum
+      median:
+        text: median
+        description: Median.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000153
+        title: Median
+      ratio:
+        text: ratio
+        description: Ratio.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000154
+        title: Ratio
+      log_ratio:
+        text: log_ratio
+        description: Log Ratio.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000155
+        title: Log Ratio
+      p_value:
+        text: p_value
+        description: p Value.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000156
+        title: p Value
+      t_score:
+        text: t_score
+        description: T Score.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000157
+        title: T Score
+      frequency:
+        text: frequency
+        description: Frequency.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000158
+        title: Frequency
+      fold_enrichment:
+        text: fold_enrichment
+        description: Fold Enrichment.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000159
+        title: Fold Enrichment
+      confidence:
+        text: confidence
+        description: Confidence.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000160
+        title: Confidence
+      evaluation:
+        text: evaluation
+        description: Evaluation.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000161
+        title: Evaluation
+      correlation:
+        text: correlation
+        description: Correlation.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000168
+        title: Correlation
+      multivariate_analysis:
+        text: multivariate_analysis
+        description: Multivariate Analysis.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000173
+        title: Multivariate Analysis
+      coefficient_of_variation:
+        text: coefficient_of_variation
+        description: Coefficient of Variation.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000358
+        title: Coefficient of Variation
+  StrandEnum:
+    name: StrandEnum
+    definition_uri: https://w3id.org/enigma/StrandEnum
+    annotations:
+      microtype:
+        tag: microtype
+        value: ME:0000186
+      microtype_data_type:
+        tag: microtype_data_type
+        value: oterm_ref
+    description: Strand of DNA
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    permissible_values:
+      forward:
+        text: forward
+        description: Forward.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000187
+        title: Forward
+      +:
+        text: +
+        description: Forward strand using + symbol notation.
+        meaning: ME:0000187
+        title: Forward (symbol notation)
+      reverse_complement:
+        text: reverse_complement
+        description: Reverse Complement.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000188
+        title: Reverse Complement
+      '-':
+        text: '-'
+        description: Reverse complement strand using - symbol notation.
+        meaning: ME:0000188
+        title: Reverse Complement (symbol notation)
+  SequenceTypeEnum:
+    name: SequenceTypeEnum
+    definition_uri: https://w3id.org/enigma/SequenceTypeEnum
+    annotations:
+      microtype:
+        tag: microtype
+        value: ME:0000189
+      microtype_data_type:
+        tag: microtype_data_type
+        value: oterm_ref
+    description: Sequence Type.
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    permissible_values:
+      16s_sequence:
+        text: 16s_sequence
+        description: 16S Sequence.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000190
+        title: 16S Sequence
+      18s_sequence:
+        text: 18s_sequence
+        description: 18S Sequence.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000191
+        title: 18S Sequence
+      its_sequence:
+        text: its_sequence
+        description: ITS Sequence.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000192
+        title: ITS Sequence
+      genome_sequence:
+        text: genome_sequence
+        description: Genome Sequence.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000195
+        title: Genome Sequence
+  StrainChangeTypeEnum:
+    name: StrainChangeTypeEnum
+    definition_uri: https://w3id.org/enigma/StrainChangeTypeEnum
+    annotations:
+      microtype:
+        tag: microtype
+        value: ME:0000227
+      microtype_data_type:
+        tag: microtype_data_type
+        value: oterm_ref
+    description: Strain Change Type.
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    permissible_values:
+      insertion:
+        text: insertion
+        description: Insertion.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000196
+        title: Insertion
+      deletion:
+        text: deletion
+        description: Deletion.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000197
+        title: Deletion
+      substitution:
+        text: substitution
+        description: Substitution.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000198
+        title: Substitution
+  CommunityTypeEnum:
+    name: CommunityTypeEnum
+    definition_uri: https://w3id.org/enigma/CommunityTypeEnum
+    annotations:
+      microtype:
+        tag: microtype
+        value: ME:0000234
+      microtype_data_type:
+        tag: microtype_data_type
+        value: oterm_ref
+    description: Community Type.
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    permissible_values:
+      isolate_community:
+        text: isolate_community
+        description: Isolate Community.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000235
+        title: Isolate Community
+      enrichment:
+        text: enrichment
+        description: Enrichment.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000236
+        title: Enrichment
+      active_fraction:
+        text: active_fraction
+        description: Active Fraction.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000237
+        title: Active Fraction
+      assemblage:
+        text: assemblage
+        description: Assemblage.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000238
+        title: Assemblage
+      environmental_community:
+        text: environmental_community
+        description: Environmental Community.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000326
+        title: Environmental Community
+  ControlEnum:
+    name: ControlEnum
+    definition_uri: https://w3id.org/enigma/ControlEnum
+    annotations:
+      microtype:
+        tag: microtype
+        value: ME:0000283
+      microtype_data_type:
+        tag: microtype_data_type
+        value: oterm_ref
+    description: Control.
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    permissible_values:
+      negative_control:
+        text: negative_control
+        description: Negative Control.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000284
+        title: Negative Control
+      positive_control:
+        text: positive_control
+        description: Positive Control.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000285
+        title: Positive Control
+      low_control:
+        text: low_control
+        description: Low Control.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000480
+        title: Low Control
+      high_control:
+        text: high_control
+        description: High Control.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000481
+        title: High Control
+      control_name:
+        text: control_name
+        description: Control Name.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000482
+        title: Control Name
+  PositionEnum:
+    name: PositionEnum
+    definition_uri: https://w3id.org/enigma/PositionEnum
+    annotations:
+      microtype:
+        tag: microtype
+        value: ME:0000339
+      microtype_data_type:
+        tag: microtype_data_type
+        value: oterm_ref
+    description: Position.
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    permissible_values:
+      top:
+        text: top
+        description: Use as context for locations, e.g., the top end of a depth measurement.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000311
+        title: Top
+      bottom:
+        text: bottom
+        description: Use as context for locations, e.g., the bottom end of a depth
+          measurement.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000312
+        title: Bottom
+      upper:
+        text: upper
+        description: Upper.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000340
+        title: Upper
+      lower:
+        text: lower
+        description: Lower.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000341
+        title: Lower
+      middle:
+        text: middle
+        description: Middle.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000342
+        title: Middle
+  IonizationModeEnum:
+    name: IonizationModeEnum
+    definition_uri: https://w3id.org/enigma/IonizationModeEnum
+    annotations:
+      microtype:
+        tag: microtype
+        value: ME:0000385
+      microtype_data_type:
+        tag: microtype_data_type
+        value: oterm_ref
+    description: Ionization mode used in a mass spec experiment.
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    permissible_values:
+      positive_polarity:
+        text: positive_polarity
+        description: Positive Polarity (ionization mode for MS experiment).
+        annotations:
+          term:
+            tag: term
+            value: ME:0000386
+        title: Positive Polarity
+      negative_polarity:
+        text: negative_polarity
+        description: Negative Polarity (ionization mode for MS experiment).
+        annotations:
+          term:
+            tag: term
+            value: ME:0000387
+        title: Negative Polarity
+  GeologicZoneEnum:
+    name: GeologicZoneEnum
+    definition_uri: https://w3id.org/enigma/GeologicZoneEnum
+    annotations:
+      microtype:
+        tag: microtype
+        value: ME:0000404
+      microtype_data_type:
+        tag: microtype_data_type
+        value: oterm_ref
+    description: Geologic Zone.
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    permissible_values:
+      vadose_zone:
+        text: vadose_zone
+        description: Vadose Zone.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000405
+        title: Vadose Zone
+      variably_saturated_zone:
+        text: variably_saturated_zone
+        description: Variably Saturated Zone.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000406
+        title: Variably Saturated Zone
+      saturated_zone:
+        text: saturated_zone
+        description: Saturated Zone.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000407
+        title: Saturated Zone
+  GrowthStageEnum:
+    name: GrowthStageEnum
+    definition_uri: https://w3id.org/enigma/GrowthStageEnum
+    annotations:
+      microtype:
+        tag: microtype
+        value: ME:0000416
+      microtype_data_type:
+        tag: microtype_data_type
+        value: oterm_ref
+    description: Growth Stage.
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    permissible_values:
+      enrichment_growth:
+        text: enrichment_growth
+        description: Preincubation or enrichment of a microbial sample before plating
+          for colony picking/isolation.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000417
+        title: Enrichment Growth
+      inoculation:
+        text: inoculation
+        description: Inoculation.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000418
+        title: Inoculation
+      lag_phase:
+        text: lag_phase
+        description: Lag Phase.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000419
+        title: Lag Phase
+      exponential_phase:
+        text: exponential_phase
+        description: Exponential Phase.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000420
+        title: Exponential Phase
+      stationary_phase:
+        text: stationary_phase
+        description: Stationary Phase.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000421
+        title: Stationary Phase
+      colony_formation_on_solid_media:
+        text: colony_formation_on_solid_media
+        description: Colony formation on solid media, during the process of microbial
+          isolation
+        annotations:
+          term:
+            tag: term
+            value: ME:0000484
+        title: Colony Formation on Solid Media
+      single_colony_growth_in_liquid_media:
+        text: single_colony_growth_in_liquid_media
+        description: Single colony growth in liquid media, after microbial isolation
+        annotations:
+          term:
+            tag: term
+            value: ME:0000485
+        title: Single Colony Growth in Liquid Media
+  FlagellarArrangementEnum:
+    name: FlagellarArrangementEnum
+    definition_uri: https://w3id.org/enigma/FlagellarArrangementEnum
+    annotations:
+      microtype:
+        tag: microtype
+        value: ME:0000447
+      microtype_data_type:
+        tag: microtype_data_type
+        value: oterm_ref
+    description: Flagellar Arrangement.
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    permissible_values:
+      monotrichous:
+        text: monotrichous
+        description: A single flagellum extending from one end of the cell.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000448
+        title: Monotrichous
+      amphitrichous:
+        text: amphitrichous
+        description: Single or multiple flagella extending from both ends of the cell.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000449
+        title: Amphitrichous
+      lophotrichous:
+        text: lophotrichous
+        description: Tuft of flagella extending from one end or both ends of the cell.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000450
+        title: Lophotrichous
+      peritrichous:
+        text: peritrichous
+        description: Multiple flagella distributed over the entire cell.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000451
+        title: Peritrichous
+  CellShapeEnum:
+    name: CellShapeEnum
+    definition_uri: https://w3id.org/enigma/CellShapeEnum
+    annotations:
+      microtype:
+        tag: microtype
+        value: ME:0000455
+      microtype_data_type:
+        tag: microtype_data_type
+        value: oterm_ref
+    description: Cell Shape.
+    from_schema: https://w3id.org/enigma/enigma-cdm
+    permissible_values:
+      rod:
+        text: rod
+        description: Rod.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000456
+        title: Rod
+      rod_vibrio:
+        text: rod_vibrio
+        description: Rod-vibrio.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000457
+        title: Rod-vibrio
+      oval:
+        text: oval
+        description: Oval.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000458
+        title: Oval
+      irregular_oval:
+        text: irregular_oval
+        description: Irregular Oval.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000459
+        title: Irregular Oval
+      spherical:
+        text: spherical
+        description: Spherical.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000460
+        title: Spherical
+      pleomorphic:
+        text: pleomorphic
+        description: Pleomorphic.
+        annotations:
+          term:
+            tag: term
+            value: ME:0000461
+        title: Pleomorphic
 slots:
   process_id:
     name: process_id
@@ -320,6 +2690,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000277
+      microtype:
+        tag: microtype
+        value: ME:0000277
+      microtype_data_type:
+        tag: microtype_data_type
+        value: object_ref
     description: id field for Process
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:process_id
@@ -339,6 +2715,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000204
+      microtype:
+        tag: microtype
+        value: ME:0000204
+      microtype_data_type:
+        tag: microtype_data_type
+        value: oterm_ref
     description: process field for Process
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:process_process
@@ -357,6 +2739,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000205
+      microtype:
+        tag: microtype
+        value: ME:0000205
+      microtype_data_type:
+        tag: microtype_data_type
+        value: string
     description: person field for Process
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:process_person
@@ -372,6 +2760,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000206
+      microtype:
+        tag: microtype
+        value: ME:0000206
+      microtype_data_type:
+        tag: microtype_data_type
+        value: string
     description: campaign field for Process
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:process_campaign
@@ -390,13 +2784,19 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000328
+      microtype:
+        tag: microtype
+        value: ME:0000328
+      microtype_data_type:
+        tag: microtype_data_type
+        value: object_ref
     description: protocol field for Process
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:process_protocol
     owner: Process
     domain_of:
     - Process
-    range: string
+    range: Protocol
   process_date_start:
     name: process_date_start
     definition_uri: https://w3id.org/enigma/process_date_start
@@ -404,6 +2804,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000009
+      microtype:
+        tag: microtype
+        value: ME:0000009
+      microtype_data_type:
+        tag: microtype_data_type
+        value: string
     description: date_start field for Process
     comments:
     - YYYY[-MM[-DD]]
@@ -412,8 +2818,7 @@ slots:
     owner: Process
     domain_of:
     - Process
-    range: string
-    pattern: \d\d\d\d(-\d\d(-\d\d)?)?
+    range: Date
   process_date_end:
     name: process_date_end
     definition_uri: https://w3id.org/enigma/process_date_end
@@ -421,6 +2826,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000009
+      microtype:
+        tag: microtype
+        value: ME:0000009
+      microtype_data_type:
+        tag: microtype_data_type
+        value: string
     description: date_end field for Process
     comments:
     - YYYY[-MM[-DD]]
@@ -429,8 +2840,7 @@ slots:
     owner: Process
     domain_of:
     - Process
-    range: string
-    pattern: \d\d\d\d(-\d\d(-\d\d)?)?
+    range: Date
   process_input_objects:
     name: process_input_objects
     definition_uri: https://w3id.org/enigma/process_input_objects
@@ -441,6 +2851,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000207
+      microtype:
+        tag: microtype
+        value: ME:0000207
+      microtype_data_type:
+        tag: microtype_data_type
+        value: string
     description: input_objects field for Process
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:process_input_objects
@@ -460,6 +2876,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000208
+      microtype:
+        tag: microtype
+        value: ME:0000208
+      microtype_data_type:
+        tag: microtype_data_type
+        value: string
     description: output_objects field for Process
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:process_output_objects
@@ -476,6 +2898,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000266
+      microtype:
+        tag: microtype
+        value: ME:0000266
+      microtype_data_type:
+        tag: microtype_data_type
+        value: object_ref
     description: id field for Location
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:location_id
@@ -495,6 +2923,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000228
+      microtype:
+        tag: microtype
+        value: ME:0000228
+      microtype_data_type:
+        tag: microtype_data_type
+        value: object_ref
     description: name field for Location
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:location_name
@@ -513,13 +2947,19 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000211
+      microtype:
+        tag: microtype
+        value: ME:0000211
+      microtype_data_type:
+        tag: microtype_data_type
+        value: float
     description: latitude field for Location
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:location_latitude
     owner: Location
     domain_of:
     - Location
-    range: float
+    range: Latitude
     required: true
     minimum_value: -90
     maximum_value: 90
@@ -533,13 +2973,19 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000212
+      microtype:
+        tag: microtype
+        value: ME:0000212
+      microtype_data_type:
+        tag: microtype_data_type
+        value: float
     description: longitude field for Location
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:location_longitude
     owner: Location
     domain_of:
     - Location
-    range: float
+    range: Longitude
     required: true
     minimum_value: -180
     maximum_value: 180
@@ -553,6 +2999,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000213
+      microtype:
+        tag: microtype
+        value: ME:0000213
+      microtype_data_type:
+        tag: microtype_data_type
+        value: oterm_ref
     description: continent field for Location
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:location_continent
@@ -571,6 +3023,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000214
+      microtype:
+        tag: microtype
+        value: ME:0000214
+      microtype_data_type:
+        tag: microtype_data_type
+        value: oterm_ref
     description: country field for Location
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:location_country
@@ -586,6 +3044,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000215
+      microtype:
+        tag: microtype
+        value: ME:0000215
+      microtype_data_type:
+        tag: microtype_data_type
+        value: string
     description: region field for Location
     comments:
     - specific local region name(s)
@@ -606,6 +3070,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000216
+      microtype:
+        tag: microtype
+        value: ME:0000216
+      microtype_data_type:
+        tag: microtype_data_type
+        value: oterm_ref
     description: biome field for Location
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:location_biome
@@ -624,6 +3094,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000217
+      microtype:
+        tag: microtype
+        value: ME:0000217
+      microtype_data_type:
+        tag: microtype_data_type
+        value: oterm_ref
     description: feature field for Location
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:location_feature
@@ -638,6 +3114,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000267
+      microtype:
+        tag: microtype
+        value: ME:0000267
+      microtype_data_type:
+        tag: microtype_data_type
+        value: object_ref
     description: id field for Sample
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:sample_id
@@ -657,6 +3139,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000102
+      microtype:
+        tag: microtype
+        value: ME:0000102
+      microtype_data_type:
+        tag: microtype_data_type
+        value: object_ref
     description: name field for Sample
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:sample_name
@@ -675,13 +3163,19 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000228
+      microtype:
+        tag: microtype
+        value: ME:0000228
+      microtype_data_type:
+        tag: microtype_data_type
+        value: object_ref
     description: location field for Sample
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:sample_location
     owner: Sample
     domain_of:
     - Sample
-    range: string
+    range: Location
     required: true
   sample_depth:
     name: sample_depth
@@ -693,6 +3187,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000219
+      microtype:
+        tag: microtype
+        value: ME:0000219
+      microtype_data_type:
+        tag: microtype_data_type
+        value: float
     description: depth field for Sample
     comments:
     - in meters below ground level
@@ -701,7 +3201,7 @@ slots:
     owner: Sample
     domain_of:
     - Sample
-    range: float
+    range: Depth
   sample_elevation:
     name: sample_elevation
     definition_uri: https://w3id.org/enigma/sample_elevation
@@ -712,6 +3212,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000220
+      microtype:
+        tag: microtype
+        value: ME:0000220
+      microtype_data_type:
+        tag: microtype_data_type
+        value: float
     description: elevation field for Sample
     comments:
     - in meters above ground level
@@ -720,7 +3226,7 @@ slots:
     owner: Sample
     domain_of:
     - Sample
-    range: float
+    range: Elevation
   sample_date:
     name: sample_date
     definition_uri: https://w3id.org/enigma/sample_date
@@ -728,6 +3234,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000009
+      microtype:
+        tag: microtype
+        value: ME:0000009
+      microtype_data_type:
+        tag: microtype_data_type
+        value: string
     description: date field for Sample
     comments:
     - YYYY[-MM[-DD]]
@@ -736,9 +3248,8 @@ slots:
     owner: Sample
     domain_of:
     - Sample
-    range: string
+    range: Date
     required: true
-    pattern: \d\d\d\d(-\d\d(-\d\d)?)?
   sample_time:
     name: sample_time
     definition_uri: https://w3id.org/enigma/sample_time
@@ -746,6 +3257,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000010
+      microtype:
+        tag: microtype
+        value: ME:0000010
+      microtype_data_type:
+        tag: microtype_data_type
+        value: string
     description: time field for Sample
     comments:
     - HH[:MM[:SS]] [AM|PM]
@@ -754,8 +3271,7 @@ slots:
     owner: Sample
     domain_of:
     - Sample
-    range: string
-    pattern: \d(\d)?(:\d\d(:\d\d)?)?\s*([apAP][mM])?
+    range: Time
   sample_timezone:
     name: sample_timezone
     definition_uri: https://w3id.org/enigma/sample_timezone
@@ -763,6 +3279,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000201
+      microtype:
+        tag: microtype
+        value: ME:0000201
+      microtype_data_type:
+        tag: microtype_data_type
+        value: string
     description: timezone field for Sample
     comments:
     - ISO8601 compliant format, ie. UTC-7
@@ -771,7 +3293,7 @@ slots:
     owner: Sample
     domain_of:
     - Sample
-    range: string
+    range: Time
   sample_material:
     name: sample_material
     definition_uri: https://w3id.org/enigma/sample_material
@@ -782,6 +3304,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000230
+      microtype:
+        tag: microtype
+        value: ME:0000230
+      microtype_data_type:
+        tag: microtype_data_type
+        value: oterm_ref
     description: material field for Sample
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:sample_material
@@ -799,6 +3327,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000229
+      microtype:
+        tag: microtype
+        value: ME:0000229
+      microtype_data_type:
+        tag: microtype_data_type
+        value: oterm_ref
     description: env_package field for Sample
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:sample_env_package
@@ -814,6 +3348,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000202
+      microtype:
+        tag: microtype
+        value: ME:0000202
+      microtype_data_type:
+        tag: microtype_data_type
+        value: string
     description: description field for Sample
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:sample_description
@@ -828,6 +3368,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000268
+      microtype:
+        tag: microtype
+        value: ME:0000268
+      microtype_data_type:
+        tag: microtype_data_type
+        value: object_ref
     description: id field for Taxon
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:taxon_id
@@ -847,6 +3393,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000046
+      microtype:
+        tag: microtype
+        value: ME:0000046
+      microtype_data_type:
+        tag: microtype_data_type
+        value: string
     description: name field for Taxon
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:taxon_name
@@ -862,6 +3414,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000047
+      microtype:
+        tag: microtype
+        value: ME:0000047
+      microtype_data_type:
+        tag: microtype_data_type
+        value: object_ref
     description: ncbi_taxid field for Taxon
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:taxon_ncbi_taxid
@@ -876,6 +3434,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000269
+      microtype:
+        tag: microtype
+        value: ME:0000269
+      microtype_data_type:
+        tag: microtype_data_type
+        value: object_ref
     description: id field for OTU
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:otu_id
@@ -895,6 +3459,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000221
+      microtype:
+        tag: microtype
+        value: ME:0000221
+      microtype_data_type:
+        tag: microtype_data_type
+        value: string
     description: name field for OTU
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:otu_name
@@ -910,6 +3480,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000270
+      microtype:
+        tag: microtype
+        value: ME:0000270
+      microtype_data_type:
+        tag: microtype_data_type
+        value: object_ref
     description: id field for Condition
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:condition_id
@@ -929,6 +3505,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000200
+      microtype:
+        tag: microtype
+        value: ME:0000200
+      microtype_data_type:
+        tag: microtype_data_type
+        value: object_ref
     description: name field for Condition
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:condition_name
@@ -944,6 +3526,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000271
+      microtype:
+        tag: microtype
+        value: ME:0000271
+      microtype_data_type:
+        tag: microtype_data_type
+        value: object_ref
     description: id field for Strain
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:strain_id
@@ -963,6 +3551,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000044
+      microtype:
+        tag: microtype
+        value: ME:0000044
+      microtype_data_type:
+        tag: microtype_data_type
+        value: object_ref
     description: name field for Strain
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:strain_name
@@ -978,6 +3572,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000202
+      microtype:
+        tag: microtype
+        value: ME:0000202
+      microtype_data_type:
+        tag: microtype_data_type
+        value: string
     description: description field for Strain
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:strain_description
@@ -995,6 +3595,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000246
+      microtype:
+        tag: microtype
+        value: ME:0000246
+      microtype_data_type:
+        tag: microtype_data_type
+        value: object_ref
     description: genome field for Strain
     comments:
     - genome object for sequenced, WT strains
@@ -1003,7 +3609,7 @@ slots:
     owner: Strain
     domain_of:
     - Strain
-    range: string
+    range: Genome
   strain_derived_from:
     name: strain_derived_from
     definition_uri: https://w3id.org/enigma/strain_derived_from
@@ -1014,13 +3620,19 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000044
+      microtype:
+        tag: microtype
+        value: ME:0000044
+      microtype_data_type:
+        tag: microtype_data_type
+        value: object_ref
     description: derived_from field for Strain
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:strain_derived_from
     owner: Strain
     domain_of:
     - Strain
-    range: string
+    range: Strain
   strain_genes_changed:
     name: strain_genes_changed
     definition_uri: https://w3id.org/enigma/strain_genes_changed
@@ -1031,13 +3643,16 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000091
+      microtype:
+        tag: microtype
+        value: ME:0000091
     description: genes_changed field for Strain
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:strain_genes_changed
     owner: Strain
     domain_of:
     - Strain
-    range: string
+    range: Gene
     multivalued: true
   community_id:
     name: community_id
@@ -1046,6 +3661,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000272
+      microtype:
+        tag: microtype
+        value: ME:0000272
+      microtype_data_type:
+        tag: microtype_data_type
+        value: object_ref
     description: id field for Community
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:community_id
@@ -1065,6 +3686,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000233
+      microtype:
+        tag: microtype
+        value: ME:0000233
+      microtype_data_type:
+        tag: microtype_data_type
+        value: object_ref
     description: name field for Community
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:community_name
@@ -1077,19 +3704,22 @@ slots:
     name: community_community_type
     definition_uri: https://w3id.org/enigma/community_community_type
     annotations:
-      constraint:
-        tag: constraint
-        value: ME:0000234
       type_term:
         tag: type_term
         value: ME:0000234
+      microtype:
+        tag: microtype
+        value: ME:0000234
+      microtype_data_type:
+        tag: microtype_data_type
+        value: oterm_ref
     description: community_type field for Community
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:community_community_type
     owner: Community
     domain_of:
     - Community
-    range: string
+    range: CommunityTypeEnum
     required: true
   community_sample:
     name: community_sample
@@ -1101,13 +3731,19 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000102
+      microtype:
+        tag: microtype
+        value: ME:0000102
+      microtype_data_type:
+        tag: microtype_data_type
+        value: object_ref
     description: sample field for Community
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:community_sample
     owner: Community
     domain_of:
     - Community
-    range: string
+    range: Sample
   community_parent_community:
     name: community_parent_community
     definition_uri: https://w3id.org/enigma/community_parent_community
@@ -1118,13 +3754,19 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000233
+      microtype:
+        tag: microtype
+        value: ME:0000233
+      microtype_data_type:
+        tag: microtype_data_type
+        value: object_ref
     description: parent_community field for Community
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:community_parent_community
     owner: Community
     domain_of:
     - Community
-    range: string
+    range: Community
   community_condition:
     name: community_condition
     definition_uri: https://w3id.org/enigma/community_condition
@@ -1135,13 +3777,19 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000200
+      microtype:
+        tag: microtype
+        value: ME:0000200
+      microtype_data_type:
+        tag: microtype_data_type
+        value: object_ref
     description: condition field for Community
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:community_condition
     owner: Community
     domain_of:
     - Community
-    range: string
+    range: Condition
   community_defined_strains:
     name: community_defined_strains
     definition_uri: https://w3id.org/enigma/community_defined_strains
@@ -1152,8 +3800,18 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000044
+      microtype:
+        tag: microtype
+        value: ME:0000044
+      microtype_data_type:
+        tag: microtype_data_type
+        value: object_ref
     description: defined_strains field for Community
     comments:
+    - typedef.json specifies array ([text]), but actual data contains single values
+      only
+    - '{''Changed to multivalued'': ''false to match data reality (0% have multiple
+      strains)''}'
     - typedef.json has typo with FK pointing to [Strain.Name] with capital N
     - Using lowercase name to match actual Strain field
     from_schema: https://w3id.org/enigma/enigma-cdm
@@ -1161,8 +3819,8 @@ slots:
     owner: Community
     domain_of:
     - Community
-    range: string
-    multivalued: true
+    range: Strain
+    multivalued: false
   community_description:
     name: community_description
     definition_uri: https://w3id.org/enigma/community_description
@@ -1170,6 +3828,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000202
+      microtype:
+        tag: microtype
+        value: ME:0000202
+      microtype_data_type:
+        tag: microtype_data_type
+        value: string
     description: description field for Community
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:community_description
@@ -1184,6 +3848,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000273
+      microtype:
+        tag: microtype
+        value: ME:0000273
+      microtype_data_type:
+        tag: microtype_data_type
+        value: object_ref
     description: id field for Reads
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:reads_id
@@ -1203,6 +3873,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000248
+      microtype:
+        tag: microtype
+        value: ME:0000248
+      microtype_data_type:
+        tag: microtype_data_type
+        value: object_ref
     description: name field for Reads
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:reads_name
@@ -1221,49 +3897,61 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000126
+      microtype:
+        tag: microtype
+        value: ME:0000126
+      microtype_data_type:
+        tag: microtype_data_type
+        value: int
     description: read_count field for Reads
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:reads_read_count
     owner: Reads
     domain_of:
     - Reads
-    range: integer
+    range: Count
     required: true
   reads_read_type:
     name: reads_read_type
     definition_uri: https://w3id.org/enigma/reads_read_type
     annotations:
-      constraint:
-        tag: constraint
-        value: ME:0000112
       type_term:
         tag: type_term
         value: ME:0000112
+      microtype:
+        tag: microtype
+        value: ME:0000112
+      microtype_data_type:
+        tag: microtype_data_type
+        value: oterm_ref
     description: read_type field for Reads
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:reads_read_type
     owner: Reads
     domain_of:
     - Reads
-    range: string
+    range: ReadTypeEnum
     required: true
   reads_sequencing_technology:
     name: reads_sequencing_technology
     definition_uri: https://w3id.org/enigma/reads_sequencing_technology
     annotations:
-      constraint:
-        tag: constraint
-        value: ME:0000116
       type_term:
         tag: type_term
         value: ME:0000116
+      microtype:
+        tag: microtype
+        value: ME:0000116
+      microtype_data_type:
+        tag: microtype_data_type
+        value: oterm_ref
     description: sequencing_technology field for Reads
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:reads_sequencing_technology
     owner: Reads
     domain_of:
     - Reads
-    range: string
+    range: SequencingTechnologyEnum
     required: true
   reads_link:
     name: reads_link
@@ -1272,13 +3960,19 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000203
+      microtype:
+        tag: microtype
+        value: ME:0000203
+      microtype_data_type:
+        tag: microtype_data_type
+        value: string
     description: link field for Reads
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:reads_link
     owner: Reads
     domain_of:
     - Reads
-    range: string
+    range: Link
     required: true
   assembly_id:
     name: assembly_id
@@ -1287,6 +3981,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000281
+      microtype:
+        tag: microtype
+        value: ME:0000281
+      microtype_data_type:
+        tag: microtype_data_type
+        value: object_ref
     description: id field for Assembly
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:assembly_id
@@ -1306,6 +4006,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000280
+      microtype:
+        tag: microtype
+        value: ME:0000280
+      microtype_data_type:
+        tag: microtype_data_type
+        value: object_ref
     description: name field for Assembly
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:assembly_name
@@ -1324,13 +4030,19 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000044
+      microtype:
+        tag: microtype
+        value: ME:0000044
+      microtype_data_type:
+        tag: microtype_data_type
+        value: object_ref
     description: strain field for Assembly
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:assembly_strain
     owner: Assembly
     domain_of:
     - Assembly
-    range: string
+    range: Strain
   assembly_n_contigs:
     name: assembly_n_contigs
     definition_uri: https://w3id.org/enigma/assembly_n_contigs
@@ -1341,13 +4053,19 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000126
+      microtype:
+        tag: microtype
+        value: ME:0000126
+      microtype_data_type:
+        tag: microtype_data_type
+        value: int
     description: n_contigs field for Assembly
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:assembly_n_contigs
     owner: Assembly
     domain_of:
     - Assembly
-    range: integer
+    range: Count
     required: true
   assembly_link:
     name: assembly_link
@@ -1356,14 +4074,23 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000203
+      microtype:
+        tag: microtype
+        value: ME:0000203
+      microtype_data_type:
+        tag: microtype_data_type
+        value: string
     description: link field for Assembly
+    comments:
+    - Made optional because many Assembly records have empty or file path values instead
+      of HTTP URLs
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:assembly_link
     owner: Assembly
     domain_of:
     - Assembly
-    range: string
-    required: true
+    range: Link
+    required: false
   genome_id:
     name: genome_id
     definition_uri: https://w3id.org/enigma/genome_id
@@ -1371,6 +4098,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000274
+      microtype:
+        tag: microtype
+        value: ME:0000274
+      microtype_data_type:
+        tag: microtype_data_type
+        value: object_ref
     description: id field for Genome
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:genome_id
@@ -1390,6 +4123,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000246
+      microtype:
+        tag: microtype
+        value: ME:0000246
+      microtype_data_type:
+        tag: microtype_data_type
+        value: object_ref
     description: name field for Genome
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:genome_name
@@ -1408,13 +4147,19 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000044
+      microtype:
+        tag: microtype
+        value: ME:0000044
+      microtype_data_type:
+        tag: microtype_data_type
+        value: object_ref
     description: strain field for Genome
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:genome_strain
     owner: Genome
     domain_of:
     - Genome
-    range: string
+    range: Strain
   genome_n_contigs:
     name: genome_n_contigs
     definition_uri: https://w3id.org/enigma/genome_n_contigs
@@ -1425,13 +4170,19 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000126
+      microtype:
+        tag: microtype
+        value: ME:0000126
+      microtype_data_type:
+        tag: microtype_data_type
+        value: int
     description: n_contigs field for Genome
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:genome_n_contigs
     owner: Genome
     domain_of:
     - Genome
-    range: integer
+    range: Count
     required: true
   genome_n_features:
     name: genome_n_features
@@ -1443,13 +4194,19 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000126
+      microtype:
+        tag: microtype
+        value: ME:0000126
+      microtype_data_type:
+        tag: microtype_data_type
+        value: int
     description: n_features field for Genome
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:genome_n_features
     owner: Genome
     domain_of:
     - Genome
-    range: integer
+    range: Count
     required: true
   genome_link:
     name: genome_link
@@ -1458,13 +4215,19 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000203
+      microtype:
+        tag: microtype
+        value: ME:0000203
+      microtype_data_type:
+        tag: microtype_data_type
+        value: string
     description: link field for Genome
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:genome_link
     owner: Genome
     domain_of:
     - Genome
-    range: string
+    range: Link
     required: true
   gene_id:
     name: gene_id
@@ -1473,6 +4236,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000275
+      microtype:
+        tag: microtype
+        value: ME:0000275
+      microtype_data_type:
+        tag: microtype_data_type
+        value: object_ref
     description: id field for Gene
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:gene_id
@@ -1492,6 +4261,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000224
+      microtype:
+        tag: microtype
+        value: ME:0000224
+      microtype_data_type:
+        tag: microtype_data_type
+        value: object_ref
     description: gene_id field for Gene
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:gene_gene_id
@@ -1510,6 +4285,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000246
+      microtype:
+        tag: microtype
+        value: ME:0000246
+      microtype_data_type:
+        tag: microtype_data_type
+        value: object_ref
     description: genome field for Gene
     comments:
     - typedef.json has FK pointing to Genome without specifying target field
@@ -1519,7 +4300,7 @@ slots:
     owner: Gene
     domain_of:
     - Gene
-    range: string
+    range: Genome
     required: true
   gene_aliases:
     name: gene_aliases
@@ -1528,6 +4309,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000060
+      microtype:
+        tag: microtype
+        value: ME:0000060
+      microtype_data_type:
+        tag: microtype_data_type
+        value: object_ref
     description: aliases field for Gene
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:gene_aliases
@@ -1546,6 +4333,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000126
+      microtype:
+        tag: microtype
+        value: ME:0000126
+      microtype_data_type:
+        tag: microtype_data_type
+        value: int
     description: contig_number field for Gene
     comments:
     - indexed starting at 1, as in KBase
@@ -1563,15 +4356,20 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000186
+      microtype:
+        tag: microtype
+        value: ME:0000186
+      microtype_data_type:
+        tag: microtype_data_type
+        value: oterm_ref
     description: strand field for Gene
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:gene_strand
     owner: Gene
     domain_of:
     - Gene
-    range: string
+    range: StrandEnum
     required: true
-    pattern: '[+-]'
   gene_start:
     name: gene_start
     definition_uri: https://w3id.org/enigma/gene_start
@@ -1582,6 +4380,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000242
+      microtype:
+        tag: microtype
+        value: ME:0000242
+      microtype_data_type:
+        tag: microtype_data_type
+        value: int
     description: start field for Gene
     comments:
     - indexed starting at 1, as in KBase
@@ -1602,6 +4406,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000243
+      microtype:
+        tag: microtype
+        value: ME:0000243
+      microtype_data_type:
+        tag: microtype_data_type
+        value: int
     description: stop field for Gene
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:gene_stop
@@ -1617,6 +4427,9 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000250
+      microtype:
+        tag: microtype
+        value: ME:0000250
     description: function field for Gene
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:gene_function
@@ -1631,6 +4444,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000331
+      microtype:
+        tag: microtype
+        value: ME:0000331
+      microtype_data_type:
+        tag: microtype_data_type
+        value: object_ref
     description: id field for Bin
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:bin_id
@@ -1650,6 +4469,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000330
+      microtype:
+        tag: microtype
+        value: ME:0000330
+      microtype_data_type:
+        tag: microtype_data_type
+        value: object_ref
     description: name field for Bin
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:bin_name
@@ -1668,6 +4493,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000280
+      microtype:
+        tag: microtype
+        value: ME:0000280
+      microtype_data_type:
+        tag: microtype_data_type
+        value: object_ref
     description: assembly field for Bin
     comments:
     - typedef.json has FK pointing to Assembly without specifying target field
@@ -1677,7 +4508,7 @@ slots:
     owner: Bin
     domain_of:
     - Bin
-    range: string
+    range: Assembly
     required: true
   bin_contigs:
     name: bin_contigs
@@ -1686,6 +4517,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000240
+      microtype:
+        tag: microtype
+        value: ME:0000240
+      microtype_data_type:
+        tag: microtype_data_type
+        value: string
     description: contigs field for Bin
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:bin_contigs
@@ -1702,6 +4539,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000332
+      microtype:
+        tag: microtype
+        value: ME:0000332
+      microtype_data_type:
+        tag: microtype_data_type
+        value: object_ref
     description: id field for Protocol
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:protocol_id
@@ -1721,6 +4564,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000328
+      microtype:
+        tag: microtype
+        value: ME:0000328
+      microtype_data_type:
+        tag: microtype_data_type
+        value: object_ref
     description: name field for Protocol
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:protocol_name
@@ -1736,6 +4585,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000202
+      microtype:
+        tag: microtype
+        value: ME:0000202
+      microtype_data_type:
+        tag: microtype_data_type
+        value: string
     description: description field for Protocol
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:protocol_description
@@ -1750,14 +4605,19 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000203
+      microtype:
+        tag: microtype
+        value: ME:0000203
+      microtype_data_type:
+        tag: microtype_data_type
+        value: string
     description: link field for Protocol
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:protocol_link
     owner: Protocol
     domain_of:
     - Protocol
-    range: string
-    pattern: http.*
+    range: Link
   image_id:
     name: image_id
     definition_uri: https://w3id.org/enigma/image_id
@@ -1765,6 +4625,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000356
+      microtype:
+        tag: microtype
+        value: ME:0000356
+      microtype_data_type:
+        tag: microtype_data_type
+        value: object_ref
     description: id field for Image
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:image_id
@@ -1784,6 +4650,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000355
+      microtype:
+        tag: microtype
+        value: ME:0000355
+      microtype_data_type:
+        tag: microtype_data_type
+        value: object_ref
     description: name field for Image
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:image_name
@@ -1799,6 +4671,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000202
+      microtype:
+        tag: microtype
+        value: ME:0000202
+      microtype_data_type:
+        tag: microtype_data_type
+        value: string
     description: description field for Image
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:image_description
@@ -1813,6 +4691,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000357
+      microtype:
+        tag: microtype
+        value: ME:0000357
+      microtype_data_type:
+        tag: microtype_data_type
+        value: string
     description: MIME type field for Image
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:image_MIME_type
@@ -1830,13 +4714,19 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000128
+      microtype:
+        tag: microtype
+        value: ME:0000128
+      microtype_data_type:
+        tag: microtype_data_type
+        value: float
     description: size field for Image
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:image_size
     owner: Image
     domain_of:
     - Image
-    range: integer
+    range: Size
   image_dimensions:
     name: image_dimensions
     definition_uri: https://w3id.org/enigma/image_dimensions
@@ -1846,6 +4736,9 @@ slots:
         value: UO:0000236
       type_term:
         tag: type_term
+        value: ME:0000292
+      microtype:
+        tag: microtype
         value: ME:0000292
     description: dimensions field for Image
     from_schema: https://w3id.org/enigma/enigma-cdm
@@ -1861,13 +4754,19 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000203
+      microtype:
+        tag: microtype
+        value: ME:0000203
+      microtype_data_type:
+        tag: microtype_data_type
+        value: string
     description: link field for Image
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:image_link
     owner: Image
     domain_of:
     - Image
-    range: string
+    range: Link
   tnseq_library_id:
     name: tnseq_library_id
     definition_uri: https://w3id.org/enigma/tnseq_library_id
@@ -1875,6 +4774,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000276
+      microtype:
+        tag: microtype
+        value: ME:0000276
+      microtype_data_type:
+        tag: microtype_data_type
+        value: object_ref
     description: id field for TnSeq_Library
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:tnseq_library_id
@@ -1894,6 +4799,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000262
+      microtype:
+        tag: microtype
+        value: ME:0000262
+      microtype_data_type:
+        tag: microtype_data_type
+        value: object_ref
     description: name field for TnSeq_Library
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:tnseq_library_name
@@ -1912,13 +4823,19 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000246
+      microtype:
+        tag: microtype
+        value: ME:0000246
+      microtype_data_type:
+        tag: microtype_data_type
+        value: object_ref
     description: genome field for TnSeq_Library
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:tnseq_library_genome
     owner: TnSeq_Library
     domain_of:
     - TnSeq_Library
-    range: string
+    range: Genome
     required: true
   tnseq_library_primers_model:
     name: tnseq_library_primers_model
@@ -1927,6 +4844,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000263
+      microtype:
+        tag: microtype
+        value: ME:0000263
+      microtype_data_type:
+        tag: microtype_data_type
+        value: string
     description: primers_model field for TnSeq_Library
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:tnseq_library_primers_model
@@ -1945,6 +4868,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000126
+      microtype:
+        tag: microtype
+        value: ME:0000126
+      microtype_data_type:
+        tag: microtype_data_type
+        value: int
     description: n_mapped_reads field for TnSeq_Library
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:tnseq_library_n_mapped_reads
@@ -1962,6 +4891,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000126
+      microtype:
+        tag: microtype
+        value: ME:0000126
+      microtype_data_type:
+        tag: microtype_data_type
+        value: int
     description: n_barcodes field for TnSeq_Library
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:tnseq_library_n_barcodes
@@ -1979,6 +4914,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000126
+      microtype:
+        tag: microtype
+        value: ME:0000126
+      microtype_data_type:
+        tag: microtype_data_type
+        value: int
     description: n_usable_barcodes field for TnSeq_Library
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:tnseq_library_n_usable_barcodes
@@ -1996,6 +4937,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000126
+      microtype:
+        tag: microtype
+        value: ME:0000126
+      microtype_data_type:
+        tag: microtype_data_type
+        value: int
     description: n_insertion_locations field for TnSeq_Library
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:tnseq_library_n_insertion_locations
@@ -2013,13 +4960,19 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000264
+      microtype:
+        tag: microtype
+        value: ME:0000264
+      microtype_data_type:
+        tag: microtype_data_type
+        value: float
     description: hit_rate_essential field for TnSeq_Library
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:tnseq_library_hit_rate_essential
     owner: TnSeq_Library
     domain_of:
     - TnSeq_Library
-    range: float
+    range: Rate
   tnseq_library_hit_rate_other:
     name: tnseq_library_hit_rate_other
     definition_uri: https://w3id.org/enigma/tnseq_library_hit_rate_other
@@ -2030,13 +4983,19 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000264
+      microtype:
+        tag: microtype
+        value: ME:0000264
+      microtype_data_type:
+        tag: microtype_data_type
+        value: float
     description: hit_rate_other field for TnSeq_Library
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:tnseq_library_hit_rate_other
     owner: TnSeq_Library
     domain_of:
     - TnSeq_Library
-    range: float
+    range: Rate
   dubseq_library_id:
     name: dubseq_library_id
     definition_uri: https://w3id.org/enigma/dubseq_library_id
@@ -2044,6 +5003,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000276
+      microtype:
+        tag: microtype
+        value: ME:0000276
+      microtype_data_type:
+        tag: microtype_data_type
+        value: object_ref
     description: id field for DubSeq_Library
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:dubseq_library_id
@@ -2063,6 +5028,12 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000262
+      microtype:
+        tag: microtype
+        value: ME:0000262
+      microtype_data_type:
+        tag: microtype_data_type
+        value: object_ref
     description: name field for DubSeq_Library
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:dubseq_library_name
@@ -2081,13 +5052,19 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000246
+      microtype:
+        tag: microtype
+        value: ME:0000246
+      microtype_data_type:
+        tag: microtype_data_type
+        value: object_ref
     description: genome field for DubSeq_Library
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:dubseq_library_genome
     owner: DubSeq_Library
     domain_of:
     - DubSeq_Library
-    range: string
+    range: Genome
     required: true
   dubseq_library_n_fragments:
     name: dubseq_library_n_fragments
@@ -2099,13 +5076,19 @@ slots:
       type_term:
         tag: type_term
         value: ME:0000126
+      microtype:
+        tag: microtype
+        value: ME:0000126
+      microtype_data_type:
+        tag: microtype_data_type
+        value: int
     description: n_fragments field for DubSeq_Library
     from_schema: https://w3id.org/enigma/enigma-cdm
     slot_uri: enigma:dubseq_library_n_fragments
     owner: DubSeq_Library
     domain_of:
     - DubSeq_Library
-    range: integer
+    range: Count
 classes:
   Process:
     name: Process
@@ -2578,7 +5561,7 @@ classes:
     class_uri: enigma:DubSeqLibrary
 metamodel_version: 1.7.0
 source_file: linkml_coral.yaml
-source_file_date: '2025-11-16T02:55:06'
-source_file_size: 34315
-generation_date: '2025-11-16T02:55:17'
+source_file_date: '2025-12-02T04:10:29'
+source_file_size: 100438
+generation_date: '2025-12-02T04:10:40'
 

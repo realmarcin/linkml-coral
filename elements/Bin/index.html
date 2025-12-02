@@ -237,6 +237,15 @@
     click Bin href "../Bin/"
       Bin : bin_assembly
 
+
+
+
+
+        Bin --&gt; "1" Assembly : bin_assembly
+        click Assembly href "../Assembly/"
+
+
+
       Bin : bin_contigs
 
       Bin : bin_id
@@ -271,7 +280,7 @@
 </tr>
 <tr>
 <td><a href="../bin_assembly/">bin_assembly</a></td>
-<td>1 <br/> <a href="../String/">String</a></td>
+<td>1 <br/> <a href="../Assembly/">Assembly</a></td>
 <td>assembly field for Bin</td>
 <td>direct</td>
 </tr>
@@ -391,6 +400,12 @@ attributes:
       type_term:
         tag: type_term
         value: ME:0000331
+      microtype:
+        tag: microtype
+        value: ME:0000331
+      microtype_data_type:
+        tag: microtype_data_type
+        value: object_ref
     description: id field for Bin
     from_schema: https://w3id.org/enigma/enigma-cdm
     rank: 1000
@@ -410,6 +425,12 @@ attributes:
       type_term:
         tag: type_term
         value: ME:0000330
+      microtype:
+        tag: microtype
+        value: ME:0000330
+      microtype_data_type:
+        tag: microtype_data_type
+        value: object_ref
     description: name field for Bin
     from_schema: https://w3id.org/enigma/enigma-cdm
     rank: 1000
@@ -428,6 +449,12 @@ attributes:
       type_term:
         tag: type_term
         value: ME:0000280
+      microtype:
+        tag: microtype
+        value: ME:0000280
+      microtype_data_type:
+        tag: microtype_data_type
+        value: object_ref
     description: assembly field for Bin
     comments:
     - typedef.json has FK pointing to Assembly without specifying target field
@@ -438,7 +465,7 @@ attributes:
     owner: Bin
     domain_of:
     - Bin
-    range: string
+    range: Assembly
     required: true
   bin_contigs:
     name: bin_contigs
@@ -446,6 +473,12 @@ attributes:
       type_term:
         tag: type_term
         value: ME:0000240
+      microtype:
+        tag: microtype
+        value: ME:0000240
+      microtype_data_type:
+        tag: microtype_data_type
+        value: string
     description: contigs field for Bin
     from_schema: https://w3id.org/enigma/enigma-cdm
     rank: 1000

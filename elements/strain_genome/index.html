@@ -429,7 +429,7 @@ Alias: strain_genome</p>
 </table>
 <h2 id="properties">Properties</h2>
 <ul>
-<li>Range: <a href="../String/">String</a></li>
+<li>Range: <a href="../Genome/">Genome</a></li>
 </ul>
 <h2 id="comments">Comments</h2>
 <ul>
@@ -452,6 +452,14 @@ Alias: strain_genome</p>
 <tr>
 <td>type_term</td>
 <td>ME:0000246</td>
+</tr>
+<tr>
+<td>microtype</td>
+<td>ME:0000246</td>
+</tr>
+<tr>
+<td>microtype_data_type</td>
+<td>object_ref</td>
 </tr>
 </tbody>
 </table>
@@ -489,6 +497,12 @@ annotations:
   type_term:
     tag: type_term
     value: ME:0000246
+  microtype:
+    tag: microtype
+    value: ME:0000246
+  microtype_data_type:
+    tag: microtype_data_type
+    value: object_ref
 description: genome field for Strain
 comments:
 - genome object for sequenced, WT strains
@@ -497,7 +511,7 @@ rank: 1000
 alias: strain_genome
 domain_of:
 - Strain
-range: string
+range: Genome
 
 </code></pre>
 

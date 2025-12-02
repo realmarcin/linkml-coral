@@ -166,6 +166,13 @@
 </a>
 </li>
 <li class="md-nav__item">
+<a class="md-nav__link" href="#usages">
+<span class="md-ellipsis">
+      Usages
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
 <a class="md-nav__link" href="#identifier-and-mapping-information">
 <span class="md-ellipsis">
       Identifier and Mapping Information
@@ -281,13 +288,13 @@
 </tr>
 <tr>
 <td><a href="../location_latitude/">location_latitude</a></td>
-<td>1 <br/> <a href="../Float/">Float</a></td>
+<td>1 <br/> <a href="../Latitude/">Latitude</a></td>
 <td>latitude field for Location</td>
 <td>direct</td>
 </tr>
 <tr>
 <td><a href="../location_longitude/">location_longitude</a></td>
-<td>1 <br/> <a href="../Float/">Float</a></td>
+<td>1 <br/> <a href="../Longitude/">Longitude</a></td>
 <td>longitude field for Location</td>
 <td>direct</td>
 </tr>
@@ -320,6 +327,25 @@
 <td>0..1 <br/> <a href="../String/">String</a></td>
 <td>feature field for Location</td>
 <td>direct</td>
+</tr>
+</tbody>
+</table>
+<h2 id="usages">Usages</h2>
+<table>
+<thead>
+<tr>
+<th>used by</th>
+<th>used in</th>
+<th>type</th>
+<th>used</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="../Sample/">Sample</a></td>
+<td><a href="../sample_location/">sample_location</a></td>
+<td>range</td>
+<td><a href="./">Location</a></td>
 </tr>
 </tbody>
 </table>
@@ -436,6 +462,12 @@ attributes:
       type_term:
         tag: type_term
         value: ME:0000266
+      microtype:
+        tag: microtype
+        value: ME:0000266
+      microtype_data_type:
+        tag: microtype_data_type
+        value: object_ref
     description: id field for Location
     from_schema: https://w3id.org/enigma/enigma-cdm
     rank: 1000
@@ -455,6 +487,12 @@ attributes:
       type_term:
         tag: type_term
         value: ME:0000228
+      microtype:
+        tag: microtype
+        value: ME:0000228
+      microtype_data_type:
+        tag: microtype_data_type
+        value: object_ref
     description: name field for Location
     from_schema: https://w3id.org/enigma/enigma-cdm
     rank: 1000
@@ -473,6 +511,12 @@ attributes:
       type_term:
         tag: type_term
         value: ME:0000211
+      microtype:
+        tag: microtype
+        value: ME:0000211
+      microtype_data_type:
+        tag: microtype_data_type
+        value: float
     description: latitude field for Location
     from_schema: https://w3id.org/enigma/enigma-cdm
     rank: 1000
@@ -480,7 +524,7 @@ attributes:
     owner: Location
     domain_of:
     - Location
-    range: float
+    range: Latitude
     required: true
     minimum_value: -90
     maximum_value: 90
@@ -493,6 +537,12 @@ attributes:
       type_term:
         tag: type_term
         value: ME:0000212
+      microtype:
+        tag: microtype
+        value: ME:0000212
+      microtype_data_type:
+        tag: microtype_data_type
+        value: float
     description: longitude field for Location
     from_schema: https://w3id.org/enigma/enigma-cdm
     rank: 1000
@@ -500,7 +550,7 @@ attributes:
     owner: Location
     domain_of:
     - Location
-    range: float
+    range: Longitude
     required: true
     minimum_value: -180
     maximum_value: 180
@@ -513,6 +563,12 @@ attributes:
       type_term:
         tag: type_term
         value: ME:0000213
+      microtype:
+        tag: microtype
+        value: ME:0000213
+      microtype_data_type:
+        tag: microtype_data_type
+        value: oterm_ref
     description: continent field for Location
     from_schema: https://w3id.org/enigma/enigma-cdm
     rank: 1000
@@ -531,6 +587,12 @@ attributes:
       type_term:
         tag: type_term
         value: ME:0000214
+      microtype:
+        tag: microtype
+        value: ME:0000214
+      microtype_data_type:
+        tag: microtype_data_type
+        value: oterm_ref
     description: country field for Location
     from_schema: https://w3id.org/enigma/enigma-cdm
     rank: 1000
@@ -546,6 +608,12 @@ attributes:
       type_term:
         tag: type_term
         value: ME:0000215
+      microtype:
+        tag: microtype
+        value: ME:0000215
+      microtype_data_type:
+        tag: microtype_data_type
+        value: string
     description: region field for Location
     comments:
     - specific local region name(s)
@@ -566,6 +634,12 @@ attributes:
       type_term:
         tag: type_term
         value: ME:0000216
+      microtype:
+        tag: microtype
+        value: ME:0000216
+      microtype_data_type:
+        tag: microtype_data_type
+        value: oterm_ref
     description: biome field for Location
     from_schema: https://w3id.org/enigma/enigma-cdm
     rank: 1000
@@ -584,6 +658,12 @@ attributes:
       type_term:
         tag: type_term
         value: ME:0000217
+      microtype:
+        tag: microtype
+        value: ME:0000217
+      microtype_data_type:
+        tag: microtype_data_type
+        value: oterm_ref
     description: feature field for Location
     from_schema: https://w3id.org/enigma/enigma-cdm
     rank: 1000

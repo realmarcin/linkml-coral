@@ -429,15 +429,12 @@ Alias: community_defined_strains</p>
 </table>
 <h2 id="properties">Properties</h2>
 <ul>
-<li>
-<p>Range: <a href="../String/">String</a></p>
-</li>
-<li>
-<p>Multivalued: True</p>
-</li>
+<li>Range: <a href="../Strain/">Strain</a></li>
 </ul>
 <h2 id="comments">Comments</h2>
 <ul>
+<li>typedef.json specifies array ([text]), but actual data contains single values only</li>
+<li>{'Changed to multivalued': 'false to match data reality (0% have multiple strains)'}</li>
 <li>typedef.json has typo with FK pointing to [Strain.Name] with capital N</li>
 <li>Using lowercase name to match actual Strain field</li>
 </ul>
@@ -458,6 +455,14 @@ Alias: community_defined_strains</p>
 <tr>
 <td>type_term</td>
 <td>ME:0000044</td>
+</tr>
+<tr>
+<td>microtype</td>
+<td>ME:0000044</td>
+</tr>
+<tr>
+<td>microtype_data_type</td>
+<td>object_ref</td>
 </tr>
 </tbody>
 </table>
@@ -495,8 +500,16 @@ annotations:
   type_term:
     tag: type_term
     value: ME:0000044
+  microtype:
+    tag: microtype
+    value: ME:0000044
+  microtype_data_type:
+    tag: microtype_data_type
+    value: object_ref
 description: defined_strains field for Community
 comments:
+- typedef.json specifies array ([text]), but actual data contains single values only
+- '{''Changed to multivalued'': ''false to match data reality (0% have multiple strains)''}'
 - typedef.json has typo with FK pointing to [Strain.Name] with capital N
 - Using lowercase name to match actual Strain field
 from_schema: https://w3id.org/enigma/enigma-cdm
@@ -504,8 +517,8 @@ rank: 1000
 alias: community_defined_strains
 domain_of:
 - Community
-range: string
-multivalued: true
+range: Strain
+multivalued: false
 
 </code></pre>
 

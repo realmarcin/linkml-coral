@@ -429,7 +429,7 @@ Alias: sample_timezone</p>
 </table>
 <h2 id="properties">Properties</h2>
 <ul>
-<li>Range: <a href="../String/">String</a></li>
+<li>Range: <a href="../Time/">Time</a></li>
 </ul>
 <h2 id="comments">Comments</h2>
 <ul>
@@ -448,6 +448,14 @@ Alias: sample_timezone</p>
 <tr>
 <td>type_term</td>
 <td>ME:0000201</td>
+</tr>
+<tr>
+<td>microtype</td>
+<td>ME:0000201</td>
+</tr>
+<tr>
+<td>microtype_data_type</td>
+<td>string</td>
 </tr>
 </tbody>
 </table>
@@ -482,6 +490,12 @@ annotations:
   type_term:
     tag: type_term
     value: ME:0000201
+  microtype:
+    tag: microtype
+    value: ME:0000201
+  microtype_data_type:
+    tag: microtype_data_type
+    value: string
 description: timezone field for Sample
 comments:
 - ISO8601 compliant format, ie. UTC-7
@@ -490,7 +504,7 @@ rank: 1000
 alias: sample_timezone
 domain_of:
 - Sample
-range: string
+range: Time
 
 </code></pre>
 

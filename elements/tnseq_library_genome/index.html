@@ -421,7 +421,7 @@ Alias: tnseq_library_genome</p>
 <h2 id="properties">Properties</h2>
 <ul>
 <li>
-<p>Range: <a href="../String/">String</a></p>
+<p>Range: <a href="../Genome/">Genome</a></p>
 </li>
 <li>
 <p>Required: True</p>
@@ -444,6 +444,14 @@ Alias: tnseq_library_genome</p>
 <tr>
 <td>type_term</td>
 <td>ME:0000246</td>
+</tr>
+<tr>
+<td>microtype</td>
+<td>ME:0000246</td>
+</tr>
+<tr>
+<td>microtype_data_type</td>
+<td>object_ref</td>
 </tr>
 </tbody>
 </table>
@@ -481,13 +489,19 @@ annotations:
   type_term:
     tag: type_term
     value: ME:0000246
+  microtype:
+    tag: microtype
+    value: ME:0000246
+  microtype_data_type:
+    tag: microtype_data_type
+    value: object_ref
 description: genome field for TnSeq_Library
 from_schema: https://w3id.org/enigma/enigma-cdm
 rank: 1000
 alias: tnseq_library_genome
 domain_of:
 - TnSeq_Library
-range: string
+range: Genome
 required: true
 
 </code></pre>

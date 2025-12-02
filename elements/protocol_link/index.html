@@ -420,12 +420,7 @@ Alias: protocol_link</p>
 </table>
 <h2 id="properties">Properties</h2>
 <ul>
-<li>
-<p>Range: <a href="../String/">String</a></p>
-</li>
-<li>
-<p>Regex pattern: <code>http.*</code></p>
-</li>
+<li>Range: <a href="../Link/">Link</a></li>
 </ul>
 <h2 id="identifier-and-mapping-information">Identifier and Mapping Information</h2>
 <h3 id="annotations">Annotations</h3>
@@ -440,6 +435,14 @@ Alias: protocol_link</p>
 <tr>
 <td>type_term</td>
 <td>ME:0000203</td>
+</tr>
+<tr>
+<td>microtype</td>
+<td>ME:0000203</td>
+</tr>
+<tr>
+<td>microtype_data_type</td>
+<td>string</td>
 </tr>
 </tbody>
 </table>
@@ -474,14 +477,19 @@ annotations:
   type_term:
     tag: type_term
     value: ME:0000203
+  microtype:
+    tag: microtype
+    value: ME:0000203
+  microtype_data_type:
+    tag: microtype_data_type
+    value: string
 description: link field for Protocol
 from_schema: https://w3id.org/enigma/enigma-cdm
 rank: 1000
 alias: protocol_link
 domain_of:
 - Protocol
-range: string
-pattern: http.*
+range: Link
 
 </code></pre>
 

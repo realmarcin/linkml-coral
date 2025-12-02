@@ -421,7 +421,7 @@ Alias: assembly_n_contigs</p>
 <h2 id="properties">Properties</h2>
 <ul>
 <li>
-<p>Range: <a href="../Integer/">Integer</a></p>
+<p>Range: <a href="../Count/">Count</a></p>
 </li>
 <li>
 <p>Required: True</p>
@@ -444,6 +444,14 @@ Alias: assembly_n_contigs</p>
 <tr>
 <td>type_term</td>
 <td>ME:0000126</td>
+</tr>
+<tr>
+<td>microtype</td>
+<td>ME:0000126</td>
+</tr>
+<tr>
+<td>microtype_data_type</td>
+<td>int</td>
 </tr>
 </tbody>
 </table>
@@ -481,13 +489,19 @@ annotations:
   type_term:
     tag: type_term
     value: ME:0000126
+  microtype:
+    tag: microtype
+    value: ME:0000126
+  microtype_data_type:
+    tag: microtype_data_type
+    value: int
 description: n_contigs field for Assembly
 from_schema: https://w3id.org/enigma/enigma-cdm
 rank: 1000
 alias: assembly_n_contigs
 domain_of:
 - Assembly
-range: integer
+range: Count
 required: true
 
 </code></pre>

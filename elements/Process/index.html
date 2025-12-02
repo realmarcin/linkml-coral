@@ -254,6 +254,15 @@
       Process : process_protocol
 
 
+
+
+
+        Process --&gt; "0..1" Protocol : process_protocol
+        click Protocol href "../Protocol/"
+
+
+
+
 </div>
 <!-- no inheritance hierarchy -->
 <h2 id="slots">Slots</h2>
@@ -293,19 +302,19 @@
 </tr>
 <tr>
 <td><a href="../process_protocol/">process_protocol</a></td>
-<td>0..1 <br/> <a href="../String/">String</a></td>
+<td>0..1 <br/> <a href="../Protocol/">Protocol</a></td>
 <td>protocol field for Process</td>
 <td>direct</td>
 </tr>
 <tr>
 <td><a href="../process_date_start/">process_date_start</a></td>
-<td>0..1 <br/> <a href="../String/">String</a></td>
+<td>0..1 <br/> <a href="../Date/">Date</a></td>
 <td>date_start field for Process</td>
 <td>direct</td>
 </tr>
 <tr>
 <td><a href="../process_date_end/">process_date_end</a></td>
-<td>0..1 <br/> <a href="../String/">String</a></td>
+<td>0..1 <br/> <a href="../Date/">Date</a></td>
 <td>date_end field for Process</td>
 <td>direct</td>
 </tr>
@@ -412,6 +421,12 @@ attributes:
       type_term:
         tag: type_term
         value: ME:0000277
+      microtype:
+        tag: microtype
+        value: ME:0000277
+      microtype_data_type:
+        tag: microtype_data_type
+        value: object_ref
     description: id field for Process
     from_schema: https://w3id.org/enigma/enigma-cdm
     rank: 1000
@@ -431,6 +446,12 @@ attributes:
       type_term:
         tag: type_term
         value: ME:0000204
+      microtype:
+        tag: microtype
+        value: ME:0000204
+      microtype_data_type:
+        tag: microtype_data_type
+        value: oterm_ref
     description: process field for Process
     from_schema: https://w3id.org/enigma/enigma-cdm
     rank: 1000
@@ -449,6 +470,12 @@ attributes:
       type_term:
         tag: type_term
         value: ME:0000205
+      microtype:
+        tag: microtype
+        value: ME:0000205
+      microtype_data_type:
+        tag: microtype_data_type
+        value: string
     description: person field for Process
     from_schema: https://w3id.org/enigma/enigma-cdm
     rank: 1000
@@ -464,6 +491,12 @@ attributes:
       type_term:
         tag: type_term
         value: ME:0000206
+      microtype:
+        tag: microtype
+        value: ME:0000206
+      microtype_data_type:
+        tag: microtype_data_type
+        value: string
     description: campaign field for Process
     from_schema: https://w3id.org/enigma/enigma-cdm
     rank: 1000
@@ -482,6 +515,12 @@ attributes:
       type_term:
         tag: type_term
         value: ME:0000328
+      microtype:
+        tag: microtype
+        value: ME:0000328
+      microtype_data_type:
+        tag: microtype_data_type
+        value: object_ref
     description: protocol field for Process
     from_schema: https://w3id.org/enigma/enigma-cdm
     rank: 1000
@@ -489,13 +528,19 @@ attributes:
     owner: Process
     domain_of:
     - Process
-    range: string
+    range: Protocol
   process_date_start:
     name: process_date_start
     annotations:
       type_term:
         tag: type_term
         value: ME:0000009
+      microtype:
+        tag: microtype
+        value: ME:0000009
+      microtype_data_type:
+        tag: microtype_data_type
+        value: string
     description: date_start field for Process
     comments:
     - YYYY[-MM[-DD]]
@@ -505,14 +550,19 @@ attributes:
     owner: Process
     domain_of:
     - Process
-    range: string
-    pattern: \d\d\d\d(-\d\d(-\d\d)?)?
+    range: Date
   process_date_end:
     name: process_date_end
     annotations:
       type_term:
         tag: type_term
         value: ME:0000009
+      microtype:
+        tag: microtype
+        value: ME:0000009
+      microtype_data_type:
+        tag: microtype_data_type
+        value: string
     description: date_end field for Process
     comments:
     - YYYY[-MM[-DD]]
@@ -522,8 +572,7 @@ attributes:
     owner: Process
     domain_of:
     - Process
-    range: string
-    pattern: \d\d\d\d(-\d\d(-\d\d)?)?
+    range: Date
   process_input_objects:
     name: process_input_objects
     annotations:
@@ -533,6 +582,12 @@ attributes:
       type_term:
         tag: type_term
         value: ME:0000207
+      microtype:
+        tag: microtype
+        value: ME:0000207
+      microtype_data_type:
+        tag: microtype_data_type
+        value: string
     description: input_objects field for Process
     from_schema: https://w3id.org/enigma/enigma-cdm
     rank: 1000
@@ -552,6 +607,12 @@ attributes:
       type_term:
         tag: type_term
         value: ME:0000208
+      microtype:
+        tag: microtype
+        value: ME:0000208
+      microtype_data_type:
+        tag: microtype_data_type
+        value: string
     description: output_objects field for Process
     from_schema: https://w3id.org/enigma/enigma-cdm
     rank: 1000

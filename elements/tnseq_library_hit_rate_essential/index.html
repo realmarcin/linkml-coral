@@ -420,7 +420,7 @@ Alias: tnseq_library_hit_rate_essential</p>
 </table>
 <h2 id="properties">Properties</h2>
 <ul>
-<li>Range: <a href="../Float/">Float</a></li>
+<li>Range: <a href="../Rate/">Rate</a></li>
 </ul>
 <h2 id="identifier-and-mapping-information">Identifier and Mapping Information</h2>
 <h3 id="annotations">Annotations</h3>
@@ -439,6 +439,14 @@ Alias: tnseq_library_hit_rate_essential</p>
 <tr>
 <td>type_term</td>
 <td>ME:0000264</td>
+</tr>
+<tr>
+<td>microtype</td>
+<td>ME:0000264</td>
+</tr>
+<tr>
+<td>microtype_data_type</td>
+<td>float</td>
 </tr>
 </tbody>
 </table>
@@ -476,13 +484,19 @@ annotations:
   type_term:
     tag: type_term
     value: ME:0000264
+  microtype:
+    tag: microtype
+    value: ME:0000264
+  microtype_data_type:
+    tag: microtype_data_type
+    value: float
 description: hit_rate_essential field for TnSeq_Library
 from_schema: https://w3id.org/enigma/enigma-cdm
 rank: 1000
 alias: tnseq_library_hit_rate_essential
 domain_of:
 - TnSeq_Library
-range: float
+range: Rate
 
 </code></pre>
 

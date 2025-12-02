@@ -421,13 +421,10 @@ Alias: gene_strand</p>
 <h2 id="properties">Properties</h2>
 <ul>
 <li>
-<p>Range: <a href="../String/">String</a></p>
+<p>Range: <a href="../StrandEnum/">StrandEnum</a></p>
 </li>
 <li>
 <p>Required: True</p>
-</li>
-<li>
-<p>Regex pattern: <code>[+-]</code></p>
 </li>
 </ul>
 <h2 id="identifier-and-mapping-information">Identifier and Mapping Information</h2>
@@ -443,6 +440,14 @@ Alias: gene_strand</p>
 <tr>
 <td>type_term</td>
 <td>ME:0000186</td>
+</tr>
+<tr>
+<td>microtype</td>
+<td>ME:0000186</td>
+</tr>
+<tr>
+<td>microtype_data_type</td>
+<td>oterm_ref</td>
 </tr>
 </tbody>
 </table>
@@ -477,15 +482,20 @@ annotations:
   type_term:
     tag: type_term
     value: ME:0000186
+  microtype:
+    tag: microtype
+    value: ME:0000186
+  microtype_data_type:
+    tag: microtype_data_type
+    value: oterm_ref
 description: strand field for Gene
 from_schema: https://w3id.org/enigma/enigma-cdm
 rank: 1000
 alias: gene_strand
 domain_of:
 - Gene
-range: string
+range: StrandEnum
 required: true
-pattern: '[+-]'
 
 </code></pre>
 

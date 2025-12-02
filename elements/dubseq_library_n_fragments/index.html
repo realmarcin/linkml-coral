@@ -420,7 +420,7 @@ Alias: dubseq_library_n_fragments</p>
 </table>
 <h2 id="properties">Properties</h2>
 <ul>
-<li>Range: <a href="../Integer/">Integer</a></li>
+<li>Range: <a href="../Count/">Count</a></li>
 </ul>
 <h2 id="identifier-and-mapping-information">Identifier and Mapping Information</h2>
 <h3 id="annotations">Annotations</h3>
@@ -439,6 +439,14 @@ Alias: dubseq_library_n_fragments</p>
 <tr>
 <td>type_term</td>
 <td>ME:0000126</td>
+</tr>
+<tr>
+<td>microtype</td>
+<td>ME:0000126</td>
+</tr>
+<tr>
+<td>microtype_data_type</td>
+<td>int</td>
 </tr>
 </tbody>
 </table>
@@ -476,13 +484,19 @@ annotations:
   type_term:
     tag: type_term
     value: ME:0000126
+  microtype:
+    tag: microtype
+    value: ME:0000126
+  microtype_data_type:
+    tag: microtype_data_type
+    value: int
 description: n_fragments field for DubSeq_Library
 from_schema: https://w3id.org/enigma/enigma-cdm
 rank: 1000
 alias: dubseq_library_n_fragments
 domain_of:
 - DubSeq_Library
-range: integer
+range: Count
 
 </code></pre>
 

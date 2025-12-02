@@ -289,7 +289,7 @@
 </tr>
 <tr>
 <td><a href="../image_size/">image_size</a></td>
-<td>0..1 <br/> <a href="../Integer/">Integer</a></td>
+<td>0..1 <br/> <a href="../Size/">Size</a></td>
 <td>size field for Image</td>
 <td>direct</td>
 </tr>
@@ -301,7 +301,7 @@
 </tr>
 <tr>
 <td><a href="../image_link/">image_link</a></td>
-<td>0..1 <br/> <a href="../String/">String</a></td>
+<td>0..1 <br/> <a href="../Link/">Link</a></td>
 <td>link field for Image</td>
 <td>direct</td>
 </tr>
@@ -418,6 +418,12 @@ attributes:
       type_term:
         tag: type_term
         value: ME:0000356
+      microtype:
+        tag: microtype
+        value: ME:0000356
+      microtype_data_type:
+        tag: microtype_data_type
+        value: object_ref
     description: id field for Image
     from_schema: https://w3id.org/enigma/enigma-cdm
     rank: 1000
@@ -437,6 +443,12 @@ attributes:
       type_term:
         tag: type_term
         value: ME:0000355
+      microtype:
+        tag: microtype
+        value: ME:0000355
+      microtype_data_type:
+        tag: microtype_data_type
+        value: object_ref
     description: name field for Image
     from_schema: https://w3id.org/enigma/enigma-cdm
     rank: 1000
@@ -452,6 +464,12 @@ attributes:
       type_term:
         tag: type_term
         value: ME:0000202
+      microtype:
+        tag: microtype
+        value: ME:0000202
+      microtype_data_type:
+        tag: microtype_data_type
+        value: string
     description: description field for Image
     from_schema: https://w3id.org/enigma/enigma-cdm
     rank: 1000
@@ -466,6 +484,12 @@ attributes:
       type_term:
         tag: type_term
         value: ME:0000357
+      microtype:
+        tag: microtype
+        value: ME:0000357
+      microtype_data_type:
+        tag: microtype_data_type
+        value: string
     description: MIME type field for Image
     from_schema: https://w3id.org/enigma/enigma-cdm
     rank: 1000
@@ -483,6 +507,12 @@ attributes:
       type_term:
         tag: type_term
         value: ME:0000128
+      microtype:
+        tag: microtype
+        value: ME:0000128
+      microtype_data_type:
+        tag: microtype_data_type
+        value: float
     description: size field for Image
     from_schema: https://w3id.org/enigma/enigma-cdm
     rank: 1000
@@ -490,7 +520,7 @@ attributes:
     owner: Image
     domain_of:
     - Image
-    range: integer
+    range: Size
   image_dimensions:
     name: image_dimensions
     annotations:
@@ -499,6 +529,9 @@ attributes:
         value: UO:0000236
       type_term:
         tag: type_term
+        value: ME:0000292
+      microtype:
+        tag: microtype
         value: ME:0000292
     description: dimensions field for Image
     from_schema: https://w3id.org/enigma/enigma-cdm
@@ -514,6 +547,12 @@ attributes:
       type_term:
         tag: type_term
         value: ME:0000203
+      microtype:
+        tag: microtype
+        value: ME:0000203
+      microtype_data_type:
+        tag: microtype_data_type
+        value: string
     description: link field for Image
     from_schema: https://w3id.org/enigma/enigma-cdm
     rank: 1000
@@ -521,7 +560,7 @@ attributes:
     owner: Image
     domain_of:
     - Image
-    range: string
+    range: Link
 
 </code></pre>
 </details>

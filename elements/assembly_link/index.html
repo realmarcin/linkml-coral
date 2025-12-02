@@ -326,6 +326,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#comments" class="md-nav__link">
+    <span class="md-ellipsis">
+      Comments
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#identifier-and-mapping-information" class="md-nav__link">
     <span class="md-ellipsis">
       Identifier and Mapping Information
@@ -420,12 +429,11 @@ Alias: assembly_link</p>
 </table>
 <h2 id="properties">Properties</h2>
 <ul>
-<li>
-<p>Range: <a href="../String/">String</a></p>
-</li>
-<li>
-<p>Required: True</p>
-</li>
+<li>Range: <a href="../Link/">Link</a></li>
+</ul>
+<h2 id="comments">Comments</h2>
+<ul>
+<li>Made optional because many Assembly records have empty or file path values instead of HTTP URLs</li>
 </ul>
 <h2 id="identifier-and-mapping-information">Identifier and Mapping Information</h2>
 <h3 id="annotations">Annotations</h3>
@@ -440,6 +448,14 @@ Alias: assembly_link</p>
 <tr>
 <td>type_term</td>
 <td>ME:0000203</td>
+</tr>
+<tr>
+<td>microtype</td>
+<td>ME:0000203</td>
+</tr>
+<tr>
+<td>microtype_data_type</td>
+<td>string</td>
 </tr>
 </tbody>
 </table>
@@ -474,14 +490,23 @@ annotations:
   type_term:
     tag: type_term
     value: ME:0000203
+  microtype:
+    tag: microtype
+    value: ME:0000203
+  microtype_data_type:
+    tag: microtype_data_type
+    value: string
 description: link field for Assembly
+comments:
+- Made optional because many Assembly records have empty or file path values instead
+  of HTTP URLs
 from_schema: https://w3id.org/enigma/enigma-cdm
 rank: 1000
 alias: assembly_link
 domain_of:
 - Assembly
-range: string
-required: true
+range: Link
+required: false
 
 </code></pre>
 

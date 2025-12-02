@@ -237,6 +237,15 @@
     click TnSeqLibrary href "../TnSeqLibrary/"
       TnSeqLibrary : tnseq_library_genome
 
+
+
+
+
+        TnSeqLibrary --&gt; "1" Genome : tnseq_library_genome
+        click Genome href "../Genome/"
+
+
+
       TnSeqLibrary : tnseq_library_hit_rate_essential
 
       TnSeqLibrary : tnseq_library_hit_rate_other
@@ -283,7 +292,7 @@
 </tr>
 <tr>
 <td><a href="../tnseq_library_genome/">tnseq_library_genome</a></td>
-<td>1 <br/> <a href="../String/">String</a></td>
+<td>1 <br/> <a href="../Genome/">Genome</a></td>
 <td>genome field for TnSeq_Library</td>
 <td>direct</td>
 </tr>
@@ -319,13 +328,13 @@
 </tr>
 <tr>
 <td><a href="../tnseq_library_hit_rate_essential/">tnseq_library_hit_rate_essential</a></td>
-<td>0..1 <br/> <a href="../Float/">Float</a></td>
+<td>0..1 <br/> <a href="../Rate/">Rate</a></td>
 <td>hit_rate_essential field for TnSeq_Library</td>
 <td>direct</td>
 </tr>
 <tr>
 <td><a href="../tnseq_library_hit_rate_other/">tnseq_library_hit_rate_other</a></td>
-<td>0..1 <br/> <a href="../Float/">Float</a></td>
+<td>0..1 <br/> <a href="../Rate/">Rate</a></td>
 <td>hit_rate_other field for TnSeq_Library</td>
 <td>direct</td>
 </tr>
@@ -445,6 +454,12 @@ attributes:
       type_term:
         tag: type_term
         value: ME:0000276
+      microtype:
+        tag: microtype
+        value: ME:0000276
+      microtype_data_type:
+        tag: microtype_data_type
+        value: object_ref
     description: id field for TnSeq_Library
     from_schema: https://w3id.org/enigma/enigma-cdm
     rank: 1000
@@ -464,6 +479,12 @@ attributes:
       type_term:
         tag: type_term
         value: ME:0000262
+      microtype:
+        tag: microtype
+        value: ME:0000262
+      microtype_data_type:
+        tag: microtype_data_type
+        value: object_ref
     description: name field for TnSeq_Library
     from_schema: https://w3id.org/enigma/enigma-cdm
     rank: 1000
@@ -482,6 +503,12 @@ attributes:
       type_term:
         tag: type_term
         value: ME:0000246
+      microtype:
+        tag: microtype
+        value: ME:0000246
+      microtype_data_type:
+        tag: microtype_data_type
+        value: object_ref
     description: genome field for TnSeq_Library
     from_schema: https://w3id.org/enigma/enigma-cdm
     rank: 1000
@@ -489,7 +516,7 @@ attributes:
     owner: TnSeq_Library
     domain_of:
     - TnSeq_Library
-    range: string
+    range: Genome
     required: true
   tnseq_library_primers_model:
     name: tnseq_library_primers_model
@@ -497,6 +524,12 @@ attributes:
       type_term:
         tag: type_term
         value: ME:0000263
+      microtype:
+        tag: microtype
+        value: ME:0000263
+      microtype_data_type:
+        tag: microtype_data_type
+        value: string
     description: primers_model field for TnSeq_Library
     from_schema: https://w3id.org/enigma/enigma-cdm
     rank: 1000
@@ -515,6 +548,12 @@ attributes:
       type_term:
         tag: type_term
         value: ME:0000126
+      microtype:
+        tag: microtype
+        value: ME:0000126
+      microtype_data_type:
+        tag: microtype_data_type
+        value: int
     description: n_mapped_reads field for TnSeq_Library
     from_schema: https://w3id.org/enigma/enigma-cdm
     rank: 1000
@@ -532,6 +571,12 @@ attributes:
       type_term:
         tag: type_term
         value: ME:0000126
+      microtype:
+        tag: microtype
+        value: ME:0000126
+      microtype_data_type:
+        tag: microtype_data_type
+        value: int
     description: n_barcodes field for TnSeq_Library
     from_schema: https://w3id.org/enigma/enigma-cdm
     rank: 1000
@@ -549,6 +594,12 @@ attributes:
       type_term:
         tag: type_term
         value: ME:0000126
+      microtype:
+        tag: microtype
+        value: ME:0000126
+      microtype_data_type:
+        tag: microtype_data_type
+        value: int
     description: n_usable_barcodes field for TnSeq_Library
     from_schema: https://w3id.org/enigma/enigma-cdm
     rank: 1000
@@ -566,6 +617,12 @@ attributes:
       type_term:
         tag: type_term
         value: ME:0000126
+      microtype:
+        tag: microtype
+        value: ME:0000126
+      microtype_data_type:
+        tag: microtype_data_type
+        value: int
     description: n_insertion_locations field for TnSeq_Library
     from_schema: https://w3id.org/enigma/enigma-cdm
     rank: 1000
@@ -583,6 +640,12 @@ attributes:
       type_term:
         tag: type_term
         value: ME:0000264
+      microtype:
+        tag: microtype
+        value: ME:0000264
+      microtype_data_type:
+        tag: microtype_data_type
+        value: float
     description: hit_rate_essential field for TnSeq_Library
     from_schema: https://w3id.org/enigma/enigma-cdm
     rank: 1000
@@ -590,7 +653,7 @@ attributes:
     owner: TnSeq_Library
     domain_of:
     - TnSeq_Library
-    range: float
+    range: Rate
   tnseq_library_hit_rate_other:
     name: tnseq_library_hit_rate_other
     annotations:
@@ -600,6 +663,12 @@ attributes:
       type_term:
         tag: type_term
         value: ME:0000264
+      microtype:
+        tag: microtype
+        value: ME:0000264
+      microtype_data_type:
+        tag: microtype_data_type
+        value: float
     description: hit_rate_other field for TnSeq_Library
     from_schema: https://w3id.org/enigma/enigma-cdm
     rank: 1000
@@ -607,7 +676,7 @@ attributes:
     owner: TnSeq_Library
     domain_of:
     - TnSeq_Library
-    range: float
+    range: Rate
 
 </code></pre>
 </details>

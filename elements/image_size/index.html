@@ -420,7 +420,7 @@ Alias: image_size</p>
 </table>
 <h2 id="properties">Properties</h2>
 <ul>
-<li>Range: <a href="../Integer/">Integer</a></li>
+<li>Range: <a href="../Size/">Size</a></li>
 </ul>
 <h2 id="identifier-and-mapping-information">Identifier and Mapping Information</h2>
 <h3 id="annotations">Annotations</h3>
@@ -439,6 +439,14 @@ Alias: image_size</p>
 <tr>
 <td>type_term</td>
 <td>ME:0000128</td>
+</tr>
+<tr>
+<td>microtype</td>
+<td>ME:0000128</td>
+</tr>
+<tr>
+<td>microtype_data_type</td>
+<td>float</td>
 </tr>
 </tbody>
 </table>
@@ -476,13 +484,19 @@ annotations:
   type_term:
     tag: type_term
     value: ME:0000128
+  microtype:
+    tag: microtype
+    value: ME:0000128
+  microtype_data_type:
+    tag: microtype_data_type
+    value: float
 description: size field for Image
 from_schema: https://w3id.org/enigma/enigma-cdm
 rank: 1000
 alias: image_size
 domain_of:
 - Image
-range: integer
+range: Size
 
 </code></pre>
 
