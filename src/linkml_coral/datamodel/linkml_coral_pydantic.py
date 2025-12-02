@@ -1728,7 +1728,7 @@ class Community(ConfiguredBaseModel):
                          'microtype_data_type': {'tag': 'microtype_data_type',
                                                  'value': 'object_ref'},
                          'type_term': {'tag': 'type_term', 'value': 'ME:0000044'}},
-         'comments': ['typedef.json specifies array ([text]), but actual data contains '
+         'comments': ['typedef.json specifies array ([text]), but actual data contains ',
                       'single values only',
                       "{'Changed to multivalued': 'false to match data reality (0% "
                       "have multiple strains)'}",
