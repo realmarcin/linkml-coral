@@ -179,11 +179,19 @@ validate-cdm-parquet file class="":
   @echo "🔍 Validating CDM parquet file..."
   uv run python scripts/cdm_analysis/validate_parquet_linkml.py {{file}} {{if class != "" { "--class " + class } else { "" } }} --verbose
 
-# Validate all CDM parquet tables
+# Validate all CDM parquet tables (quick: sample validation)
 [group('CDM analysis')]
 validate-all-cdm-parquet db='/Users/marcin/Documents/VIMSS/ENIGMA/KBase/ENIGMA_in_CDM/minio/jmc_coral.db':
-  @echo "🔍 Validating all CDM parquet tables..."
+  @echo "🔍 Validating all CDM parquet tables (sample mode)..."
   ./scripts/cdm_analysis/validate_all_cdm_parquet.sh {{db}}
+
+# Full validation of all CDM data with detailed error report
+[group('CDM analysis')]
+validate-cdm-full db='/Users/marcin/Documents/VIMSS/ENIGMA/KBase/ENIGMA_in_CDM/minio/jmc_coral.db':
+  @echo "🔍 Running full validation on all CDM parquet data..."
+  @echo "⚠️  This may take a while for large tables..."
+  uv run python scripts/cdm_analysis/validate_cdm_full_report.py {{db}}
+  @echo "✅ Validation complete! Check validation_reports/cdm_parquet/ for detailed report"
 
 # Clean CDM analysis outputs
 [group('CDM analysis')]
