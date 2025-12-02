@@ -294,6 +294,7 @@ classes:
 
       CDM changes from CORAL:
       - Added 'link' field for protocol documents
+      - Renamed description → sdt_protocol_description for CDM consistency
     annotations:
       term:
         tag: term
@@ -301,7 +302,7 @@ classes:
     slots:
       - sdt_protocol_id
       - sdt_protocol_name
-      - description
+      - sdt_protocol_description
       - link
 
   Image:
@@ -823,6 +824,11 @@ slots:
     description: Name of protocol
     range: EntityName
     required: true
+
+  sdt_protocol_description:
+    description: Protocol description
+    range: string
+    required: false
 
   # Image slots
   sdt_image_id:

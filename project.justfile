@@ -173,9 +173,21 @@ cdm-compare-schemas:
   @echo "KBase CDM: src/linkml_coral/schema/cdm/linkml_coral_cdm.yaml"
   @echo "Analysis: docs/cdm_analysis/CDM_PARQUET_ANALYSIS_REPORT.md"
 
+# Validate single CDM parquet file
+[group('CDM analysis')]
+validate-cdm-parquet file class="":
+  @echo "🔍 Validating CDM parquet file..."
+  uv run python scripts/cdm_analysis/validate_parquet_linkml.py {{file}} {{if class != "" { "--class " + class } else { "" } }} --verbose
+
+# Validate all CDM parquet tables
+[group('CDM analysis')]
+validate-all-cdm-parquet db='/Users/marcin/Documents/VIMSS/ENIGMA/KBase/ENIGMA_in_CDM/minio/jmc_coral.db':
+  @echo "🔍 Validating all CDM parquet tables..."
+  ./scripts/cdm_analysis/validate_all_cdm_parquet.sh {{db}}
+
 # Clean CDM analysis outputs
 [group('CDM analysis')]
 clean-cdm:
   @echo "🧹 Cleaning CDM analysis outputs..."
-  rm -rf docs/cdm_analysis/*.json docs/cdm_analysis/*.txt cdm_diagrams/
+  rm -rf docs/cdm_analysis/*.json docs/cdm_analysis/*.txt cdm_diagrams/ validation_reports/cdm_parquet/
   @echo "✅ Cleaned CDM outputs"
