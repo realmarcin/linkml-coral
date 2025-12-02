@@ -199,3 +199,65 @@ clean-cdm:
   @echo "🧹 Cleaning CDM analysis outputs..."
   rm -rf docs/cdm_analysis/*.json docs/cdm_analysis/*.txt cdm_diagrams/ validation_reports/cdm_parquet/
   @echo "✅ Cleaned CDM outputs"
+
+# ============== KBase CDM Data Management ==============
+
+# Load CDM parquet data into linkml-store database
+[group('CDM data management')]
+load-cdm-store db='/Users/marcin/Documents/VIMSS/ENIGMA/KBase/ENIGMA_in_CDM/minio/jmc_coral.db' output='cdm_store.db':
+  @echo "📦 Loading CDM parquet data into linkml-store..."
+  uv run python scripts/cdm_analysis/load_cdm_parquet_to_store.py {{db}} \
+    --output {{output}} \
+    --include-system \
+    --include-static \
+    --create-indexes \
+    --show-info \
+    --verbose
+  @echo "✅ Database ready: {{output}}"
+
+# Load CDM parquet with dynamic brick tables (sampled)
+[group('CDM data management')]
+load-cdm-store-full db='/Users/marcin/Documents/VIMSS/ENIGMA/KBase/ENIGMA_in_CDM/minio/jmc_coral.db' output='cdm_store_full.db':
+  @echo "📦 Loading CDM parquet data (including dynamic tables)..."
+  @echo "⚠️  Note: Dynamic brick tables sampled at 10K rows each"
+  uv run python scripts/cdm_analysis/load_cdm_parquet_to_store.py {{db}} \
+    --output {{output}} \
+    --include-system \
+    --include-static \
+    --include-dynamic \
+    --max-dynamic-rows 10000 \
+    --create-indexes \
+    --show-info \
+    --verbose
+  @echo "✅ Database ready: {{output}}"
+
+# Show CDM store database statistics
+[group('CDM data management')]
+cdm-store-stats db='cdm_store.db':
+  @echo "📊 Querying CDM Store statistics..."
+  uv run python scripts/cdm_analysis/query_cdm_store.py --db {{db}} stats
+
+# Find samples from a specific location
+[group('CDM data management')]
+cdm-find-samples location db='cdm_store.db':
+  @echo "🔍 Finding samples from location: {{location}}..."
+  uv run python scripts/cdm_analysis/query_cdm_store.py --db {{db}} find-samples --location {{location}}
+
+# Search ontology terms
+[group('CDM data management')]
+cdm-search-oterm term db='cdm_store.db':
+  @echo "🔍 Searching ontology terms for: {{term}}..."
+  uv run python scripts/cdm_analysis/query_cdm_store.py --db {{db}} search-oterm "{{term}}"
+
+# Trace provenance lineage for an entity
+[group('CDM data management')]
+cdm-lineage entity_type entity_id db='cdm_store.db':
+  @echo "🔗 Tracing lineage for {{entity_type}}:{{entity_id}}..."
+  uv run python scripts/cdm_analysis/query_cdm_store.py --db {{db}} lineage {{entity_type}} {{entity_id}}
+
+# Clean CDM store databases
+[group('CDM data management')]
+clean-cdm-store:
+  @echo "🧹 Cleaning CDM store databases..."
+  rm -f cdm_store.db cdm_store_full.db
+  @echo "✅ Cleaned CDM store databases"

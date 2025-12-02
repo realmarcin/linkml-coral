@@ -1,0 +1,3954 @@
+{
+  "name": "kbase-cdm",
+  "annotations": [
+    {
+      "tag": "source_schema",
+      "value": "https://w3id.org/enigma/enigma-cdm (original CORAL LinkML schema)"
+    },
+    {
+      "tag": "cdm_version",
+      "value": "1.0.0"
+    },
+    {
+      "tag": "parquet_database",
+      "value": "/Users/marcin/Documents/VIMSS/ENIGMA/KBase/ENIGMA_in_CDM/minio/jmc_coral.db"
+    },
+    {
+      "tag": "analysis_date",
+      "value": "2025-12-01"
+    },
+    {
+      "tag": "total_static_rows",
+      "value": "272,934"
+    },
+    {
+      "tag": "total_dynamic_rows",
+      "value": "82,643,066"
+    },
+    {
+      "tag": "n_system_tables",
+      "value": "6"
+    },
+    {
+      "tag": "n_static_tables",
+      "value": "17"
+    },
+    {
+      "tag": "n_dynamic_tables",
+      "value": "21"
+    },
+    {
+      "tag": "n_ontology_terms",
+      "value": "10,594"
+    },
+    {
+      "tag": "n_processes",
+      "value": "142,958"
+    }
+  ],
+  "description": "LinkML schema for KBase Common Data Model (CDM) representing ENIGMA CORAL data.\n\nThis schema is derived from the original CORAL LinkML schema but includes\ntransformations specific to the KBase CDM implementation:\n\n**Key CDM Patterns:**\n\n1. **Ontology Term Splitting**\n   - CORAL: Single field with ontology constraint\n   - CDM: Two fields (ID + name) for each ontology term\n   - Example: `material` \u2192 `material_sys_oterm_id` + `material_sys_oterm_name`\n   - Enables FK validation + human-readable labels without joins\n\n2. **CDM Naming Conventions**\n   - Tables: `sdt_*` (static), `ddt_*` (dynamic), `sys_*` (system)\n   - IDs: `sdt_{entity}_id` with pattern `EntityName\\d{7}`\n   - Names: `sdt_{entity}_name` (unique, used for FK references)\n   - All columns: snake_case with entity prefix\n\n3. **Centralized Ontology Catalog**\n   - All ontology terms stored in `sys_oterm` table\n   - 10,594 terms from multiple ontologies (ME, ENVO, UO, etc.)\n   - Hierarchical relationships via `parent_sys_oterm_id`\n   - Single source of truth for semantic metadata\n\n4. **Denormalized Provenance Model**\n   - Process workflows stored in `sys_process` table\n   - Input/output relationships in `sys_process_input`, `sys_process_output`\n   - Complete lineage tracing from samples to analyses\n   - 142,958 process records documenting all transformations\n\n5. **Dynamic Data Bricks**\n   - N-dimensional measurement arrays in `ddt_brick*` tables\n   - Flexible schema defined in `sys_ddt_typedef`\n   - Semantic dimensions and variables via ontology terms\n   - 82.6M rows across 20 brick tables\n\n**Schema Organization:**\n\nThis schema is modular, organized into:\n- `cdm_base.yaml`: Common types, mixins, validation patterns\n- `cdm_static_entities.yaml`: 17 sdt_* entity classes\n- `cdm_system_tables.yaml`: 6 sys_* system classes\n- `cdm_dynamic_data.yaml`: Brick infrastructure (ddt_*)\n- `linkml_coral_cdm.yaml`: Main schema (this file)\n\n**Data Volume:**\n- 272,934 rows across 17 static entity tables\n- 142,958 process records (provenance)\n- 10,594 ontology terms\n- 82.6M rows in dynamic data tables\n\n**Comparison to Original CORAL:**\n- Maintains same 17 core entity types\n- Adds 6 new system table classes\n- Preserves provenance annotations\n- Extends with CDM-specific patterns\n\n**Documentation:**\n- Analysis Report: `docs/cdm_analysis/CDM_PARQUET_ANALYSIS_REPORT.md`\n- Schema Comparison: `docs/CORAL_TO_CDM_MAPPING.md`\n- Validation Guide: `docs/CDM_VALIDATION_GUIDE.md`\n",
+  "title": "KBase Common Data Model (CDM) for ENIGMA CORAL",
+  "comments": [
+    "This schema represents the KBase CDM implementation of ENIGMA CORAL data.\nIt maintains compatibility with the original CORAL schema while adding\nCDM-specific patterns for ontology management, provenance tracking, and\ndynamic data storage.\n",
+    "Validation Strategy:\n1. Static entities: Validate against cdm_static_entities.yaml classes\n2. System tables: Validate against cdm_system_tables.yaml classes\n3. Dynamic bricks: Validate against sys_ddt_typedef at runtime\n",
+    "Foreign Key References:\n- All FK references in CDM use _name columns (not _id)\n- Example: Sample.sdt_location_name \u2192 Location.sdt_location_name\n- Self-referential FKs: Community.parent, Strain.derived_from\n",
+    "Ontology Term Splitting:\n- 15 fields affected across 5 entity types\n- Location: 4 fields (continent, country, biome, feature)\n- Sample: 2 fields (material, env_package)\n- Reads: 2 fields (read_type, sequencing_technology)\n- Community: 1 field (community_type)\n- Process: 6 fields (process_type, person, campaign, etc.)\n",
+    "Migration from CORAL to CDM:\n- Original CORAL data can be transformed to CDM format\n- Key transformations documented in docs/CORAL_TO_CDM_MAPPING.md\n- Migration scripts available in scripts/cdm_analysis/\n",
+    "Provenance Lineage Examples:\n- Sample \u2192 Reads \u2192 Assembly \u2192 Genome \u2192 Gene\n- Sample \u2192 Community \u2192 (defined strains)\n- Location \u2192 Sample \u2192 (multiple downstream entities)\n",
+    "Brick System Usage:\n- Store measurements too diverse for static schema\n- Examples: metabolomics, proteomics, time series, spatial arrays\n- Each brick defines its own N-dimensional structure\n- Semantic metadata enables cross-brick queries\n",
+    "Reproducible Analysis:\n- All analysis scripts in scripts/cdm_analysis/\n- Justfile targets: just analyze-cdm, just cdm-report\n- Analysis outputs in docs/cdm_analysis/\n- Machine-readable schema in cdm_schema_report.json\n"
+  ],
+  "id": "https://w3id.org/enigma/kbase-cdm",
+  "version": "1.0.0",
+  "imports": [
+    "linkml:types",
+    "./cdm_base",
+    "./cdm_static_entities",
+    "./cdm_system_tables",
+    "./cdm_dynamic_data"
+  ],
+  "license": "MIT",
+  "prefixes": [
+    {
+      "prefix_prefix": "linkml",
+      "prefix_reference": "https://w3id.org/linkml/"
+    },
+    {
+      "prefix_prefix": "enigma",
+      "prefix_reference": "https://w3id.org/enigma/"
+    },
+    {
+      "prefix_prefix": "kbase_cdm",
+      "prefix_reference": "https://w3id.org/enigma/kbase-cdm/"
+    },
+    {
+      "prefix_prefix": "DA",
+      "prefix_reference": "http://purl.obolibrary.org/obo/DA_"
+    },
+    {
+      "prefix_prefix": "ME",
+      "prefix_reference": "http://purl.obolibrary.org/obo/ME_"
+    },
+    {
+      "prefix_prefix": "ENVO",
+      "prefix_reference": "http://purl.obolibrary.org/obo/ENVO_"
+    },
+    {
+      "prefix_prefix": "UO",
+      "prefix_reference": "http://purl.obolibrary.org/obo/UO_"
+    },
+    {
+      "prefix_prefix": "PROCESS",
+      "prefix_reference": "http://purl.obolibrary.org/obo/PROCESS_"
+    },
+    {
+      "prefix_prefix": "ENIGMA_TERM",
+      "prefix_reference": "http://purl.obolibrary.org/obo/ENIGMA_"
+    },
+    {
+      "prefix_prefix": "CONTINENT",
+      "prefix_reference": "http://purl.obolibrary.org/obo/CONTINENT_"
+    },
+    {
+      "prefix_prefix": "COUNTRY",
+      "prefix_reference": "http://purl.obolibrary.org/obo/COUNTRY_"
+    },
+    {
+      "prefix_prefix": "MIxS",
+      "prefix_reference": "http://purl.obolibrary.org/obo/MIxS_"
+    }
+  ],
+  "default_prefix": "kbase_cdm",
+  "default_range": "string",
+  "types": [
+    {
+      "name": "string",
+      "definition_uri": "https://w3id.org/linkml/String",
+      "description": "A character string",
+      "notes": [
+        "In RDF serializations, a slot with range of string is treated as a literal or type xsd:string.   If you are authoring schemas in LinkML YAML, the type is referenced with the lower case \"string\"."
+      ],
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "exact_mappings": [
+        "schema:Text"
+      ],
+      "base": "str",
+      "uri": "http://www.w3.org/2001/XMLSchema#string",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "integer",
+      "definition_uri": "https://w3id.org/linkml/Integer",
+      "description": "An integer",
+      "notes": [
+        "If you are authoring schemas in LinkML YAML, the type is referenced with the lower case \"integer\"."
+      ],
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "exact_mappings": [
+        "schema:Integer"
+      ],
+      "base": "int",
+      "uri": "http://www.w3.org/2001/XMLSchema#integer",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "boolean",
+      "definition_uri": "https://w3id.org/linkml/Boolean",
+      "description": "A binary (true or false) value",
+      "notes": [
+        "If you are authoring schemas in LinkML YAML, the type is referenced with the lower case \"boolean\"."
+      ],
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "exact_mappings": [
+        "schema:Boolean"
+      ],
+      "base": "Bool",
+      "uri": "http://www.w3.org/2001/XMLSchema#boolean",
+      "repr": "bool",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "float",
+      "definition_uri": "https://w3id.org/linkml/Float",
+      "description": "A real number that conforms to the xsd:float specification",
+      "notes": [
+        "If you are authoring schemas in LinkML YAML, the type is referenced with the lower case \"float\"."
+      ],
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "exact_mappings": [
+        "schema:Float"
+      ],
+      "base": "float",
+      "uri": "http://www.w3.org/2001/XMLSchema#float",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "double",
+      "definition_uri": "https://w3id.org/linkml/Double",
+      "description": "A real number that conforms to the xsd:double specification",
+      "notes": [
+        "If you are authoring schemas in LinkML YAML, the type is referenced with the lower case \"double\"."
+      ],
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "close_mappings": [
+        "schema:Float"
+      ],
+      "base": "float",
+      "uri": "http://www.w3.org/2001/XMLSchema#double",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "decimal",
+      "definition_uri": "https://w3id.org/linkml/Decimal",
+      "description": "A real number with arbitrary precision that conforms to the xsd:decimal specification",
+      "notes": [
+        "If you are authoring schemas in LinkML YAML, the type is referenced with the lower case \"decimal\"."
+      ],
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "broad_mappings": [
+        "schema:Number"
+      ],
+      "base": "Decimal",
+      "uri": "http://www.w3.org/2001/XMLSchema#decimal",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "time",
+      "definition_uri": "https://w3id.org/linkml/Time",
+      "description": "A time object represents a (local) time of day, independent of any particular day",
+      "notes": [
+        "URI is dateTime because OWL reasoners do not work with straight date or time",
+        "If you are authoring schemas in LinkML YAML, the type is referenced with the lower case \"time\"."
+      ],
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "exact_mappings": [
+        "schema:Time"
+      ],
+      "base": "XSDTime",
+      "uri": "http://www.w3.org/2001/XMLSchema#time",
+      "repr": "str",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "date",
+      "definition_uri": "https://w3id.org/linkml/Date",
+      "description": "a date (year, month and day) in an idealized calendar",
+      "notes": [
+        "URI is dateTime because OWL reasoners don't work with straight date or time",
+        "If you are authoring schemas in LinkML YAML, the type is referenced with the lower case \"date\"."
+      ],
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "exact_mappings": [
+        "schema:Date"
+      ],
+      "base": "XSDDate",
+      "uri": "http://www.w3.org/2001/XMLSchema#date",
+      "repr": "str",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "datetime",
+      "definition_uri": "https://w3id.org/linkml/Datetime",
+      "description": "The combination of a date and time",
+      "notes": [
+        "If you are authoring schemas in LinkML YAML, the type is referenced with the lower case \"datetime\"."
+      ],
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "exact_mappings": [
+        "schema:DateTime"
+      ],
+      "base": "XSDDateTime",
+      "uri": "http://www.w3.org/2001/XMLSchema#dateTime",
+      "repr": "str",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "date_or_datetime",
+      "definition_uri": "https://w3id.org/linkml/DateOrDatetime",
+      "description": "Either a date or a datetime",
+      "notes": [
+        "If you are authoring schemas in LinkML YAML, the type is referenced with the lower case \"date_or_datetime\"."
+      ],
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "base": "str",
+      "uri": "https://w3id.org/linkml/DateOrDatetime",
+      "repr": "str",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "uriorcurie",
+      "definition_uri": "https://w3id.org/linkml/Uriorcurie",
+      "description": "a URI or a CURIE",
+      "notes": [
+        "If you are authoring schemas in LinkML YAML, the type is referenced with the lower case \"uriorcurie\"."
+      ],
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "base": "URIorCURIE",
+      "uri": "http://www.w3.org/2001/XMLSchema#anyURI",
+      "repr": "str",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "curie",
+      "definition_uri": "https://w3id.org/linkml/Curie",
+      "conforms_to": "https://www.w3.org/TR/curie/",
+      "description": "a compact URI",
+      "notes": [
+        "If you are authoring schemas in LinkML YAML, the type is referenced with the lower case \"curie\"."
+      ],
+      "comments": [
+        "in RDF serializations this MUST be expanded to a URI",
+        "in non-RDF serializations MAY be serialized as the compact representation"
+      ],
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "base": "Curie",
+      "uri": "http://www.w3.org/2001/XMLSchema#string",
+      "repr": "str",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "uri",
+      "definition_uri": "https://w3id.org/linkml/Uri",
+      "conforms_to": "https://www.ietf.org/rfc/rfc3987.txt",
+      "description": "a complete URI",
+      "notes": [
+        "If you are authoring schemas in LinkML YAML, the type is referenced with the lower case \"uri\"."
+      ],
+      "comments": [
+        "in RDF serializations a slot with range of uri is treated as a literal or type xsd:anyURI unless it is an identifier or a reference to an identifier, in which case it is translated directly to a node"
+      ],
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "close_mappings": [
+        "schema:URL"
+      ],
+      "base": "URI",
+      "uri": "http://www.w3.org/2001/XMLSchema#anyURI",
+      "repr": "str",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "ncname",
+      "definition_uri": "https://w3id.org/linkml/Ncname",
+      "description": "Prefix part of CURIE",
+      "notes": [
+        "If you are authoring schemas in LinkML YAML, the type is referenced with the lower case \"ncname\"."
+      ],
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "base": "NCName",
+      "uri": "http://www.w3.org/2001/XMLSchema#string",
+      "repr": "str",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "objectidentifier",
+      "definition_uri": "https://w3id.org/linkml/Objectidentifier",
+      "description": "A URI or CURIE that represents an object in the model.",
+      "notes": [
+        "If you are authoring schemas in LinkML YAML, the type is referenced with the lower case \"objectidentifier\"."
+      ],
+      "comments": [
+        "Used for inheritance and type checking"
+      ],
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "base": "ElementIdentifier",
+      "uri": "http://www.w3.org/ns/shex#iri",
+      "repr": "str",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "nodeidentifier",
+      "definition_uri": "https://w3id.org/linkml/Nodeidentifier",
+      "description": "A URI, CURIE or BNODE that represents a node in a model.",
+      "notes": [
+        "If you are authoring schemas in LinkML YAML, the type is referenced with the lower case \"nodeidentifier\"."
+      ],
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "base": "NodeIdentifier",
+      "uri": "http://www.w3.org/ns/shex#nonLiteral",
+      "repr": "str",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "jsonpointer",
+      "definition_uri": "https://w3id.org/linkml/Jsonpointer",
+      "conforms_to": "https://datatracker.ietf.org/doc/html/rfc6901",
+      "description": "A string encoding a JSON Pointer. The value of the string MUST conform to JSON Point syntax and SHOULD dereference to a valid object within the current instance document when encoded in tree form.",
+      "notes": [
+        "If you are authoring schemas in LinkML YAML, the type is referenced with the lower case \"jsonpointer\"."
+      ],
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "base": "str",
+      "uri": "http://www.w3.org/2001/XMLSchema#string",
+      "repr": "str",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "jsonpath",
+      "definition_uri": "https://w3id.org/linkml/Jsonpath",
+      "conforms_to": "https://www.ietf.org/archive/id/draft-goessner-dispatch-jsonpath-00.html",
+      "description": "A string encoding a JSON Path. The value of the string MUST conform to JSON Point syntax and SHOULD dereference to zero or more valid objects within the current instance document when encoded in tree form.",
+      "notes": [
+        "If you are authoring schemas in LinkML YAML, the type is referenced with the lower case \"jsonpath\"."
+      ],
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "base": "str",
+      "uri": "http://www.w3.org/2001/XMLSchema#string",
+      "repr": "str",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "sparqlpath",
+      "definition_uri": "https://w3id.org/linkml/Sparqlpath",
+      "conforms_to": "https://www.w3.org/TR/sparql11-query/#propertypaths",
+      "description": "A string encoding a SPARQL Property Path. The value of the string MUST conform to SPARQL syntax and SHOULD dereference to zero or more valid objects within the current instance document when encoded as RDF.",
+      "notes": [
+        "If you are authoring schemas in LinkML YAML, the type is referenced with the lower case \"sparqlpath\"."
+      ],
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "base": "str",
+      "uri": "http://www.w3.org/2001/XMLSchema#string",
+      "repr": "str",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "Date",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/Date",
+      "annotations": [
+        {
+          "tag": "microtype",
+          "value": "ME:0000040",
+          "@type": "Annotation"
+        },
+        {
+          "tag": "microtype_data_type",
+          "value": "string",
+          "@type": "Annotation"
+        }
+      ],
+      "description": "ISO 8601 date format (YYYY-MM-DD)",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-base",
+      "typeof": "string",
+      "base": "str",
+      "uri": "http://www.w3.org/2001/XMLSchema#string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "Time",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/Time",
+      "annotations": [
+        {
+          "tag": "microtype",
+          "value": "ME:0000041",
+          "@type": "Annotation"
+        },
+        {
+          "tag": "microtype_data_type",
+          "value": "string",
+          "@type": "Annotation"
+        }
+      ],
+      "description": "Time in HH:MM or HH:MM:SS format",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-base",
+      "typeof": "string",
+      "base": "str",
+      "uri": "http://www.w3.org/2001/XMLSchema#string",
+      "pattern": "^\\d{2}:\\d{2}(:\\d{2})?$",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "Link",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/Link",
+      "annotations": [
+        {
+          "tag": "microtype",
+          "value": "ME:0000042",
+          "@type": "Annotation"
+        },
+        {
+          "tag": "microtype_data_type",
+          "value": "string",
+          "@type": "Annotation"
+        }
+      ],
+      "description": "HTTP/HTTPS URL or file path",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-base",
+      "typeof": "string",
+      "base": "str",
+      "uri": "http://www.w3.org/2001/XMLSchema#string",
+      "pattern": "^(http.*|/.*)$",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "Latitude",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/Latitude",
+      "annotations": [
+        {
+          "tag": "microtype",
+          "value": "ME:0000043",
+          "@type": "Annotation"
+        },
+        {
+          "tag": "microtype_data_type",
+          "value": "float",
+          "@type": "Annotation"
+        }
+      ],
+      "description": "Latitude in decimal degrees",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-base",
+      "typeof": "float",
+      "base": "float",
+      "uri": "http://www.w3.org/2001/XMLSchema#float",
+      "minimum_value": -90.0,
+      "maximum_value": 90.0,
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "Longitude",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/Longitude",
+      "annotations": [
+        {
+          "tag": "microtype",
+          "value": "ME:0000044",
+          "@type": "Annotation"
+        },
+        {
+          "tag": "microtype_data_type",
+          "value": "float",
+          "@type": "Annotation"
+        }
+      ],
+      "description": "Longitude in decimal degrees",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-base",
+      "typeof": "float",
+      "base": "float",
+      "uri": "http://www.w3.org/2001/XMLSchema#float",
+      "minimum_value": -180.0,
+      "maximum_value": 180.0,
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "Count",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/Count",
+      "annotations": [
+        {
+          "tag": "microtype",
+          "value": "ME:0000045",
+          "@type": "Annotation"
+        },
+        {
+          "tag": "microtype_data_type",
+          "value": "int",
+          "@type": "Annotation"
+        }
+      ],
+      "description": "Non-negative integer count",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-base",
+      "typeof": "integer",
+      "base": "int",
+      "uri": "http://www.w3.org/2001/XMLSchema#integer",
+      "minimum_value": 0,
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "Size",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/Size",
+      "annotations": [
+        {
+          "tag": "microtype",
+          "value": "ME:0000046",
+          "@type": "Annotation"
+        },
+        {
+          "tag": "microtype_data_type",
+          "value": "int",
+          "@type": "Annotation"
+        }
+      ],
+      "description": "Size in bytes",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-base",
+      "typeof": "integer",
+      "base": "int",
+      "uri": "http://www.w3.org/2001/XMLSchema#integer",
+      "minimum_value": 0,
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "Rate",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/Rate",
+      "annotations": [
+        {
+          "tag": "microtype",
+          "value": "ME:0000047",
+          "@type": "Annotation"
+        },
+        {
+          "tag": "microtype_data_type",
+          "value": "float",
+          "@type": "Annotation"
+        }
+      ],
+      "description": "Rate or frequency measurement",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-base",
+      "typeof": "float",
+      "base": "float",
+      "uri": "http://www.w3.org/2001/XMLSchema#float",
+      "minimum_value": 0.0,
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "Depth",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/Depth",
+      "annotations": [
+        {
+          "tag": "microtype",
+          "value": "ME:0000048",
+          "@type": "Annotation"
+        },
+        {
+          "tag": "microtype_data_type",
+          "value": "float",
+          "@type": "Annotation"
+        }
+      ],
+      "description": "Depth measurement (meters)",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-base",
+      "typeof": "float",
+      "base": "float",
+      "uri": "http://www.w3.org/2001/XMLSchema#float",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "Elevation",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/Elevation",
+      "annotations": [
+        {
+          "tag": "microtype",
+          "value": "ME:0000049",
+          "@type": "Annotation"
+        },
+        {
+          "tag": "microtype_data_type",
+          "value": "float",
+          "@type": "Annotation"
+        }
+      ],
+      "description": "Elevation measurement (meters)",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-base",
+      "typeof": "float",
+      "base": "float",
+      "uri": "http://www.w3.org/2001/XMLSchema#float",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "OntologyTermID",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/OntologyTermID",
+      "description": "CURIE format ontology term identifier (e.g., ME:0000129, ENVO:00002041)",
+      "comments": [
+        "References sys_oterm table in CDM",
+        "Standard OBO format with prefix and numeric ID"
+      ],
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-base",
+      "typeof": "string",
+      "base": "str",
+      "uri": "http://www.w3.org/2001/XMLSchema#string",
+      "pattern": "^[A-Z_]+:\\d+$",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "EntityName",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/EntityName",
+      "description": "Human-readable entity name",
+      "comments": [
+        "Used for foreign key references in CDM (not ID)",
+        "Allows alphanumeric, underscore, hyphen, dot, and space"
+      ],
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-base",
+      "typeof": "string",
+      "base": "str",
+      "uri": "http://www.w3.org/2001/XMLSchema#string",
+      "pattern": "^[A-Za-z0-9_\\-. ]+$",
+      "@type": "TypeDefinition"
+    }
+  ],
+  "enums": [
+    {
+      "name": "StrandEnum",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/StrandEnum",
+      "description": "DNA strand orientation",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm",
+      "permissible_values": [
+        {
+          "text": "forward",
+          "description": "Forward strand (+)",
+          "meaning": "ME:0000193",
+          "annotations": [
+            {
+              "tag": "symbol",
+              "value": "+"
+            }
+          ]
+        },
+        {
+          "text": "reverse_complement",
+          "description": "Reverse complement strand (-)",
+          "meaning": "ME:0000194",
+          "annotations": [
+            {
+              "tag": "symbol",
+              "value": "-"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ReadTypeEnum",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/ReadTypeEnum",
+      "description": "Sequencing read type",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm",
+      "permissible_values": [
+        {
+          "text": "paired_end",
+          "description": "Paired-end reads",
+          "meaning": "ME:0000113"
+        },
+        {
+          "text": "single_end",
+          "description": "Single-end reads",
+          "meaning": "ME:0000114"
+        }
+      ]
+    },
+    {
+      "name": "SequencingTechnologyEnum",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/SequencingTechnologyEnum",
+      "description": "Sequencing platform technology",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm",
+      "permissible_values": [
+        {
+          "text": "illumina",
+          "description": "Illumina sequencing",
+          "meaning": "ME:0000115"
+        },
+        {
+          "text": "pacbio",
+          "description": "PacBio sequencing",
+          "meaning": "ME:0000116"
+        },
+        {
+          "text": "nanopore",
+          "description": "Oxford Nanopore sequencing",
+          "meaning": "ME:0000117"
+        },
+        {
+          "text": "sanger",
+          "description": "Sanger sequencing",
+          "meaning": "ME:0000118"
+        }
+      ]
+    },
+    {
+      "name": "CommunityTypeEnum",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/CommunityTypeEnum",
+      "description": "Microbial community type",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm",
+      "permissible_values": [
+        {
+          "text": "isolate_community",
+          "description": "Isolated single strain",
+          "meaning": "ME:0000200"
+        },
+        {
+          "text": "enrichment",
+          "description": "Enrichment culture",
+          "meaning": "ME:0000201"
+        },
+        {
+          "text": "assemblage",
+          "description": "Defined assemblage of strains",
+          "meaning": "ME:0000202"
+        },
+        {
+          "text": "environmental_community",
+          "description": "Environmental community (metagenome)",
+          "meaning": "ME:0000203"
+        },
+        {
+          "text": "active_fraction",
+          "description": "Active fraction",
+          "meaning": "ME:0000237"
+        }
+      ]
+    },
+    {
+      "name": "MaterialEnum",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/MaterialEnum",
+      "description": "Sample material type",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm",
+      "permissible_values": [
+        {
+          "text": "soil",
+          "description": "Soil",
+          "meaning": "ENVO:00001998"
+        },
+        {
+          "text": "sediment",
+          "description": "Sediment",
+          "meaning": "ENVO:00002007"
+        },
+        {
+          "text": "water",
+          "description": "Water",
+          "meaning": "ENVO:00002006"
+        },
+        {
+          "text": "biofilm",
+          "description": "Biofilm",
+          "meaning": "ENVO:00002034"
+        }
+      ]
+    },
+    {
+      "name": "BiomeEnum",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/BiomeEnum",
+      "description": "Environmental biome",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm",
+      "permissible_values": [
+        {
+          "text": "terrestrial",
+          "description": "Terrestrial biome",
+          "meaning": "ENVO:00000446"
+        },
+        {
+          "text": "aquatic",
+          "description": "Aquatic biome",
+          "meaning": "ENVO:00002030"
+        },
+        {
+          "text": "marine",
+          "description": "Marine biome",
+          "meaning": "ENVO:00000447"
+        }
+      ]
+    },
+    {
+      "name": "BrickDataType",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/BrickDataType",
+      "description": "Data types for brick variables",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-dynamic-data",
+      "permissible_values": [
+        {
+          "text": "float",
+          "description": "Floating point number"
+        },
+        {
+          "text": "int",
+          "description": "Integer"
+        },
+        {
+          "text": "bool",
+          "description": "Boolean (true/false)"
+        },
+        {
+          "text": "text",
+          "description": "Free text string"
+        },
+        {
+          "text": "oterm_ref",
+          "description": "Reference to ontology term (sys_oterm_id)"
+        },
+        {
+          "text": "object_ref",
+          "description": "Reference to entity by name"
+        }
+      ]
+    },
+    {
+      "name": "DimensionSemantics",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/DimensionSemantics",
+      "description": "Common dimension semantic types",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-dynamic-data",
+      "permissible_values": [
+        {
+          "text": "environmental_sample",
+          "description": "Environmental sample dimension",
+          "meaning": "ME:0000501"
+        },
+        {
+          "text": "molecule",
+          "description": "Molecule/compound dimension",
+          "meaning": "ME:0000502"
+        },
+        {
+          "text": "state",
+          "description": "Experimental state dimension (time, treatment, etc.)",
+          "meaning": "ME:0000503"
+        },
+        {
+          "text": "statistic",
+          "description": "Statistical measure dimension (mean, std, etc.)",
+          "meaning": "ME:0000504"
+        },
+        {
+          "text": "gene",
+          "description": "Gene dimension",
+          "meaning": "ME:0000505"
+        },
+        {
+          "text": "taxon",
+          "description": "Taxonomic dimension",
+          "meaning": "ME:0000506"
+        },
+        {
+          "text": "location",
+          "description": "Location dimension",
+          "meaning": "ME:0000507"
+        },
+        {
+          "text": "time",
+          "description": "Time point dimension",
+          "meaning": "ME:0000508"
+        }
+      ]
+    },
+    {
+      "name": "VariableSemantics",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/VariableSemantics",
+      "description": "Common variable semantic types",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-dynamic-data",
+      "permissible_values": [
+        {
+          "text": "concentration",
+          "description": "Chemical concentration",
+          "meaning": "ME:0000601"
+        },
+        {
+          "text": "molecular_weight",
+          "description": "Molecular weight",
+          "meaning": "ME:0000602"
+        },
+        {
+          "text": "activity_rate",
+          "description": "Enzymatic or metabolic activity rate",
+          "meaning": "ME:0000603"
+        },
+        {
+          "text": "expression_level",
+          "description": "Gene expression level",
+          "meaning": "ME:0000604"
+        },
+        {
+          "text": "abundance",
+          "description": "Relative or absolute abundance",
+          "meaning": "ME:0000605"
+        },
+        {
+          "text": "ph",
+          "description": "pH measurement",
+          "meaning": "ME:0000606"
+        },
+        {
+          "text": "temperature",
+          "description": "Temperature",
+          "meaning": "ME:0000607"
+        },
+        {
+          "text": "growth_rate",
+          "description": "Cell or organism growth rate",
+          "meaning": "ME:0000608"
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "name": "sys_oterm_id",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/sys_oterm_id",
+      "description": "Ontology term identifier (CURIE format)",
+      "comments": [
+        "Foreign key to sys_oterm table",
+        "{'Standard format': 'PREFIX:NNNNNN (e.g., ME:0000129)'}"
+      ],
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-base",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/sys_oterm_id",
+      "owner": "SystemOntologyTerm",
+      "domain_of": [
+        "SystemOntologyTerm"
+      ],
+      "range": "OntologyTermID",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "sys_oterm_name",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/sys_oterm_name",
+      "description": "Human-readable ontology term name",
+      "comments": [
+        "Denormalized from sys_oterm for query performance",
+        "Must match the name in sys_oterm catalog"
+      ],
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-base",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/sys_oterm_name",
+      "owner": "SystemOntologyTerm",
+      "domain_of": [
+        "SystemOntologyTerm"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "link",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/link",
+      "description": "External reference URL or file path",
+      "comments": [
+        "Used for Assembly, Genome, Reads, Image, Protocol",
+        "May point to files in object storage or external databases"
+      ],
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-base",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/link",
+      "owner": "Image",
+      "domain_of": [
+        "Reads",
+        "Assembly",
+        "Genome",
+        "Protocol",
+        "Image"
+      ],
+      "range": "Link",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "sdt_location_id",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/sdt_location_id",
+      "description": "Unique identifier for Location",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/sdt_location_id",
+      "identifier": true,
+      "owner": "Location",
+      "domain_of": [
+        "Location"
+      ],
+      "range": "string",
+      "required": true,
+      "pattern": "^Location\\d{7}$",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "sdt_location_name",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/sdt_location_name",
+      "description": "Name of location",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/sdt_location_name",
+      "owner": "Location",
+      "domain_of": [
+        "Location"
+      ],
+      "range": "EntityName",
+      "required": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "latitude",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/latitude",
+      "description": "Latitude in decimal degrees",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/latitude",
+      "owner": "Location",
+      "domain_of": [
+        "Location"
+      ],
+      "range": "Latitude",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "longitude",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/longitude",
+      "description": "Longitude in decimal degrees",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/longitude",
+      "owner": "Location",
+      "domain_of": [
+        "Location"
+      ],
+      "range": "Longitude",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "continent_sys_oterm_id",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/continent_sys_oterm_id",
+      "description": "Continent ontology term ID",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/continent_sys_oterm_id",
+      "owner": "Location",
+      "domain_of": [
+        "Location"
+      ],
+      "range": "OntologyTermID",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "continent_sys_oterm_name",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/continent_sys_oterm_name",
+      "description": "Continent ontology term name",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/continent_sys_oterm_name",
+      "owner": "Location",
+      "domain_of": [
+        "Location"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "country_sys_oterm_id",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/country_sys_oterm_id",
+      "description": "Country ontology term ID",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/country_sys_oterm_id",
+      "owner": "Location",
+      "domain_of": [
+        "Location"
+      ],
+      "range": "OntologyTermID",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "country_sys_oterm_name",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/country_sys_oterm_name",
+      "description": "Country ontology term name",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/country_sys_oterm_name",
+      "owner": "Location",
+      "domain_of": [
+        "Location"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "region",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/region",
+      "description": "Geographic region",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/region",
+      "owner": "Location",
+      "domain_of": [
+        "Location"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "biome_sys_oterm_id",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/biome_sys_oterm_id",
+      "description": "Biome ontology term ID (ENVO)",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/biome_sys_oterm_id",
+      "owner": "Location",
+      "domain_of": [
+        "Location"
+      ],
+      "range": "OntologyTermID",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "biome_sys_oterm_name",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/biome_sys_oterm_name",
+      "description": "Biome ontology term name",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/biome_sys_oterm_name",
+      "owner": "Location",
+      "domain_of": [
+        "Location"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "feature_sys_oterm_id",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/feature_sys_oterm_id",
+      "description": "Environmental feature ontology term ID",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/feature_sys_oterm_id",
+      "owner": "Location",
+      "domain_of": [
+        "Location"
+      ],
+      "range": "OntologyTermID",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "feature_sys_oterm_name",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/feature_sys_oterm_name",
+      "description": "Environmental feature ontology term name",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/feature_sys_oterm_name",
+      "owner": "Location",
+      "domain_of": [
+        "Location"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "sdt_sample_id",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/sdt_sample_id",
+      "description": "Unique identifier for Sample",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/sdt_sample_id",
+      "identifier": true,
+      "owner": "Sample",
+      "domain_of": [
+        "Sample"
+      ],
+      "range": "string",
+      "required": true,
+      "pattern": "^Sample\\d{7}$",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "sdt_sample_name",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/sdt_sample_name",
+      "description": "Name of sample",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/sdt_sample_name",
+      "owner": "Sample",
+      "domain_of": [
+        "Sample"
+      ],
+      "range": "EntityName",
+      "required": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "location_ref",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/location_ref",
+      "description": "Reference to location name (FK to Location.sdt_location_name)",
+      "comments": [
+        "{'CDM convention': 'FK references use entity name, not ID'}",
+        "References Location.sdt_location_name"
+      ],
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/location_ref",
+      "owner": "Sample",
+      "domain_of": [
+        "Sample"
+      ],
+      "range": "EntityName",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "depth",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/depth",
+      "description": "Depth in meters",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/depth",
+      "owner": "Sample",
+      "domain_of": [
+        "Sample"
+      ],
+      "range": "Depth",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "elevation",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/elevation",
+      "description": "Elevation in meters",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/elevation",
+      "owner": "Sample",
+      "domain_of": [
+        "Sample"
+      ],
+      "range": "Elevation",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "date",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/date",
+      "description": "Collection date",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/date",
+      "owner": "Sample",
+      "domain_of": [
+        "Sample"
+      ],
+      "range": "Date",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "time",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/time",
+      "description": "Collection time",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/time",
+      "owner": "Sample",
+      "domain_of": [
+        "Sample"
+      ],
+      "range": "Time",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "timezone",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/timezone",
+      "description": "Timezone",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/timezone",
+      "owner": "Sample",
+      "domain_of": [
+        "Sample"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "material_sys_oterm_id",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/material_sys_oterm_id",
+      "description": "Material type ontology term ID",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/material_sys_oterm_id",
+      "owner": "Sample",
+      "domain_of": [
+        "Sample"
+      ],
+      "range": "OntologyTermID",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "material_sys_oterm_name",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/material_sys_oterm_name",
+      "description": "Material type ontology term name",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/material_sys_oterm_name",
+      "owner": "Sample",
+      "domain_of": [
+        "Sample"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "env_package_sys_oterm_id",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/env_package_sys_oterm_id",
+      "description": "Environment package ontology term ID",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/env_package_sys_oterm_id",
+      "owner": "Sample",
+      "domain_of": [
+        "Sample"
+      ],
+      "range": "OntologyTermID",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "env_package_sys_oterm_name",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/env_package_sys_oterm_name",
+      "description": "Environment package ontology term name",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/env_package_sys_oterm_name",
+      "owner": "Sample",
+      "domain_of": [
+        "Sample"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "description",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/description",
+      "description": "Free text description",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/description",
+      "owner": "DynamicDataArray",
+      "domain_of": [
+        "Sample",
+        "Protocol",
+        "DynamicDataArray"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "sdt_community_id",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/sdt_community_id",
+      "description": "Unique identifier for Community",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/sdt_community_id",
+      "identifier": true,
+      "owner": "Community",
+      "domain_of": [
+        "Community"
+      ],
+      "range": "string",
+      "required": true,
+      "pattern": "^Community\\d{7}$",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "sdt_community_name",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/sdt_community_name",
+      "description": "Name of community",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/sdt_community_name",
+      "owner": "Community",
+      "domain_of": [
+        "Community"
+      ],
+      "range": "EntityName",
+      "required": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "community_type_sys_oterm_id",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/community_type_sys_oterm_id",
+      "description": "Community type ontology term ID",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/community_type_sys_oterm_id",
+      "owner": "Community",
+      "domain_of": [
+        "Community"
+      ],
+      "range": "OntologyTermID",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "community_type_sys_oterm_name",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/community_type_sys_oterm_name",
+      "description": "Community type ontology term name",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/community_type_sys_oterm_name",
+      "owner": "Community",
+      "domain_of": [
+        "Community"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "sample_ref",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/sample_ref",
+      "description": "Reference to sample name (FK to Sample.sdt_sample_name)",
+      "comments": [
+        "{'CDM convention': 'FK references use entity name, not ID'}",
+        "References Sample.sdt_sample_name"
+      ],
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/sample_ref",
+      "owner": "Community",
+      "domain_of": [
+        "Community"
+      ],
+      "range": "EntityName",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "parent_community_ref",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/parent_community_ref",
+      "description": "Reference to parent community name (FK, self-referential to Community.sdt_community_name)",
+      "comments": [
+        "Self-referential FK for community hierarchies",
+        "References Community.sdt_community_name"
+      ],
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/parent_community_ref",
+      "owner": "Community",
+      "domain_of": [
+        "Community"
+      ],
+      "range": "EntityName",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "defined_strains_ref",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/defined_strains_ref",
+      "description": "References to defined strain names (multivalued FK to Strain.sdt_strain_name)",
+      "comments": [
+        "Multivalued FK for assemblage communities",
+        "References Strain.sdt_strain_name"
+      ],
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/defined_strains_ref",
+      "owner": "Community",
+      "domain_of": [
+        "Community"
+      ],
+      "range": "EntityName",
+      "multivalued": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "sdt_reads_id",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/sdt_reads_id",
+      "description": "Unique identifier for Reads",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/sdt_reads_id",
+      "identifier": true,
+      "owner": "Reads",
+      "domain_of": [
+        "Reads"
+      ],
+      "range": "string",
+      "required": true,
+      "pattern": "^Reads\\d{7}$",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "sdt_reads_name",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/sdt_reads_name",
+      "description": "Name of reads dataset",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/sdt_reads_name",
+      "owner": "Reads",
+      "domain_of": [
+        "Reads"
+      ],
+      "range": "EntityName",
+      "required": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "read_count",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/read_count",
+      "description": "Number of reads",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/read_count",
+      "owner": "Reads",
+      "domain_of": [
+        "Reads"
+      ],
+      "range": "Count",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "base_count",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/base_count",
+      "description": "Total number of bases",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/base_count",
+      "owner": "Reads",
+      "domain_of": [
+        "Reads"
+      ],
+      "range": "Count",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "read_type_sys_oterm_id",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/read_type_sys_oterm_id",
+      "description": "Read type ontology term ID (e.g., paired-end, single-end)",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/read_type_sys_oterm_id",
+      "owner": "Reads",
+      "domain_of": [
+        "Reads"
+      ],
+      "range": "OntologyTermID",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "read_type_sys_oterm_name",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/read_type_sys_oterm_name",
+      "description": "Read type ontology term name",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/read_type_sys_oterm_name",
+      "owner": "Reads",
+      "domain_of": [
+        "Reads"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "sequencing_technology_sys_oterm_id",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/sequencing_technology_sys_oterm_id",
+      "description": "Sequencing technology ontology term ID",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/sequencing_technology_sys_oterm_id",
+      "owner": "Reads",
+      "domain_of": [
+        "Reads"
+      ],
+      "range": "OntologyTermID",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "sequencing_technology_sys_oterm_name",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/sequencing_technology_sys_oterm_name",
+      "description": "Sequencing technology ontology term name",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/sequencing_technology_sys_oterm_name",
+      "owner": "Reads",
+      "domain_of": [
+        "Reads"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "sdt_assembly_id",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/sdt_assembly_id",
+      "description": "Unique identifier for Assembly",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/sdt_assembly_id",
+      "identifier": true,
+      "owner": "Assembly",
+      "domain_of": [
+        "Assembly"
+      ],
+      "range": "string",
+      "required": true,
+      "pattern": "^Assembly\\d{7}$",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "sdt_assembly_name",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/sdt_assembly_name",
+      "description": "Name of assembly",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/sdt_assembly_name",
+      "owner": "Assembly",
+      "domain_of": [
+        "Assembly"
+      ],
+      "range": "EntityName",
+      "required": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "strain_ref",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/strain_ref",
+      "description": "Reference to strain name (FK to Strain.sdt_strain_name)",
+      "comments": [
+        "{'CDM convention': 'FK references use entity name, not ID'}",
+        "References Strain.sdt_strain_name"
+      ],
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/strain_ref",
+      "owner": "Genome",
+      "domain_of": [
+        "Assembly",
+        "Genome"
+      ],
+      "range": "EntityName",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "n_contigs",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/n_contigs",
+      "description": "Number of contigs",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/n_contigs",
+      "owner": "Genome",
+      "domain_of": [
+        "Assembly",
+        "Genome"
+      ],
+      "range": "Count",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "total_size",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/total_size",
+      "description": "Total assembly size in base pairs",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/total_size",
+      "owner": "Genome",
+      "domain_of": [
+        "Assembly",
+        "Genome"
+      ],
+      "range": "Size",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "sdt_bin_id",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/sdt_bin_id",
+      "description": "Unique identifier for Bin",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/sdt_bin_id",
+      "identifier": true,
+      "owner": "Bin",
+      "domain_of": [
+        "Bin"
+      ],
+      "range": "string",
+      "required": true,
+      "pattern": "^Bin\\d{7}$",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "sdt_bin_name",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/sdt_bin_name",
+      "description": "Name of bin",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/sdt_bin_name",
+      "owner": "Bin",
+      "domain_of": [
+        "Bin"
+      ],
+      "range": "EntityName",
+      "required": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "assembly_ref",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/assembly_ref",
+      "description": "Reference to assembly name (FK to Assembly.sdt_assembly_name)",
+      "comments": [
+        "{'CDM convention': 'FK references use entity name, not ID'}",
+        "References Assembly.sdt_assembly_name"
+      ],
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/assembly_ref",
+      "owner": "Bin",
+      "domain_of": [
+        "Bin"
+      ],
+      "range": "EntityName",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "contigs",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/contigs",
+      "description": "Comma-separated list of contig names",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/contigs",
+      "owner": "Bin",
+      "domain_of": [
+        "Bin"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "sdt_genome_id",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/sdt_genome_id",
+      "description": "Unique identifier for Genome",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/sdt_genome_id",
+      "identifier": true,
+      "owner": "Genome",
+      "domain_of": [
+        "Genome"
+      ],
+      "range": "string",
+      "required": true,
+      "pattern": "^Genome\\d{7}$",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "sdt_genome_name",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/sdt_genome_name",
+      "description": "Name of genome",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/sdt_genome_name",
+      "owner": "Genome",
+      "domain_of": [
+        "Genome"
+      ],
+      "range": "EntityName",
+      "required": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "genome_ref",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/genome_ref",
+      "description": "Reference to genome name (FK to Genome.sdt_genome_name)",
+      "comments": [
+        "{'CDM convention': 'FK references use entity name, not ID'}",
+        "References Genome.sdt_genome_name",
+        "{'Used by': 'Gene, Strain, DubSeqLibrary, TnSeqLibrary'}"
+      ],
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/genome_ref",
+      "owner": "TnSeqLibrary",
+      "domain_of": [
+        "Gene",
+        "Strain",
+        "DubSeqLibrary",
+        "TnSeqLibrary"
+      ],
+      "range": "EntityName",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "n_features",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/n_features",
+      "description": "Number of annotated features",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/n_features",
+      "owner": "Genome",
+      "domain_of": [
+        "Genome"
+      ],
+      "range": "Count",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "sdt_gene_id",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/sdt_gene_id",
+      "description": "Unique identifier for Gene",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/sdt_gene_id",
+      "identifier": true,
+      "owner": "Gene",
+      "domain_of": [
+        "Gene"
+      ],
+      "range": "string",
+      "required": true,
+      "pattern": "^Gene\\d{7}$",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "sdt_gene_name",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/sdt_gene_name",
+      "description": "Name of gene",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/sdt_gene_name",
+      "owner": "Gene",
+      "domain_of": [
+        "Gene"
+      ],
+      "range": "EntityName",
+      "required": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "contig_number",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/contig_number",
+      "description": "Contig number where gene is located",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/contig_number",
+      "owner": "Gene",
+      "domain_of": [
+        "Gene"
+      ],
+      "range": "integer",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "strand",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/strand",
+      "description": "DNA strand (+ or -)",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/strand",
+      "owner": "Gene",
+      "domain_of": [
+        "Gene"
+      ],
+      "range": "string",
+      "pattern": "^[+-]$",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "start",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/start",
+      "description": "Start position on contig",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/start",
+      "owner": "Gene",
+      "domain_of": [
+        "Gene"
+      ],
+      "range": "integer",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "stop",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/stop",
+      "description": "Stop position on contig",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/stop",
+      "owner": "Gene",
+      "domain_of": [
+        "Gene"
+      ],
+      "range": "integer",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "function",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/function",
+      "description": "Predicted gene function",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/function",
+      "owner": "Gene",
+      "domain_of": [
+        "Gene"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "sdt_strain_id",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/sdt_strain_id",
+      "description": "Unique identifier for Strain",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/sdt_strain_id",
+      "identifier": true,
+      "owner": "Strain",
+      "domain_of": [
+        "Strain"
+      ],
+      "range": "string",
+      "required": true,
+      "pattern": "^Strain\\d{7}$",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "sdt_strain_name",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/sdt_strain_name",
+      "description": "Name of strain",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/sdt_strain_name",
+      "owner": "Strain",
+      "domain_of": [
+        "Strain"
+      ],
+      "range": "EntityName",
+      "required": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "derived_from_strain_ref",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/derived_from_strain_ref",
+      "description": "Reference to parent strain name (FK, self-referential to Strain.sdt_strain_name)",
+      "comments": [
+        "Self-referential FK for strain derivation lineage",
+        "References Strain.sdt_strain_name"
+      ],
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/derived_from_strain_ref",
+      "owner": "Strain",
+      "domain_of": [
+        "Strain"
+      ],
+      "range": "EntityName",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "gene_names_changed",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/gene_names_changed",
+      "description": "Names of genes that were changed",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/gene_names_changed",
+      "owner": "Strain",
+      "domain_of": [
+        "Strain"
+      ],
+      "range": "EntityName",
+      "multivalued": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "sdt_taxon_id",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/sdt_taxon_id",
+      "description": "Unique identifier for Taxon",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/sdt_taxon_id",
+      "identifier": true,
+      "owner": "Taxon",
+      "domain_of": [
+        "Taxon"
+      ],
+      "range": "string",
+      "required": true,
+      "pattern": "^Taxon\\d{7}$",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "sdt_taxon_name",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/sdt_taxon_name",
+      "description": "Taxonomic name",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/sdt_taxon_name",
+      "owner": "Taxon",
+      "domain_of": [
+        "Taxon"
+      ],
+      "range": "EntityName",
+      "required": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "ncbi_taxid",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/ncbi_taxid",
+      "description": "NCBI Taxonomy ID",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/ncbi_taxid",
+      "owner": "Taxon",
+      "domain_of": [
+        "Taxon"
+      ],
+      "range": "integer",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "sdt_asv_id",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/sdt_asv_id",
+      "description": "Unique identifier for ASV",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/sdt_asv_id",
+      "identifier": true,
+      "owner": "ASV",
+      "domain_of": [
+        "ASV"
+      ],
+      "range": "string",
+      "required": true,
+      "pattern": "^ASV\\d{7}$",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "sdt_asv_name",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/sdt_asv_name",
+      "description": "Name of ASV",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/sdt_asv_name",
+      "owner": "ASV",
+      "domain_of": [
+        "ASV"
+      ],
+      "range": "EntityName",
+      "required": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "sequence",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/sequence",
+      "description": "DNA sequence",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/sequence",
+      "owner": "ASV",
+      "domain_of": [
+        "ASV"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "sdt_protocol_id",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/sdt_protocol_id",
+      "description": "Unique identifier for Protocol",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/sdt_protocol_id",
+      "identifier": true,
+      "owner": "Protocol",
+      "domain_of": [
+        "Protocol"
+      ],
+      "range": "string",
+      "required": true,
+      "pattern": "^Protocol\\d{7}$",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "sdt_protocol_name",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/sdt_protocol_name",
+      "description": "Name of protocol",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/sdt_protocol_name",
+      "owner": "SystemProcess",
+      "domain_of": [
+        "Protocol",
+        "SystemProcess"
+      ],
+      "range": "EntityName",
+      "required": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "sdt_image_id",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/sdt_image_id",
+      "description": "Unique identifier for Image",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/sdt_image_id",
+      "identifier": true,
+      "owner": "Image",
+      "domain_of": [
+        "Image"
+      ],
+      "range": "string",
+      "required": true,
+      "pattern": "^Image\\d{7}$",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "sdt_image_name",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/sdt_image_name",
+      "description": "Name of image",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/sdt_image_name",
+      "owner": "Image",
+      "domain_of": [
+        "Image"
+      ],
+      "range": "EntityName",
+      "required": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "mime_type",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/mime_type",
+      "description": "MIME type of image",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/mime_type",
+      "owner": "Image",
+      "domain_of": [
+        "Image"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "size",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/size",
+      "description": "File size in bytes",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/size",
+      "owner": "Image",
+      "domain_of": [
+        "Image"
+      ],
+      "range": "Size",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "dimensions",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/dimensions",
+      "description": "Image dimensions (e.g., \"1024x768\")",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/dimensions",
+      "owner": "Image",
+      "domain_of": [
+        "Image"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "sdt_condition_id",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/sdt_condition_id",
+      "description": "Unique identifier for Condition",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/sdt_condition_id",
+      "identifier": true,
+      "owner": "Condition",
+      "domain_of": [
+        "Condition"
+      ],
+      "range": "string",
+      "required": true,
+      "pattern": "^Condition\\d{7}$",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "sdt_condition_name",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/sdt_condition_name",
+      "description": "Name of condition",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/sdt_condition_name",
+      "owner": "Condition",
+      "domain_of": [
+        "Condition"
+      ],
+      "range": "EntityName",
+      "required": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "sdt_dubseq_library_id",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/sdt_dubseq_library_id",
+      "description": "Unique identifier for DubSeqLibrary",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/sdt_dubseq_library_id",
+      "identifier": true,
+      "owner": "DubSeqLibrary",
+      "domain_of": [
+        "DubSeqLibrary"
+      ],
+      "range": "string",
+      "required": true,
+      "pattern": "^DubSeqLibrary\\d{7}$",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "sdt_dubseq_library_name",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/sdt_dubseq_library_name",
+      "description": "Name of DubSeq library",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/sdt_dubseq_library_name",
+      "owner": "DubSeqLibrary",
+      "domain_of": [
+        "DubSeqLibrary"
+      ],
+      "range": "EntityName",
+      "required": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "n_fragments",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/n_fragments",
+      "description": "Number of fragments",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/n_fragments",
+      "owner": "DubSeqLibrary",
+      "domain_of": [
+        "DubSeqLibrary"
+      ],
+      "range": "Count",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "sdt_tnseq_library_id",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/sdt_tnseq_library_id",
+      "description": "Unique identifier for TnSeqLibrary",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/sdt_tnseq_library_id",
+      "identifier": true,
+      "owner": "TnSeqLibrary",
+      "domain_of": [
+        "TnSeqLibrary"
+      ],
+      "range": "string",
+      "required": true,
+      "pattern": "^TnSeqLibrary\\d{7}$",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "sdt_tnseq_library_name",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/sdt_tnseq_library_name",
+      "description": "Name of TnSeq library",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/sdt_tnseq_library_name",
+      "owner": "TnSeqLibrary",
+      "domain_of": [
+        "TnSeqLibrary"
+      ],
+      "range": "EntityName",
+      "required": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "primers_model",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/primers_model",
+      "description": "Primers model used",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/primers_model",
+      "owner": "TnSeqLibrary",
+      "domain_of": [
+        "TnSeqLibrary"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "n_mapped_reads",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/n_mapped_reads",
+      "description": "Number of mapped reads",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/n_mapped_reads",
+      "owner": "TnSeqLibrary",
+      "domain_of": [
+        "TnSeqLibrary"
+      ],
+      "range": "Count",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "n_good_reads",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/n_good_reads",
+      "description": "Number of good quality reads",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/n_good_reads",
+      "owner": "TnSeqLibrary",
+      "domain_of": [
+        "TnSeqLibrary"
+      ],
+      "range": "Count",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "n_genes_hit",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/n_genes_hit",
+      "description": "Number of genes with transposon insertions",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/n_genes_hit",
+      "owner": "TnSeqLibrary",
+      "domain_of": [
+        "TnSeqLibrary"
+      ],
+      "range": "Count",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "sdt_enigma_id",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/sdt_enigma_id",
+      "description": "Unique identifier for ENIGMA root entity",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/sdt_enigma_id",
+      "identifier": true,
+      "owner": "ENIGMA",
+      "domain_of": [
+        "ENIGMA"
+      ],
+      "range": "string",
+      "required": true,
+      "pattern": "^ENIGMA1$",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "type_name",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/type_name",
+      "description": "CORAL entity type name (e.g., \"Gene\", \"Sample\")",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-system-tables",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/type_name",
+      "owner": "SystemTypedef",
+      "domain_of": [
+        "SystemTypedef"
+      ],
+      "range": "string",
+      "required": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "field_name",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/field_name",
+      "description": "Original CORAL field name",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-system-tables",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/field_name",
+      "owner": "SystemTypedef",
+      "domain_of": [
+        "SystemTypedef"
+      ],
+      "range": "string",
+      "required": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "cdm_column_name",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/cdm_column_name",
+      "description": "Mapped CDM column name (snake_case with prefixes)",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-system-tables",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/cdm_column_name",
+      "owner": "SystemDDTTypedef",
+      "domain_of": [
+        "SystemTypedef",
+        "SystemDDTTypedef"
+      ],
+      "range": "string",
+      "required": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "scalar_type",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/scalar_type",
+      "description": "Data type (text, int, float, [text] for arrays)",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-system-tables",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/scalar_type",
+      "owner": "SystemDDTTypedef",
+      "domain_of": [
+        "SystemTypedef",
+        "SystemDDTTypedef"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "pk",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/pk",
+      "description": "Primary key flag",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-system-tables",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/pk",
+      "owner": "SystemTypedef",
+      "domain_of": [
+        "SystemTypedef"
+      ],
+      "range": "boolean",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "upk",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/upk",
+      "description": "Unique key flag",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-system-tables",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/upk",
+      "owner": "SystemTypedef",
+      "domain_of": [
+        "SystemTypedef"
+      ],
+      "range": "boolean",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "fk",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/fk",
+      "description": "Foreign key reference",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-system-tables",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/fk",
+      "owner": "SystemTypedef",
+      "domain_of": [
+        "SystemTypedef"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "constraint",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/constraint",
+      "description": "Validation pattern or ontology constraint",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-system-tables",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/constraint",
+      "owner": "SystemTypedef",
+      "domain_of": [
+        "SystemTypedef"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "units_sys_oterm_id",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/units_sys_oterm_id",
+      "description": "Ontology term for measurement units",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-system-tables",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/units_sys_oterm_id",
+      "owner": "SystemTypedef",
+      "domain_of": [
+        "SystemTypedef"
+      ],
+      "range": "OntologyTermID",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "type_sys_oterm_id",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/type_sys_oterm_id",
+      "description": "Ontology term for data type",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-system-tables",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/type_sys_oterm_id",
+      "owner": "SystemTypedef",
+      "domain_of": [
+        "SystemTypedef"
+      ],
+      "range": "OntologyTermID",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "ddt_ndarray_id",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/ddt_ndarray_id",
+      "description": "Brick identifier (e.g., \"Brick0000010\")",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-system-tables",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/ddt_ndarray_id",
+      "owner": "DynamicDataArray",
+      "domain_of": [
+        "SystemDDTTypedef",
+        "DynamicDataArray"
+      ],
+      "range": "string",
+      "required": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "cdm_column_data_type",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/cdm_column_data_type",
+      "description": "Column type (variable, dimension_variable, or dimension_index)",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-system-tables",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/cdm_column_data_type",
+      "owner": "SystemDDTTypedef",
+      "domain_of": [
+        "SystemDDTTypedef"
+      ],
+      "range": "string",
+      "pattern": "^(variable|dimension_variable|dimension_index)$",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "dimension_number",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/dimension_number",
+      "description": "Position in N-dimensional array (0-indexed)",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-system-tables",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/dimension_number",
+      "owner": "BrickDimension",
+      "domain_of": [
+        "SystemDDTTypedef",
+        "BrickDimension"
+      ],
+      "range": "integer",
+      "minimum_value": 0,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "variable_number",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/variable_number",
+      "description": "Variable index in brick",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-system-tables",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/variable_number",
+      "owner": "BrickVariable",
+      "domain_of": [
+        "SystemDDTTypedef",
+        "BrickVariable"
+      ],
+      "range": "integer",
+      "minimum_value": 0,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "dimension_oterm_id",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/dimension_oterm_id",
+      "description": "Dimension semantic ontology term ID",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-system-tables",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/dimension_oterm_id",
+      "owner": "BrickDimension",
+      "domain_of": [
+        "SystemDDTTypedef",
+        "BrickDimension"
+      ],
+      "range": "OntologyTermID",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "dimension_oterm_name",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/dimension_oterm_name",
+      "description": "Dimension semantic ontology term name",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-system-tables",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/dimension_oterm_name",
+      "owner": "BrickDimension",
+      "domain_of": [
+        "SystemDDTTypedef",
+        "BrickDimension"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "variable_oterm_id",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/variable_oterm_id",
+      "description": "Variable semantic ontology term ID",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-system-tables",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/variable_oterm_id",
+      "owner": "BrickVariable",
+      "domain_of": [
+        "SystemDDTTypedef",
+        "BrickVariable"
+      ],
+      "range": "OntologyTermID",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "variable_oterm_name",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/variable_oterm_name",
+      "description": "Variable semantic ontology term name",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-system-tables",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/variable_oterm_name",
+      "owner": "BrickVariable",
+      "domain_of": [
+        "SystemDDTTypedef",
+        "BrickVariable"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "unit_sys_oterm_id",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/unit_sys_oterm_id",
+      "description": "Measurement unit ontology term ID",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-system-tables",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/unit_sys_oterm_id",
+      "owner": "BrickVariable",
+      "domain_of": [
+        "SystemDDTTypedef",
+        "BrickVariable"
+      ],
+      "range": "OntologyTermID",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "unit_sys_oterm_name",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/unit_sys_oterm_name",
+      "description": "Measurement unit ontology term name",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-system-tables",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/unit_sys_oterm_name",
+      "owner": "BrickVariable",
+      "domain_of": [
+        "SystemDDTTypedef",
+        "BrickVariable"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "sys_oterm_ontology",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/sys_oterm_ontology",
+      "description": "Source ontology name",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-system-tables",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/sys_oterm_ontology",
+      "owner": "SystemOntologyTerm",
+      "domain_of": [
+        "SystemOntologyTerm"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "parent_sys_oterm_id",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/parent_sys_oterm_id",
+      "description": "Parent term in ontology hierarchy (FK to sys_oterm)",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-system-tables",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/parent_sys_oterm_id",
+      "owner": "SystemOntologyTerm",
+      "domain_of": [
+        "SystemOntologyTerm"
+      ],
+      "range": "OntologyTermID",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "sys_oterm_definition",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/sys_oterm_definition",
+      "description": "Formal term definition",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-system-tables",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/sys_oterm_definition",
+      "owner": "SystemOntologyTerm",
+      "domain_of": [
+        "SystemOntologyTerm"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "sys_oterm_synonyms",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/sys_oterm_synonyms",
+      "description": "Alternative term names (pipe-separated)",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-system-tables",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/sys_oterm_synonyms",
+      "owner": "SystemOntologyTerm",
+      "domain_of": [
+        "SystemOntologyTerm"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "sys_oterm_links",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/sys_oterm_links",
+      "description": "External links (URLs, pipe-separated)",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-system-tables",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/sys_oterm_links",
+      "owner": "SystemOntologyTerm",
+      "domain_of": [
+        "SystemOntologyTerm"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "sys_oterm_properties",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/sys_oterm_properties",
+      "description": "Additional term properties (JSON or key=value pairs)",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-system-tables",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/sys_oterm_properties",
+      "owner": "SystemOntologyTerm",
+      "domain_of": [
+        "SystemOntologyTerm"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "sys_process_id",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/sys_process_id",
+      "description": "Unique process identifier",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-system-tables",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/sys_process_id",
+      "owner": "SystemProcessOutput",
+      "domain_of": [
+        "SystemProcess",
+        "SystemProcessInput",
+        "SystemProcessOutput"
+      ],
+      "range": "string",
+      "required": true,
+      "pattern": "^Process\\d{7}$",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "process_type_sys_oterm_id",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/process_type_sys_oterm_id",
+      "description": "Process type ontology term ID",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-system-tables",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/process_type_sys_oterm_id",
+      "owner": "SystemProcess",
+      "domain_of": [
+        "SystemProcess"
+      ],
+      "range": "OntologyTermID",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "process_type_sys_oterm_name",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/process_type_sys_oterm_name",
+      "description": "Process type ontology term name",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-system-tables",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/process_type_sys_oterm_name",
+      "owner": "SystemProcess",
+      "domain_of": [
+        "SystemProcess"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "person_sys_oterm_id",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/person_sys_oterm_id",
+      "description": "Person who performed process (ontology term ID)",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-system-tables",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/person_sys_oterm_id",
+      "owner": "SystemProcess",
+      "domain_of": [
+        "SystemProcess"
+      ],
+      "range": "OntologyTermID",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "person_sys_oterm_name",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/person_sys_oterm_name",
+      "description": "Person who performed process (ontology term name)",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-system-tables",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/person_sys_oterm_name",
+      "owner": "SystemProcess",
+      "domain_of": [
+        "SystemProcess"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "campaign_sys_oterm_id",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/campaign_sys_oterm_id",
+      "description": "Research campaign ontology term ID",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-system-tables",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/campaign_sys_oterm_id",
+      "owner": "SystemProcess",
+      "domain_of": [
+        "SystemProcess"
+      ],
+      "range": "OntologyTermID",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "campaign_sys_oterm_name",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/campaign_sys_oterm_name",
+      "description": "Research campaign ontology term name",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-system-tables",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/campaign_sys_oterm_name",
+      "owner": "SystemProcess",
+      "domain_of": [
+        "SystemProcess"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "date_start",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/date_start",
+      "description": "Process start date",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-system-tables",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/date_start",
+      "owner": "SystemProcess",
+      "domain_of": [
+        "SystemProcess"
+      ],
+      "range": "Date",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "date_end",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/date_end",
+      "description": "Process end date",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-system-tables",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/date_end",
+      "owner": "SystemProcess",
+      "domain_of": [
+        "SystemProcess"
+      ],
+      "range": "Date",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "input_objects",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/input_objects",
+      "description": "Array of input entity references (type:name format)",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-system-tables",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/input_objects",
+      "owner": "SystemProcess",
+      "domain_of": [
+        "SystemProcess"
+      ],
+      "range": "string",
+      "multivalued": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "output_objects",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/output_objects",
+      "description": "Array of output entity references (type:name format)",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-system-tables",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/output_objects",
+      "owner": "SystemProcess",
+      "domain_of": [
+        "SystemProcess"
+      ],
+      "range": "string",
+      "multivalued": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "input_object_type",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/input_object_type",
+      "description": "Type of input entity (e.g., \"Sample\", \"Reads\")",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-system-tables",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/input_object_type",
+      "owner": "SystemProcessInput",
+      "domain_of": [
+        "SystemProcessInput"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "input_object_name",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/input_object_name",
+      "description": "Name of input entity",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-system-tables",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/input_object_name",
+      "owner": "SystemProcessInput",
+      "domain_of": [
+        "SystemProcessInput"
+      ],
+      "range": "EntityName",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "input_index",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/input_index",
+      "description": "Index in input_objects array",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-system-tables",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/input_index",
+      "owner": "SystemProcessInput",
+      "domain_of": [
+        "SystemProcessInput"
+      ],
+      "range": "integer",
+      "minimum_value": 0,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "output_object_type",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/output_object_type",
+      "description": "Type of output entity (e.g., \"Assembly\", \"Genome\")",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-system-tables",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/output_object_type",
+      "owner": "SystemProcessOutput",
+      "domain_of": [
+        "SystemProcessOutput"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "output_object_name",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/output_object_name",
+      "description": "Name of output entity",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-system-tables",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/output_object_name",
+      "owner": "SystemProcessOutput",
+      "domain_of": [
+        "SystemProcessOutput"
+      ],
+      "range": "EntityName",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "output_index",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/output_index",
+      "description": "Index in output_objects array",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-system-tables",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/output_index",
+      "owner": "SystemProcessOutput",
+      "domain_of": [
+        "SystemProcessOutput"
+      ],
+      "range": "integer",
+      "minimum_value": 0,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "brick_table_name",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/brick_table_name",
+      "description": "Name of brick table (e.g., \"ddt_brick0000010\")",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-dynamic-data",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/brick_table_name",
+      "owner": "DynamicDataArray",
+      "domain_of": [
+        "DynamicDataArray"
+      ],
+      "range": "string",
+      "pattern": "^ddt_brick\\d{7}$",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "n_dimensions",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/n_dimensions",
+      "description": "Number of dimensions in array",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-dynamic-data",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/n_dimensions",
+      "owner": "DynamicDataArray",
+      "domain_of": [
+        "DynamicDataArray"
+      ],
+      "range": "integer",
+      "minimum_value": 1,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "dimension_sizes",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/dimension_sizes",
+      "description": "Comma-separated dimension sizes (e.g., \"209,52,3,3\")",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-dynamic-data",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/dimension_sizes",
+      "owner": "DynamicDataArray",
+      "domain_of": [
+        "DynamicDataArray"
+      ],
+      "range": "string",
+      "pattern": "^\\d+(,\\d+)*$",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "n_variables",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/n_variables",
+      "description": "Number of measured variables",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-dynamic-data",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/n_variables",
+      "owner": "DynamicDataArray",
+      "domain_of": [
+        "DynamicDataArray"
+      ],
+      "range": "integer",
+      "minimum_value": 1,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "total_rows",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/total_rows",
+      "description": "Total number of data rows in brick table",
+      "comments": [
+        "Should equal product of dimension sizes",
+        "May be less if array is sparse"
+      ],
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-dynamic-data",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/total_rows",
+      "owner": "DynamicDataArray",
+      "domain_of": [
+        "DynamicDataArray"
+      ],
+      "range": "integer",
+      "minimum_value": 0,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "associated_entity_type",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/associated_entity_type",
+      "description": "Type of entities measured (e.g., \"Sample\", \"Community\")",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-dynamic-data",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/associated_entity_type",
+      "owner": "DynamicDataArray",
+      "domain_of": [
+        "DynamicDataArray"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "associated_entity_names",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/associated_entity_names",
+      "description": "Names of entities associated with this brick",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-dynamic-data",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/associated_entity_names",
+      "owner": "DynamicDataArray",
+      "domain_of": [
+        "DynamicDataArray"
+      ],
+      "range": "EntityName",
+      "multivalued": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "measurement_type_sys_oterm_id",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/measurement_type_sys_oterm_id",
+      "description": "Type of measurement ontology term ID",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-dynamic-data",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/measurement_type_sys_oterm_id",
+      "owner": "DynamicDataArray",
+      "domain_of": [
+        "DynamicDataArray"
+      ],
+      "range": "OntologyTermID",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "measurement_type_sys_oterm_name",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/measurement_type_sys_oterm_name",
+      "description": "Type of measurement ontology term name",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-dynamic-data",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/measurement_type_sys_oterm_name",
+      "owner": "DynamicDataArray",
+      "domain_of": [
+        "DynamicDataArray"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "creation_date",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/creation_date",
+      "description": "Date brick was created",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-dynamic-data",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/creation_date",
+      "owner": "DynamicDataArray",
+      "domain_of": [
+        "DynamicDataArray"
+      ],
+      "range": "Date",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "dimension_size",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/dimension_size",
+      "description": "Number of values along this dimension",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-dynamic-data",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/dimension_size",
+      "owner": "BrickDimension",
+      "domain_of": [
+        "BrickDimension"
+      ],
+      "range": "integer",
+      "minimum_value": 1,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "dimension_values",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/dimension_values",
+      "description": "Comma-separated dimension value labels",
+      "comments": [
+        "{'For entity dimensions': 'entity names'}",
+        "{'For numeric dimensions': 'numeric values or labels'}"
+      ],
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-dynamic-data",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/dimension_values",
+      "owner": "BrickDimension",
+      "domain_of": [
+        "BrickDimension"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "variable_data_type",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/variable_data_type",
+      "description": "Data type of variable (float, int, bool, oterm_ref, object_ref)",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-dynamic-data",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/variable_data_type",
+      "owner": "BrickVariable",
+      "domain_of": [
+        "BrickVariable"
+      ],
+      "range": "string",
+      "pattern": "^(float|int|bool|text|oterm_ref|object_ref)$",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "min_value",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/min_value",
+      "description": "Minimum allowed value (for numeric variables)",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-dynamic-data",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/min_value",
+      "owner": "BrickVariable",
+      "domain_of": [
+        "BrickVariable"
+      ],
+      "range": "float",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "max_value",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/max_value",
+      "description": "Maximum allowed value (for numeric variables)",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-dynamic-data",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/max_value",
+      "owner": "BrickVariable",
+      "domain_of": [
+        "BrickVariable"
+      ],
+      "range": "float",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "SystemOntologyTerm_sys_oterm_id",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/sys_oterm_id",
+      "description": "Ontology term identifier (CURIE format)",
+      "comments": [
+        "Foreign key to sys_oterm table",
+        "{'Standard format': 'PREFIX:NNNNNN (e.g., ME:0000129)'}"
+      ],
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-base",
+      "is_a": "sys_oterm_id",
+      "domain": "SystemOntologyTerm",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/sys_oterm_id",
+      "identifier": true,
+      "alias": "sys_oterm_id",
+      "owner": "SystemOntologyTerm",
+      "domain_of": [
+        "SystemOntologyTerm"
+      ],
+      "is_usage_slot": true,
+      "usage_slot_name": "sys_oterm_id",
+      "range": "OntologyTermID",
+      "required": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "SystemProcess_sys_process_id",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/sys_process_id",
+      "description": "Unique process identifier",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-system-tables",
+      "is_a": "sys_process_id",
+      "domain": "SystemProcess",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/sys_process_id",
+      "identifier": true,
+      "alias": "sys_process_id",
+      "owner": "SystemProcess",
+      "domain_of": [
+        "SystemProcess"
+      ],
+      "is_usage_slot": true,
+      "usage_slot_name": "sys_process_id",
+      "range": "string",
+      "required": true,
+      "pattern": "^Process\\d{7}$",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "DynamicDataArray_ddt_ndarray_id",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/ddt_ndarray_id",
+      "description": "Brick identifier (e.g., \"Brick0000010\")",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-system-tables",
+      "is_a": "ddt_ndarray_id",
+      "domain": "DynamicDataArray",
+      "slot_uri": "https://w3id.org/enigma/kbase-cdm/ddt_ndarray_id",
+      "identifier": true,
+      "alias": "ddt_ndarray_id",
+      "owner": "DynamicDataArray",
+      "domain_of": [
+        "DynamicDataArray"
+      ],
+      "is_usage_slot": true,
+      "usage_slot_name": "ddt_ndarray_id",
+      "range": "string",
+      "required": true,
+      "@type": "SlotDefinition"
+    }
+  ],
+  "classes": [
+    {
+      "name": "OntologyTermPair",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/OntologyTermPair",
+      "description": "Mixin for ontology-constrained fields in KBase CDM.\n\nThe CDM splits each ontology-controlled field into two columns:\n- {field}_sys_oterm_id: CURIE identifier (FK to sys_oterm)\n- {field}_sys_oterm_name: Human-readable term name\n\nThis pattern enables:\n- Ontology validation via FK constraint\n- Human-readable labels without joins\n- Ontology evolution without data migration\n\nExamples:\n- material \u2192 material_sys_oterm_id + material_sys_oterm_name\n- biome \u2192 biome_sys_oterm_id + biome_sys_oterm_name\n- read_type \u2192 read_type_sys_oterm_id + read_type_sys_oterm_name\n",
+      "comments": [
+        "Use this mixin when defining ontology-constrained slot pairs",
+        "Ensures consistent naming and typing across all entities"
+      ],
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-base",
+      "abstract": true,
+      "mixin": true,
+      "slot_usage": {},
+      "class_uri": "https://w3id.org/enigma/kbase-cdm/OntologyTermPair",
+      "@type": "ClassDefinition"
+    },
+    {
+      "name": "CDMEntity",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/CDMEntity",
+      "description": "Base mixin for all CDM static data tables (sdt_*).\n\nEnforces CDM naming conventions:\n- Primary key: sdt_{entity}_id with pattern EntityName\\d{7}\n- Name field: sdt_{entity}_name (unique, used for FK references)\n- All columns use snake_case with entity prefix\n\nExample:\n- Location: sdt_location_id, sdt_location_name\n- Sample: sdt_sample_id, sdt_sample_name\n\nNote: Each entity class must define its own id and name slots\nwith entity-specific names (e.g., sdt_location_id, sdt_location_name).\n",
+      "comments": [
+        "This mixin does not define slots - each entity defines its own",
+        "Used for grouping and documentation purposes"
+      ],
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-base",
+      "abstract": true,
+      "mixin": true,
+      "slot_usage": {},
+      "class_uri": "https://w3id.org/enigma/kbase-cdm/CDMEntity",
+      "@type": "ClassDefinition"
+    },
+    {
+      "name": "SystemEntity",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/SystemEntity",
+      "description": "Base mixin for CDM system tables (sys_*).\n\nSystem tables provide metadata, type definitions, provenance tracking,\nand ontology catalogs. They support the static and dynamic data tables\nbut are not directly linked to experimental entities.\n\nSystem tables: sys_typedef, sys_ddt_typedef, sys_oterm, sys_process,\nsys_process_input, sys_process_output\n",
+      "comments": [
+        "System tables have their own identifier conventions",
+        "No sdt_ prefix (use sys_ instead)",
+        "May have composite keys or generated IDs"
+      ],
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-base",
+      "abstract": true,
+      "mixin": true,
+      "slot_usage": {},
+      "class_uri": "https://w3id.org/enigma/kbase-cdm/SystemEntity",
+      "@type": "ClassDefinition"
+    },
+    {
+      "name": "Location",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/Location",
+      "annotations": [
+        {
+          "tag": "term",
+          "value": "DA:0000041",
+          "@type": "Annotation"
+        }
+      ],
+      "description": "Sampling location with geographic coordinates and environmental context.\n\nCDM changes from CORAL:\n- 4 ontology term fields split into ID+name pairs:\n  continent, country, biome, feature\n",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "mixins": [
+        "CDMEntity"
+      ],
+      "slots": [
+        "sdt_location_id",
+        "sdt_location_name",
+        "latitude",
+        "longitude",
+        "continent_sys_oterm_id",
+        "continent_sys_oterm_name",
+        "country_sys_oterm_id",
+        "country_sys_oterm_name",
+        "region",
+        "biome_sys_oterm_id",
+        "biome_sys_oterm_name",
+        "feature_sys_oterm_id",
+        "feature_sys_oterm_name"
+      ],
+      "slot_usage": {},
+      "class_uri": "https://w3id.org/enigma/kbase-cdm/Location",
+      "@type": "ClassDefinition"
+    },
+    {
+      "name": "Sample",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/Sample",
+      "annotations": [
+        {
+          "tag": "term",
+          "value": "DA:0000042",
+          "@type": "Annotation"
+        }
+      ],
+      "description": "Environmental sample collected from a location.\n\nCDM changes from CORAL:\n- 2 ontology term fields split: material, env_package\n- FK reference: location \u2192 location_ref\n",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "mixins": [
+        "CDMEntity"
+      ],
+      "slots": [
+        "sdt_sample_id",
+        "sdt_sample_name",
+        "location_ref",
+        "depth",
+        "elevation",
+        "date",
+        "time",
+        "timezone",
+        "material_sys_oterm_id",
+        "material_sys_oterm_name",
+        "env_package_sys_oterm_id",
+        "env_package_sys_oterm_name",
+        "description"
+      ],
+      "slot_usage": {},
+      "class_uri": "https://w3id.org/enigma/kbase-cdm/Sample",
+      "@type": "ClassDefinition"
+    },
+    {
+      "name": "Community",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/Community",
+      "annotations": [
+        {
+          "tag": "term",
+          "value": "DA:0000071",
+          "@type": "Annotation"
+        }
+      ],
+      "description": "Microbial community (isolate, enrichment, assemblage, or environmental).\n\nCDM changes from CORAL:\n- 1 ontology term field split: community_type\n- FK references: sample \u2192 sample_ref, parent_community \u2192 parent_community_ref\n- Multivalued FK: defined_strains \u2192 defined_strains_ref\n",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "mixins": [
+        "CDMEntity"
+      ],
+      "slots": [
+        "sdt_community_id",
+        "sdt_community_name",
+        "community_type_sys_oterm_id",
+        "community_type_sys_oterm_name",
+        "sample_ref",
+        "parent_community_ref",
+        "defined_strains_ref"
+      ],
+      "slot_usage": {},
+      "class_uri": "https://w3id.org/enigma/kbase-cdm/Community",
+      "@type": "ClassDefinition"
+    },
+    {
+      "name": "Reads",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/Reads",
+      "annotations": [
+        {
+          "tag": "term",
+          "value": "DA:0000063",
+          "@type": "Annotation"
+        }
+      ],
+      "description": "Sequencing reads dataset.\n\nCDM changes from CORAL:\n- 2 ontology term fields split: read_type, sequencing_technology\n- Added 'link' field for external data references\n",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "mixins": [
+        "CDMEntity"
+      ],
+      "slots": [
+        "sdt_reads_id",
+        "sdt_reads_name",
+        "read_count",
+        "base_count",
+        "read_type_sys_oterm_id",
+        "read_type_sys_oterm_name",
+        "sequencing_technology_sys_oterm_id",
+        "sequencing_technology_sys_oterm_name",
+        "link"
+      ],
+      "slot_usage": {},
+      "class_uri": "https://w3id.org/enigma/kbase-cdm/Reads",
+      "@type": "ClassDefinition"
+    },
+    {
+      "name": "Assembly",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/Assembly",
+      "annotations": [
+        {
+          "tag": "term",
+          "value": "DA:0000066",
+          "@type": "Annotation"
+        }
+      ],
+      "description": "Genome assembly from sequencing reads.\n\nCDM changes from CORAL:\n- FK reference: strain \u2192 strain_ref\n- Added 'link' field\n",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "mixins": [
+        "CDMEntity"
+      ],
+      "slots": [
+        "sdt_assembly_id",
+        "sdt_assembly_name",
+        "strain_ref",
+        "n_contigs",
+        "total_size",
+        "link"
+      ],
+      "slot_usage": {},
+      "class_uri": "https://w3id.org/enigma/kbase-cdm/Assembly",
+      "@type": "ClassDefinition"
+    },
+    {
+      "name": "Bin",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/Bin",
+      "annotations": [
+        {
+          "tag": "term",
+          "value": "DA:0000072",
+          "@type": "Annotation"
+        }
+      ],
+      "description": "Genome bin extracted from metagenomic assembly.\n\nCDM changes from CORAL:\n- FK reference: assembly \u2192 assembly_ref\n- contigs field contains comma-separated contig names\n",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "mixins": [
+        "CDMEntity"
+      ],
+      "slots": [
+        "sdt_bin_id",
+        "sdt_bin_name",
+        "assembly_ref",
+        "contigs"
+      ],
+      "slot_usage": {},
+      "class_uri": "https://w3id.org/enigma/kbase-cdm/Bin",
+      "@type": "ClassDefinition"
+    },
+    {
+      "name": "Genome",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/Genome",
+      "annotations": [
+        {
+          "tag": "term",
+          "value": "DA:0000068",
+          "@type": "Annotation"
+        }
+      ],
+      "description": "Assembled and annotated genome.\n\nCDM changes from CORAL:\n- FK reference: strain \u2192 strain_ref\n- Added 'link' field\n",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "mixins": [
+        "CDMEntity"
+      ],
+      "slots": [
+        "sdt_genome_id",
+        "sdt_genome_name",
+        "strain_ref",
+        "n_contigs",
+        "n_features",
+        "total_size",
+        "link"
+      ],
+      "slot_usage": {},
+      "class_uri": "https://w3id.org/enigma/kbase-cdm/Genome",
+      "@type": "ClassDefinition"
+    },
+    {
+      "name": "Gene",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/Gene",
+      "annotations": [
+        {
+          "tag": "term",
+          "value": "DA:0000069",
+          "@type": "Annotation"
+        }
+      ],
+      "description": "Annotated gene within a genome.\n\nCDM changes from CORAL:\n- FK reference: genome \u2192 genome_ref\n- Gene ID convention: GeneName{genome_name}_{contig}_{start}_{stop}\n",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "mixins": [
+        "CDMEntity"
+      ],
+      "slots": [
+        "sdt_gene_id",
+        "sdt_gene_name",
+        "genome_ref",
+        "contig_number",
+        "strand",
+        "start",
+        "stop",
+        "function"
+      ],
+      "slot_usage": {},
+      "class_uri": "https://w3id.org/enigma/kbase-cdm/Gene",
+      "@type": "ClassDefinition"
+    },
+    {
+      "name": "Strain",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/Strain",
+      "annotations": [
+        {
+          "tag": "term",
+          "value": "DA:0000067",
+          "@type": "Annotation"
+        }
+      ],
+      "description": "Microbial strain (isolated or derived).\n\nCDM changes from CORAL:\n- FK references: genome \u2192 genome_ref, derived_from \u2192 derived_from_strain_ref\n- Self-referential for strain derivation lineage\n",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "mixins": [
+        "CDMEntity"
+      ],
+      "slots": [
+        "sdt_strain_id",
+        "sdt_strain_name",
+        "genome_ref",
+        "derived_from_strain_ref",
+        "gene_names_changed"
+      ],
+      "slot_usage": {},
+      "class_uri": "https://w3id.org/enigma/kbase-cdm/Strain",
+      "@type": "ClassDefinition"
+    },
+    {
+      "name": "Taxon",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/Taxon",
+      "annotations": [
+        {
+          "tag": "term",
+          "value": "DA:0000070",
+          "@type": "Annotation"
+        }
+      ],
+      "description": "Taxonomic classification.\n",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "mixins": [
+        "CDMEntity"
+      ],
+      "slots": [
+        "sdt_taxon_id",
+        "sdt_taxon_name",
+        "ncbi_taxid"
+      ],
+      "slot_usage": {},
+      "class_uri": "https://w3id.org/enigma/kbase-cdm/Taxon",
+      "@type": "ClassDefinition"
+    },
+    {
+      "name": "ASV",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/ASV",
+      "annotations": [
+        {
+          "tag": "term",
+          "value": "DA:0000073",
+          "@type": "Annotation"
+        },
+        {
+          "tag": "preferred_name",
+          "value": "ASV",
+          "@type": "Annotation"
+        }
+      ],
+      "description": "Amplicon Sequence Variant (formerly OTU).\n\nCDM changes from CORAL:\n- Entity renamed from OTU to ASV (Amplicon Sequence Variant)\n- Table name: sdt_asv\n",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "mappings": [
+        "kbase_cdm:ASV"
+      ],
+      "mixins": [
+        "CDMEntity"
+      ],
+      "slots": [
+        "sdt_asv_id",
+        "sdt_asv_name",
+        "sequence"
+      ],
+      "slot_usage": {},
+      "class_uri": "https://w3id.org/enigma/kbase-cdm/ASV",
+      "@type": "ClassDefinition"
+    },
+    {
+      "name": "Protocol",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/Protocol",
+      "annotations": [
+        {
+          "tag": "term",
+          "value": "DA:0000062",
+          "@type": "Annotation"
+        }
+      ],
+      "description": "Experimental protocol.\n\nCDM changes from CORAL:\n- Added 'link' field for protocol documents\n",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "mixins": [
+        "CDMEntity"
+      ],
+      "slots": [
+        "sdt_protocol_id",
+        "sdt_protocol_name",
+        "description",
+        "link"
+      ],
+      "slot_usage": {},
+      "class_uri": "https://w3id.org/enigma/kbase-cdm/Protocol",
+      "@type": "ClassDefinition"
+    },
+    {
+      "name": "Image",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/Image",
+      "annotations": [
+        {
+          "tag": "term",
+          "value": "DA:0000074",
+          "@type": "Annotation"
+        }
+      ],
+      "description": "Microscopy or other image data.\n\nCDM changes from CORAL:\n- Added 'link' field for image files\n",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "mixins": [
+        "CDMEntity"
+      ],
+      "slots": [
+        "sdt_image_id",
+        "sdt_image_name",
+        "mime_type",
+        "size",
+        "dimensions",
+        "link"
+      ],
+      "slot_usage": {},
+      "class_uri": "https://w3id.org/enigma/kbase-cdm/Image",
+      "@type": "ClassDefinition"
+    },
+    {
+      "name": "Condition",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/Condition",
+      "annotations": [
+        {
+          "tag": "term",
+          "value": "DA:0000075",
+          "@type": "Annotation"
+        }
+      ],
+      "description": "Growth or experimental condition.\n",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "mixins": [
+        "CDMEntity"
+      ],
+      "slots": [
+        "sdt_condition_id",
+        "sdt_condition_name"
+      ],
+      "slot_usage": {},
+      "class_uri": "https://w3id.org/enigma/kbase-cdm/Condition",
+      "@type": "ClassDefinition"
+    },
+    {
+      "name": "DubSeqLibrary",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/DubSeqLibrary",
+      "annotations": [
+        {
+          "tag": "term",
+          "value": "DA:0000076",
+          "@type": "Annotation"
+        }
+      ],
+      "description": "Dual Barcoded Sequencing (DubSeq) library.\n\nCDM changes from CORAL:\n- FK reference: genome \u2192 genome_ref\n",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "mappings": [
+        "kbase_cdm:DubSeqLibrary"
+      ],
+      "mixins": [
+        "CDMEntity"
+      ],
+      "slots": [
+        "sdt_dubseq_library_id",
+        "sdt_dubseq_library_name",
+        "genome_ref",
+        "n_fragments"
+      ],
+      "slot_usage": {},
+      "class_uri": "https://w3id.org/enigma/kbase-cdm/DubSeqLibrary",
+      "@type": "ClassDefinition"
+    },
+    {
+      "name": "TnSeqLibrary",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/TnSeqLibrary",
+      "annotations": [
+        {
+          "tag": "term",
+          "value": "DA:0000077",
+          "@type": "Annotation"
+        }
+      ],
+      "description": "Transposon Sequencing (TnSeq) library.\n\nCDM changes from CORAL:\n- FK reference: genome \u2192 genome_ref\n",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "mappings": [
+        "kbase_cdm:TnSeqLibrary"
+      ],
+      "mixins": [
+        "CDMEntity"
+      ],
+      "slots": [
+        "sdt_tnseq_library_id",
+        "sdt_tnseq_library_name",
+        "genome_ref",
+        "primers_model",
+        "n_mapped_reads",
+        "n_good_reads",
+        "n_genes_hit"
+      ],
+      "slot_usage": {},
+      "class_uri": "https://w3id.org/enigma/kbase-cdm/TnSeqLibrary",
+      "@type": "ClassDefinition"
+    },
+    {
+      "name": "ENIGMA",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/ENIGMA",
+      "annotations": [
+        {
+          "tag": "term",
+          "value": "DA:0000001",
+          "@type": "Annotation"
+        }
+      ],
+      "description": "Root entity (database singleton).\n",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-static-entities",
+      "mixins": [
+        "CDMEntity"
+      ],
+      "slots": [
+        "sdt_enigma_id"
+      ],
+      "slot_usage": {},
+      "class_uri": "https://w3id.org/enigma/kbase-cdm/ENIGMA",
+      "@type": "ClassDefinition"
+    },
+    {
+      "name": "SystemTypedef",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/SystemTypedef",
+      "description": "Type definitions for static entity tables (equivalent to typedef.json).\n\nMaps CORAL entity types and fields to CDM table/column names with\nconstraints, data types, and ontology references.\n\nThis table documents the schema transformation from CORAL to CDM and\nenables automated validation and migration.\n",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-system-tables",
+      "mappings": [
+        "kbase_cdm:SystemTypedef"
+      ],
+      "mixins": [
+        "SystemEntity"
+      ],
+      "slots": [
+        "type_name",
+        "field_name",
+        "cdm_column_name",
+        "scalar_type",
+        "pk",
+        "upk",
+        "fk",
+        "constraint",
+        "units_sys_oterm_id",
+        "type_sys_oterm_id"
+      ],
+      "slot_usage": {},
+      "class_uri": "https://w3id.org/enigma/kbase-cdm/SystemTypedef",
+      "@type": "ClassDefinition"
+    },
+    {
+      "name": "SystemDDTTypedef",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/SystemDDTTypedef",
+      "description": "Type definitions for dynamic data tables (bricks).\n\nDefines schema for N-dimensional measurement arrays including:\n- Dimension semantics (Environmental Sample, Molecule, State, Statistic)\n- Variable semantics (Concentration, Molecular Weight, etc.)\n- Data types and units\n- Brick structure metadata\n\nEach brick can have different dimensionality and variable sets,\nenabling flexible storage of heterogeneous measurement data.\n",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-system-tables",
+      "mappings": [
+        "kbase_cdm:SystemDDTTypedef"
+      ],
+      "mixins": [
+        "SystemEntity"
+      ],
+      "slots": [
+        "ddt_ndarray_id",
+        "cdm_column_name",
+        "cdm_column_data_type",
+        "scalar_type",
+        "dimension_number",
+        "variable_number",
+        "dimension_oterm_id",
+        "dimension_oterm_name",
+        "variable_oterm_id",
+        "variable_oterm_name",
+        "unit_sys_oterm_id",
+        "unit_sys_oterm_name"
+      ],
+      "slot_usage": {},
+      "class_uri": "https://w3id.org/enigma/kbase-cdm/SystemDDTTypedef",
+      "@type": "ClassDefinition"
+    },
+    {
+      "name": "SystemOntologyTerm",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/SystemOntologyTerm",
+      "description": "Centralized ontology term catalog.\n\nStores all ontology terms used across the CDM with:\n- CURIE identifiers (ME:, ENVO:, UO:, etc.)\n- Human-readable names\n- Hierarchical relationships (parent terms)\n- Definitions, synonyms, and external links\n\nBenefits:\n- Single source of truth for ontology terms\n- Supports ontology evolution without data migration\n- Enables semantic queries and reasoning\n- Foreign key target for all *_sys_oterm_id columns\n",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-system-tables",
+      "mappings": [
+        "kbase_cdm:SystemOntologyTerm"
+      ],
+      "mixins": [
+        "SystemEntity"
+      ],
+      "slots": [
+        "SystemOntologyTerm_sys_oterm_id",
+        "sys_oterm_name",
+        "sys_oterm_ontology",
+        "parent_sys_oterm_id",
+        "sys_oterm_definition",
+        "sys_oterm_synonyms",
+        "sys_oterm_links",
+        "sys_oterm_properties"
+      ],
+      "slot_usage": {},
+      "class_uri": "https://w3id.org/enigma/kbase-cdm/SystemOntologyTerm",
+      "@type": "ClassDefinition"
+    },
+    {
+      "name": "SystemProcess",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/SystemProcess",
+      "description": "Provenance tracking for all data transformations.\n\nRecords experimental processes with:\n- Process type (Assay Growth, Sequencing, etc.)\n- People, protocols, campaigns\n- Temporal metadata (start/end dates)\n- Input/output relationships (denormalized arrays)\n\nEnables complete lineage tracing from raw samples to final analyses.\n",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-system-tables",
+      "mappings": [
+        "kbase_cdm:SystemProcess"
+      ],
+      "mixins": [
+        "SystemEntity"
+      ],
+      "slots": [
+        "SystemProcess_sys_process_id",
+        "process_type_sys_oterm_id",
+        "process_type_sys_oterm_name",
+        "person_sys_oterm_id",
+        "person_sys_oterm_name",
+        "campaign_sys_oterm_id",
+        "campaign_sys_oterm_name",
+        "sdt_protocol_name",
+        "date_start",
+        "date_end",
+        "input_objects",
+        "output_objects"
+      ],
+      "slot_usage": {},
+      "class_uri": "https://w3id.org/enigma/kbase-cdm/SystemProcess",
+      "@type": "ClassDefinition"
+    },
+    {
+      "name": "SystemProcessInput",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/SystemProcessInput",
+      "description": "Normalized process input relationships.\n\nDenormalizes the input_objects array from sys_process for efficient\nquerying. Each row represents one input entity to one process.\n\nEnables queries like:\n- \"Find all processes that used this sample\"\n- \"What samples were used in sequencing processes?\"\n",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-system-tables",
+      "mappings": [
+        "kbase_cdm:SystemProcessInput"
+      ],
+      "mixins": [
+        "SystemEntity"
+      ],
+      "slots": [
+        "sys_process_id",
+        "input_object_type",
+        "input_object_name",
+        "input_index"
+      ],
+      "slot_usage": {},
+      "class_uri": "https://w3id.org/enigma/kbase-cdm/SystemProcessInput",
+      "@type": "ClassDefinition"
+    },
+    {
+      "name": "SystemProcessOutput",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/SystemProcessOutput",
+      "description": "Normalized process output relationships.\n\nDenormalizes the output_objects array from sys_process for efficient\nquerying. Each row represents one output entity from one process.\n\nEnables queries like:\n- \"What process created this assembly?\"\n- \"Find all assemblies from sequencing processes\"\n",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-system-tables",
+      "mappings": [
+        "kbase_cdm:SystemProcessOutput"
+      ],
+      "mixins": [
+        "SystemEntity"
+      ],
+      "slots": [
+        "sys_process_id",
+        "output_object_type",
+        "output_object_name",
+        "output_index"
+      ],
+      "slot_usage": {},
+      "class_uri": "https://w3id.org/enigma/kbase-cdm/SystemProcessOutput",
+      "@type": "ClassDefinition"
+    },
+    {
+      "name": "DynamicDataArray",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/DynamicDataArray",
+      "description": "Brick index table (ddt_ndarray).\n\nCatalogs all available measurement bricks with:\n- Brick identifiers (Brick0000001, Brick0000002, etc.)\n- Shape metadata (dimensions and sizes)\n- Entity relationships (which samples, communities, etc.)\n- Semantic metadata (measurement types, units)\n\nEach brick corresponds to:\n- One ddt_brick* table with actual measurement data\n- Multiple rows in sys_ddt_typedef defining brick schema\n",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-dynamic-data",
+      "mappings": [
+        "kbase_cdm:DynamicDataArray"
+      ],
+      "mixins": [
+        "SystemEntity"
+      ],
+      "slots": [
+        "DynamicDataArray_ddt_ndarray_id",
+        "brick_table_name",
+        "n_dimensions",
+        "dimension_sizes",
+        "n_variables",
+        "total_rows",
+        "associated_entity_type",
+        "associated_entity_names",
+        "measurement_type_sys_oterm_id",
+        "measurement_type_sys_oterm_name",
+        "creation_date",
+        "description"
+      ],
+      "slot_usage": {},
+      "class_uri": "https://w3id.org/enigma/kbase-cdm/DynamicDataArray",
+      "@type": "ClassDefinition"
+    },
+    {
+      "name": "BrickDimension",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/BrickDimension",
+      "description": "Abstract base for brick dimension metadata.\n\nDimensions define the axes of N-dimensional measurement arrays:\n- Environmental Sample: Different samples measured\n- Molecule: Different molecules/compounds measured\n- State: Different conditions (e.g., time points, treatments)\n- Statistic: Different statistical measures (mean, std, etc.)\n\nEach dimension has:\n- Semantic meaning (ontology term)\n- Size (number of values along axis)\n- Index values (entity names or numeric indices)\n",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-dynamic-data",
+      "abstract": true,
+      "slots": [
+        "dimension_number",
+        "dimension_oterm_id",
+        "dimension_oterm_name",
+        "dimension_size",
+        "dimension_values"
+      ],
+      "slot_usage": {},
+      "class_uri": "https://w3id.org/enigma/kbase-cdm/BrickDimension",
+      "@type": "ClassDefinition"
+    },
+    {
+      "name": "BrickVariable",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/BrickVariable",
+      "description": "Abstract base for brick variable metadata.\n\nVariables define what is measured at each point in the N-dimensional array:\n- Concentration (with units: mg/L, \u00b5M, etc.)\n- Molecular Weight (with units: Da, kDa, etc.)\n- Activity Rate (with units: nmol/min, etc.)\n- Expression Level (with units: RPKM, TPM, etc.)\n\nEach variable has:\n- Semantic meaning (ontology term)\n- Data type (float, int, bool, oterm_ref, object_ref)\n- Units (ontology term)\n- Value range constraints\n",
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-dynamic-data",
+      "abstract": true,
+      "slots": [
+        "variable_number",
+        "variable_oterm_id",
+        "variable_oterm_name",
+        "variable_data_type",
+        "unit_sys_oterm_id",
+        "unit_sys_oterm_name",
+        "min_value",
+        "max_value"
+      ],
+      "slot_usage": {},
+      "class_uri": "https://w3id.org/enigma/kbase-cdm/BrickVariable",
+      "@type": "ClassDefinition"
+    },
+    {
+      "name": "Brick",
+      "definition_uri": "https://w3id.org/enigma/kbase-cdm/Brick",
+      "description": "Abstract base for all brick data tables (ddt_brick*).\n\nEach brick table stores measurement values in a denormalized format\nwhere each row represents one cell in the N-dimensional array.\n\nCommon structure:\n- Dimension indices (dim0_index, dim1_index, dim2_index, ...)\n- Dimension values (dim0_value, dim1_value, dim2_value, ...)\n- Variable values (var0_value, var1_value, var2_value, ...)\n\nSchema is defined in sys_ddt_typedef and varies per brick.\n\nNote: Individual brick classes (Brick0000001, Brick0000002, etc.)\nare not explicitly defined in this schema because they have\nheterogeneous structures. They should be validated against\nsys_ddt_typedef at runtime.\n",
+      "comments": [
+        "Brick tables are created dynamically based on measurement needs",
+        "Each brick can have different dimensions and variables",
+        "Schema flexibility enables diverse experimental data types"
+      ],
+      "from_schema": "https://w3id.org/enigma/kbase-cdm-dynamic-data",
+      "abstract": true,
+      "slot_usage": {},
+      "class_uri": "https://w3id.org/enigma/kbase-cdm/Brick",
+      "@type": "ClassDefinition"
+    }
+  ],
+  "metamodel_version": "1.7.0",
+  "source_file": "linkml_coral_cdm.yaml",
+  "source_file_date": "2025-12-01T21:31:56",
+  "source_file_size": 9702,
+  "generation_date": "2025-12-01T21:40:09",
+  "@type": "SchemaDefinition",
+  "@context": [
+    "project_cdm/jsonld/linkml_coral_cdm.context.jsonld",
+    "https://w3id.org/linkml/types.context.jsonld",
+    "./cdm_base.context.jsonld",
+    "./cdm_static_entities.context.jsonld",
+    "./cdm_system_tables.context.jsonld",
+    "./cdm_dynamic_data.context.jsonld",
+    {
+      "@base": "https://w3id.org/enigma/kbase-cdm/"
+    }
+  ]
+}

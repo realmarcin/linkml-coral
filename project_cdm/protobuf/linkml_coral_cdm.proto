@@ -1,0 +1,400 @@
+ syntax="proto3";
+ package
+// metamodel_version: 1.7.0
+// version: 1.0.0
+// Genome assembly from sequencing reads.
+// 
+// CDM changes from CORAL:
+// - FK reference: strain → strain_ref
+// - Added 'link' field
+// 
+message Assembly
+ {
+  string sdtAssemblyId = 0
+  entityName sdtAssemblyName = 0
+  entityName strainRef = 0
+  count nContigs = 0
+  size totalSize = 0
+  link link = 0
+ }
+// Amplicon Sequence Variant (formerly OTU).
+// 
+// CDM changes from CORAL:
+// - Entity renamed from OTU to ASV (Amplicon Sequence Variant)
+// - Table name: sdt_asv
+// 
+message ASV
+ {
+  string sdtAsvId = 0
+  entityName sdtAsvName = 0
+  string sequence = 0
+ }
+// Genome bin extracted from metagenomic assembly.
+// 
+// CDM changes from CORAL:
+// - FK reference: assembly → assembly_ref
+// - contigs field contains comma-separated contig names
+// 
+message Bin
+ {
+  string sdtBinId = 0
+  entityName sdtBinName = 0
+  entityName assemblyRef = 0
+  string contigs = 0
+ }
+// Microbial community (isolate, enrichment, assemblage, or environmental).
+// 
+// CDM changes from CORAL:
+// - 1 ontology term field split: community_type
+// - FK references: sample → sample_ref, parent_community → parent_community_ref
+// - Multivalued FK: defined_strains → defined_strains_ref
+// 
+message Community
+ {
+  string sdtCommunityId = 0
+  entityName sdtCommunityName = 0
+  ontologyTermID communityTypeSysOtermId = 0
+  string communityTypeSysOtermName = 0
+  entityName sampleRef = 0
+  entityName parentCommunityRef = 0
+ repeated  entityName definedStrainsRef = 0
+ }
+// Growth or experimental condition.
+// 
+message Condition
+ {
+  string sdtConditionId = 0
+  entityName sdtConditionName = 0
+ }
+// Dual Barcoded Sequencing (DubSeq) library.
+// 
+// CDM changes from CORAL:
+// - FK reference: genome → genome_ref
+// 
+message DubSeqLibrary
+ {
+  string sdtDubseqLibraryId = 0
+  entityName sdtDubseqLibraryName = 0
+  entityName genomeRef = 0
+  count nFragments = 0
+ }
+// Brick index table (ddt_ndarray).
+// 
+// Catalogs all available measurement bricks with:
+// - Brick identifiers (Brick0000001, Brick0000002, etc.)
+// - Shape metadata (dimensions and sizes)
+// - Entity relationships (which samples, communities, etc.)
+// - Semantic metadata (measurement types, units)
+// 
+// Each brick corresponds to:
+// - One ddt_brick* table with actual measurement data
+// - Multiple rows in sys_ddt_typedef defining brick schema
+// 
+message DynamicDataArray
+ {
+  string ddtNdarrayId = 0
+  string brickTableName = 0
+  integer nDimensions = 0
+  string dimensionSizes = 0
+  integer nVariables = 0
+  integer totalRows = 0
+  string associatedEntityType = 0
+ repeated  entityName associatedEntityNames = 0
+  ontologyTermID measurementTypeSysOtermId = 0
+  string measurementTypeSysOtermName = 0
+  date creationDate = 0
+  string description = 0
+ }
+// Root entity (database singleton).
+// 
+message ENIGMA
+ {
+  string sdtEnigmaId = 0
+ }
+// Annotated gene within a genome.
+// 
+// CDM changes from CORAL:
+// - FK reference: genome → genome_ref
+// - Gene ID convention: GeneName{genome_name}_{contig}_{start}_{stop}
+// 
+message Gene
+ {
+  string sdtGeneId = 0
+  entityName sdtGeneName = 0
+  entityName genomeRef = 0
+  integer contigNumber = 0
+  string strand = 0
+  integer start = 0
+  integer stop = 0
+  string function = 0
+ }
+// Assembled and annotated genome.
+// 
+// CDM changes from CORAL:
+// - FK reference: strain → strain_ref
+// - Added 'link' field
+// 
+message Genome
+ {
+  string sdtGenomeId = 0
+  entityName sdtGenomeName = 0
+  entityName strainRef = 0
+  count nContigs = 0
+  count nFeatures = 0
+  size totalSize = 0
+  link link = 0
+ }
+// Microscopy or other image data.
+// 
+// CDM changes from CORAL:
+// - Added 'link' field for image files
+// 
+message Image
+ {
+  string sdtImageId = 0
+  entityName sdtImageName = 0
+  string mimeType = 0
+  size size = 0
+  string dimensions = 0
+  link link = 0
+ }
+// Sampling location with geographic coordinates and environmental context.
+// 
+// CDM changes from CORAL:
+// - 4 ontology term fields split into ID+name pairs:
+//   continent, country, biome, feature
+// 
+message Location
+ {
+  string sdtLocationId = 0
+  entityName sdtLocationName = 0
+  latitude latitude = 0
+  longitude longitude = 0
+  ontologyTermID continentSysOtermId = 0
+  string continentSysOtermName = 0
+  ontologyTermID countrySysOtermId = 0
+  string countrySysOtermName = 0
+  string region = 0
+  ontologyTermID biomeSysOtermId = 0
+  string biomeSysOtermName = 0
+  ontologyTermID featureSysOtermId = 0
+  string featureSysOtermName = 0
+ }
+// Experimental protocol.
+// 
+// CDM changes from CORAL:
+// - Added 'link' field for protocol documents
+// 
+message Protocol
+ {
+  string sdtProtocolId = 0
+  entityName sdtProtocolName = 0
+  string description = 0
+  link link = 0
+ }
+// Sequencing reads dataset.
+// 
+// CDM changes from CORAL:
+// - 2 ontology term fields split: read_type, sequencing_technology
+// - Added 'link' field for external data references
+// 
+message Reads
+ {
+  string sdtReadsId = 0
+  entityName sdtReadsName = 0
+  count readCount = 0
+  count baseCount = 0
+  ontologyTermID readTypeSysOtermId = 0
+  string readTypeSysOtermName = 0
+  ontologyTermID sequencingTechnologySysOtermId = 0
+  string sequencingTechnologySysOtermName = 0
+  link link = 0
+ }
+// Environmental sample collected from a location.
+// 
+// CDM changes from CORAL:
+// - 2 ontology term fields split: material, env_package
+// - FK reference: location → location_ref
+// 
+message Sample
+ {
+  string sdtSampleId = 0
+  entityName sdtSampleName = 0
+  entityName locationRef = 0
+  depth depth = 0
+  elevation elevation = 0
+  date date = 0
+  time time = 0
+  string timezone = 0
+  ontologyTermID materialSysOtermId = 0
+  string materialSysOtermName = 0
+  ontologyTermID envPackageSysOtermId = 0
+  string envPackageSysOtermName = 0
+  string description = 0
+ }
+// Microbial strain (isolated or derived).
+// 
+// CDM changes from CORAL:
+// - FK references: genome → genome_ref, derived_from → derived_from_strain_ref
+// - Self-referential for strain derivation lineage
+// 
+message Strain
+ {
+  string sdtStrainId = 0
+  entityName sdtStrainName = 0
+  entityName genomeRef = 0
+  entityName derivedFromStrainRef = 0
+ repeated  entityName geneNamesChanged = 0
+ }
+// Type definitions for dynamic data tables (bricks).
+// 
+// Defines schema for N-dimensional measurement arrays including:
+// - Dimension semantics (Environmental Sample, Molecule, State, Statistic)
+// - Variable semantics (Concentration, Molecular Weight, etc.)
+// - Data types and units
+// - Brick structure metadata
+// 
+// Each brick can have different dimensionality and variable sets,
+// enabling flexible storage of heterogeneous measurement data.
+// 
+message SystemDDTTypedef
+ {
+  string ddtNdarrayId = 0
+  string cdmColumnName = 0
+  string cdmColumnDataType = 0
+  string scalarType = 0
+  integer dimensionNumber = 0
+  integer variableNumber = 0
+  ontologyTermID dimensionOtermId = 0
+  string dimensionOtermName = 0
+  ontologyTermID variableOtermId = 0
+  string variableOtermName = 0
+  ontologyTermID unitSysOtermId = 0
+  string unitSysOtermName = 0
+ }
+// Centralized ontology term catalog.
+// 
+// Stores all ontology terms used across the CDM with:
+// - CURIE identifiers (ME:, ENVO:, UO:, etc.)
+// - Human-readable names
+// - Hierarchical relationships (parent terms)
+// - Definitions, synonyms, and external links
+// 
+// Benefits:
+// - Single source of truth for ontology terms
+// - Supports ontology evolution without data migration
+// - Enables semantic queries and reasoning
+// - Foreign key target for all *_sys_oterm_id columns
+// 
+message SystemOntologyTerm
+ {
+  ontologyTermID sysOtermId = 0
+  string sysOtermName = 0
+  string sysOtermOntology = 0
+  ontologyTermID parentSysOtermId = 0
+  string sysOtermDefinition = 0
+  string sysOtermSynonyms = 0
+  string sysOtermLinks = 0
+  string sysOtermProperties = 0
+ }
+// Provenance tracking for all data transformations.
+// 
+// Records experimental processes with:
+// - Process type (Assay Growth, Sequencing, etc.)
+// - People, protocols, campaigns
+// - Temporal metadata (start/end dates)
+// - Input/output relationships (denormalized arrays)
+// 
+// Enables complete lineage tracing from raw samples to final analyses.
+// 
+message SystemProcess
+ {
+  string sysProcessId = 0
+  ontologyTermID processTypeSysOtermId = 0
+  string processTypeSysOtermName = 0
+  ontologyTermID personSysOtermId = 0
+  string personSysOtermName = 0
+  ontologyTermID campaignSysOtermId = 0
+  string campaignSysOtermName = 0
+  entityName sdtProtocolName = 0
+  date dateStart = 0
+  date dateEnd = 0
+ repeated  string inputObjects = 0
+ repeated  string outputObjects = 0
+ }
+// Normalized process input relationships.
+// 
+// Denormalizes the input_objects array from sys_process for efficient
+// querying. Each row represents one input entity to one process.
+// 
+// Enables queries like:
+// - "Find all processes that used this sample"
+// - "What samples were used in sequencing processes?"
+// 
+message SystemProcessInput
+ {
+  string sysProcessId = 0
+  string inputObjectType = 0
+  entityName inputObjectName = 0
+  integer inputIndex = 0
+ }
+// Normalized process output relationships.
+// 
+// Denormalizes the output_objects array from sys_process for efficient
+// querying. Each row represents one output entity from one process.
+// 
+// Enables queries like:
+// - "What process created this assembly?"
+// - "Find all assemblies from sequencing processes"
+// 
+message SystemProcessOutput
+ {
+  string sysProcessId = 0
+  string outputObjectType = 0
+  entityName outputObjectName = 0
+  integer outputIndex = 0
+ }
+// Type definitions for static entity tables (equivalent to typedef.json).
+// 
+// Maps CORAL entity types and fields to CDM table/column names with
+// constraints, data types, and ontology references.
+// 
+// This table documents the schema transformation from CORAL to CDM and
+// enables automated validation and migration.
+// 
+message SystemTypedef
+ {
+  string typeName = 0
+  string fieldName = 0
+  string cdmColumnName = 0
+  string scalarType = 0
+  boolean pk = 0
+  boolean upk = 0
+  string fk = 0
+  string constraint = 0
+  ontologyTermID unitsSysOtermId = 0
+  ontologyTermID typeSysOtermId = 0
+ }
+// Taxonomic classification.
+// 
+message Taxon
+ {
+  string sdtTaxonId = 0
+  entityName sdtTaxonName = 0
+  integer ncbiTaxid = 0
+ }
+// Transposon Sequencing (TnSeq) library.
+// 
+// CDM changes from CORAL:
+// - FK reference: genome → genome_ref
+// 
+message TnSeqLibrary
+ {
+  string sdtTnseqLibraryId = 0
+  entityName sdtTnseqLibraryName = 0
+  entityName genomeRef = 0
+  string primersModel = 0
+  count nMappedReads = 0
+  count nGoodReads = 0
+  count nGenesHit = 0
+ }

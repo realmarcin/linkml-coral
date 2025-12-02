@@ -1,0 +1,14 @@
+{
+   "CONTINENT": "http://purl.obolibrary.org/obo/CONTINENT_",
+   "COUNTRY": "http://purl.obolibrary.org/obo/COUNTRY_",
+   "DA": "http://purl.obolibrary.org/obo/DA_",
+   "ENIGMA_TERM": "http://purl.obolibrary.org/obo/ENIGMA_",
+   "ENVO": "http://purl.obolibrary.org/obo/ENVO_",
+   "ME": "http://purl.obolibrary.org/obo/ME_",
+   "MIxS": "http://purl.obolibrary.org/obo/MIxS_",
+   "PROCESS": "http://purl.obolibrary.org/obo/PROCESS_",
+   "UO": "http://purl.obolibrary.org/obo/UO_",
+   "enigma": "https://w3id.org/enigma/",
+   "kbase_cdm": "https://w3id.org/enigma/kbase-cdm/",
+   "linkml": "https://w3id.org/linkml/"
+}

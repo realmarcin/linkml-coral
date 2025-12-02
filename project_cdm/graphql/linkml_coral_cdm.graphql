@@ -1,0 +1,376 @@
+# metamodel_version: 1.7.0
+# version: 1.0.0
+enum BiomeEnum
+  {
+    terrestrial
+    aquatic
+    marine
+  }
+
+enum BrickDataType
+  {
+    float
+    int
+    bool
+    text
+    oterm_ref
+    object_ref
+  }
+
+enum CommunityTypeEnum
+  {
+    isolate_community
+    enrichment
+    assemblage
+    environmental_community
+    active_fraction
+  }
+
+enum DimensionSemantics
+  {
+    environmental_sample
+    molecule
+    state
+    statistic
+    gene
+    taxon
+    location
+    time
+  }
+
+enum MaterialEnum
+  {
+    soil
+    sediment
+    water
+    biofilm
+  }
+
+enum ReadTypeEnum
+  {
+    paired_end
+    single_end
+  }
+
+enum SequencingTechnologyEnum
+  {
+    illumina
+    pacbio
+    nanopore
+    sanger
+  }
+
+enum StrandEnum
+  {
+    forward
+    reverse_complement
+  }
+
+enum VariableSemantics
+  {
+    concentration
+    molecular_weight
+    activity_rate
+    expression_level
+    abundance
+    ph
+    temperature
+    growth_rate
+  }
+
+type Assembly implements CDMEntity
+  {
+    sdtAssemblyId: String!
+    sdtAssemblyName: EntityName!
+    strainRef: EntityName
+    nContigs: Count
+    totalSize: Size
+    link: Link
+  }
+
+type ASV implements CDMEntity
+  {
+    sdtAsvId: String!
+    sdtAsvName: EntityName!
+    sequence: String
+  }
+
+type Bin implements CDMEntity
+  {
+    sdtBinId: String!
+    sdtBinName: EntityName!
+    assemblyRef: EntityName
+    contigs: String
+  }
+
+interface Brick
+  {
+  }
+
+interface BrickDimension
+  {
+    dimensionNumber: Integer
+    dimensionOtermId: OntologyTermID
+    dimensionOtermName: String
+    dimensionSize: Integer
+    dimensionValues: String
+  }
+
+interface BrickVariable
+  {
+    variableNumber: Integer
+    variableOtermId: OntologyTermID
+    variableOtermName: String
+    variableDataType: String
+    unitSysOtermId: OntologyTermID
+    unitSysOtermName: String
+    minValue: Float
+    maxValue: Float
+  }
+
+interface CDMEntity
+  {
+  }
+
+type Community implements CDMEntity
+  {
+    sdtCommunityId: String!
+    sdtCommunityName: EntityName!
+    communityTypeSysOtermId: OntologyTermID
+    communityTypeSysOtermName: String
+    sampleRef: EntityName
+    parentCommunityRef: EntityName
+    definedStrainsRef: [EntityName]
+  }
+
+type Condition implements CDMEntity
+  {
+    sdtConditionId: String!
+    sdtConditionName: EntityName!
+  }
+
+type DubSeqLibrary implements CDMEntity
+  {
+    sdtDubseqLibraryId: String!
+    sdtDubseqLibraryName: EntityName!
+    genomeRef: EntityName
+    nFragments: Count
+  }
+
+type DynamicDataArray implements SystemEntity
+  {
+    ddtNdarrayId: String!
+    brickTableName: String
+    nDimensions: Integer
+    dimensionSizes: String
+    nVariables: Integer
+    totalRows: Integer
+    associatedEntityType: String
+    associatedEntityNames: [EntityName]
+    measurementTypeSysOtermId: OntologyTermID
+    measurementTypeSysOtermName: String
+    creationDate: Date
+    description: String
+  }
+
+type ENIGMA implements CDMEntity
+  {
+    sdtEnigmaId: String!
+  }
+
+type Gene implements CDMEntity
+  {
+    sdtGeneId: String!
+    sdtGeneName: EntityName!
+    genomeRef: EntityName
+    contigNumber: Integer
+    strand: String
+    start: Integer
+    stop: Integer
+    function: String
+  }
+
+type Genome implements CDMEntity
+  {
+    sdtGenomeId: String!
+    sdtGenomeName: EntityName!
+    strainRef: EntityName
+    nContigs: Count
+    nFeatures: Count
+    totalSize: Size
+    link: Link
+  }
+
+type Image implements CDMEntity
+  {
+    sdtImageId: String!
+    sdtImageName: EntityName!
+    mimeType: String
+    size: Size
+    dimensions: String
+    link: Link
+  }
+
+type Location implements CDMEntity
+  {
+    sdtLocationId: String!
+    sdtLocationName: EntityName!
+    latitude: Latitude
+    longitude: Longitude
+    continentSysOtermId: OntologyTermID
+    continentSysOtermName: String
+    countrySysOtermId: OntologyTermID
+    countrySysOtermName: String
+    region: String
+    biomeSysOtermId: OntologyTermID
+    biomeSysOtermName: String
+    featureSysOtermId: OntologyTermID
+    featureSysOtermName: String
+  }
+
+interface OntologyTermPair
+  {
+  }
+
+type Protocol implements CDMEntity
+  {
+    sdtProtocolId: String!
+    sdtProtocolName: EntityName!
+    description: String
+    link: Link
+  }
+
+type Reads implements CDMEntity
+  {
+    sdtReadsId: String!
+    sdtReadsName: EntityName!
+    readCount: Count
+    baseCount: Count
+    readTypeSysOtermId: OntologyTermID
+    readTypeSysOtermName: String
+    sequencingTechnologySysOtermId: OntologyTermID
+    sequencingTechnologySysOtermName: String
+    link: Link
+  }
+
+type Sample implements CDMEntity
+  {
+    sdtSampleId: String!
+    sdtSampleName: EntityName!
+    locationRef: EntityName
+    depth: Depth
+    elevation: Elevation
+    date: Date
+    time: Time
+    timezone: String
+    materialSysOtermId: OntologyTermID
+    materialSysOtermName: String
+    envPackageSysOtermId: OntologyTermID
+    envPackageSysOtermName: String
+    description: String
+  }
+
+type Strain implements CDMEntity
+  {
+    sdtStrainId: String!
+    sdtStrainName: EntityName!
+    genomeRef: EntityName
+    derivedFromStrainRef: EntityName
+    geneNamesChanged: [EntityName]
+  }
+
+type SystemDDTTypedef implements SystemEntity
+  {
+    ddtNdarrayId: String!
+    cdmColumnName: String!
+    cdmColumnDataType: String
+    scalarType: String
+    dimensionNumber: Integer
+    variableNumber: Integer
+    dimensionOtermId: OntologyTermID
+    dimensionOtermName: String
+    variableOtermId: OntologyTermID
+    variableOtermName: String
+    unitSysOtermId: OntologyTermID
+    unitSysOtermName: String
+  }
+
+interface SystemEntity
+  {
+  }
+
+type SystemOntologyTerm implements SystemEntity
+  {
+    sysOtermId: OntologyTermID!
+    sysOtermName: String
+    sysOtermOntology: String
+    parentSysOtermId: OntologyTermID
+    sysOtermDefinition: String
+    sysOtermSynonyms: String
+    sysOtermLinks: String
+    sysOtermProperties: String
+  }
+
+type SystemProcess implements SystemEntity
+  {
+    sysProcessId: String!
+    processTypeSysOtermId: OntologyTermID
+    processTypeSysOtermName: String
+    personSysOtermId: OntologyTermID
+    personSysOtermName: String
+    campaignSysOtermId: OntologyTermID
+    campaignSysOtermName: String
+    sdtProtocolName: EntityName!
+    dateStart: Date
+    dateEnd: Date
+    inputObjects: [String]
+    outputObjects: [String]
+  }
+
+type SystemProcessInput implements SystemEntity
+  {
+    sysProcessId: String!
+    inputObjectType: String
+    inputObjectName: EntityName
+    inputIndex: Integer
+  }
+
+type SystemProcessOutput implements SystemEntity
+  {
+    sysProcessId: String!
+    outputObjectType: String
+    outputObjectName: EntityName
+    outputIndex: Integer
+  }
+
+type SystemTypedef implements SystemEntity
+  {
+    typeName: String!
+    fieldName: String!
+    cdmColumnName: String!
+    scalarType: String
+    pk: Boolean
+    upk: Boolean
+    fk: String
+    constraint: String
+    unitsSysOtermId: OntologyTermID
+    typeSysOtermId: OntologyTermID
+  }
+
+type Taxon implements CDMEntity
+  {
+    sdtTaxonId: String!
+    sdtTaxonName: EntityName!
+    ncbiTaxid: Integer
+  }
+
+type TnSeqLibrary implements CDMEntity
+  {
+    sdtTnseqLibraryId: String!
+    sdtTnseqLibraryName: EntityName!
+    genomeRef: EntityName
+    primersModel: String
+    nMappedReads: Count
+    nGoodReads: Count
+    nGenesHit: Count
+  }

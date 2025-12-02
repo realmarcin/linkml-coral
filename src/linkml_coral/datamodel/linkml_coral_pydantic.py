@@ -1728,11 +1728,11 @@ class Community(ConfiguredBaseModel):
                          'microtype_data_type': {'tag': 'microtype_data_type',
                                                  'value': 'object_ref'},
                          'type_term': {'tag': 'type_term', 'value': 'ME:0000044'}},
-         'comments': ['typedef.json specifies array ([text]), but actual data contains ',
+         'comments': ['typedef.json specifies array ([text]), but actual data contains '
                       'single values only',
                       "{'Changed to multivalued': 'false to match data reality (0% "
                       "have multiple strains)'}",
-                      'typedef.json has typo with FK pointing to [Strain.Name] with ',
+                      'typedef.json has typo with FK pointing to [Strain.Name] with '
                       'capital N',
                       'Using lowercase name to match actual Strain field'],
          'domain_of': ['Community']} })
@@ -1934,7 +1934,7 @@ class Gene(ConfiguredBaseModel):
                          'microtype_data_type': {'tag': 'microtype_data_type',
                                                  'value': 'object_ref'},
                          'type_term': {'tag': 'type_term', 'value': 'ME:0000246'}},
-         'comments': ['typedef.json has FK pointing to Genome without specifying ',
+         'comments': ['typedef.json has FK pointing to Genome without specifying '
                       'target field',
                       'Assumed to reference Genome.name based on pattern'],
          'domain_of': ['Gene']} })
@@ -2012,7 +2012,7 @@ class Bin(ConfiguredBaseModel):
                          'microtype_data_type': {'tag': 'microtype_data_type',
                                                  'value': 'object_ref'},
                          'type_term': {'tag': 'type_term', 'value': 'ME:0000280'}},
-         'comments': ['typedef.json has FK pointing to Assembly without specifying ',
+         'comments': ['typedef.json has FK pointing to Assembly without specifying '
                       'target field',
                       'Assumed to reference Assembly.name based on pattern'],
          'domain_of': ['Bin']} })

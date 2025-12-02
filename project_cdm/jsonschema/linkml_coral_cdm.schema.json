@@ -1,0 +1,1541 @@
+{
+    "$defs": {
+        "ASV": {
+            "additionalProperties": false,
+            "description": "Amplicon Sequence Variant (formerly OTU).\n\nCDM changes from CORAL:\n- Entity renamed from OTU to ASV (Amplicon Sequence Variant)\n- Table name: sdt_asv",
+            "properties": {
+                "sdt_asv_id": {
+                    "description": "Unique identifier for ASV",
+                    "pattern": "^ASV\\d{7}$",
+                    "type": "string"
+                },
+                "sdt_asv_name": {
+                    "description": "Name of ASV",
+                    "pattern": "^[A-Za-z0-9_\\-. ]+$",
+                    "type": "string"
+                },
+                "sequence": {
+                    "description": "DNA sequence",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                }
+            },
+            "required": [
+                "sdt_asv_id",
+                "sdt_asv_name"
+            ],
+            "title": "ASV",
+            "type": "object"
+        },
+        "Assembly": {
+            "additionalProperties": false,
+            "description": "Genome assembly from sequencing reads.\n\nCDM changes from CORAL:\n- FK reference: strain \u2192 strain_ref\n- Added 'link' field",
+            "properties": {
+                "link": {
+                    "description": "External reference URL or file path",
+                    "pattern": "^(http.*|/.*)$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "n_contigs": {
+                    "description": "Number of contigs",
+                    "minimum": 0,
+                    "type": [
+                        "integer",
+                        "null"
+                    ]
+                },
+                "sdt_assembly_id": {
+                    "description": "Unique identifier for Assembly",
+                    "pattern": "^Assembly\\d{7}$",
+                    "type": "string"
+                },
+                "sdt_assembly_name": {
+                    "description": "Name of assembly",
+                    "pattern": "^[A-Za-z0-9_\\-. ]+$",
+                    "type": "string"
+                },
+                "strain_ref": {
+                    "description": "Reference to strain name (FK to Strain.sdt_strain_name)",
+                    "pattern": "^[A-Za-z0-9_\\-. ]+$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "total_size": {
+                    "description": "Total assembly size in base pairs",
+                    "minimum": 0,
+                    "type": [
+                        "integer",
+                        "null"
+                    ]
+                }
+            },
+            "required": [
+                "sdt_assembly_id",
+                "sdt_assembly_name"
+            ],
+            "title": "Assembly",
+            "type": "object"
+        },
+        "Bin": {
+            "additionalProperties": false,
+            "description": "Genome bin extracted from metagenomic assembly.\n\nCDM changes from CORAL:\n- FK reference: assembly \u2192 assembly_ref\n- contigs field contains comma-separated contig names",
+            "properties": {
+                "assembly_ref": {
+                    "description": "Reference to assembly name (FK to Assembly.sdt_assembly_name)",
+                    "pattern": "^[A-Za-z0-9_\\-. ]+$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "contigs": {
+                    "description": "Comma-separated list of contig names",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "sdt_bin_id": {
+                    "description": "Unique identifier for Bin",
+                    "pattern": "^Bin\\d{7}$",
+                    "type": "string"
+                },
+                "sdt_bin_name": {
+                    "description": "Name of bin",
+                    "pattern": "^[A-Za-z0-9_\\-. ]+$",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "sdt_bin_id",
+                "sdt_bin_name"
+            ],
+            "title": "Bin",
+            "type": "object"
+        },
+        "BiomeEnum": {
+            "description": "Environmental biome",
+            "enum": [
+                "terrestrial",
+                "aquatic",
+                "marine"
+            ],
+            "title": "BiomeEnum",
+            "type": "string"
+        },
+        "BrickDataType": {
+            "description": "Data types for brick variables",
+            "enum": [
+                "float",
+                "int",
+                "bool",
+                "text",
+                "oterm_ref",
+                "object_ref"
+            ],
+            "title": "BrickDataType",
+            "type": "string"
+        },
+        "Community": {
+            "additionalProperties": false,
+            "description": "Microbial community (isolate, enrichment, assemblage, or environmental).\n\nCDM changes from CORAL:\n- 1 ontology term field split: community_type\n- FK references: sample \u2192 sample_ref, parent_community \u2192 parent_community_ref\n- Multivalued FK: defined_strains \u2192 defined_strains_ref",
+            "properties": {
+                "community_type_sys_oterm_id": {
+                    "description": "Community type ontology term ID",
+                    "pattern": "^[A-Z_]+:\\d+$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "community_type_sys_oterm_name": {
+                    "description": "Community type ontology term name",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "defined_strains_ref": {
+                    "description": "References to defined strain names (multivalued FK to Strain.sdt_strain_name)",
+                    "items": {
+                        "pattern": "^[A-Za-z0-9_\\-. ]+$",
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "parent_community_ref": {
+                    "description": "Reference to parent community name (FK, self-referential to Community.sdt_community_name)",
+                    "pattern": "^[A-Za-z0-9_\\-. ]+$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "sample_ref": {
+                    "description": "Reference to sample name (FK to Sample.sdt_sample_name)",
+                    "pattern": "^[A-Za-z0-9_\\-. ]+$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "sdt_community_id": {
+                    "description": "Unique identifier for Community",
+                    "pattern": "^Community\\d{7}$",
+                    "type": "string"
+                },
+                "sdt_community_name": {
+                    "description": "Name of community",
+                    "pattern": "^[A-Za-z0-9_\\-. ]+$",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "sdt_community_id",
+                "sdt_community_name"
+            ],
+            "title": "Community",
+            "type": "object"
+        },
+        "CommunityTypeEnum": {
+            "description": "Microbial community type",
+            "enum": [
+                "isolate_community",
+                "enrichment",
+                "assemblage",
+                "environmental_community",
+                "active_fraction"
+            ],
+            "title": "CommunityTypeEnum",
+            "type": "string"
+        },
+        "Condition": {
+            "additionalProperties": false,
+            "description": "Growth or experimental condition.",
+            "properties": {
+                "sdt_condition_id": {
+                    "description": "Unique identifier for Condition",
+                    "pattern": "^Condition\\d{7}$",
+                    "type": "string"
+                },
+                "sdt_condition_name": {
+                    "description": "Name of condition",
+                    "pattern": "^[A-Za-z0-9_\\-. ]+$",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "sdt_condition_id",
+                "sdt_condition_name"
+            ],
+            "title": "Condition",
+            "type": "object"
+        },
+        "DimensionSemantics": {
+            "description": "Common dimension semantic types",
+            "enum": [
+                "environmental_sample",
+                "molecule",
+                "state",
+                "statistic",
+                "gene",
+                "taxon",
+                "location",
+                "time"
+            ],
+            "title": "DimensionSemantics",
+            "type": "string"
+        },
+        "DubSeqLibrary": {
+            "additionalProperties": false,
+            "description": "Dual Barcoded Sequencing (DubSeq) library.\n\nCDM changes from CORAL:\n- FK reference: genome \u2192 genome_ref",
+            "properties": {
+                "genome_ref": {
+                    "description": "Reference to genome name (FK to Genome.sdt_genome_name)",
+                    "pattern": "^[A-Za-z0-9_\\-. ]+$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "n_fragments": {
+                    "description": "Number of fragments",
+                    "minimum": 0,
+                    "type": [
+                        "integer",
+                        "null"
+                    ]
+                },
+                "sdt_dubseq_library_id": {
+                    "description": "Unique identifier for DubSeqLibrary",
+                    "pattern": "^DubSeqLibrary\\d{7}$",
+                    "type": "string"
+                },
+                "sdt_dubseq_library_name": {
+                    "description": "Name of DubSeq library",
+                    "pattern": "^[A-Za-z0-9_\\-. ]+$",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "sdt_dubseq_library_id",
+                "sdt_dubseq_library_name"
+            ],
+            "title": "DubSeqLibrary",
+            "type": "object"
+        },
+        "DynamicDataArray": {
+            "additionalProperties": false,
+            "description": "Brick index table (ddt_ndarray).\n\nCatalogs all available measurement bricks with:\n- Brick identifiers (Brick0000001, Brick0000002, etc.)\n- Shape metadata (dimensions and sizes)\n- Entity relationships (which samples, communities, etc.)\n- Semantic metadata (measurement types, units)\n\nEach brick corresponds to:\n- One ddt_brick* table with actual measurement data\n- Multiple rows in sys_ddt_typedef defining brick schema",
+            "properties": {
+                "associated_entity_names": {
+                    "description": "Names of entities associated with this brick",
+                    "items": {
+                        "pattern": "^[A-Za-z0-9_\\-. ]+$",
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "associated_entity_type": {
+                    "description": "Type of entities measured (e.g., \"Sample\", \"Community\")",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "brick_table_name": {
+                    "description": "Name of brick table (e.g., \"ddt_brick0000010\")",
+                    "pattern": "^ddt_brick\\d{7}$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "creation_date": {
+                    "description": "Date brick was created",
+                    "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "ddt_ndarray_id": {
+                    "description": "Brick identifier (e.g., \"Brick0000010\")",
+                    "type": "string"
+                },
+                "description": {
+                    "description": "Free text description",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "dimension_sizes": {
+                    "description": "Comma-separated dimension sizes (e.g., \"209,52,3,3\")",
+                    "pattern": "^\\d+(,\\d+)*$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "measurement_type_sys_oterm_id": {
+                    "description": "Type of measurement ontology term ID",
+                    "pattern": "^[A-Z_]+:\\d+$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "measurement_type_sys_oterm_name": {
+                    "description": "Type of measurement ontology term name",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "n_dimensions": {
+                    "description": "Number of dimensions in array",
+                    "minimum": 1,
+                    "type": [
+                        "integer",
+                        "null"
+                    ]
+                },
+                "n_variables": {
+                    "description": "Number of measured variables",
+                    "minimum": 1,
+                    "type": [
+                        "integer",
+                        "null"
+                    ]
+                },
+                "total_rows": {
+                    "description": "Total number of data rows in brick table",
+                    "minimum": 0,
+                    "type": [
+                        "integer",
+                        "null"
+                    ]
+                }
+            },
+            "required": [
+                "ddt_ndarray_id"
+            ],
+            "title": "DynamicDataArray",
+            "type": "object"
+        },
+        "ENIGMA": {
+            "additionalProperties": false,
+            "description": "Root entity (database singleton).",
+            "properties": {
+                "sdt_enigma_id": {
+                    "description": "Unique identifier for ENIGMA root entity",
+                    "pattern": "^ENIGMA1$",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "sdt_enigma_id"
+            ],
+            "title": "ENIGMA",
+            "type": "object"
+        },
+        "Gene": {
+            "additionalProperties": false,
+            "description": "Annotated gene within a genome.\n\nCDM changes from CORAL:\n- FK reference: genome \u2192 genome_ref\n- Gene ID convention: GeneName{genome_name}_{contig}_{start}_{stop}",
+            "properties": {
+                "contig_number": {
+                    "description": "Contig number where gene is located",
+                    "type": [
+                        "integer",
+                        "null"
+                    ]
+                },
+                "function": {
+                    "description": "Predicted gene function",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "genome_ref": {
+                    "description": "Reference to genome name (FK to Genome.sdt_genome_name)",
+                    "pattern": "^[A-Za-z0-9_\\-. ]+$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "sdt_gene_id": {
+                    "description": "Unique identifier for Gene",
+                    "pattern": "^Gene\\d{7}$",
+                    "type": "string"
+                },
+                "sdt_gene_name": {
+                    "description": "Name of gene",
+                    "pattern": "^[A-Za-z0-9_\\-. ]+$",
+                    "type": "string"
+                },
+                "start": {
+                    "description": "Start position on contig",
+                    "type": [
+                        "integer",
+                        "null"
+                    ]
+                },
+                "stop": {
+                    "description": "Stop position on contig",
+                    "type": [
+                        "integer",
+                        "null"
+                    ]
+                },
+                "strand": {
+                    "description": "DNA strand (+ or -)",
+                    "pattern": "^[+-]$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                }
+            },
+            "required": [
+                "sdt_gene_id",
+                "sdt_gene_name"
+            ],
+            "title": "Gene",
+            "type": "object"
+        },
+        "Genome": {
+            "additionalProperties": false,
+            "description": "Assembled and annotated genome.\n\nCDM changes from CORAL:\n- FK reference: strain \u2192 strain_ref\n- Added 'link' field",
+            "properties": {
+                "link": {
+                    "description": "External reference URL or file path",
+                    "pattern": "^(http.*|/.*)$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "n_contigs": {
+                    "description": "Number of contigs",
+                    "minimum": 0,
+                    "type": [
+                        "integer",
+                        "null"
+                    ]
+                },
+                "n_features": {
+                    "description": "Number of annotated features",
+                    "minimum": 0,
+                    "type": [
+                        "integer",
+                        "null"
+                    ]
+                },
+                "sdt_genome_id": {
+                    "description": "Unique identifier for Genome",
+                    "pattern": "^Genome\\d{7}$",
+                    "type": "string"
+                },
+                "sdt_genome_name": {
+                    "description": "Name of genome",
+                    "pattern": "^[A-Za-z0-9_\\-. ]+$",
+                    "type": "string"
+                },
+                "strain_ref": {
+                    "description": "Reference to strain name (FK to Strain.sdt_strain_name)",
+                    "pattern": "^[A-Za-z0-9_\\-. ]+$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "total_size": {
+                    "description": "Total assembly size in base pairs",
+                    "minimum": 0,
+                    "type": [
+                        "integer",
+                        "null"
+                    ]
+                }
+            },
+            "required": [
+                "sdt_genome_id",
+                "sdt_genome_name"
+            ],
+            "title": "Genome",
+            "type": "object"
+        },
+        "Image": {
+            "additionalProperties": false,
+            "description": "Microscopy or other image data.\n\nCDM changes from CORAL:\n- Added 'link' field for image files",
+            "properties": {
+                "dimensions": {
+                    "description": "Image dimensions (e.g., \"1024x768\")",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "link": {
+                    "description": "External reference URL or file path",
+                    "pattern": "^(http.*|/.*)$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "mime_type": {
+                    "description": "MIME type of image",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "sdt_image_id": {
+                    "description": "Unique identifier for Image",
+                    "pattern": "^Image\\d{7}$",
+                    "type": "string"
+                },
+                "sdt_image_name": {
+                    "description": "Name of image",
+                    "pattern": "^[A-Za-z0-9_\\-. ]+$",
+                    "type": "string"
+                },
+                "size": {
+                    "description": "File size in bytes",
+                    "minimum": 0,
+                    "type": [
+                        "integer",
+                        "null"
+                    ]
+                }
+            },
+            "required": [
+                "sdt_image_id",
+                "sdt_image_name"
+            ],
+            "title": "Image",
+            "type": "object"
+        },
+        "Location": {
+            "additionalProperties": false,
+            "description": "Sampling location with geographic coordinates and environmental context.\n\nCDM changes from CORAL:\n- 4 ontology term fields split into ID+name pairs:\n  continent, country, biome, feature",
+            "properties": {
+                "biome_sys_oterm_id": {
+                    "description": "Biome ontology term ID (ENVO)",
+                    "pattern": "^[A-Z_]+:\\d+$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "biome_sys_oterm_name": {
+                    "description": "Biome ontology term name",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "continent_sys_oterm_id": {
+                    "description": "Continent ontology term ID",
+                    "pattern": "^[A-Z_]+:\\d+$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "continent_sys_oterm_name": {
+                    "description": "Continent ontology term name",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "country_sys_oterm_id": {
+                    "description": "Country ontology term ID",
+                    "pattern": "^[A-Z_]+:\\d+$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "country_sys_oterm_name": {
+                    "description": "Country ontology term name",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "feature_sys_oterm_id": {
+                    "description": "Environmental feature ontology term ID",
+                    "pattern": "^[A-Z_]+:\\d+$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "feature_sys_oterm_name": {
+                    "description": "Environmental feature ontology term name",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "latitude": {
+                    "description": "Latitude in decimal degrees",
+                    "maximum": 90.0,
+                    "minimum": -90.0,
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                },
+                "longitude": {
+                    "description": "Longitude in decimal degrees",
+                    "maximum": 180.0,
+                    "minimum": -180.0,
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                },
+                "region": {
+                    "description": "Geographic region",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "sdt_location_id": {
+                    "description": "Unique identifier for Location",
+                    "pattern": "^Location\\d{7}$",
+                    "type": "string"
+                },
+                "sdt_location_name": {
+                    "description": "Name of location",
+                    "pattern": "^[A-Za-z0-9_\\-. ]+$",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "sdt_location_id",
+                "sdt_location_name"
+            ],
+            "title": "Location",
+            "type": "object"
+        },
+        "MaterialEnum": {
+            "description": "Sample material type",
+            "enum": [
+                "soil",
+                "sediment",
+                "water",
+                "biofilm"
+            ],
+            "title": "MaterialEnum",
+            "type": "string"
+        },
+        "Protocol": {
+            "additionalProperties": false,
+            "description": "Experimental protocol.\n\nCDM changes from CORAL:\n- Added 'link' field for protocol documents",
+            "properties": {
+                "description": {
+                    "description": "Free text description",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "link": {
+                    "description": "External reference URL or file path",
+                    "pattern": "^(http.*|/.*)$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "sdt_protocol_id": {
+                    "description": "Unique identifier for Protocol",
+                    "pattern": "^Protocol\\d{7}$",
+                    "type": "string"
+                },
+                "sdt_protocol_name": {
+                    "description": "Name of protocol",
+                    "pattern": "^[A-Za-z0-9_\\-. ]+$",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "sdt_protocol_id",
+                "sdt_protocol_name"
+            ],
+            "title": "Protocol",
+            "type": "object"
+        },
+        "ReadTypeEnum": {
+            "description": "Sequencing read type",
+            "enum": [
+                "paired_end",
+                "single_end"
+            ],
+            "title": "ReadTypeEnum",
+            "type": "string"
+        },
+        "Reads": {
+            "additionalProperties": false,
+            "description": "Sequencing reads dataset.\n\nCDM changes from CORAL:\n- 2 ontology term fields split: read_type, sequencing_technology\n- Added 'link' field for external data references",
+            "properties": {
+                "base_count": {
+                    "description": "Total number of bases",
+                    "minimum": 0,
+                    "type": [
+                        "integer",
+                        "null"
+                    ]
+                },
+                "link": {
+                    "description": "External reference URL or file path",
+                    "pattern": "^(http.*|/.*)$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "read_count": {
+                    "description": "Number of reads",
+                    "minimum": 0,
+                    "type": [
+                        "integer",
+                        "null"
+                    ]
+                },
+                "read_type_sys_oterm_id": {
+                    "description": "Read type ontology term ID (e.g., paired-end, single-end)",
+                    "pattern": "^[A-Z_]+:\\d+$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "read_type_sys_oterm_name": {
+                    "description": "Read type ontology term name",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "sdt_reads_id": {
+                    "description": "Unique identifier for Reads",
+                    "pattern": "^Reads\\d{7}$",
+                    "type": "string"
+                },
+                "sdt_reads_name": {
+                    "description": "Name of reads dataset",
+                    "pattern": "^[A-Za-z0-9_\\-. ]+$",
+                    "type": "string"
+                },
+                "sequencing_technology_sys_oterm_id": {
+                    "description": "Sequencing technology ontology term ID",
+                    "pattern": "^[A-Z_]+:\\d+$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "sequencing_technology_sys_oterm_name": {
+                    "description": "Sequencing technology ontology term name",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                }
+            },
+            "required": [
+                "sdt_reads_id",
+                "sdt_reads_name"
+            ],
+            "title": "Reads",
+            "type": "object"
+        },
+        "Sample": {
+            "additionalProperties": false,
+            "description": "Environmental sample collected from a location.\n\nCDM changes from CORAL:\n- 2 ontology term fields split: material, env_package\n- FK reference: location \u2192 location_ref",
+            "properties": {
+                "date": {
+                    "description": "Collection date",
+                    "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "depth": {
+                    "description": "Depth in meters",
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                },
+                "description": {
+                    "description": "Free text description",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "elevation": {
+                    "description": "Elevation in meters",
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                },
+                "env_package_sys_oterm_id": {
+                    "description": "Environment package ontology term ID",
+                    "pattern": "^[A-Z_]+:\\d+$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "env_package_sys_oterm_name": {
+                    "description": "Environment package ontology term name",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "location_ref": {
+                    "description": "Reference to location name (FK to Location.sdt_location_name)",
+                    "pattern": "^[A-Za-z0-9_\\-. ]+$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "material_sys_oterm_id": {
+                    "description": "Material type ontology term ID",
+                    "pattern": "^[A-Z_]+:\\d+$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "material_sys_oterm_name": {
+                    "description": "Material type ontology term name",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "sdt_sample_id": {
+                    "description": "Unique identifier for Sample",
+                    "pattern": "^Sample\\d{7}$",
+                    "type": "string"
+                },
+                "sdt_sample_name": {
+                    "description": "Name of sample",
+                    "pattern": "^[A-Za-z0-9_\\-. ]+$",
+                    "type": "string"
+                },
+                "time": {
+                    "description": "Collection time",
+                    "pattern": "^\\d{2}:\\d{2}(:\\d{2})?$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "timezone": {
+                    "description": "Timezone",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                }
+            },
+            "required": [
+                "sdt_sample_id",
+                "sdt_sample_name"
+            ],
+            "title": "Sample",
+            "type": "object"
+        },
+        "SequencingTechnologyEnum": {
+            "description": "Sequencing platform technology",
+            "enum": [
+                "illumina",
+                "pacbio",
+                "nanopore",
+                "sanger"
+            ],
+            "title": "SequencingTechnologyEnum",
+            "type": "string"
+        },
+        "Strain": {
+            "additionalProperties": false,
+            "description": "Microbial strain (isolated or derived).\n\nCDM changes from CORAL:\n- FK references: genome \u2192 genome_ref, derived_from \u2192 derived_from_strain_ref\n- Self-referential for strain derivation lineage",
+            "properties": {
+                "derived_from_strain_ref": {
+                    "description": "Reference to parent strain name (FK, self-referential to Strain.sdt_strain_name)",
+                    "pattern": "^[A-Za-z0-9_\\-. ]+$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "gene_names_changed": {
+                    "description": "Names of genes that were changed",
+                    "items": {
+                        "pattern": "^[A-Za-z0-9_\\-. ]+$",
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "genome_ref": {
+                    "description": "Reference to genome name (FK to Genome.sdt_genome_name)",
+                    "pattern": "^[A-Za-z0-9_\\-. ]+$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "sdt_strain_id": {
+                    "description": "Unique identifier for Strain",
+                    "pattern": "^Strain\\d{7}$",
+                    "type": "string"
+                },
+                "sdt_strain_name": {
+                    "description": "Name of strain",
+                    "pattern": "^[A-Za-z0-9_\\-. ]+$",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "sdt_strain_id",
+                "sdt_strain_name"
+            ],
+            "title": "Strain",
+            "type": "object"
+        },
+        "StrandEnum": {
+            "description": "DNA strand orientation",
+            "enum": [
+                "forward",
+                "reverse_complement"
+            ],
+            "title": "StrandEnum",
+            "type": "string"
+        },
+        "SystemDDTTypedef": {
+            "additionalProperties": false,
+            "description": "Type definitions for dynamic data tables (bricks).\n\nDefines schema for N-dimensional measurement arrays including:\n- Dimension semantics (Environmental Sample, Molecule, State, Statistic)\n- Variable semantics (Concentration, Molecular Weight, etc.)\n- Data types and units\n- Brick structure metadata\n\nEach brick can have different dimensionality and variable sets,\nenabling flexible storage of heterogeneous measurement data.",
+            "properties": {
+                "cdm_column_data_type": {
+                    "description": "Column type (variable, dimension_variable, or dimension_index)",
+                    "pattern": "^(variable|dimension_variable|dimension_index)$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "cdm_column_name": {
+                    "description": "Mapped CDM column name (snake_case with prefixes)",
+                    "type": "string"
+                },
+                "ddt_ndarray_id": {
+                    "description": "Brick identifier (e.g., \"Brick0000010\")",
+                    "type": "string"
+                },
+                "dimension_number": {
+                    "description": "Position in N-dimensional array (0-indexed)",
+                    "minimum": 0,
+                    "type": [
+                        "integer",
+                        "null"
+                    ]
+                },
+                "dimension_oterm_id": {
+                    "description": "Dimension semantic ontology term ID",
+                    "pattern": "^[A-Z_]+:\\d+$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "dimension_oterm_name": {
+                    "description": "Dimension semantic ontology term name",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "scalar_type": {
+                    "description": "Data type (text, int, float, [text] for arrays)",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "unit_sys_oterm_id": {
+                    "description": "Measurement unit ontology term ID",
+                    "pattern": "^[A-Z_]+:\\d+$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "unit_sys_oterm_name": {
+                    "description": "Measurement unit ontology term name",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "variable_number": {
+                    "description": "Variable index in brick",
+                    "minimum": 0,
+                    "type": [
+                        "integer",
+                        "null"
+                    ]
+                },
+                "variable_oterm_id": {
+                    "description": "Variable semantic ontology term ID",
+                    "pattern": "^[A-Z_]+:\\d+$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "variable_oterm_name": {
+                    "description": "Variable semantic ontology term name",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                }
+            },
+            "required": [
+                "ddt_ndarray_id",
+                "cdm_column_name"
+            ],
+            "title": "SystemDDTTypedef",
+            "type": "object"
+        },
+        "SystemOntologyTerm": {
+            "additionalProperties": false,
+            "description": "Centralized ontology term catalog.\n\nStores all ontology terms used across the CDM with:\n- CURIE identifiers (ME:, ENVO:, UO:, etc.)\n- Human-readable names\n- Hierarchical relationships (parent terms)\n- Definitions, synonyms, and external links\n\nBenefits:\n- Single source of truth for ontology terms\n- Supports ontology evolution without data migration\n- Enables semantic queries and reasoning\n- Foreign key target for all *_sys_oterm_id columns",
+            "properties": {
+                "parent_sys_oterm_id": {
+                    "description": "Parent term in ontology hierarchy (FK to sys_oterm)",
+                    "pattern": "^[A-Z_]+:\\d+$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "sys_oterm_definition": {
+                    "description": "Formal term definition",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "sys_oterm_id": {
+                    "description": "Ontology term identifier (CURIE format)",
+                    "pattern": "^[A-Z_]+:\\d+$",
+                    "type": "string"
+                },
+                "sys_oterm_links": {
+                    "description": "External links (URLs, pipe-separated)",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "sys_oterm_name": {
+                    "description": "Human-readable ontology term name",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "sys_oterm_ontology": {
+                    "description": "Source ontology name",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "sys_oterm_properties": {
+                    "description": "Additional term properties (JSON or key=value pairs)",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "sys_oterm_synonyms": {
+                    "description": "Alternative term names (pipe-separated)",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                }
+            },
+            "required": [
+                "sys_oterm_id"
+            ],
+            "title": "SystemOntologyTerm",
+            "type": "object"
+        },
+        "SystemProcess": {
+            "additionalProperties": false,
+            "description": "Provenance tracking for all data transformations.\n\nRecords experimental processes with:\n- Process type (Assay Growth, Sequencing, etc.)\n- People, protocols, campaigns\n- Temporal metadata (start/end dates)\n- Input/output relationships (denormalized arrays)\n\nEnables complete lineage tracing from raw samples to final analyses.",
+            "properties": {
+                "campaign_sys_oterm_id": {
+                    "description": "Research campaign ontology term ID",
+                    "pattern": "^[A-Z_]+:\\d+$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "campaign_sys_oterm_name": {
+                    "description": "Research campaign ontology term name",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "date_end": {
+                    "description": "Process end date",
+                    "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "date_start": {
+                    "description": "Process start date",
+                    "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "input_objects": {
+                    "description": "Array of input entity references (type:name format)",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "output_objects": {
+                    "description": "Array of output entity references (type:name format)",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "person_sys_oterm_id": {
+                    "description": "Person who performed process (ontology term ID)",
+                    "pattern": "^[A-Z_]+:\\d+$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "person_sys_oterm_name": {
+                    "description": "Person who performed process (ontology term name)",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "process_type_sys_oterm_id": {
+                    "description": "Process type ontology term ID",
+                    "pattern": "^[A-Z_]+:\\d+$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "process_type_sys_oterm_name": {
+                    "description": "Process type ontology term name",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "sdt_protocol_name": {
+                    "description": "Name of protocol",
+                    "pattern": "^[A-Za-z0-9_\\-. ]+$",
+                    "type": "string"
+                },
+                "sys_process_id": {
+                    "description": "Unique process identifier",
+                    "pattern": "^Process\\d{7}$",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "sys_process_id",
+                "sdt_protocol_name"
+            ],
+            "title": "SystemProcess",
+            "type": "object"
+        },
+        "SystemProcessInput": {
+            "additionalProperties": false,
+            "description": "Normalized process input relationships.\n\nDenormalizes the input_objects array from sys_process for efficient\nquerying. Each row represents one input entity to one process.\n\nEnables queries like:\n- \"Find all processes that used this sample\"\n- \"What samples were used in sequencing processes?\"",
+            "properties": {
+                "input_index": {
+                    "description": "Index in input_objects array",
+                    "minimum": 0,
+                    "type": [
+                        "integer",
+                        "null"
+                    ]
+                },
+                "input_object_name": {
+                    "description": "Name of input entity",
+                    "pattern": "^[A-Za-z0-9_\\-. ]+$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "input_object_type": {
+                    "description": "Type of input entity (e.g., \"Sample\", \"Reads\")",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "sys_process_id": {
+                    "description": "Unique process identifier",
+                    "pattern": "^Process\\d{7}$",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "sys_process_id"
+            ],
+            "title": "SystemProcessInput",
+            "type": "object"
+        },
+        "SystemProcessOutput": {
+            "additionalProperties": false,
+            "description": "Normalized process output relationships.\n\nDenormalizes the output_objects array from sys_process for efficient\nquerying. Each row represents one output entity from one process.\n\nEnables queries like:\n- \"What process created this assembly?\"\n- \"Find all assemblies from sequencing processes\"",
+            "properties": {
+                "output_index": {
+                    "description": "Index in output_objects array",
+                    "minimum": 0,
+                    "type": [
+                        "integer",
+                        "null"
+                    ]
+                },
+                "output_object_name": {
+                    "description": "Name of output entity",
+                    "pattern": "^[A-Za-z0-9_\\-. ]+$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "output_object_type": {
+                    "description": "Type of output entity (e.g., \"Assembly\", \"Genome\")",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "sys_process_id": {
+                    "description": "Unique process identifier",
+                    "pattern": "^Process\\d{7}$",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "sys_process_id"
+            ],
+            "title": "SystemProcessOutput",
+            "type": "object"
+        },
+        "SystemTypedef": {
+            "additionalProperties": false,
+            "description": "Type definitions for static entity tables (equivalent to typedef.json).\n\nMaps CORAL entity types and fields to CDM table/column names with\nconstraints, data types, and ontology references.\n\nThis table documents the schema transformation from CORAL to CDM and\nenables automated validation and migration.",
+            "properties": {
+                "cdm_column_name": {
+                    "description": "Mapped CDM column name (snake_case with prefixes)",
+                    "type": "string"
+                },
+                "constraint": {
+                    "description": "Validation pattern or ontology constraint",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "field_name": {
+                    "description": "Original CORAL field name",
+                    "type": "string"
+                },
+                "fk": {
+                    "description": "Foreign key reference",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "pk": {
+                    "description": "Primary key flag",
+                    "type": [
+                        "boolean",
+                        "null"
+                    ]
+                },
+                "scalar_type": {
+                    "description": "Data type (text, int, float, [text] for arrays)",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "type_name": {
+                    "description": "CORAL entity type name (e.g., \"Gene\", \"Sample\")",
+                    "type": "string"
+                },
+                "type_sys_oterm_id": {
+                    "description": "Ontology term for data type",
+                    "pattern": "^[A-Z_]+:\\d+$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "units_sys_oterm_id": {
+                    "description": "Ontology term for measurement units",
+                    "pattern": "^[A-Z_]+:\\d+$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "upk": {
+                    "description": "Unique key flag",
+                    "type": [
+                        "boolean",
+                        "null"
+                    ]
+                }
+            },
+            "required": [
+                "type_name",
+                "field_name",
+                "cdm_column_name"
+            ],
+            "title": "SystemTypedef",
+            "type": "object"
+        },
+        "Taxon": {
+            "additionalProperties": false,
+            "description": "Taxonomic classification.",
+            "properties": {
+                "ncbi_taxid": {
+                    "description": "NCBI Taxonomy ID",
+                    "type": [
+                        "integer",
+                        "null"
+                    ]
+                },
+                "sdt_taxon_id": {
+                    "description": "Unique identifier for Taxon",
+                    "pattern": "^Taxon\\d{7}$",
+                    "type": "string"
+                },
+                "sdt_taxon_name": {
+                    "description": "Taxonomic name",
+                    "pattern": "^[A-Za-z0-9_\\-. ]+$",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "sdt_taxon_id",
+                "sdt_taxon_name"
+            ],
+            "title": "Taxon",
+            "type": "object"
+        },
+        "TnSeqLibrary": {
+            "additionalProperties": false,
+            "description": "Transposon Sequencing (TnSeq) library.\n\nCDM changes from CORAL:\n- FK reference: genome \u2192 genome_ref",
+            "properties": {
+                "genome_ref": {
+                    "description": "Reference to genome name (FK to Genome.sdt_genome_name)",
+                    "pattern": "^[A-Za-z0-9_\\-. ]+$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "n_genes_hit": {
+                    "description": "Number of genes with transposon insertions",
+                    "minimum": 0,
+                    "type": [
+                        "integer",
+                        "null"
+                    ]
+                },
+                "n_good_reads": {
+                    "description": "Number of good quality reads",
+                    "minimum": 0,
+                    "type": [
+                        "integer",
+                        "null"
+                    ]
+                },
+                "n_mapped_reads": {
+                    "description": "Number of mapped reads",
+                    "minimum": 0,
+                    "type": [
+                        "integer",
+                        "null"
+                    ]
+                },
+                "primers_model": {
+                    "description": "Primers model used",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "sdt_tnseq_library_id": {
+                    "description": "Unique identifier for TnSeqLibrary",
+                    "pattern": "^TnSeqLibrary\\d{7}$",
+                    "type": "string"
+                },
+                "sdt_tnseq_library_name": {
+                    "description": "Name of TnSeq library",
+                    "pattern": "^[A-Za-z0-9_\\-. ]+$",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "sdt_tnseq_library_id",
+                "sdt_tnseq_library_name"
+            ],
+            "title": "TnSeqLibrary",
+            "type": "object"
+        },
+        "VariableSemantics": {
+            "description": "Common variable semantic types",
+            "enum": [
+                "concentration",
+                "molecular_weight",
+                "activity_rate",
+                "expression_level",
+                "abundance",
+                "ph",
+                "temperature",
+                "growth_rate"
+            ],
+            "title": "VariableSemantics",
+            "type": "string"
+        }
+    },
+    "$id": "https://w3id.org/enigma/kbase-cdm",
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "additionalProperties": true,
+    "metamodel_version": "1.7.0",
+    "title": "kbase-cdm",
+    "type": "object",
+    "version": "1.0.0"
+}

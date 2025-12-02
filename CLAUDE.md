@@ -485,6 +485,59 @@ python scripts/linkml_to_cdm.py src/linkml_coral/schema/linkml_coral.yaml --chec
 - [docs/CDM_CONVERSION_SUMMARY.md](docs/CDM_CONVERSION_SUMMARY.md) - Summary and examples
 - [scripts/linkml_to_cdm.py](scripts/linkml_to_cdm.py) - Conversion tool source code
 
+## CDM Parquet → linkml-store Database
+
+**Load KBase CDM parquet data into queryable linkml-store database:**
+
+```bash
+# Load core CDM tables (static entities + system tables, 515K rows)
+just load-cdm-store
+
+# Load with custom paths
+just load-cdm-store /path/to/jmc_coral.db output.db
+
+# Load including dynamic brick tables (sampled at 10K rows each)
+just load-cdm-store-full
+```
+
+**Query the CDM store database:**
+
+```bash
+# Show database statistics
+just cdm-store-stats
+
+# Find samples from a location
+just cdm-find-samples Location0000001
+
+# Search ontology terms
+just cdm-search-oterm "soil"
+
+# Trace provenance lineage
+just cdm-lineage Assembly Assembly0000001
+
+# Or use Python script directly
+uv run python scripts/cdm_analysis/query_cdm_store.py --help
+```
+
+**CDM Database Structure:**
+- **44 parquet tables** from KBase CDM (157 MB total)
+- **Static entities (sdt_*)**: Location, Sample, Reads, Assembly, Genome, Gene, etc. (17 tables, 273K rows)
+- **System tables (sys_*)**: Ontology terms, Type definitions, Process records (6 tables, 242K rows)
+- **Dynamic tables (ddt_*)**: Measurement arrays in brick tables (21 tables, 82.6M rows - optionally sampled)
+
+**Key Features:**
+- Fast DuckDB-based columnar storage (~50 MB database for core tables)
+- Schema validation against CDM LinkML schema
+- Computed fields (read_count_category, contig_count_category)
+- Parsed provenance arrays (input/output entity types and IDs)
+- Efficient querying and analysis
+
+**Documentation:**
+- [docs/CDM_PARQUET_STORE_GUIDE.md](docs/CDM_PARQUET_STORE_GUIDE.md) - Complete loading and querying guide
+- [docs/CDM_PARQUET_VALIDATION_GUIDE.md](docs/CDM_PARQUET_VALIDATION_GUIDE.md) - Parquet validation guide
+- [scripts/cdm_analysis/load_cdm_parquet_to_store.py](scripts/cdm_analysis/load_cdm_parquet_to_store.py) - Loader source code
+- [scripts/cdm_analysis/query_cdm_store.py](scripts/cdm_analysis/query_cdm_store.py) - Query interface
+
 ## Common Development Tasks
 
 ```bash

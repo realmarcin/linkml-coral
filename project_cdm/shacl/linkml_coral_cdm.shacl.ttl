@@ -1,0 +1,1452 @@
+@prefix kbase_cdm: <https://w3id.org/enigma/kbase-cdm/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+kbase_cdm:ASV a sh:NodeShape ;
+    sh:closed true ;
+    sh:description """Amplicon Sequence Variant (formerly OTU).
+
+CDM changes from CORAL:
+- Entity renamed from OTU to ASV (Amplicon Sequence Variant)
+- Table name: sdt_asv
+""" ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:datatype xsd:string ;
+            sh:description "Unique identifier for ASV" ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path kbase_cdm:sdt_asv_id ;
+            sh:pattern "^ASV\\d{7}$" ],
+        [ sh:datatype xsd:string ;
+            sh:description "DNA sequence" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 2 ;
+            sh:path kbase_cdm:sequence ],
+        [ sh:description "Name of ASV" ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 1 ;
+            sh:path kbase_cdm:sdt_asv_name ] ;
+    sh:targetClass kbase_cdm:ASV .
+
+kbase_cdm:Assembly a sh:NodeShape ;
+    sh:closed true ;
+    sh:description """Genome assembly from sequencing reads.
+
+CDM changes from CORAL:
+- FK reference: strain → strain_ref
+- Added 'link' field
+""" ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:description "Number of contigs" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 3 ;
+            sh:path kbase_cdm:n_contigs ],
+        [ sh:datatype xsd:string ;
+            sh:description "Unique identifier for Assembly" ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path kbase_cdm:sdt_assembly_id ;
+            sh:pattern "^Assembly\\d{7}$" ],
+        [ sh:description "Name of assembly" ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 1 ;
+            sh:path kbase_cdm:sdt_assembly_name ],
+        [ sh:description "External reference URL or file path" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 5 ;
+            sh:path kbase_cdm:link ],
+        [ sh:description "Total assembly size in base pairs" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 4 ;
+            sh:path kbase_cdm:total_size ],
+        [ sh:description "Reference to strain name (FK to Strain.sdt_strain_name)" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 2 ;
+            sh:path kbase_cdm:strain_ref ] ;
+    sh:targetClass kbase_cdm:Assembly .
+
+kbase_cdm:Bin a sh:NodeShape ;
+    sh:closed true ;
+    sh:description """Genome bin extracted from metagenomic assembly.
+
+CDM changes from CORAL:
+- FK reference: assembly → assembly_ref
+- contigs field contains comma-separated contig names
+""" ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:datatype xsd:string ;
+            sh:description "Unique identifier for Bin" ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path kbase_cdm:sdt_bin_id ;
+            sh:pattern "^Bin\\d{7}$" ],
+        [ sh:description "Reference to assembly name (FK to Assembly.sdt_assembly_name)" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 2 ;
+            sh:path kbase_cdm:assembly_ref ],
+        [ sh:datatype xsd:string ;
+            sh:description "Comma-separated list of contig names" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 3 ;
+            sh:path kbase_cdm:contigs ],
+        [ sh:description "Name of bin" ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 1 ;
+            sh:path kbase_cdm:sdt_bin_name ] ;
+    sh:targetClass kbase_cdm:Bin .
+
+kbase_cdm:Brick a sh:NodeShape ;
+    sh:closed false ;
+    sh:description """Abstract base for all brick data tables (ddt_brick*).
+
+Each brick table stores measurement values in a denormalized format
+where each row represents one cell in the N-dimensional array.
+
+Common structure:
+- Dimension indices (dim0_index, dim1_index, dim2_index, ...)
+- Dimension values (dim0_value, dim1_value, dim2_value, ...)
+- Variable values (var0_value, var1_value, var2_value, ...)
+
+Schema is defined in sys_ddt_typedef and varies per brick.
+
+Note: Individual brick classes (Brick0000001, Brick0000002, etc.)
+are not explicitly defined in this schema because they have
+heterogeneous structures. They should be validated against
+sys_ddt_typedef at runtime.
+""" ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:targetClass kbase_cdm:Brick .
+
+kbase_cdm:BrickDimension a sh:NodeShape ;
+    sh:closed false ;
+    sh:description """Abstract base for brick dimension metadata.
+
+Dimensions define the axes of N-dimensional measurement arrays:
+- Environmental Sample: Different samples measured
+- Molecule: Different molecules/compounds measured
+- State: Different conditions (e.g., time points, treatments)
+- Statistic: Different statistical measures (mean, std, etc.)
+
+Each dimension has:
+- Semantic meaning (ontology term)
+- Size (number of values along axis)
+- Index values (entity names or numeric indices)
+""" ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:description "Dimension semantic ontology term ID" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 1 ;
+            sh:path kbase_cdm:dimension_oterm_id ],
+        [ sh:datatype xsd:string ;
+            sh:description "Comma-separated dimension value labels" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 4 ;
+            sh:path kbase_cdm:dimension_values ],
+        [ sh:datatype xsd:integer ;
+            sh:description "Position in N-dimensional array (0-indexed)" ;
+            sh:maxCount 1 ;
+            sh:minInclusive 0 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path kbase_cdm:dimension_number ],
+        [ sh:datatype xsd:string ;
+            sh:description "Dimension semantic ontology term name" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 2 ;
+            sh:path kbase_cdm:dimension_oterm_name ],
+        [ sh:datatype xsd:integer ;
+            sh:description "Number of values along this dimension" ;
+            sh:maxCount 1 ;
+            sh:minInclusive 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 3 ;
+            sh:path kbase_cdm:dimension_size ] ;
+    sh:targetClass kbase_cdm:BrickDimension .
+
+kbase_cdm:BrickVariable a sh:NodeShape ;
+    sh:closed false ;
+    sh:description """Abstract base for brick variable metadata.
+
+Variables define what is measured at each point in the N-dimensional array:
+- Concentration (with units: mg/L, µM, etc.)
+- Molecular Weight (with units: Da, kDa, etc.)
+- Activity Rate (with units: nmol/min, etc.)
+- Expression Level (with units: RPKM, TPM, etc.)
+
+Each variable has:
+- Semantic meaning (ontology term)
+- Data type (float, int, bool, oterm_ref, object_ref)
+- Units (ontology term)
+- Value range constraints
+""" ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:datatype xsd:string ;
+            sh:description "Variable semantic ontology term name" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 2 ;
+            sh:path kbase_cdm:variable_oterm_name ],
+        [ sh:datatype xsd:integer ;
+            sh:description "Variable index in brick" ;
+            sh:maxCount 1 ;
+            sh:minInclusive 0 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path kbase_cdm:variable_number ],
+        [ sh:datatype xsd:string ;
+            sh:description "Data type of variable (float, int, bool, oterm_ref, object_ref)" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 3 ;
+            sh:path kbase_cdm:variable_data_type ;
+            sh:pattern "^(float|int|bool|text|oterm_ref|object_ref)$" ],
+        [ sh:datatype xsd:string ;
+            sh:description "Measurement unit ontology term name" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 5 ;
+            sh:path kbase_cdm:unit_sys_oterm_name ],
+        [ sh:description "Variable semantic ontology term ID" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 1 ;
+            sh:path kbase_cdm:variable_oterm_id ],
+        [ sh:datatype xsd:float ;
+            sh:description "Minimum allowed value (for numeric variables)" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 6 ;
+            sh:path kbase_cdm:min_value ],
+        [ sh:description "Measurement unit ontology term ID" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 4 ;
+            sh:path kbase_cdm:unit_sys_oterm_id ],
+        [ sh:datatype xsd:float ;
+            sh:description "Maximum allowed value (for numeric variables)" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 7 ;
+            sh:path kbase_cdm:max_value ] ;
+    sh:targetClass kbase_cdm:BrickVariable .
+
+kbase_cdm:CDMEntity a sh:NodeShape ;
+    sh:closed false ;
+    sh:description """Base mixin for all CDM static data tables (sdt_*).
+
+Enforces CDM naming conventions:
+- Primary key: sdt_{entity}_id with pattern EntityName\\d{7}
+- Name field: sdt_{entity}_name (unique, used for FK references)
+- All columns use snake_case with entity prefix
+
+Example:
+- Location: sdt_location_id, sdt_location_name
+- Sample: sdt_sample_id, sdt_sample_name
+
+Note: Each entity class must define its own id and name slots
+with entity-specific names (e.g., sdt_location_id, sdt_location_name).
+""" ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:targetClass kbase_cdm:CDMEntity .
+
+kbase_cdm:Community a sh:NodeShape ;
+    sh:closed true ;
+    sh:description """Microbial community (isolate, enrichment, assemblage, or environmental).
+
+CDM changes from CORAL:
+- 1 ontology term field split: community_type
+- FK references: sample → sample_ref, parent_community → parent_community_ref
+- Multivalued FK: defined_strains → defined_strains_ref
+""" ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:datatype xsd:string ;
+            sh:description "Unique identifier for Community" ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path kbase_cdm:sdt_community_id ;
+            sh:pattern "^Community\\d{7}$" ],
+        [ sh:description "Name of community" ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 1 ;
+            sh:path kbase_cdm:sdt_community_name ],
+        [ sh:description "Reference to parent community name (FK, self-referential to Community.sdt_community_name)" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 5 ;
+            sh:path kbase_cdm:parent_community_ref ],
+        [ sh:description "Community type ontology term ID" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 2 ;
+            sh:path kbase_cdm:community_type_sys_oterm_id ],
+        [ sh:datatype xsd:string ;
+            sh:description "Community type ontology term name" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 3 ;
+            sh:path kbase_cdm:community_type_sys_oterm_name ],
+        [ sh:description "Reference to sample name (FK to Sample.sdt_sample_name)" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 4 ;
+            sh:path kbase_cdm:sample_ref ],
+        [ sh:description "References to defined strain names (multivalued FK to Strain.sdt_strain_name)" ;
+            sh:nodeKind sh:Literal ;
+            sh:order 6 ;
+            sh:path kbase_cdm:defined_strains_ref ] ;
+    sh:targetClass kbase_cdm:Community .
+
+kbase_cdm:Condition a sh:NodeShape ;
+    sh:closed true ;
+    sh:description """Growth or experimental condition.
+""" ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:datatype xsd:string ;
+            sh:description "Unique identifier for Condition" ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path kbase_cdm:sdt_condition_id ;
+            sh:pattern "^Condition\\d{7}$" ],
+        [ sh:description "Name of condition" ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 1 ;
+            sh:path kbase_cdm:sdt_condition_name ] ;
+    sh:targetClass kbase_cdm:Condition .
+
+kbase_cdm:DubSeqLibrary a sh:NodeShape ;
+    sh:closed true ;
+    sh:description """Dual Barcoded Sequencing (DubSeq) library.
+
+CDM changes from CORAL:
+- FK reference: genome → genome_ref
+""" ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:description "Reference to genome name (FK to Genome.sdt_genome_name)" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 2 ;
+            sh:path kbase_cdm:genome_ref ],
+        [ sh:description "Name of DubSeq library" ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 1 ;
+            sh:path kbase_cdm:sdt_dubseq_library_name ],
+        [ sh:datatype xsd:string ;
+            sh:description "Unique identifier for DubSeqLibrary" ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path kbase_cdm:sdt_dubseq_library_id ;
+            sh:pattern "^DubSeqLibrary\\d{7}$" ],
+        [ sh:description "Number of fragments" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 3 ;
+            sh:path kbase_cdm:n_fragments ] ;
+    sh:targetClass kbase_cdm:DubSeqLibrary .
+
+kbase_cdm:DynamicDataArray a sh:NodeShape ;
+    sh:closed true ;
+    sh:description """Brick index table (ddt_ndarray).
+
+Catalogs all available measurement bricks with:
+- Brick identifiers (Brick0000001, Brick0000002, etc.)
+- Shape metadata (dimensions and sizes)
+- Entity relationships (which samples, communities, etc.)
+- Semantic metadata (measurement types, units)
+
+Each brick corresponds to:
+- One ddt_brick* table with actual measurement data
+- Multiple rows in sys_ddt_typedef defining brick schema
+""" ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:datatype xsd:string ;
+            sh:description "Type of measurement ontology term name" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 9 ;
+            sh:path kbase_cdm:measurement_type_sys_oterm_name ],
+        [ sh:datatype xsd:string ;
+            sh:description "Name of brick table (e.g., \"ddt_brick0000010\")" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 1 ;
+            sh:path kbase_cdm:brick_table_name ;
+            sh:pattern "^ddt_brick\\d{7}$" ],
+        [ sh:datatype xsd:string ;
+            sh:description "Type of entities measured (e.g., \"Sample\", \"Community\")" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 6 ;
+            sh:path kbase_cdm:associated_entity_type ],
+        [ sh:datatype xsd:integer ;
+            sh:description "Total number of data rows in brick table" ;
+            sh:maxCount 1 ;
+            sh:minInclusive 0 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 5 ;
+            sh:path kbase_cdm:total_rows ],
+        [ sh:datatype xsd:integer ;
+            sh:description "Number of measured variables" ;
+            sh:maxCount 1 ;
+            sh:minInclusive 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 4 ;
+            sh:path kbase_cdm:n_variables ],
+        [ sh:datatype xsd:integer ;
+            sh:description "Number of dimensions in array" ;
+            sh:maxCount 1 ;
+            sh:minInclusive 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 2 ;
+            sh:path kbase_cdm:n_dimensions ],
+        [ sh:datatype xsd:string ;
+            sh:description "Comma-separated dimension sizes (e.g., \"209,52,3,3\")" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 3 ;
+            sh:path kbase_cdm:dimension_sizes ;
+            sh:pattern "^\\d+(,\\d+)*$" ],
+        [ sh:description "Names of entities associated with this brick" ;
+            sh:nodeKind sh:Literal ;
+            sh:order 7 ;
+            sh:path kbase_cdm:associated_entity_names ],
+        [ sh:datatype xsd:string ;
+            sh:description "Free text description" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 11 ;
+            sh:path kbase_cdm:description ],
+        [ sh:datatype xsd:string ;
+            sh:description "Brick identifier (e.g., \"Brick0000010\")" ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path kbase_cdm:ddt_ndarray_id ],
+        [ sh:description "Date brick was created" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 10 ;
+            sh:path kbase_cdm:creation_date ],
+        [ sh:description "Type of measurement ontology term ID" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 8 ;
+            sh:path kbase_cdm:measurement_type_sys_oterm_id ] ;
+    sh:targetClass kbase_cdm:DynamicDataArray .
+
+kbase_cdm:ENIGMA a sh:NodeShape ;
+    sh:closed true ;
+    sh:description """Root entity (database singleton).
+""" ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:datatype xsd:string ;
+            sh:description "Unique identifier for ENIGMA root entity" ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path kbase_cdm:sdt_enigma_id ;
+            sh:pattern "^ENIGMA1$" ] ;
+    sh:targetClass kbase_cdm:ENIGMA .
+
+kbase_cdm:Gene a sh:NodeShape ;
+    sh:closed true ;
+    sh:description """Annotated gene within a genome.
+
+CDM changes from CORAL:
+- FK reference: genome → genome_ref
+- Gene ID convention: GeneName{genome_name}_{contig}_{start}_{stop}
+""" ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:datatype xsd:integer ;
+            sh:description "Start position on contig" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 5 ;
+            sh:path kbase_cdm:start ],
+        [ sh:datatype xsd:integer ;
+            sh:description "Stop position on contig" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 6 ;
+            sh:path kbase_cdm:stop ],
+        [ sh:datatype xsd:string ;
+            sh:description "DNA strand (+ or -)" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 4 ;
+            sh:path kbase_cdm:strand ;
+            sh:pattern "^[+-]$" ],
+        [ sh:datatype xsd:integer ;
+            sh:description "Contig number where gene is located" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 3 ;
+            sh:path kbase_cdm:contig_number ],
+        [ sh:description "Reference to genome name (FK to Genome.sdt_genome_name)" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 2 ;
+            sh:path kbase_cdm:genome_ref ],
+        [ sh:datatype xsd:string ;
+            sh:description "Predicted gene function" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 7 ;
+            sh:path kbase_cdm:function ],
+        [ sh:datatype xsd:string ;
+            sh:description "Unique identifier for Gene" ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path kbase_cdm:sdt_gene_id ;
+            sh:pattern "^Gene\\d{7}$" ],
+        [ sh:description "Name of gene" ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 1 ;
+            sh:path kbase_cdm:sdt_gene_name ] ;
+    sh:targetClass kbase_cdm:Gene .
+
+kbase_cdm:Genome a sh:NodeShape ;
+    sh:closed true ;
+    sh:description """Assembled and annotated genome.
+
+CDM changes from CORAL:
+- FK reference: strain → strain_ref
+- Added 'link' field
+""" ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:description "Number of contigs" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 3 ;
+            sh:path kbase_cdm:n_contigs ],
+        [ sh:description "Name of genome" ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 1 ;
+            sh:path kbase_cdm:sdt_genome_name ],
+        [ sh:description "External reference URL or file path" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 6 ;
+            sh:path kbase_cdm:link ],
+        [ sh:description "Total assembly size in base pairs" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 5 ;
+            sh:path kbase_cdm:total_size ],
+        [ sh:datatype xsd:string ;
+            sh:description "Unique identifier for Genome" ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path kbase_cdm:sdt_genome_id ;
+            sh:pattern "^Genome\\d{7}$" ],
+        [ sh:description "Reference to strain name (FK to Strain.sdt_strain_name)" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 2 ;
+            sh:path kbase_cdm:strain_ref ],
+        [ sh:description "Number of annotated features" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 4 ;
+            sh:path kbase_cdm:n_features ] ;
+    sh:targetClass kbase_cdm:Genome .
+
+kbase_cdm:Image a sh:NodeShape ;
+    sh:closed true ;
+    sh:description """Microscopy or other image data.
+
+CDM changes from CORAL:
+- Added 'link' field for image files
+""" ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:datatype xsd:string ;
+            sh:description "MIME type of image" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 2 ;
+            sh:path kbase_cdm:mime_type ],
+        [ sh:datatype xsd:string ;
+            sh:description "Image dimensions (e.g., \"1024x768\")" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 4 ;
+            sh:path kbase_cdm:dimensions ],
+        [ sh:datatype xsd:string ;
+            sh:description "Unique identifier for Image" ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path kbase_cdm:sdt_image_id ;
+            sh:pattern "^Image\\d{7}$" ],
+        [ sh:description "External reference URL or file path" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 5 ;
+            sh:path kbase_cdm:link ],
+        [ sh:description "File size in bytes" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 3 ;
+            sh:path kbase_cdm:size ],
+        [ sh:description "Name of image" ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 1 ;
+            sh:path kbase_cdm:sdt_image_name ] ;
+    sh:targetClass kbase_cdm:Image .
+
+kbase_cdm:Location a sh:NodeShape ;
+    sh:closed true ;
+    sh:description """Sampling location with geographic coordinates and environmental context.
+
+CDM changes from CORAL:
+- 4 ontology term fields split into ID+name pairs:
+  continent, country, biome, feature
+""" ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:description "Latitude in decimal degrees" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 2 ;
+            sh:path kbase_cdm:latitude ],
+        [ sh:datatype xsd:string ;
+            sh:description "Geographic region" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 8 ;
+            sh:path kbase_cdm:region ],
+        [ sh:datatype xsd:string ;
+            sh:description "Unique identifier for Location" ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path kbase_cdm:sdt_location_id ;
+            sh:pattern "^Location\\d{7}$" ],
+        [ sh:description "Continent ontology term ID" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 4 ;
+            sh:path kbase_cdm:continent_sys_oterm_id ],
+        [ sh:datatype xsd:string ;
+            sh:description "Environmental feature ontology term name" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 12 ;
+            sh:path kbase_cdm:feature_sys_oterm_name ],
+        [ sh:description "Biome ontology term ID (ENVO)" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 9 ;
+            sh:path kbase_cdm:biome_sys_oterm_id ],
+        [ sh:datatype xsd:string ;
+            sh:description "Country ontology term name" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 7 ;
+            sh:path kbase_cdm:country_sys_oterm_name ],
+        [ sh:description "Longitude in decimal degrees" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 3 ;
+            sh:path kbase_cdm:longitude ],
+        [ sh:datatype xsd:string ;
+            sh:description "Continent ontology term name" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 5 ;
+            sh:path kbase_cdm:continent_sys_oterm_name ],
+        [ sh:description "Country ontology term ID" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 6 ;
+            sh:path kbase_cdm:country_sys_oterm_id ],
+        [ sh:description "Name of location" ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 1 ;
+            sh:path kbase_cdm:sdt_location_name ],
+        [ sh:datatype xsd:string ;
+            sh:description "Biome ontology term name" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 10 ;
+            sh:path kbase_cdm:biome_sys_oterm_name ],
+        [ sh:description "Environmental feature ontology term ID" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 11 ;
+            sh:path kbase_cdm:feature_sys_oterm_id ] ;
+    sh:targetClass kbase_cdm:Location .
+
+kbase_cdm:OntologyTermPair a sh:NodeShape ;
+    sh:closed false ;
+    sh:description """Mixin for ontology-constrained fields in KBase CDM.
+
+The CDM splits each ontology-controlled field into two columns:
+- {field}_sys_oterm_id: CURIE identifier (FK to sys_oterm)
+- {field}_sys_oterm_name: Human-readable term name
+
+This pattern enables:
+- Ontology validation via FK constraint
+- Human-readable labels without joins
+- Ontology evolution without data migration
+
+Examples:
+- material → material_sys_oterm_id + material_sys_oterm_name
+- biome → biome_sys_oterm_id + biome_sys_oterm_name
+- read_type → read_type_sys_oterm_id + read_type_sys_oterm_name
+""" ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:targetClass kbase_cdm:OntologyTermPair .
+
+kbase_cdm:Protocol a sh:NodeShape ;
+    sh:closed true ;
+    sh:description """Experimental protocol.
+
+CDM changes from CORAL:
+- Added 'link' field for protocol documents
+""" ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:description "Name of protocol" ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 1 ;
+            sh:path kbase_cdm:sdt_protocol_name ],
+        [ sh:datatype xsd:string ;
+            sh:description "Free text description" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 2 ;
+            sh:path kbase_cdm:description ],
+        [ sh:description "External reference URL or file path" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 3 ;
+            sh:path kbase_cdm:link ],
+        [ sh:datatype xsd:string ;
+            sh:description "Unique identifier for Protocol" ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path kbase_cdm:sdt_protocol_id ;
+            sh:pattern "^Protocol\\d{7}$" ] ;
+    sh:targetClass kbase_cdm:Protocol .
+
+kbase_cdm:Reads a sh:NodeShape ;
+    sh:closed true ;
+    sh:description """Sequencing reads dataset.
+
+CDM changes from CORAL:
+- 2 ontology term fields split: read_type, sequencing_technology
+- Added 'link' field for external data references
+""" ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:datatype xsd:string ;
+            sh:description "Unique identifier for Reads" ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path kbase_cdm:sdt_reads_id ;
+            sh:pattern "^Reads\\d{7}$" ],
+        [ sh:description "External reference URL or file path" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 8 ;
+            sh:path kbase_cdm:link ],
+        [ sh:datatype xsd:string ;
+            sh:description "Sequencing technology ontology term name" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 7 ;
+            sh:path kbase_cdm:sequencing_technology_sys_oterm_name ],
+        [ sh:description "Read type ontology term ID (e.g., paired-end, single-end)" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 4 ;
+            sh:path kbase_cdm:read_type_sys_oterm_id ],
+        [ sh:description "Total number of bases" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 3 ;
+            sh:path kbase_cdm:base_count ],
+        [ sh:datatype xsd:string ;
+            sh:description "Read type ontology term name" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 5 ;
+            sh:path kbase_cdm:read_type_sys_oterm_name ],
+        [ sh:description "Number of reads" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 2 ;
+            sh:path kbase_cdm:read_count ],
+        [ sh:description "Sequencing technology ontology term ID" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 6 ;
+            sh:path kbase_cdm:sequencing_technology_sys_oterm_id ],
+        [ sh:description "Name of reads dataset" ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 1 ;
+            sh:path kbase_cdm:sdt_reads_name ] ;
+    sh:targetClass kbase_cdm:Reads .
+
+kbase_cdm:Sample a sh:NodeShape ;
+    sh:closed true ;
+    sh:description """Environmental sample collected from a location.
+
+CDM changes from CORAL:
+- 2 ontology term fields split: material, env_package
+- FK reference: location → location_ref
+""" ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:description "Material type ontology term ID" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 8 ;
+            sh:path kbase_cdm:material_sys_oterm_id ],
+        [ sh:datatype xsd:string ;
+            sh:description "Unique identifier for Sample" ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path kbase_cdm:sdt_sample_id ;
+            sh:pattern "^Sample\\d{7}$" ],
+        [ sh:description "Name of sample" ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 1 ;
+            sh:path kbase_cdm:sdt_sample_name ],
+        [ sh:datatype xsd:string ;
+            sh:description "Material type ontology term name" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 9 ;
+            sh:path kbase_cdm:material_sys_oterm_name ],
+        [ sh:description "Elevation in meters" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 4 ;
+            sh:path kbase_cdm:elevation ],
+        [ sh:description "Reference to location name (FK to Location.sdt_location_name)" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 2 ;
+            sh:path kbase_cdm:location_ref ],
+        [ sh:description "Environment package ontology term ID" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 10 ;
+            sh:path kbase_cdm:env_package_sys_oterm_id ],
+        [ sh:description "Depth in meters" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 3 ;
+            sh:path kbase_cdm:depth ],
+        [ sh:datatype xsd:string ;
+            sh:description "Environment package ontology term name" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 11 ;
+            sh:path kbase_cdm:env_package_sys_oterm_name ],
+        [ sh:datatype xsd:string ;
+            sh:description "Free text description" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 12 ;
+            sh:path kbase_cdm:description ],
+        [ sh:description "Collection date" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 5 ;
+            sh:path kbase_cdm:date ],
+        [ sh:datatype xsd:string ;
+            sh:description "Timezone" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 7 ;
+            sh:path kbase_cdm:timezone ],
+        [ sh:description "Collection time" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 6 ;
+            sh:path kbase_cdm:time ] ;
+    sh:targetClass kbase_cdm:Sample .
+
+kbase_cdm:Strain a sh:NodeShape ;
+    sh:closed true ;
+    sh:description """Microbial strain (isolated or derived).
+
+CDM changes from CORAL:
+- FK references: genome → genome_ref, derived_from → derived_from_strain_ref
+- Self-referential for strain derivation lineage
+""" ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:description "Reference to genome name (FK to Genome.sdt_genome_name)" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 2 ;
+            sh:path kbase_cdm:genome_ref ],
+        [ sh:description "Names of genes that were changed" ;
+            sh:nodeKind sh:Literal ;
+            sh:order 4 ;
+            sh:path kbase_cdm:gene_names_changed ],
+        [ sh:description "Reference to parent strain name (FK, self-referential to Strain.sdt_strain_name)" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 3 ;
+            sh:path kbase_cdm:derived_from_strain_ref ],
+        [ sh:datatype xsd:string ;
+            sh:description "Unique identifier for Strain" ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path kbase_cdm:sdt_strain_id ;
+            sh:pattern "^Strain\\d{7}$" ],
+        [ sh:description "Name of strain" ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 1 ;
+            sh:path kbase_cdm:sdt_strain_name ] ;
+    sh:targetClass kbase_cdm:Strain .
+
+kbase_cdm:SystemDDTTypedef a sh:NodeShape ;
+    sh:closed true ;
+    sh:description """Type definitions for dynamic data tables (bricks).
+
+Defines schema for N-dimensional measurement arrays including:
+- Dimension semantics (Environmental Sample, Molecule, State, Statistic)
+- Variable semantics (Concentration, Molecular Weight, etc.)
+- Data types and units
+- Brick structure metadata
+
+Each brick can have different dimensionality and variable sets,
+enabling flexible storage of heterogeneous measurement data.
+""" ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:description "Dimension semantic ontology term ID" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 6 ;
+            sh:path kbase_cdm:dimension_oterm_id ],
+        [ sh:datatype xsd:string ;
+            sh:description "Data type (text, int, float, [text] for arrays)" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 3 ;
+            sh:path kbase_cdm:scalar_type ],
+        [ sh:datatype xsd:integer ;
+            sh:description "Variable index in brick" ;
+            sh:maxCount 1 ;
+            sh:minInclusive 0 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 5 ;
+            sh:path kbase_cdm:variable_number ],
+        [ sh:datatype xsd:string ;
+            sh:description "Measurement unit ontology term name" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 11 ;
+            sh:path kbase_cdm:unit_sys_oterm_name ],
+        [ sh:datatype xsd:string ;
+            sh:description "Column type (variable, dimension_variable, or dimension_index)" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 2 ;
+            sh:path kbase_cdm:cdm_column_data_type ;
+            sh:pattern "^(variable|dimension_variable|dimension_index)$" ],
+        [ sh:description "Variable semantic ontology term ID" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 8 ;
+            sh:path kbase_cdm:variable_oterm_id ],
+        [ sh:datatype xsd:string ;
+            sh:description "Variable semantic ontology term name" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 9 ;
+            sh:path kbase_cdm:variable_oterm_name ],
+        [ sh:datatype xsd:string ;
+            sh:description "Dimension semantic ontology term name" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 7 ;
+            sh:path kbase_cdm:dimension_oterm_name ],
+        [ sh:description "Measurement unit ontology term ID" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 10 ;
+            sh:path kbase_cdm:unit_sys_oterm_id ],
+        [ sh:datatype xsd:string ;
+            sh:description "Brick identifier (e.g., \"Brick0000010\")" ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path kbase_cdm:ddt_ndarray_id ],
+        [ sh:datatype xsd:integer ;
+            sh:description "Position in N-dimensional array (0-indexed)" ;
+            sh:maxCount 1 ;
+            sh:minInclusive 0 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 4 ;
+            sh:path kbase_cdm:dimension_number ],
+        [ sh:datatype xsd:string ;
+            sh:description "Mapped CDM column name (snake_case with prefixes)" ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 1 ;
+            sh:path kbase_cdm:cdm_column_name ] ;
+    sh:targetClass kbase_cdm:SystemDDTTypedef .
+
+kbase_cdm:SystemEntity a sh:NodeShape ;
+    sh:closed false ;
+    sh:description """Base mixin for CDM system tables (sys_*).
+
+System tables provide metadata, type definitions, provenance tracking,
+and ontology catalogs. They support the static and dynamic data tables
+but are not directly linked to experimental entities.
+
+System tables: sys_typedef, sys_ddt_typedef, sys_oterm, sys_process,
+sys_process_input, sys_process_output
+""" ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:targetClass kbase_cdm:SystemEntity .
+
+kbase_cdm:SystemOntologyTerm a sh:NodeShape ;
+    sh:closed true ;
+    sh:description """Centralized ontology term catalog.
+
+Stores all ontology terms used across the CDM with:
+- CURIE identifiers (ME:, ENVO:, UO:, etc.)
+- Human-readable names
+- Hierarchical relationships (parent terms)
+- Definitions, synonyms, and external links
+
+Benefits:
+- Single source of truth for ontology terms
+- Supports ontology evolution without data migration
+- Enables semantic queries and reasoning
+- Foreign key target for all *_sys_oterm_id columns
+""" ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:datatype xsd:string ;
+            sh:description "Source ontology name" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 2 ;
+            sh:path kbase_cdm:sys_oterm_ontology ],
+        [ sh:datatype xsd:string ;
+            sh:description "Additional term properties (JSON or key=value pairs)" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 7 ;
+            sh:path kbase_cdm:sys_oterm_properties ],
+        [ sh:datatype xsd:string ;
+            sh:description "Alternative term names (pipe-separated)" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 5 ;
+            sh:path kbase_cdm:sys_oterm_synonyms ],
+        [ sh:datatype xsd:string ;
+            sh:description "External links (URLs, pipe-separated)" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 6 ;
+            sh:path kbase_cdm:sys_oterm_links ],
+        [ sh:datatype xsd:string ;
+            sh:description "Formal term definition" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 4 ;
+            sh:path kbase_cdm:sys_oterm_definition ],
+        [ sh:datatype xsd:string ;
+            sh:description "Human-readable ontology term name" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 1 ;
+            sh:path kbase_cdm:sys_oterm_name ],
+        [ sh:description "Ontology term identifier (CURIE format)" ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path kbase_cdm:sys_oterm_id ],
+        [ sh:description "Parent term in ontology hierarchy (FK to sys_oterm)" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 3 ;
+            sh:path kbase_cdm:parent_sys_oterm_id ] ;
+    sh:targetClass kbase_cdm:SystemOntologyTerm .
+
+kbase_cdm:SystemProcess a sh:NodeShape ;
+    sh:closed true ;
+    sh:description """Provenance tracking for all data transformations.
+
+Records experimental processes with:
+- Process type (Assay Growth, Sequencing, etc.)
+- People, protocols, campaigns
+- Temporal metadata (start/end dates)
+- Input/output relationships (denormalized arrays)
+
+Enables complete lineage tracing from raw samples to final analyses.
+""" ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:description "Person who performed process (ontology term ID)" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 3 ;
+            sh:path kbase_cdm:person_sys_oterm_id ],
+        [ sh:datatype xsd:string ;
+            sh:description "Person who performed process (ontology term name)" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 4 ;
+            sh:path kbase_cdm:person_sys_oterm_name ],
+        [ sh:datatype xsd:string ;
+            sh:description "Array of input entity references (type:name format)" ;
+            sh:nodeKind sh:Literal ;
+            sh:order 10 ;
+            sh:path kbase_cdm:input_objects ],
+        [ sh:datatype xsd:string ;
+            sh:description "Process type ontology term name" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 2 ;
+            sh:path kbase_cdm:process_type_sys_oterm_name ],
+        [ sh:description "Process type ontology term ID" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 1 ;
+            sh:path kbase_cdm:process_type_sys_oterm_id ],
+        [ sh:description "Process start date" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 8 ;
+            sh:path kbase_cdm:date_start ],
+        [ sh:datatype xsd:string ;
+            sh:description "Array of output entity references (type:name format)" ;
+            sh:nodeKind sh:Literal ;
+            sh:order 11 ;
+            sh:path kbase_cdm:output_objects ],
+        [ sh:datatype xsd:string ;
+            sh:description "Unique process identifier" ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path kbase_cdm:sys_process_id ;
+            sh:pattern "^Process\\d{7}$" ],
+        [ sh:datatype xsd:string ;
+            sh:description "Research campaign ontology term name" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 6 ;
+            sh:path kbase_cdm:campaign_sys_oterm_name ],
+        [ sh:description "Process end date" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 9 ;
+            sh:path kbase_cdm:date_end ],
+        [ sh:description "Name of protocol" ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 7 ;
+            sh:path kbase_cdm:sdt_protocol_name ],
+        [ sh:description "Research campaign ontology term ID" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 5 ;
+            sh:path kbase_cdm:campaign_sys_oterm_id ] ;
+    sh:targetClass kbase_cdm:SystemProcess .
+
+kbase_cdm:SystemProcessInput a sh:NodeShape ;
+    sh:closed true ;
+    sh:description """Normalized process input relationships.
+
+Denormalizes the input_objects array from sys_process for efficient
+querying. Each row represents one input entity to one process.
+
+Enables queries like:
+- "Find all processes that used this sample"
+- "What samples were used in sequencing processes?"
+""" ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:datatype xsd:string ;
+            sh:description "Type of input entity (e.g., \"Sample\", \"Reads\")" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 1 ;
+            sh:path kbase_cdm:input_object_type ],
+        [ sh:datatype xsd:string ;
+            sh:description "Unique process identifier" ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path kbase_cdm:sys_process_id ;
+            sh:pattern "^Process\\d{7}$" ],
+        [ sh:datatype xsd:integer ;
+            sh:description "Index in input_objects array" ;
+            sh:maxCount 1 ;
+            sh:minInclusive 0 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 3 ;
+            sh:path kbase_cdm:input_index ],
+        [ sh:description "Name of input entity" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 2 ;
+            sh:path kbase_cdm:input_object_name ] ;
+    sh:targetClass kbase_cdm:SystemProcessInput .
+
+kbase_cdm:SystemProcessOutput a sh:NodeShape ;
+    sh:closed true ;
+    sh:description """Normalized process output relationships.
+
+Denormalizes the output_objects array from sys_process for efficient
+querying. Each row represents one output entity from one process.
+
+Enables queries like:
+- "What process created this assembly?"
+- "Find all assemblies from sequencing processes"
+""" ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:datatype xsd:integer ;
+            sh:description "Index in output_objects array" ;
+            sh:maxCount 1 ;
+            sh:minInclusive 0 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 3 ;
+            sh:path kbase_cdm:output_index ],
+        [ sh:datatype xsd:string ;
+            sh:description "Unique process identifier" ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path kbase_cdm:sys_process_id ;
+            sh:pattern "^Process\\d{7}$" ],
+        [ sh:datatype xsd:string ;
+            sh:description "Type of output entity (e.g., \"Assembly\", \"Genome\")" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 1 ;
+            sh:path kbase_cdm:output_object_type ],
+        [ sh:description "Name of output entity" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 2 ;
+            sh:path kbase_cdm:output_object_name ] ;
+    sh:targetClass kbase_cdm:SystemProcessOutput .
+
+kbase_cdm:SystemTypedef a sh:NodeShape ;
+    sh:closed true ;
+    sh:description """Type definitions for static entity tables (equivalent to typedef.json).
+
+Maps CORAL entity types and fields to CDM table/column names with
+constraints, data types, and ontology references.
+
+This table documents the schema transformation from CORAL to CDM and
+enables automated validation and migration.
+""" ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:datatype xsd:boolean ;
+            sh:description "Primary key flag" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 4 ;
+            sh:path kbase_cdm:pk ],
+        [ sh:datatype xsd:boolean ;
+            sh:description "Unique key flag" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 5 ;
+            sh:path kbase_cdm:upk ],
+        [ sh:datatype xsd:string ;
+            sh:description "Validation pattern or ontology constraint" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 7 ;
+            sh:path kbase_cdm:constraint ],
+        [ sh:datatype xsd:string ;
+            sh:description "Foreign key reference" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 6 ;
+            sh:path kbase_cdm:fk ],
+        [ sh:datatype xsd:string ;
+            sh:description "Mapped CDM column name (snake_case with prefixes)" ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 2 ;
+            sh:path kbase_cdm:cdm_column_name ],
+        [ sh:description "Ontology term for measurement units" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 8 ;
+            sh:path kbase_cdm:units_sys_oterm_id ],
+        [ sh:datatype xsd:string ;
+            sh:description "CORAL entity type name (e.g., \"Gene\", \"Sample\")" ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path kbase_cdm:type_name ],
+        [ sh:description "Ontology term for data type" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 9 ;
+            sh:path kbase_cdm:type_sys_oterm_id ],
+        [ sh:datatype xsd:string ;
+            sh:description "Original CORAL field name" ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 1 ;
+            sh:path kbase_cdm:field_name ],
+        [ sh:datatype xsd:string ;
+            sh:description "Data type (text, int, float, [text] for arrays)" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 3 ;
+            sh:path kbase_cdm:scalar_type ] ;
+    sh:targetClass kbase_cdm:SystemTypedef .
+
+kbase_cdm:Taxon a sh:NodeShape ;
+    sh:closed true ;
+    sh:description """Taxonomic classification.
+""" ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:datatype xsd:string ;
+            sh:description "Unique identifier for Taxon" ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path kbase_cdm:sdt_taxon_id ;
+            sh:pattern "^Taxon\\d{7}$" ],
+        [ sh:datatype xsd:integer ;
+            sh:description "NCBI Taxonomy ID" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 2 ;
+            sh:path kbase_cdm:ncbi_taxid ],
+        [ sh:description "Taxonomic name" ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 1 ;
+            sh:path kbase_cdm:sdt_taxon_name ] ;
+    sh:targetClass kbase_cdm:Taxon .
+
+kbase_cdm:TnSeqLibrary a sh:NodeShape ;
+    sh:closed true ;
+    sh:description """Transposon Sequencing (TnSeq) library.
+
+CDM changes from CORAL:
+- FK reference: genome → genome_ref
+""" ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:description "Number of good quality reads" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 5 ;
+            sh:path kbase_cdm:n_good_reads ],
+        [ sh:description "Number of genes with transposon insertions" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 6 ;
+            sh:path kbase_cdm:n_genes_hit ],
+        [ sh:description "Name of TnSeq library" ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 1 ;
+            sh:path kbase_cdm:sdt_tnseq_library_name ],
+        [ sh:description "Reference to genome name (FK to Genome.sdt_genome_name)" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 2 ;
+            sh:path kbase_cdm:genome_ref ],
+        [ sh:datatype xsd:string ;
+            sh:description "Unique identifier for TnSeqLibrary" ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path kbase_cdm:sdt_tnseq_library_id ;
+            sh:pattern "^TnSeqLibrary\\d{7}$" ],
+        [ sh:description "Number of mapped reads" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 4 ;
+            sh:path kbase_cdm:n_mapped_reads ],
+        [ sh:datatype xsd:string ;
+            sh:description "Primers model used" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 3 ;
+            sh:path kbase_cdm:primers_model ] ;
+    sh:targetClass kbase_cdm:TnSeqLibrary .
+
