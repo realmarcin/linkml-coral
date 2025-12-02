@@ -71,7 +71,12 @@ Never use `pip` directly - this project uses `uv` for dependency management.
 - `analyze_schema.py`, `visualize_schema.py`, `visualize_relationships.py` - Production schema analysis tools
 - `load_tsv_to_store.py`, `enigma_query.py`, `query_provenance_tracker.py` - Database and query tools
 - `linkml_to_cdm.py` - CDM table naming converter
+- `generate_enums_from_obo.py` - Auto-generate LinkML enums from OBO microtypes
+- `update_schema_with_microtypes.py` - Update schema with semantic types and enums
 - `test_*.py`, `debug_*.py`, `fix_*.py` - Exploratory/debug scripts (not part of test suite)
+
+**Utility modules (src/linkml_coral/utils/):**
+- `obo_parser.py` - OBO file parser for extracting microtypes and ontology terms
 
 ## Architecture Overview
 
@@ -88,6 +93,52 @@ This is a LinkML project that:
 - Enhances validation with patterns, constraints, and type checking
 - Maps CORAL scalar types: "text"→string, "int"→integer, "float"→float, "[text]"→multivalued
 - Preserves provenance workflow annotations from typedef process_types/process_inputs
+
+## OBO Microtype Integration
+
+The schema integrates semantic type definitions from CORAL's `context_measurement_ontology.obo`, which defines **298 microtypes** with the `ME:` prefix. Microtypes provide semantic meaning and validation rules for data fields.
+
+**Microtype categories:**
+- **oterm_ref**: Controlled vocabulary types (enums) - e.g., ReadType, SequencingTechnology, Strand
+- **string**: Text with patterns - e.g., Date (YYYY-MM-DD), Time (HH:MM:SS), Link (URLs)
+- **int/float**: Numeric measurements - e.g., Count, Depth, Elevation, Rate
+- **object_ref**: Foreign key references to other entities
+
+**Schema components derived from OBO:**
+
+1. **Semantic Types** (10 reusable types in `types:` section):
+   - `Date`, `Time`, `Link` - String-based with patterns
+   - `Latitude`, `Longitude` - Float with range constraints
+   - `Count`, `Size`, `Rate` - Numeric with constraints
+   - `Depth`, `Elevation` - Measurement types with units
+
+2. **Enums** (23 auto-generated from OBO in `enums:` section):
+   - `ReadTypeEnum` (Paired End, Single End)
+   - `SequencingTechnologyEnum` (Illumina, Pacbio, Nanopore)
+   - `StrandEnum` (Forward, Reverse Complement)
+   - `CommunityTypeEnum` (Isolate Community, Enrichment, Assemblage, Environmental Community)
+   - ...and 19 more covering biological, chemical, and experimental contexts
+
+3. **Microtype Annotations** (on all 105 slots):
+   - `microtype`: ME: term defining semantic meaning
+   - `microtype_data_type`: Data type category (string, int, float, oterm_ref, object_ref)
+   - `type_term`: Original ME: term from typedef.json
+
+**Regenerating enums from OBO:**
+```bash
+# Auto-generate enum definitions from OBO file
+uv run python generate_enums_from_obo.py --obo CORAL/example/enigma/ontologies/context_measurement_ontology.obo --output generated_enums.yaml
+
+# Update schema with new enums and types
+uv run python update_schema_with_microtypes.py --dry-run  # Preview changes
+uv run python update_schema_with_microtypes.py            # Apply changes
+```
+
+**OBO Parser Utility** (`src/linkml_coral/utils/obo_parser.py`):
+- Parses OBO format ontology files
+- Extracts microtypes and their properties (data_type, valid_units, etc.)
+- Builds term hierarchies and relationships
+- Used by enum generator and schema update scripts
 
 ## Testing Strategy
 
@@ -114,28 +165,185 @@ uv run pytest -xvs                               # Stop on first failure, verbos
 
 ## TSV Data Validation
 
-**Validate ENIGMA TSV files against schema:**
+The validation system provides comprehensive checking of ENIGMA TSV files against the LinkML schema with **enum validation**, **foreign key validation**, **data quality metrics**, and **multi-format reporting**.
+
+### Quick Validation Commands
+
+**Using just commands (recommended):**
 ```bash
-# Single file validation
-uv run python validate_tsv_linkml.py /path/to/file.tsv --verbose
+# Quick validation (linkml-validate only)
+just validate-quick data/export/exported_tsvs/Sample.tsv
 
-# Batch validation (small files <10K records)
-./validate_small_files.sh
+# Enhanced validation (enum + FK + quality metrics)
+just validate-tsv-enhanced data/export/exported_tsvs/Sample.tsv
 
-# Large files with timeout handling
-./validate_large_files.sh
+# Batch validate all TSV files
+just validate-batch
 
-# All TSV files
-./validate_all.sh
+# Batch validate specific files
+just validate-batch-files Sample Reads Assembly
 
-# Save converted YAML for inspection
-uv run python validate_tsv_linkml.py file.tsv --save-yaml output_dir/
+# Generate HTML report from JSON results
+just validate-report-html validation_reports/validation_report_20241115_143022.json
 ```
 
-**Field mapping handled automatically:**
-- TSV column names → LinkML schema slots (e.g., 'material_term_id' → 'sample_material')
-- ASV data maps to OTU class, Process/Sample/Location/Community map directly
-- Unmapped columns reported but don't cause validation failures
+**Direct Python commands:**
+```bash
+# Basic validation
+uv run python validate_tsv_linkml.py /path/to/file.tsv --verbose
+
+# Enhanced validation with all features
+uv run python validate_tsv_linkml.py /path/to/file.tsv \
+  --enum-validate \
+  --fk-validate \
+  --quality-metrics \
+  --tsv-dir data/export/exported_tsvs \
+  --report-format all \
+  --verbose
+
+# Batch validation of all TSV files
+uv run python validate_all_exported_tsvs.py \
+  --tsv-dir data/export/exported_tsvs \
+  --report-format all
+
+# Generate HTML report from JSON results
+uv run python generate_html_validation_report.py validation_report.json
+```
+
+### Validation Features
+
+**1. Schema Compliance (linkml-validate)**
+- Validates data structure against LinkML schema definitions
+- Checks required fields, data types, and patterns
+- Enforces range constraints and cardinality rules
+
+**2. Enum Value Pre-Validation (`--enum-validate`)**
+- Validates enum fields before full LinkML validation
+- Checks against 23 auto-generated enums from OBO microtypes
+- Handles ontology term format: `"Label <PREFIX:ID>"`
+- Reports invalid enum values with valid alternatives
+
+**3. Foreign Key Validation (`--fk-validate`)**
+- Validates FK references across all TSV files
+- Builds FK index from entity IDs in TSV directory
+- Checks referential integrity for object_ref fields
+- Handles both simple IDs and bracket notation `[EntityType:ID]`
+- Validates multivalued FK arrays
+
+**4. Data Quality Metrics (`--quality-metrics`)**
+- Completeness: Percentage of non-empty values per field
+- Unique values: Count of distinct values
+- Value distribution: Top 10 most common values
+- Numeric statistics: min, max, mean, median, stdev (for numeric fields)
+- Outlier detection: Z-score based outlier identification
+
+**5. Multi-Format Reporting (`--report-format`)**
+- **console**: Human-readable terminal output (default)
+- **json**: Machine-readable JSON with full validation results
+- **csv**: Tabular format for spreadsheet analysis
+- **all**: Generate all formats simultaneously
+
+**6. HTML Report Generation**
+- Interactive HTML reports with filtering and sorting
+- Summary cards with pass/warning/error counts
+- Expandable file sections (auto-expand files with errors)
+- Quality metrics visualization with progress bars
+- Detailed validation issue tables with entity IDs and line numbers
+
+### Field Mapping (Automatic)
+
+TSV column names are automatically mapped to LinkML schema slots:
+- Direct mapping: `sample_id` → `sample_id`
+- Class prefix removal: `id` → `sample_id` (when validating Sample class)
+- Special mappings: `material_term_id` → `sample_material`
+- ASV data maps to OTU class
+- Process/Sample/Location/Community map directly to schema classes
+- Unmapped columns are reported but don't cause validation failures
+
+### Validation Workflow Examples
+
+**Example 1: Validate single file with full checks**
+```bash
+just validate-tsv-enhanced data/export/exported_tsvs/Reads.tsv
+# Output:
+# - Console report with enum/FK issues
+# - JSON report: validation_reports/validation_report_TIMESTAMP.json
+# - CSV report: validation_reports/validation_report_TIMESTAMP.csv
+# - Quality metrics for all fields
+```
+
+**Example 2: Batch validate and generate HTML**
+```bash
+# Step 1: Batch validate all TSVs
+just validate-batch
+
+# Step 2: Generate HTML report
+just validate-report-html validation_reports/batch_TIMESTAMP/validation_report_TIMESTAMP.json
+
+# Step 3: Open HTML in browser
+open validation_reports/batch_TIMESTAMP/validation_report_TIMESTAMP.html
+```
+
+**Example 3: Validate specific entity types**
+```bash
+# Only validate Sample, Reads, and Assembly files
+just validate-batch-files Sample Reads Assembly
+
+# Outputs to: validation_reports/batch_TIMESTAMP/
+```
+
+### Validation Output Structure
+
+**JSON Report Format:**
+```json
+{
+  "validation_date": "2024-11-15T14:30:22",
+  "files": [
+    {
+      "filename": "Sample.tsv",
+      "total_records": 1523,
+      "pass_count": 1520,
+      "warning_count": 2,
+      "error_count": 1,
+      "pass_rate": 0.998,
+      "record_results": [
+        {
+          "record_line": 42,
+          "entity_id": "SAMPLE123",
+          "status": "ERROR",
+          "results": [
+            {
+              "status": "ERROR",
+              "message": "Invalid enum value",
+              "field": "sample_material",
+              "value": "unknown_material",
+              "expected": "One of: soil, sediment, water, ..."
+            }
+          ]
+        }
+      ],
+      "quality_metrics": {
+        "sample_id": {
+          "completeness": 100.0,
+          "unique_count": 1523,
+          "non_empty_count": 1523
+        }
+      }
+    }
+  ]
+}
+```
+
+### Legacy Validation Scripts
+
+For backward compatibility, shell scripts are still available:
+```bash
+./validate_small_files.sh   # Batch validation for files <10K records
+./validate_large_files.sh   # Validation for large TSV files with timeout handling
+./validate_all.sh           # Comprehensive validation of all TSV files
+```
+
+**Note:** These scripts use basic linkml-validate without enhanced features. Use `just validate-batch` for full validation capabilities.
 
 ## Schema Visualization
 

@@ -1,0 +1,5 @@
+community_id: "COMM001"
+community_name: "Test Community"
+community_community_type: "isolate_community"
+community_sample: "SAMP001"
+community_description: "Test microbial community"

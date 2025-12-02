@@ -1,0 +1,6 @@
+reads_id: "READS001"
+reads_name: "Test Reads Paired End"
+reads_read_type: "paired_end_read"
+reads_sequencing_technology: "illumina"
+reads_read_count: 1000000
+reads_link: "http://example.com/reads/READS001"

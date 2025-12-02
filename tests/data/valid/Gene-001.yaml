@@ -1,0 +1,8 @@
+gene_id: "GENE001"
+gene_gene_id: "gene_12345"
+gene_genome: "GENOME001"
+gene_start: 1000
+gene_stop: 2000
+gene_strand: "forward"
+gene_contig_number: 1
+gene_function: "Test gene function"
