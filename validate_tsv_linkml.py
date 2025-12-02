@@ -21,7 +21,7 @@ import sys
 import tempfile
 import yaml
 from pathlib import Path
-from typing import Dict, List, Any, Tuple, Optional
+from typing import Dict, List, Any, Tuple
 from collections import defaultdict
 from datetime import datetime
 
