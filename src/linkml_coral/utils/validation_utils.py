@@ -425,6 +425,7 @@ class DataQualityAnalyzer:
             try:
                 numeric_values.append(float(v))
             except (ValueError, TypeError):
+                # Non-numeric values are expected and should be skipped when collecting numeric statistics
                 pass
 
         if len(numeric_values) > 0 and len(numeric_values) / len(non_empty_values) > 0.5:
