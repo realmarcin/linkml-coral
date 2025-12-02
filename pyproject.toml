@@ -16,6 +16,7 @@ dynamic = ["version"]
 
 dependencies = [
   "linkml-runtime >=1.9.4",
+  "pyarrow>=21.0.0",
 ]
 
 [dependency-groups]
