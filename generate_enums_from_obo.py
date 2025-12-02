@@ -8,7 +8,7 @@ LinkML enum definitions for all oterm_ref type microtypes that have child terms.
 
 import yaml
 from pathlib import Path
-from typing import Dict, List
+from typing import Dict
 from src.linkml_coral.utils.obo_parser import OBOParser, OBOTerm
 
 
