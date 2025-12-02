@@ -10,7 +10,6 @@ This script updates the CORAL LinkML schema to integrate:
 """
 
 import yaml
-from pathlib import Path
 from typing import Dict, Any
 from src.linkml_coral.utils.obo_parser import OBOParser
 
