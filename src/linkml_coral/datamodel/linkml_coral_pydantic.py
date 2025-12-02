@@ -1732,7 +1732,7 @@ class Community(ConfiguredBaseModel):
                       'single values only',
                       "{'Changed to multivalued': 'false to match data reality (0% "
                       "have multiple strains)'}",
-                      'typedef.json has typo with FK pointing to [Strain.Name] with '
+                      'typedef.json has typo with FK pointing to [Strain.Name] with ',
                       'capital N',
                       'Using lowercase name to match actual Strain field'],
          'domain_of': ['Community']} })
