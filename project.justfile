@@ -88,7 +88,7 @@ validate-batch-files tsv_dir='data/export/exported_tsvs' *files='':
 [group('model development')]
 validate-report-html json_path:
   @echo "📊 Generating HTML report from {{json_path}}..."
-  uv run python generate_html_validation_report.py {{json_path}}
+  uv run python generate_html_validation_report.py '{{json_path}}'
   @echo "✅ HTML report generated!"
 
 # Quick validation without enhanced checks
