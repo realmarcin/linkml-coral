@@ -2012,7 +2012,7 @@ class Bin(ConfiguredBaseModel):
                          'microtype_data_type': {'tag': 'microtype_data_type',
                                                  'value': 'object_ref'},
                          'type_term': {'tag': 'type_term', 'value': 'ME:0000280'}},
-         'comments': ['typedef.json has FK pointing to Assembly without specifying '
+         'comments': ['typedef.json has FK pointing to Assembly without specifying ',
                       'target field',
                       'Assumed to reference Assembly.name based on pattern'],
          'domain_of': ['Bin']} })
