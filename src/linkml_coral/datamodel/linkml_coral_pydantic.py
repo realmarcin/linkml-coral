@@ -1934,7 +1934,7 @@ class Gene(ConfiguredBaseModel):
                          'microtype_data_type': {'tag': 'microtype_data_type',
                                                  'value': 'object_ref'},
                          'type_term': {'tag': 'type_term', 'value': 'ME:0000246'}},
-         'comments': ['typedef.json has FK pointing to Genome without specifying '
+         'comments': ['typedef.json has FK pointing to Genome without specifying ',
                       'target field',
                       'Assumed to reference Genome.name based on pattern'],
          'domain_of': ['Gene']} })
