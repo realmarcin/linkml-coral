@@ -1,0 +1,939 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://realmarcin.github.io/linkml-coral/CDM_NAMING_CONVENTIONS/">
+      
+      
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.19">
+    
+    
+      
+        <title>CDM Naming Conventions for CORAL LinkML Schema - linkml-coral</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.7e37652d.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../css/ansi-colours.css">
+    
+      <link rel="stylesheet" href="../css/jupyter-cells.css">
+    
+      <link rel="stylesheet" href="../css/pandas-dataframe.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#cdm-naming-conventions-for-coral-linkml-schema" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="linkml-coral" class="md-header__button md-logo" aria-label="linkml-coral" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            linkml-coral
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              CDM Naming Conventions for CORAL LinkML Schema
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/realmarcin/linkml-coral" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="linkml-coral" class="md-nav__button md-logo" aria-label="linkml-coral" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    linkml-coral
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/realmarcin/linkml-coral" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../elements/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Schema
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cdm_store_quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    CDM Store Quick Start
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    About
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-behaviors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Behaviors
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Key Behaviors">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#table-naming" class="md-nav__link">
+    <span class="md-ellipsis">
+      Table Naming
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#column-naming" class="md-nav__link">
+    <span class="md-ellipsis">
+      Column Naming
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Column Naming">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#primary-key-columns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Primary Key Columns
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#foreign-key-columns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Foreign Key Columns
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#regular-columns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Regular Columns
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#foreign-key-value-rewriting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Foreign Key Value Rewriting
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conversion-tool-linkml_to_cdmpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conversion Tool: linkml_to_cdm.py
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Conversion Tool: linkml_to_cdm.py">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      Usage
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#output-formats" class="md-nav__link">
+    <span class="md-ellipsis">
+      Output Formats
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Output Formats">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#json-schema-cdm_schemajson" class="md-nav__link">
+    <span class="md-ellipsis">
+      JSON Schema (cdm_schema.json)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#text-report-cdm_reporttxt" class="md-nav__link">
+    <span class="md-ellipsis">
+      Text Report (cdm_report.txt)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#complete-example-sample-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      Complete Example: Sample Table
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Complete Example: Sample Table">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#linkml-schema" class="md-nav__link">
+    <span class="md-ellipsis">
+      LinkML Schema
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cdm-table-definition" class="md-nav__link">
+    <span class="md-ellipsis">
+      CDM Table Definition
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key-transformations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Transformations
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adding-preferred-names" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adding Preferred Names
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-type-mappings" class="md-nav__link">
+    <span class="md-ellipsis">
+      Data Type Mappings
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#constraint-preservation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Constraint Preservation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#issues-and-recommendations-report" class="md-nav__link">
+    <span class="md-ellipsis">
+      Issues and Recommendations Report
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Issues and Recommendations Report">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example Issues
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#provenance-metadata" class="md-nav__link">
+    <span class="md-ellipsis">
+      Provenance Metadata
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#see-also" class="md-nav__link">
+    <span class="md-ellipsis">
+      See Also
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="cdm-naming-conventions-for-coral-linkml-schema">CDM Naming Conventions for CORAL LinkML Schema</h1>
+<h2 id="overview">Overview</h2>
+<p>This document describes the Common Data Model (CDM) naming conventions applied when converting the CORAL LinkML schema to CDM table definitions.</p>
+<h2 id="key-behaviors">Key Behaviors</h2>
+<h3 id="table-naming">Table Naming</h3>
+<p><strong>Base Rule</strong>: All tables are prefixed with <code>sdt_</code> and use <code>snake_case</code>.</p>
+<pre><code>LinkML Class → CDM Table
+Location     → sdt_location
+TnSeq_Library → sdt_tn_seq_library
+</code></pre>
+<p><strong>With Preferred Name</strong>: If a type defines <code>preferred_name</code> in typedef.json, the CDM table uses that name.</p>
+<pre><code># Example (if configured):
+OTU → preferred_name: &quot;ASV&quot; → sdt_asv
+</code></pre>
+<h3 id="column-naming">Column Naming</h3>
+<p>All column names are <strong>lowercase snake_case</strong> (underscores only, no hyphens or camelCase).</p>
+<h4 id="primary-key-columns">Primary Key Columns</h4>
+<p>Format: <code>&lt;table&gt;_id</code></p>
+<pre><code>Table: sdt_sample
+Primary Key: sample_id
+
+Table: sdt_tn_seq_library
+Primary Key: tn_seq_library_id
+</code></pre>
+<p>When a preferred_name is used, the primary key reflects the preferred name:</p>
+<pre><code># If OTU has preferred_name &quot;ASV&quot;
+Table: sdt_asv
+Primary Key: asv_id  (not otu_id)
+</code></pre>
+<h4 id="foreign-key-columns">Foreign Key Columns</h4>
+<p><strong>Single-valued FK</strong>: <code>&lt;referenced_table&gt;_id</code></p>
+<pre><code>LinkML:
+  community_sample:
+    range: string
+    annotations:
+      foreign_key: Sample.name
+
+CDM:
+  Column: sample_id
+  FK Target: sdt_sample.sample_id
+</code></pre>
+<p><strong>Multi-valued FK</strong>: <code>&lt;referenced_table&gt;_ids</code> (plural)</p>
+<pre><code>LinkML:
+  community_defined_strains:
+    range: string
+    multivalued: true
+    annotations:
+      foreign_key: Strain.name
+
+CDM:
+  Column: strain_ids
+  FK Target: sdt_strain.strain_id
+  Type: [text]
+</code></pre>
+<h4 id="regular-columns">Regular Columns</h4>
+<p>All other columns use snake_case derived from the LinkML slot name:</p>
+<pre><code>LinkML Slot       → CDM Column
+read_count        → read_count
+n_contigs         → n_contigs
+sequencing_technology → sequencing_technology
+MIME type         → mime_type
+</code></pre>
+<h3 id="foreign-key-value-rewriting">Foreign Key Value Rewriting</h3>
+<p><strong>Important</strong>: When preferred names are used, the stored ID values must also be rewritten:</p>
+<pre><code># If OTU → ASV with preferred_name
+Original ID in data: &quot;OTU000001&quot;
+Rewritten ID:        &quot;ASV000001&quot;
+
+# FK columns referencing this table also use the new prefix
+</code></pre>
+<h2 id="conversion-tool-linkml_to_cdmpy">Conversion Tool: <code>linkml_to_cdm.py</code></h2>
+<h3 id="usage">Usage</h3>
+<pre><code class="language-bash"># Basic conversion (outputs to stdout)
+python linkml_to_cdm.py src/linkml_coral/schema/linkml_coral.yaml
+
+# With typedef.json for preferred_name support
+python linkml_to_cdm.py src/linkml_coral/schema/linkml_coral.yaml \
+  --typedef data/typedef.json
+
+# Generate JSON schema
+python linkml_to_cdm.py src/linkml_coral/schema/linkml_coral.yaml \
+  --typedef data/typedef.json \
+  --json-output cdm_schema.json
+
+# Generate text report
+python linkml_to_cdm.py src/linkml_coral/schema/linkml_coral.yaml \
+  --typedef data/typedef.json \
+  --report-output cdm_report.txt
+
+# Check for LinkML schema issues only
+python linkml_to_cdm.py src/linkml_coral/schema/linkml_coral.yaml \
+  --check-only
+</code></pre>
+<h3 id="output-formats">Output Formats</h3>
+<h4 id="json-schema-cdm_schemajson">JSON Schema (<code>cdm_schema.json</code>)</h4>
+<p>Complete machine-readable schema including:
+- Table definitions
+- Column specifications
+- Data types
+- Constraints
+- Foreign key relationships
+- Ontology term annotations
+- Provenance metadata</p>
+<h4 id="text-report-cdm_reporttxt">Text Report (<code>cdm_report.txt</code>)</h4>
+<p>Human-readable summary with:
+- Table listings
+- Column details
+- FK relationships
+- Constraints and comments
+- Any detected issues</p>
+<h2 id="complete-example-sample-table">Complete Example: Sample Table</h2>
+<h3 id="linkml-schema">LinkML Schema</h3>
+<pre><code class="language-yaml">Sample:
+  slots:
+  - sample_id
+  - sample_name
+  - sample_location
+  - sample_depth
+  - sample_description
+
+slots:
+  sample_id:
+    range: string
+    identifier: true
+    required: true
+
+  sample_name:
+    range: string
+    required: true
+    annotations:
+      unique: true
+
+  sample_location:
+    range: string
+    required: true
+    annotations:
+      foreign_key: Location.name
+
+  sample_depth:
+    range: float
+    annotations:
+      units_term: UO:0000008
+    comments:
+    - in meters below ground level
+
+  sample_description:
+    range: string
+</code></pre>
+<h3 id="cdm-table-definition">CDM Table Definition</h3>
+<pre><code>Table: sdt_sample
+
+Columns:
+  sample_id             text     PK, REQ
+  sample_name           text     REQ, UNQ
+  location_id           text     FK, REQ    → sdt_location.location_id
+  sample_depth          float    -
+  sample_description    text     -
+</code></pre>
+<h3 id="key-transformations">Key Transformations</h3>
+<ol>
+<li><strong>Class name</strong>: <code>Sample</code> → <code>sdt_sample</code></li>
+<li><strong>Primary key</strong>: <code>sample_id</code> → <code>sample_id</code> (stays same, already correct format)</li>
+<li><strong>Foreign key</strong>: <code>sample_location</code> → <code>location_id</code> (references sdt_location table)</li>
+<li><strong>Regular fields</strong>: Keep snake_case as-is</li>
+</ol>
+<h2 id="adding-preferred-names">Adding Preferred Names</h2>
+<p>To enable preferred name support, add to typedef.json:</p>
+<pre><code class="language-json">{
+  &quot;static_types&quot;: [
+    {
+      &quot;name&quot;: &quot;OTU&quot;,
+      &quot;preferred_name&quot;: &quot;ASV&quot;,
+      &quot;term&quot;: &quot;DA:0000063&quot;,
+      &quot;fields&quot;: [ ... ]
+    }
+  ]
+}
+</code></pre>
+<p>This will cause:
+- Table: <code>sdt_asv</code> (not <code>sdt_otu</code>)
+- Primary key: <code>asv_id</code> (not <code>otu_id</code>)
+- FK columns referencing it: <code>asv_id</code> or <code>asv_ids</code></p>
+<h2 id="data-type-mappings">Data Type Mappings</h2>
+<table>
+<thead>
+<tr>
+<th>LinkML Type</th>
+<th>CDM Type</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>string</td>
+<td>text</td>
+<td>Default for text fields</td>
+</tr>
+<tr>
+<td>integer</td>
+<td>int</td>
+<td>Whole numbers</td>
+</tr>
+<tr>
+<td>float</td>
+<td>float</td>
+<td>Decimal numbers</td>
+</tr>
+<tr>
+<td>double</td>
+<td>float</td>
+<td>Treated same as float</td>
+</tr>
+<tr>
+<td>boolean</td>
+<td>boolean</td>
+<td>True/false</td>
+</tr>
+<tr>
+<td>date</td>
+<td>text</td>
+<td>ISO 8601 format</td>
+</tr>
+<tr>
+<td>datetime</td>
+<td>text</td>
+<td>ISO 8601 format</td>
+</tr>
+<tr>
+<td>uri</td>
+<td>text</td>
+<td>URLs and URIs</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Multivalued fields</strong>: Wrapped in brackets <code>[type]</code></p>
+<pre><code>multivalued: true, range: string → [text]
+</code></pre>
+<h2 id="constraint-preservation">Constraint Preservation</h2>
+<p>The converter preserves all LinkML constraints:</p>
+<ul>
+<li><strong>Pattern validation</strong>: Regular expressions</li>
+<li><strong>Range constraints</strong>: min/max values for numbers</li>
+<li><strong>Enum constraints</strong>: Controlled vocabularies</li>
+<li><strong>Ontology constraints</strong>: Term references (e.g., ENVO:00010483)</li>
+</ul>
+<p>Example:</p>
+<pre><code class="language-yaml">LinkML:
+  latitude:
+    range: float
+    minimum_value: -90
+    maximum_value: 90
+
+CDM:
+  Column: location_latitude
+  Type: float
+  Constraint: [-90, 90]
+</code></pre>
+<h2 id="issues-and-recommendations-report">Issues and Recommendations Report</h2>
+<p>The tool generates a report of any potential issues:</p>
+<h3 id="example-issues">Example Issues</h3>
+<pre><code>⚠️ Community: typedef.json has typo with FK pointing to [Strain.Name]
+   with capital N - Using lowercase name to match actual Strain field
+</code></pre>
+<p>These issues are informational and show where the LinkML schema has already compensated for inconsistencies in the original typedef.json.</p>
+<h2 id="provenance-metadata">Provenance Metadata</h2>
+<p>Tables include provenance metadata from the LinkML schema:</p>
+<ul>
+<li><code>used_for_provenance</code>: Whether table is used in provenance tracking</li>
+<li><code>process_types</code>: Associated PROCESS ontology terms</li>
+<li><code>process_inputs</code>: Expected input entity types</li>
+</ul>
+<p>This metadata is preserved in the JSON output but not required for basic table creation.</p>
+<h2 id="see-also">See Also</h2>
+<ul>
+<li><a href="linkml_to_cdm.py">linkml_to_cdm.py</a> - Conversion tool source code</li>
+<li><a href="cdm_schema.json">cdm_schema.json</a> - Generated CDM schema (JSON format)</li>
+<li><a href="cdm_report.txt">cdm_report.txt</a> - Generated CDM report (human-readable)</li>
+<li><a href="../LINKML_STORE_USAGE/">LINKML_STORE_USAGE.md</a> - Using the data with linkml-store</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": ["content.tabs.link"], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.92b07e13.min.js"></script>
+      
+    
+  </body>
+</html>

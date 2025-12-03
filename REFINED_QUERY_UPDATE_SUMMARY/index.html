@@ -1,0 +1,810 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://realmarcin.github.io/linkml-coral/REFINED_QUERY_UPDATE_SUMMARY/">
+      
+      
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.19">
+    
+    
+      
+        <title>Refined Query Update Summary - linkml-coral</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.7e37652d.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../css/ansi-colours.css">
+    
+      <link rel="stylesheet" href="../css/jupyter-cells.css">
+    
+      <link rel="stylesheet" href="../css/pandas-dataframe.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#refined-query-update-summary" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="linkml-coral" class="md-header__button md-logo" aria-label="linkml-coral" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            linkml-coral
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Refined Query Update Summary
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/realmarcin/linkml-coral" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="linkml-coral" class="md-nav__button md-logo" aria-label="linkml-coral" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    linkml-coral
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/realmarcin/linkml-coral" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../elements/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Schema
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cdm_store_quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    CDM Store Quick Start
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    About
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-was-added" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Was Added
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="What Was Added">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-query-filtering-capabilities" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Query Filtering Capabilities
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-new-justfile-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. New Justfile Commands
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-updated-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Updated Documentation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-code-updates" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Code Updates
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-provenance-tracking-enhancement" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Provenance Tracking Enhancement
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-findings" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Findings
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Key Findings">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#comparative-results-50k-threshold" class="md-nav__link">
+    <span class="md-ellipsis">
+      Comparative Results (50K threshold)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scientific-impact" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scientific Impact
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usage-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Usage Examples
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Usage Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#command-line" class="md-nav__link">
+    <span class="md-ellipsis">
+      Command-Line
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#python-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      Python API
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#files-modified" class="md-nav__link">
+    <span class="md-ellipsis">
+      Files Modified
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#files-created" class="md-nav__link">
+    <span class="md-ellipsis">
+      Files Created
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#next-steps-recommendations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Next Steps (Recommendations)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#see-also" class="md-nav__link">
+    <span class="md-ellipsis">
+      See Also
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="refined-query-update-summary">Refined Query Update Summary</h1>
+<h2 id="overview">Overview</h2>
+<p>This document summarizes the updates made to add refined query capabilities for filtering ENIGMA reads by type, specifically to identify isolate genome assembly candidates.</p>
+<h2 id="what-was-added">What Was Added</h2>
+<h3 id="1-query-filtering-capabilities">1. Query Filtering Capabilities</h3>
+<p><strong>New Command-Line Flags:</strong>
+- <code>--exclude-16s</code>: Filter to only Single End reads (ME:0000114) - isolate genome sequencing data
+- <code>--read-type &lt;TYPE&gt;</code>: Filter by specific read type (ME:0000114, ME:0000113, ME:0000112)</p>
+<p><strong>Read Type Classification:</strong>
+- <strong>ME:0000114</strong> - Single End Read (isolate genome sequencing)
+  - 1,840 reads ≥50K threshold
+  - 1,836 unused (99.8%!)
+  - Perfect candidates for genome assembly</p>
+<ul>
+<li><strong>ME:0000113</strong> - Paired End Read (metagenome/16S sequencing)</li>
+<li>9,640 reads ≥50K threshold</li>
+<li>7,768 unused (80.6%)</li>
+<li>
+<p>Community diversity analysis</p>
+</li>
+<li>
+<p><strong>ME:0000112</strong> - Generic Read Type (metatranscriptome)</p>
+</li>
+<li>2,938 reads ≥50K threshold</li>
+<li>Gene expression analysis</li>
+</ul>
+<h3 id="2-new-justfile-commands">2. New Justfile Commands</h3>
+<p>Added to <code>project.justfile</code>:</p>
+<pre><code class="language-bash"># Query unused isolate genome reads
+just query-unused-isolates 50000
+
+# Query unused metagenome/16S reads
+just query-unused-metagenomes 50000
+</code></pre>
+<h3 id="3-updated-documentation">3. Updated Documentation</h3>
+<p><strong>QUERY_REFERENCE.md</strong>:
+- Added refined query examples
+- Included read type codes and descriptions
+- Updated Common Workflows section with read type comparisons
+- Enhanced Python API examples with filtering parameters</p>
+<p><strong>LINKML_STORE_USAGE.md</strong>:
+- Added read type filtering examples
+- Included read type classification
+- Added links to refined query analysis</p>
+<p><strong>QUERY_COMMANDS_SUMMARY.txt</strong>:
+- Added new justfile commands
+- Included comparative results by read type
+- Updated documentation links</p>
+<p><strong>REFINED_QUERY_ANALYSIS.md</strong> (new):
+- Complete analysis of read types
+- Comparative results across all read types
+- Scientific impact assessment
+- Usage examples and recommendations</p>
+<h3 id="4-code-updates">4. Code Updates</h3>
+<p><strong>query_enigma_provenance.py</strong>:</p>
+<pre><code class="language-python">def get_unused_reads(
+    self,
+    min_count: int = 10000,
+    return_details: bool = True,
+    read_type: Optional[str] = None,      # NEW
+    exclude_16s: bool = False              # NEW
+) -&gt; Tuple[List[Dict[str, Any]], Dict[str, Any]]:
+</code></pre>
+<p><strong>enigma_query.py</strong>:
+- Added <code>--exclude-16s</code> argument
+- Added <code>--read-type</code> argument
+- Integrated filtering into provenance tracking
+- Updated descriptions based on filter parameters</p>
+<h3 id="5-provenance-tracking-enhancement">5. Provenance Tracking Enhancement</h3>
+<p>All refined queries are fully tracked with:
+- Filter parameters (exclude_16s, read_type)
+- Updated descriptions indicating filtering
+- Complete execution metadata</p>
+<p>Example provenance record:</p>
+<pre><code class="language-json">{
+  &quot;execution&quot;: {
+    &quot;execution_id&quot;: &quot;4b5bebb97a960f2f&quot;,
+    &quot;description&quot;: &quot;Find unused reads with &gt;= 50000 raw reads (isolate genome reads only)&quot;,
+    &quot;parameters&quot;: {
+      &quot;min_count&quot;: 50000,
+      &quot;exclude_16s&quot;: true
+    }
+  },
+  &quot;results&quot;: {
+    &quot;total_good_reads&quot;: 1840,
+    &quot;unused_good_reads&quot;: 1836,
+    &quot;utilization_rate&quot;: 1.6271739130434784
+  }
+}
+</code></pre>
+<h2 id="key-findings">Key Findings</h2>
+<h3 id="comparative-results-50k-threshold">Comparative Results (50K threshold)</h3>
+<table>
+<thead>
+<tr>
+<th>Read Type</th>
+<th>Total</th>
+<th>Unused</th>
+<th>% Unused</th>
+<th>Wasted Reads</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>All reads</strong></td>
+<td>14,418</td>
+<td>11,608</td>
+<td>79.2%</td>
+<td>43.3 billion</td>
+</tr>
+<tr>
+<td><strong>Isolate genomes</strong> (ME:0000114)</td>
+<td>1,840</td>
+<td>1,836</td>
+<td><strong>99.8%</strong></td>
+<td>230.5 million</td>
+</tr>
+<tr>
+<td><strong>Metagenomes</strong> (ME:0000113)</td>
+<td>9,640</td>
+<td>7,768</td>
+<td>80.6%</td>
+<td>25.0 billion</td>
+</tr>
+</tbody>
+</table>
+<h3 id="scientific-impact">Scientific Impact</h3>
+<p><strong>Isolate Genome Assembly Opportunity:</strong>
+- 1,836 unused isolate genome read sets identified
+- Average read count: 125,553 (sufficient for good assembly)
+- Maximum read count: 4,078,972 (excellent coverage)
+- Each represents a unique environmental bacterial strain
+- Could significantly expand ENIGMA genome collection</p>
+<p><strong>Top Unused Isolate Genome Reads:</strong>
+1. FW305-C-52-trim.reads_unpaired_fwd - 4,078,972 reads
+2. FW305-C-35-trim.reads_unpaired_fwd - 3,618,897 reads
+3. FW305-C-101-trim.reads_unpaired_fwd - 2,075,026 reads
+4. FW305-C-134A-trim.reads_unpaired_fwd - 1,976,395 reads
+5. MT66-cutadapt-trim.reads_unpaired_fwd - 1,932,179 reads</p>
+<h2 id="usage-examples">Usage Examples</h2>
+<h3 id="command-line">Command-Line</h3>
+<pre><code class="language-bash"># Find unused isolate genome reads
+just query-unused-isolates 50000
+
+# Find unused metagenome reads
+just query-unused-metagenomes 50000
+
+# Export isolate genome candidates for assembly pipeline
+uv run python enigma_query.py unused-reads --min-count 50000 --exclude-16s --export isolate_genomes.json
+
+# Compare all read types
+./read_type_comparison.sh
+</code></pre>
+<h3 id="python-api">Python API</h3>
+<pre><code class="language-python">from query_enigma_provenance import ENIGMAProvenanceQuery
+
+query = ENIGMAProvenanceQuery(&quot;enigma_data.db&quot;)
+
+# Get unused isolate genome reads
+isolate_reads, summary = query.get_unused_reads(
+    min_count=50000,
+    return_details=True,
+    exclude_16s=True
+)
+
+print(f&quot;Unused isolate genomes: {summary['unused_good_reads']}&quot;)
+print(f&quot;Average read count: {summary['unused_stats']['avg_count']:,.0f}&quot;)
+
+# Get unused metagenome reads
+meta_reads, meta_summary = query.get_unused_reads(
+    min_count=50000,
+    return_details=True,
+    read_type='ME:0000113'
+)
+
+print(f&quot;Unused metagenomes: {meta_summary['unused_good_reads']}&quot;)
+</code></pre>
+<h2 id="testing">Testing</h2>
+<p>All commands have been tested and verified:</p>
+<pre><code class="language-bash">✅ just query-unused-isolates 50000
+   - Returns 1,836 unused isolate genome reads
+   - Properly filters to ME:0000114 (Single End)
+   - Provenance tracked correctly
+
+✅ just query-unused-metagenomes 50000
+   - Returns 7,768 unused metagenome reads
+   - Properly filters to ME:0000113 (Paired End)
+   - Provenance tracked correctly
+
+✅ uv run python enigma_query.py unused-reads --min-count 50000 --read-type ME:0000114
+   - Same results as --exclude-16s flag
+   - Explicit type filtering works correctly
+</code></pre>
+<h2 id="files-modified">Files Modified</h2>
+<ol>
+<li><strong>query_enigma_provenance.py</strong> - Added filtering logic to get_unused_reads()</li>
+<li><strong>enigma_query.py</strong> - Added CLI arguments and description updates</li>
+<li><strong>project.justfile</strong> - Added convenience commands</li>
+<li><strong>QUERY_REFERENCE.md</strong> - Updated with refined query examples</li>
+<li><strong>LINKML_STORE_USAGE.md</strong> - Added read type filtering documentation</li>
+<li><strong>QUERY_COMMANDS_SUMMARY.txt</strong> - Updated with new commands and results</li>
+</ol>
+<h2 id="files-created">Files Created</h2>
+<ol>
+<li><strong>REFINED_QUERY_ANALYSIS.md</strong> - Complete analysis of read type refinement</li>
+<li><strong>read_type_comparison.sh</strong> - Script to compare results across read types</li>
+<li><strong>REFINED_QUERY_UPDATE_SUMMARY.md</strong> (this file) - Summary of updates</li>
+</ol>
+<h2 id="next-steps-recommendations">Next Steps (Recommendations)</h2>
+<ol>
+<li><strong>Genome Assembly Pipeline</strong>: Use the 1,836 unused isolate genome reads for de novo assembly</li>
+<li><strong>Quality Analysis</strong>: Analyze read quality metrics for assembly candidates</li>
+<li><strong>Batch Processing</strong>: Create workflow to assemble top N isolate genomes</li>
+<li><strong>Stakeholder Report</strong>: Generate report for ENIGMA team about unused resources</li>
+</ol>
+<h2 id="see-also">See Also</h2>
+<ul>
+<li><a href="../REFINED_QUERY_ANALYSIS/">REFINED_QUERY_ANALYSIS.md</a> - Complete read type analysis</li>
+<li><a href="../QUERY_REFERENCE/">QUERY_REFERENCE.md</a> - Full query command reference</li>
+<li><a href="../DEPLOYMENT_PROVENANCE/">DEPLOYMENT_PROVENANCE.md</a> - Provenance tracking guide</li>
+<li><a href="../LINKML_STORE_USAGE/">LINKML_STORE_USAGE.md</a> - Database usage guide</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": ["content.tabs.link"], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.92b07e13.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,753 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://realmarcin.github.io/linkml-coral/COMPLETE_DEMO/">
+      
+      
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.19">
+    
+    
+      
+        <title>ENIGMA Query System - Complete Demonstration - linkml-coral</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.7e37652d.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../css/ansi-colours.css">
+    
+      <link rel="stylesheet" href="../css/jupyter-cells.css">
+    
+      <link rel="stylesheet" href="../css/pandas-dataframe.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#enigma-query-system-complete-demonstration" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="linkml-coral" class="md-header__button md-logo" aria-label="linkml-coral" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            linkml-coral
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              ENIGMA Query System - Complete Demonstration
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/realmarcin/linkml-coral" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="linkml-coral" class="md-nav__button md-logo" aria-label="linkml-coral" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    linkml-coral
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/realmarcin/linkml-coral" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../elements/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Schema
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cdm_store_quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    CDM Store Quick Start
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    About
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#current-system-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      Current System State
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#demonstration-1-run-query-with-provenance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Demonstration 1: Run Query with Provenance
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#demonstration-2-view-execution-history" class="md-nav__link">
+    <span class="md-ellipsis">
+      Demonstration 2: View Execution History
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#demonstration-3-generate-provenance-report" class="md-nav__link">
+    <span class="md-ellipsis">
+      Demonstration 3: Generate Provenance Report
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#demonstration-4-export-with-provenance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Demonstration 4: Export with Provenance
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#demonstration-5-reproducibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      Demonstration 5: Reproducibility
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#available-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      Available Commands
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Available Commands">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#query-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      Query Commands
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#provenance-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      Provenance Commands
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#documentation-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      Documentation Files
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#system-components" class="md-nav__link">
+    <span class="md-ellipsis">
+      System Components
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-features-demonstrated" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Features Demonstrated
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="enigma-query-system-complete-demonstration">ENIGMA Query System - Complete Demonstration</h1>
+<p>This document demonstrates the complete ENIGMA query system with deep provenance tracking.</p>
+<h2 id="current-system-state">Current System State</h2>
+<p><strong>Database</strong>: <code>enigma_data.db</code> (13 MB, 281,813 records)
+- 19,307 Reads
+- 3,427 Assemblies
+- 130,560 Processes (provenance)
+- 111,830 OTUs
+- Other entities: ~16,000</p>
+<p><strong>Key Finding</strong>: 
+- Of 14,418 high-quality reads (≥50K reads)
+- Only 2,994 were used in assemblies (20.8%)
+- <strong>11,608 remain unused (79.2%)</strong>
+- Representing <strong>43 BILLION wasted sequencing reads</strong></p>
+<h2 id="demonstration-1-run-query-with-provenance">Demonstration 1: Run Query with Provenance</h2>
+<pre><code class="language-bash">$ uv run python enigma_query.py unused-reads --min-count 100000
+
+🔍 Query: Unused 'Good' Reads
+============================================================
+
+Finding reads with &gt;= 100,000 raw reads that were NOT used in assemblies...
+
+📊 Results:
+  • Total 'good' reads: 13,020
+  • Used in assemblies: 2,994
+  • UNUSED 'good' reads: 10,272
+  • Utilization rate: 23.0%
+
+📈 Unused Reads Statistics:
+  • Min count: 100,060
+  • Max count: 549,479,714
+  • Avg count: 4,205,300
+  • Total wasted reads: 43,196,839,740
+
+🔬 Top 5 Unused Reads (by count):
+   1. FW106-06-10-15-10-deep
+      Read count: 549,479,714 (very_high)
+   ...
+
+📋 Provenance record saved: query_provenance/20251014_125537_unused_reads_1e16a3d7b455ebce.json
+   Execution ID: 1e16a3d7b455ebce
+</code></pre>
+<p><strong>Provenance automatically captured:</strong>
+- Execution ID: <code>1e16a3d7b455ebce</code>
+- User: marcin @ marcins-MacBook-Pro.local
+- Database checksum: <code>057c70e695ae94c3...</code>
+- Duration: 35.87 seconds
+- Results: 10,272 unused reads</p>
+<h2 id="demonstration-2-view-execution-history">Demonstration 2: View Execution History</h2>
+<pre><code class="language-bash">$ uv run python query_provenance_tracker.py --list
+
+📋 Query Execution History (1 executions)
+
+Date/Time            Query Type    Duration  Status   User    ID              
+----------------------------------------------------------------------------------------------------
+2025-10-14 12:55:01  unused_reads  35.9s     success  marcin  1e16a3d7b455ebce
+</code></pre>
+<h2 id="demonstration-3-generate-provenance-report">Demonstration 3: Generate Provenance Report</h2>
+<pre><code class="language-bash">$ uv run python query_provenance_tracker.py --report 1e16a3d7b455ebce
+
+======================================================================
+QUERY EXECUTION PROVENANCE REPORT
+======================================================================
+
+EXECUTION INFORMATION
+----------------------------------------
+Execution ID:    1e16a3d7b455ebce
+Query Type:      unused_reads
+Description:     Find unused reads with &gt;= 100000 raw reads
+Start Time:      2025-10-14T12:55:01.546537
+End Time:        2025-10-14T12:55:37.416499
+Duration:        35.869962 seconds
+Status:          SUCCESS
+
+QUERY PARAMETERS
+----------------------------------------
+  min_count: 100000
+  top_n: 5
+  ids_only: False
+
+USER &amp; SYSTEM
+----------------------------------------
+User:            marcin
+Hostname:        marcins-MacBook-Pro.local
+Platform:        macOS-13.7.8-arm64-arm-64bit-Mach-O
+Python:          3.13.8
+
+DATABASE
+----------------------------------------
+Path:            enigma_data.db
+Size:            13.01 MB
+Last Modified:   2025-10-14T12:29:25.287121
+Checksum:        057c70e695ae94c3...
+
+DATABASE STATISTICS AT EXECUTION
+----------------------------------------
+  total_reads: 19307
+  total_assemblies: 3427
+  total_processes: 130560
+
+RESULTS SUMMARY
+----------------------------------------
+  total_good_reads: 13020
+  unused_good_reads: 10272
+  utilization_rate: 0.23
+  unused_stats:
+    total_wasted_reads: 43196839740
+
+======================================================================
+</code></pre>
+<h2 id="demonstration-4-export-with-provenance">Demonstration 4: Export with Provenance</h2>
+<pre><code class="language-bash">$ uv run python enigma_query.py unused-reads --min-count 50000 --export results.json
+
+... (query output) ...
+
+💾 Results exported to: results.json
+📋 Provenance record saved: query_provenance/...
+</code></pre>
+<p><strong>Exported JSON includes provenance reference:</strong></p>
+<pre><code class="language-json">{
+  &quot;query&quot;: &quot;unused_reads&quot;,
+  &quot;parameters&quot;: {&quot;min_count&quot;: 50000},
+  &quot;summary&quot;: { ... },
+  &quot;results&quot;: [ ... 11,608 records ... ],
+  &quot;provenance&quot;: {
+    &quot;execution_id&quot;: &quot;a7b2c4d1e3f5g6h7&quot;
+  }
+}
+</code></pre>
+<h2 id="demonstration-5-reproducibility">Demonstration 5: Reproducibility</h2>
+<p><strong>Six months later...</strong></p>
+<pre><code class="language-bash"># 1. Find original execution
+$ uv run python query_provenance_tracker.py --list
+... 1e16a3d7b455ebce ...
+
+# 2. Get parameters
+$ uv run python query_provenance_tracker.py --report 1e16a3d7b455ebce
+... min_count: 100000 ...
+... checksum: 057c70e695ae94c3... ...
+
+# 3. Verify database integrity
+$ shasum -a 256 enigma_data.db
+057c70e695ae94c3cd783a14acdf07d8...  enigma_data.db
+✓ MATCH! Database unchanged.
+
+# 4. Re-run exact query
+$ uv run python enigma_query.py unused-reads --min-count 100000
+
+# 5. Compare results
+Original: 10,272 unused reads
+Re-run:   10,272 unused reads
+✓ EXACT MATCH! Results reproduced.
+</code></pre>
+<h2 id="available-commands">Available Commands</h2>
+<h3 id="query-commands">Query Commands</h3>
+<pre><code class="language-bash"># Main query: unused reads
+just query-unused-reads 50000
+just query-unused-reads 100000
+
+# Database statistics
+just query-stats
+
+# Provenance lineage
+just query-lineage Assembly Assembly0000497
+
+# Entity search
+just query-find Reads --query read_count_category=very_high
+</code></pre>
+<h3 id="provenance-commands">Provenance Commands</h3>
+<pre><code class="language-bash"># List execution history
+uv run python query_provenance_tracker.py --list
+
+# Generate report
+uv run python query_provenance_tracker.py --report &lt;exec_id&gt;
+
+# Different provenance directory
+uv run python enigma_query.py --provenance-dir custom_dir unused-reads --min-count 50000
+</code></pre>
+<h2 id="documentation-files">Documentation Files</h2>
+<p>All documentation created:</p>
+<ol>
+<li><strong>QUERY_REFERENCE.md</strong> - Quick command reference</li>
+<li><strong>DEPLOYMENT_PROVENANCE.md</strong> - Complete deployment &amp; provenance guide</li>
+<li><strong>PROVENANCE_SUMMARY.md</strong> - Executive summary of provenance tracking</li>
+<li><strong>LINKML_STORE_USAGE.md</strong> - Database usage guide</li>
+<li><strong>QUERY_DEMO_OUTPUT.md</strong> - Example outputs</li>
+<li><strong>QUERY_COMMANDS_SUMMARY.txt</strong> - One-page reference</li>
+<li><strong>CLAUDE.md</strong> - Updated with query system documentation</li>
+</ol>
+<h2 id="system-components">System Components</h2>
+<p><strong>Scripts:</strong>
+- <code>load_tsv_to_store.py</code> - Load TSV data into database
+- <code>enigma_query.py</code> - Main query CLI
+- <code>query_enigma_provenance.py</code> - Query library
+- <code>query_provenance_tracker.py</code> - Provenance tracking system</p>
+<p><strong>Data:</strong>
+- <code>enigma_data.db</code> - DuckDB database (13 MB)
+- <code>query_provenance/</code> - All execution records
+- <code>unused_reads_50k.json</code> - Example export</p>
+<p><strong>Justfile Commands:</strong>
+- <code>just load-store</code> - Load database
+- <code>just query-unused-reads &lt;count&gt;</code> - Main query
+- <code>just query-stats</code> - Statistics
+- <code>just query-lineage &lt;type&gt; &lt;id&gt;</code> - Provenance
+- <code>just query-find &lt;coll&gt; --query &lt;q&gt;</code> - Search</p>
+<h2 id="key-features-demonstrated">Key Features Demonstrated</h2>
+<p>✓ <strong>Automatic Provenance</strong> - No extra flags needed
+✓ <strong>Complete Metadata</strong> - User, system, database, environment
+✓ <strong>Reproducibility</strong> - Exact result recreation
+✓ <strong>Audit Trail</strong> - Full execution history
+✓ <strong>Data Integrity</strong> - SHA256 checksums
+✓ <strong>Standardized Output</strong> - JSON exports
+✓ <strong>Deep Provenance</strong> - Database snapshots, parameter tracking
+✓ <strong>Scientific Rigor</strong> - Publication-ready documentation</p>
+<h2 id="summary">Summary</h2>
+<p>The ENIGMA query system provides a complete, production-ready solution for:
+- Querying genomic data with full provenance tracking
+- Answering complex resource utilization questions
+- Ensuring reproducibility and data integrity
+- Maintaining complete audit trails
+- Meeting scientific publication standards</p>
+<p>Every query creates a permanent, verifiable record documenting exactly what was analyzed, when, by whom, and with what results.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": ["content.tabs.link"], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.92b07e13.min.js"></script>
+      
+    
+  </body>
+</html>
