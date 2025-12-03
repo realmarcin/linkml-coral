@@ -1,0 +1,931 @@
+id: https://w3id.org/enigma/kbase-cdm-static-entities
+name: kbase-cdm-static-entities
+title: KBase CDM Static Entities Schema
+description: |
+  Static entity classes for KBase Common Data Model (CDM).
+
+  This module defines 17 sdt_* (static data table) classes corresponding to
+  core scientific entities in the ENIGMA data model:
+  - Location, Sample, Community, Reads, Assembly, Bin, Genome, Gene
+  - Strain, Taxon, ASV (OTU), Protocol, Image, Condition, Process
+  - DubSeqLibrary, TnSeqLibrary
+
+  Key CDM transformations from original CORAL:
+  - Ontology term splitting: field → field_sys_oterm_id + field_sys_oterm_name
+  - ID/name prefixing: id → sdt_{entity}_id, name → sdt_{entity}_name
+  - FK references use _name columns instead of _id
+  - Added 'link' fields for external references
+
+version: 1.0.0
+license: MIT
+
+prefixes:
+  linkml: https://w3id.org/linkml/
+  kbase_cdm: https://w3id.org/enigma/kbase-cdm/
+  DA: http://purl.obolibrary.org/obo/DA_
+  ME: http://purl.obolibrary.org/obo/ME_
+  ENVO: http://purl.obolibrary.org/obo/ENVO_
+  UO: http://purl.obolibrary.org/obo/UO_
+  PROCESS: http://purl.obolibrary.org/obo/PROCESS_
+  CONTINENT: http://purl.obolibrary.org/obo/CONTINENT_
+  COUNTRY: http://purl.obolibrary.org/obo/COUNTRY_
+  MIxS: http://purl.obolibrary.org/obo/MIxS_
+
+default_prefix: kbase_cdm
+
+imports:
+  - linkml:types
+  - ./cdm_base
+
+# ============================================================
+# STATIC ENTITY CLASSES (sdt_*)
+# ============================================================
+
+classes:
+  Location:
+    mixins:
+      - CDMEntity
+    description: |
+      Sampling location with geographic coordinates and environmental context.
+
+      CDM changes from CORAL:
+      - 4 ontology term fields split into ID+name pairs:
+        continent, country, biome, feature
+    annotations:
+      term:
+        tag: term
+        value: DA:0000041
+    slots:
+      - sdt_location_id
+      - sdt_location_name
+      - latitude
+      - longitude
+      - continent_sys_oterm_id
+      - continent_sys_oterm_name
+      - country_sys_oterm_id
+      - country_sys_oterm_name
+      - region
+      - biome_sys_oterm_id
+      - biome_sys_oterm_name
+      - feature_sys_oterm_id
+      - feature_sys_oterm_name
+
+  Sample:
+    mixins:
+      - CDMEntity
+    description: |
+      Environmental sample collected from a location.
+
+      CDM changes from CORAL:
+      - 2 ontology term fields split: material, env_package
+      - FK reference: location → location_ref
+    annotations:
+      term:
+        tag: term
+        value: DA:0000042
+    slots:
+      - sdt_sample_id
+      - sdt_sample_name
+      - location_ref
+      - depth
+      - elevation
+      - date
+      - time
+      - timezone
+      - material_sys_oterm_id
+      - material_sys_oterm_name
+      - env_package_sys_oterm_id
+      - env_package_sys_oterm_name
+      - description
+
+  Community:
+    mixins:
+      - CDMEntity
+    description: |
+      Microbial community (isolate, enrichment, assemblage, or environmental).
+
+      CDM changes from CORAL:
+      - 1 ontology term field split: community_type
+      - FK references: sample → sample_ref, parent_community → parent_community_ref
+      - Multivalued FK: defined_strains → defined_strains_ref
+    annotations:
+      term:
+        tag: term
+        value: DA:0000071
+    slots:
+      - sdt_community_id
+      - sdt_community_name
+      - community_type_sys_oterm_id
+      - community_type_sys_oterm_name
+      - sample_ref
+      - parent_community_ref
+      - defined_strains_ref
+
+  Reads:
+    mixins:
+      - CDMEntity
+    description: |
+      Sequencing reads dataset.
+
+      CDM changes from CORAL:
+      - 2 ontology term fields split: read_type, sequencing_technology
+      - Added 'link' field for external data references
+    annotations:
+      term:
+        tag: term
+        value: DA:0000063
+    slots:
+      - sdt_reads_id
+      - sdt_reads_name
+      - read_count
+      - base_count
+      - read_type_sys_oterm_id
+      - read_type_sys_oterm_name
+      - sequencing_technology_sys_oterm_id
+      - sequencing_technology_sys_oterm_name
+      - link
+
+  Assembly:
+    mixins:
+      - CDMEntity
+    description: |
+      Genome assembly from sequencing reads.
+
+      CDM changes from CORAL:
+      - FK reference: strain → strain_ref
+      - Added 'link' field
+    annotations:
+      term:
+        tag: term
+        value: DA:0000066
+    slots:
+      - sdt_assembly_id
+      - sdt_assembly_name
+      - strain_ref
+      - n_contigs
+      - total_size
+      - link
+
+  Bin:
+    mixins:
+      - CDMEntity
+    description: |
+      Genome bin extracted from metagenomic assembly.
+
+      CDM changes from CORAL:
+      - FK reference: assembly → assembly_ref
+      - contigs field contains comma-separated contig names
+    annotations:
+      term:
+        tag: term
+        value: DA:0000072
+    slots:
+      - sdt_bin_id
+      - sdt_bin_name
+      - assembly_ref
+      - contigs
+
+  Genome:
+    mixins:
+      - CDMEntity
+    description: |
+      Assembled and annotated genome.
+
+      CDM changes from CORAL:
+      - FK reference: strain → strain_ref
+      - Added 'link' field
+    annotations:
+      term:
+        tag: term
+        value: DA:0000068
+    slots:
+      - sdt_genome_id
+      - sdt_genome_name
+      - strain_ref
+      - n_contigs
+      - n_features
+      - total_size
+      - link
+
+  Gene:
+    mixins:
+      - CDMEntity
+    description: |
+      Annotated gene within a genome.
+
+      CDM changes from CORAL:
+      - FK reference: genome → genome_ref
+      - Gene ID convention: GeneName{genome_name}_{contig}_{start}_{stop}
+    annotations:
+      term:
+        tag: term
+        value: DA:0000069
+    slots:
+      - sdt_gene_id
+      - sdt_gene_name
+      - genome_ref
+      - contig_number
+      - strand
+      - start
+      - stop
+      - function
+
+  Strain:
+    mixins:
+      - CDMEntity
+    description: |
+      Microbial strain (isolated or derived).
+
+      CDM changes from CORAL:
+      - FK references: genome → genome_ref, derived_from → derived_from_strain_ref
+      - Self-referential for strain derivation lineage
+    annotations:
+      term:
+        tag: term
+        value: DA:0000067
+    slots:
+      - sdt_strain_id
+      - sdt_strain_name
+      - genome_ref
+      - derived_from_strain_ref
+      - gene_names_changed
+
+  Taxon:
+    mixins:
+      - CDMEntity
+    description: |
+      Taxonomic classification.
+    annotations:
+      term:
+        tag: term
+        value: DA:0000070
+    slots:
+      - sdt_taxon_id
+      - sdt_taxon_name
+      - ncbi_taxid
+
+  ASV:
+    mixins:
+      - CDMEntity
+    description: |
+      Amplicon Sequence Variant (formerly OTU).
+
+      CDM changes from CORAL:
+      - Entity renamed from OTU to ASV (Amplicon Sequence Variant)
+      - Table name: sdt_asv
+    class_uri: kbase_cdm:ASV
+    annotations:
+      term:
+        tag: term
+        value: DA:0000073
+      preferred_name:
+        tag: preferred_name
+        value: ASV
+    slots:
+      - sdt_asv_id
+      - sdt_asv_name
+      - sequence
+
+  Protocol:
+    mixins:
+      - CDMEntity
+    description: |
+      Experimental protocol.
+
+      CDM changes from CORAL:
+      - Added 'link' field for protocol documents
+      - Renamed description → sdt_protocol_description for CDM consistency
+    annotations:
+      term:
+        tag: term
+        value: DA:0000062
+    slots:
+      - sdt_protocol_id
+      - sdt_protocol_name
+      - sdt_protocol_description
+      - link
+
+  Image:
+    mixins:
+      - CDMEntity
+    description: |
+      Microscopy or other image data.
+
+      CDM changes from CORAL:
+      - Added 'link' field for image files
+    annotations:
+      term:
+        tag: term
+        value: DA:0000074
+    slots:
+      - sdt_image_id
+      - sdt_image_name
+      - mime_type
+      - size
+      - dimensions
+      - link
+
+  Condition:
+    mixins:
+      - CDMEntity
+    description: |
+      Growth or experimental condition.
+    annotations:
+      term:
+        tag: term
+        value: DA:0000075
+    slots:
+      - sdt_condition_id
+      - sdt_condition_name
+
+  DubSeqLibrary:
+    mixins:
+      - CDMEntity
+    description: |
+      Dual Barcoded Sequencing (DubSeq) library.
+
+      CDM changes from CORAL:
+      - FK reference: genome → genome_ref
+    class_uri: kbase_cdm:DubSeqLibrary
+    annotations:
+      term:
+        tag: term
+        value: DA:0000076
+    slots:
+      - sdt_dubseq_library_id
+      - sdt_dubseq_library_name
+      - genome_ref
+      - n_fragments
+
+  TnSeqLibrary:
+    mixins:
+      - CDMEntity
+    description: |
+      Transposon Sequencing (TnSeq) library.
+
+      CDM changes from CORAL:
+      - FK reference: genome → genome_ref
+    class_uri: kbase_cdm:TnSeqLibrary
+    annotations:
+      term:
+        tag: term
+        value: DA:0000077
+    slots:
+      - sdt_tnseq_library_id
+      - sdt_tnseq_library_name
+      - genome_ref
+      - primers_model
+      - n_mapped_reads
+      - n_good_reads
+      - n_genes_hit
+
+  ENIGMA:
+    mixins:
+      - CDMEntity
+    description: |
+      Root entity (database singleton).
+    annotations:
+      term:
+        tag: term
+        value: DA:0000001
+    slots:
+      - sdt_enigma_id
+
+# ============================================================
+# SLOTS - Entity-specific slots with CDM naming
+# ============================================================
+
+slots:
+  # Location slots
+  sdt_location_id:
+    description: Unique identifier for Location
+    range: string
+    required: true
+    identifier: true
+    pattern: '^Location\d{7}$'
+
+  sdt_location_name:
+    description: Name of location
+    range: EntityName
+    required: true
+
+  latitude:
+    description: Latitude in decimal degrees
+    range: Latitude
+    required: false
+
+  longitude:
+    description: Longitude in decimal degrees
+    range: Longitude
+    required: false
+
+  continent_sys_oterm_id:
+    description: Continent ontology term ID
+    range: OntologyTermID
+    required: false
+
+  continent_sys_oterm_name:
+    description: Continent ontology term name
+    range: string
+    required: false
+
+  country_sys_oterm_id:
+    description: Country ontology term ID
+    range: OntologyTermID
+    required: false
+
+  country_sys_oterm_name:
+    description: Country ontology term name
+    range: string
+    required: false
+
+  region:
+    description: Geographic region
+    range: string
+    required: false
+
+  biome_sys_oterm_id:
+    description: Biome ontology term ID (ENVO)
+    range: OntologyTermID
+    required: false
+
+  biome_sys_oterm_name:
+    description: Biome ontology term name
+    range: string
+    required: false
+
+  feature_sys_oterm_id:
+    description: Environmental feature ontology term ID
+    range: OntologyTermID
+    required: false
+
+  feature_sys_oterm_name:
+    description: Environmental feature ontology term name
+    range: string
+    required: false
+
+  # Sample slots
+  sdt_sample_id:
+    description: Unique identifier for Sample
+    range: string
+    required: true
+    identifier: true
+    pattern: '^Sample\d{7}$'
+
+  sdt_sample_name:
+    description: Name of sample
+    range: EntityName
+    required: true
+
+  location_ref:
+    description: Reference to location name (FK to Location.sdt_location_name)
+    range: EntityName
+    required: false
+    comments:
+      - CDM convention: FK references use entity name, not ID
+      - References Location.sdt_location_name
+
+  depth:
+    description: Depth in meters
+    range: Depth
+    required: false
+
+  elevation:
+    description: Elevation in meters
+    range: Elevation
+    required: false
+
+  date:
+    description: Collection date
+    range: Date
+    required: false
+
+  time:
+    description: Collection time
+    range: Time
+    required: false
+
+  timezone:
+    description: Timezone
+    range: string
+    required: false
+
+  material_sys_oterm_id:
+    description: Material type ontology term ID
+    range: OntologyTermID
+    required: false
+
+  material_sys_oterm_name:
+    description: Material type ontology term name
+    range: string
+    required: false
+
+  env_package_sys_oterm_id:
+    description: Environment package ontology term ID
+    range: OntologyTermID
+    required: false
+
+  env_package_sys_oterm_name:
+    description: Environment package ontology term name
+    range: string
+    required: false
+
+  description:
+    description: Free text description
+    range: string
+    required: false
+
+  # Community slots
+  sdt_community_id:
+    description: Unique identifier for Community
+    range: string
+    required: true
+    identifier: true
+    pattern: '^Community\d{7}$'
+
+  sdt_community_name:
+    description: Name of community
+    range: EntityName
+    required: true
+
+  community_type_sys_oterm_id:
+    description: Community type ontology term ID
+    range: OntologyTermID
+    required: false
+
+  community_type_sys_oterm_name:
+    description: Community type ontology term name
+    range: string
+    required: false
+
+  sample_ref:
+    description: Reference to sample name (FK to Sample.sdt_sample_name)
+    range: EntityName
+    required: false
+    comments:
+      - CDM convention: FK references use entity name, not ID
+      - References Sample.sdt_sample_name
+
+  parent_community_ref:
+    description: Reference to parent community name (FK, self-referential to Community.sdt_community_name)
+    range: EntityName
+    required: false
+    comments:
+      - Self-referential FK for community hierarchies
+      - References Community.sdt_community_name
+
+  defined_strains_ref:
+    description: References to defined strain names (multivalued FK to Strain.sdt_strain_name)
+    range: EntityName
+    required: false
+    multivalued: true
+    comments:
+      - Multivalued FK for assemblage communities
+      - References Strain.sdt_strain_name
+
+  # Reads slots
+  sdt_reads_id:
+    description: Unique identifier for Reads
+    range: string
+    required: true
+    identifier: true
+    pattern: '^Reads\d{7}$'
+
+  sdt_reads_name:
+    description: Name of reads dataset
+    range: EntityName
+    required: true
+
+  read_count:
+    description: Number of reads
+    range: Count
+    required: false
+
+  base_count:
+    description: Total number of bases
+    range: Count
+    required: false
+
+  read_type_sys_oterm_id:
+    description: Read type ontology term ID (e.g., paired-end, single-end)
+    range: OntologyTermID
+    required: false
+
+  read_type_sys_oterm_name:
+    description: Read type ontology term name
+    range: string
+    required: false
+
+  sequencing_technology_sys_oterm_id:
+    description: Sequencing technology ontology term ID
+    range: OntologyTermID
+    required: false
+
+  sequencing_technology_sys_oterm_name:
+    description: Sequencing technology ontology term name
+    range: string
+    required: false
+
+  # Assembly slots
+  sdt_assembly_id:
+    description: Unique identifier for Assembly
+    range: string
+    required: true
+    identifier: true
+    pattern: '^Assembly\d{7}$'
+
+  sdt_assembly_name:
+    description: Name of assembly
+    range: EntityName
+    required: true
+
+  strain_ref:
+    description: Reference to strain name (FK to Strain.sdt_strain_name)
+    range: EntityName
+    required: false
+    comments:
+      - CDM convention: FK references use entity name, not ID
+      - References Strain.sdt_strain_name
+
+  n_contigs:
+    description: Number of contigs
+    range: Count
+    required: false
+
+  total_size:
+    description: Total assembly size in base pairs
+    range: Size
+    required: false
+
+  # Bin slots
+  sdt_bin_id:
+    description: Unique identifier for Bin
+    range: string
+    required: true
+    identifier: true
+    pattern: '^Bin\d{7}$'
+
+  sdt_bin_name:
+    description: Name of bin
+    range: EntityName
+    required: true
+
+  assembly_ref:
+    description: Reference to assembly name (FK to Assembly.sdt_assembly_name)
+    range: EntityName
+    required: false
+    comments:
+      - CDM convention: FK references use entity name, not ID
+      - References Assembly.sdt_assembly_name
+
+  contigs:
+    description: Comma-separated list of contig names
+    range: string
+    required: false
+
+  # Genome slots
+  sdt_genome_id:
+    description: Unique identifier for Genome
+    range: string
+    required: true
+    identifier: true
+    pattern: '^Genome\d{7}$'
+
+  sdt_genome_name:
+    description: Name of genome
+    range: EntityName
+    required: true
+
+  genome_ref:
+    description: Reference to genome name (FK to Genome.sdt_genome_name)
+    range: EntityName
+    required: false
+    comments:
+      - CDM convention: FK references use entity name, not ID
+      - References Genome.sdt_genome_name
+      - Used by: Gene, Strain, DubSeqLibrary, TnSeqLibrary
+
+  n_features:
+    description: Number of annotated features
+    range: Count
+    required: false
+
+  # Gene slots
+  sdt_gene_id:
+    description: Unique identifier for Gene
+    range: string
+    required: true
+    identifier: true
+    pattern: '^Gene\d{7}$'
+
+  sdt_gene_name:
+    description: Name of gene
+    range: EntityName
+    required: true
+
+  contig_number:
+    description: Contig number where gene is located
+    range: integer
+    required: false
+
+  strand:
+    description: DNA strand (+ or -)
+    range: string
+    required: false
+    pattern: '^[+-]$'
+
+  start:
+    description: Start position on contig
+    range: integer
+    required: false
+
+  stop:
+    description: Stop position on contig
+    range: integer
+    required: false
+
+  function:
+    description: Predicted gene function
+    range: string
+    required: false
+
+  # Strain slots
+  sdt_strain_id:
+    description: Unique identifier for Strain
+    range: string
+    required: true
+    identifier: true
+    pattern: '^Strain\d{7}$'
+
+  sdt_strain_name:
+    description: Name of strain
+    range: EntityName
+    required: true
+
+  derived_from_strain_ref:
+    description: Reference to parent strain name (FK, self-referential to Strain.sdt_strain_name)
+    range: EntityName
+    required: false
+    comments:
+      - Self-referential FK for strain derivation lineage
+      - References Strain.sdt_strain_name
+
+  gene_names_changed:
+    description: Names of genes that were changed
+    range: EntityName
+    required: false
+    multivalued: true
+
+  # Taxon slots
+  sdt_taxon_id:
+    description: Unique identifier for Taxon
+    range: string
+    required: true
+    identifier: true
+    pattern: '^Taxon\d{7}$'
+
+  sdt_taxon_name:
+    description: Taxonomic name
+    range: EntityName
+    required: true
+
+  ncbi_taxid:
+    description: NCBI Taxonomy ID
+    range: integer
+    required: false
+
+  # ASV slots
+  sdt_asv_id:
+    description: Unique identifier for ASV
+    range: string
+    required: true
+    identifier: true
+    pattern: '^ASV\d{7}$'
+
+  sdt_asv_name:
+    description: Name of ASV
+    range: EntityName
+    required: true
+
+  sequence:
+    description: DNA sequence
+    range: string
+    required: false
+
+  # Protocol slots
+  sdt_protocol_id:
+    description: Unique identifier for Protocol
+    range: string
+    required: true
+    identifier: true
+    pattern: '^Protocol\d{7}$'
+
+  sdt_protocol_name:
+    description: Name of protocol
+    range: EntityName
+    required: true
+
+  sdt_protocol_description:
+    description: Protocol description
+    range: string
+    required: false
+
+  # Image slots
+  sdt_image_id:
+    description: Unique identifier for Image
+    range: string
+    required: true
+    identifier: true
+    pattern: '^Image\d{7}$'
+
+  sdt_image_name:
+    description: Name of image
+    range: EntityName
+    required: true
+
+  mime_type:
+    description: MIME type of image
+    range: string
+    required: false
+
+  size:
+    description: File size in bytes
+    range: Size
+    required: false
+
+  dimensions:
+    description: Image dimensions (e.g., "1024x768")
+    range: string
+    required: false
+
+  # Condition slots
+  sdt_condition_id:
+    description: Unique identifier for Condition
+    range: string
+    required: true
+    identifier: true
+    pattern: '^Condition\d{7}$'
+
+  sdt_condition_name:
+    description: Name of condition
+    range: EntityName
+    required: true
+
+  # DubSeqLibrary slots
+  sdt_dubseq_library_id:
+    description: Unique identifier for DubSeqLibrary
+    range: string
+    required: true
+    identifier: true
+    pattern: '^DubSeqLibrary\d{7}$'
+
+  sdt_dubseq_library_name:
+    description: Name of DubSeq library
+    range: EntityName
+    required: true
+
+  n_fragments:
+    description: Number of fragments
+    range: Count
+    required: false
+
+  # TnSeqLibrary slots
+  sdt_tnseq_library_id:
+    description: Unique identifier for TnSeqLibrary
+    range: string
+    required: true
+    identifier: true
+    pattern: '^TnSeqLibrary\d{7}$'
+
+  sdt_tnseq_library_name:
+    description: Name of TnSeq library
+    range: EntityName
+    required: true
+
+  primers_model:
+    description: Primers model used
+    range: string
+    required: false
+
+  n_mapped_reads:
+    description: Number of mapped reads
+    range: Count
+    required: false
+
+  n_good_reads:
+    description: Number of good quality reads
+    range: Count
+    required: false
+
+  n_genes_hit:
+    description: Number of genes with transposon insertions
+    range: Count
+    required: false
+
+  # ENIGMA slots
+  sdt_enigma_id:
+    description: Unique identifier for ENIGMA root entity
+    range: string
+    required: true
+    identifier: true
+    pattern: '^ENIGMA1$'

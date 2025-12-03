@@ -27,6 +27,7 @@ watch:
 nav:
   - Home: index.md
   - Schema: elements/index.md
+  - CDM Store Quick Start: cdm_store_quickstart.md
   - About: about.md
 
 exclude_docs: |

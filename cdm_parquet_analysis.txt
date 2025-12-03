@@ -1,0 +1,863 @@
+KBASE CDM PARQUET TABLE ANALYSIS
+================================================================================
+Database location: /Users/marcin/Documents/VIMSS/ENIGMA/KBase/ENIGMA_in_CDM/minio/jmc_coral.db
+
+================================================================================
+SYSTEM TABLES ANALYSIS
+================================================================================
+
+SYS_TYPEDEF: CORAL static type to CDM table mappings
+--------------------------------------------------------------------------------
+  Rows: 118
+  Columns: 12
+  Memory: 0.06 MB
+
+  Column Details:
+    - type_name: object (nullable=False)
+      Sample: Gene, Gene, Bin
+    - field_name: object (nullable=False)
+      Sample: stop, function, id
+    - cdm_column_name: object (nullable=False)
+      Sample: stop, function, sdt_bin_id
+    - scalar_type: object (nullable=False)
+      Sample: int, text, text
+    - required: object (nullable=True)
+      Sample: True, True, True
+    - pk: object (nullable=True)
+      Sample: True, True, True
+    - upk: object (nullable=True)
+      Sample: True, True, True
+    - fk: object (nullable=True)
+      Sample: Assembly, Genome, Genome
+    - constraint: object (nullable=True)
+      Sample: http.*, ME:0000112, ME:0000112
+    - comment: object (nullable=False)
+      Sample: Genomic stop coordinate in base pairs, Annotated biological function of the gene, Unique identifier for the bin (Primary key)
+    - units_sys_oterm_id: object (nullable=True)
+      Sample: UO:0000244, UO:0000233, UO:0000236
+    - type_sys_oterm_id: object (nullable=True)
+      Sample: ME:0000243, ME:0000250, ME:0000331
+
+  CORAL Type → CDM Table Mappings:
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+    N/A → N/A
+
+SYS_DDT_TYPEDEF: Dynamic type (brick/microtype) mappings
+--------------------------------------------------------------------------------
+  Rows: 101
+  Columns: 15
+  Memory: 0.08 MB
+
+  Column Details:
+    - ddt_ndarray_id: object (nullable=False)
+      Sample: Brick0000010, Brick0000010, Brick0000010
+    - cdm_column_name: object (nullable=False)
+      Sample: concentration_micromolar, sdt_sample_name, molecule_from_list_sys_oterm_id
+    - cdm_column_data_type: object (nullable=False)
+      Sample: variable, dimension_variable, dimension_variable
+    - scalar_type: object (nullable=False)
+      Sample: float, object_ref, oterm_ref
+    - fk: object (nullable=True)
+      Sample: sdt_sample.sdt_sample_name, sys_oterm.sys_oterm_id, sys_oterm.sys_oterm_id
+    - comment: object (nullable=False)
+      Sample: Concentration, Environmental Sample ID, Molecule from list, ontology term CURIE
+    - unit_sys_oterm_id: object (nullable=True)
+      Sample: UO:0000064, UO:0000221, UO:0000064
+    - unit_sys_oterm_name: object (nullable=True)
+      Sample: micromolar, dalton, micromolar
+    - dimension_number: float64 (nullable=True)
+      Sample: 1.0, 2.0, 2.0
+    - dimension_oterm_id: object (nullable=True)
+      Sample: DA:0000042, ME:0000027, ME:0000027
+    - dimension_oterm_name: object (nullable=True)
+      Sample: Environmental Sample, Molecule, Molecule
+    - variable_number: int32 (nullable=False)
+      Sample: 1, 1, 1
+    - variable_oterm_id: object (nullable=False)
+      Sample: ME:0000129, ME:0000102, ME:0000381
+    - variable_oterm_name: object (nullable=False)
+      Sample: Concentration, Environmental Sample ID, Molecule from list
+    - original_csv_string: object (nullable=False)
+      Sample: values,Concentration <ME:0000129>,micromolar <UO:0, dmeta,1,Environmental Sample <DA:0000042>,Environm, dmeta,2,Molecule <ME:0000027>,Molecule from list <
+
+  Dynamic Type Summary:
+
+SYS_OTERM: Ontology term catalog
+--------------------------------------------------------------------------------
+  Rows: 10,594
+  Columns: 8
+  Memory: 5.58 MB
+
+  Column Details:
+    - sys_oterm_id: object (nullable=False)
+      Sample: ME:0000000, ME:0000001, ME:0000002
+    - parent_sys_oterm_id: object (nullable=True)
+      Sample: ME:0000000, ME:0000001, ME:0000002
+    - sys_oterm_ontology: object (nullable=False)
+      Sample: context_measurement_ontology, context_measurement_ontology, context_measurement_ontology
+    - sys_oterm_name: object (nullable=True)
+      Sample: term, Context, Experimental Context
+    - sys_oterm_synonyms: object (nullable=False)
+      Sample: [], [], []
+    - sys_oterm_definition: object (nullable=True)
+      Sample: Root of all ontological terms., Root of all Context and Measurement Terms., Context describing experimental design.
+    - sys_oterm_links: object (nullable=True)
+      Sample: ['ORef:ME:0000001'], ['ORef:ME:0000002'], ['ORef:ME:0000003']
+    - sys_oterm_properties: object (nullable=True)
+      Sample: [('is_hidden', 'true'), ('data_type', 'oterm_ref'), [('data_type', 'oterm_ref'), ('is_valid_property',, [('data_type', 'oterm_ref'), ('is_valid_property',
+
+  Ontology Term Summary:
+
+SYS_PROCESS: Process/workflow definitions
+--------------------------------------------------------------------------------
+  Rows: 142,958
+  Columns: 12
+  Memory: 108.23 MB
+
+  Column Details:
+    - sys_process_id: object (nullable=False)
+      Sample: Process0000001, Process0000002, Process0000003
+    - process_sys_oterm_id: object (nullable=False)
+      Sample: PROCESS:0000006, PROCESS:0000006, PROCESS:0000006
+    - process_sys_oterm_name: object (nullable=False)
+      Sample: Assay Growth, Assay Growth, Assay Growth
+    - person_sys_oterm_id: object (nullable=False)
+      Sample: ENIGMA:0000032, ENIGMA:0000032, ENIGMA:0000032
+    - person_sys_oterm_name: object (nullable=False)
+      Sample: Michael Thorgersen, Michael Thorgersen, Michael Thorgersen
+    - campaign_sys_oterm_id: object (nullable=False)
+      Sample: ENIGMA:0000013, ENIGMA:0000013, ENIGMA:0000013
+    - campaign_sys_oterm_name: object (nullable=False)
+      Sample: Metal Metabolism, Metal Metabolism, Metal Metabolism
+    - sdt_protocol_name: object (nullable=True)
+      Sample: chandonia-2019-prokka, chandonia-2019-prokka, chandonia-2019-prokka
+    - date_start: object (nullable=True)
+      Sample: 2015-06-10, 2015-06-10, 2015-06-10
+    - date_end: object (nullable=True)
+      Sample: 2015-06-10, 2015-06-10, 2015-06-10
+    - input_objects: object (nullable=False)
+      Sample: ['Strain:Strain0000672'], ['Strain:Strain0000669'], ['Strain:Strain0000672']
+    - output_objects: object (nullable=False)
+      Sample: ['Brick-0000019:Brick0000003'], ['Brick-0000019:Brick0000004'], ['Brick-0000019:Brick0000005']
+
+  Process Type Summary:
+
+SYS_PROCESS_INPUT: Process input specifications
+--------------------------------------------------------------------------------
+  Rows: 90,395
+  Columns: 10
+  Memory: 27.33 MB
+
+  Column Details:
+    - sys_process_id: object (nullable=False)
+      Sample: Process0000001, Process0000002, Process0000003
+    - sdt_assembly_id: object (nullable=True)
+      Sample: Assembly0000497, Assembly0000277, Assembly0000023
+    - sdt_bin_id: object (nullable=True)
+      Sample: Bin0000283
+    - sdt_community_id: object (nullable=True)
+      Sample: Community0000172, Community0000173, Community0000174
+    - sdt_genome_id: object (nullable=True)
+      Sample: Genome0000013, Genome0000761, Genome0000762
+    - sdt_location_id: object (nullable=True)
+      Sample: Location0000271, Location0000408, Location0000576
+    - sdt_reads_id: object (nullable=True)
+      Sample: Reads0001927, Reads0000794, Reads0000712
+    - sdt_sample_id: object (nullable=True)
+      Sample: Sample0002249, Sample0002292, Sample0002363
+    - sdt_strain_id: object (nullable=True)
+      Sample: Strain0000672, Strain0000669, Strain0000672
+    - sdt_tnseq_library_id: object (nullable=True)
+      Sample: TnSeq_Library0000001, TnSeq_Library0000001, TnSeq_Library0000001
+
+SYS_PROCESS_OUTPUT: Process output specifications
+--------------------------------------------------------------------------------
+  Rows: 38,228
+  Columns: 12
+  Memory: 13.30 MB
+
+  Column Details:
+    - sys_process_id: object (nullable=False)
+      Sample: Process0122921, Process0122922, Process0122923
+    - ddt_ndarray_id: object (nullable=True)
+      Sample: Brick0000507, Brick0000462, Brick0000460
+    - sdt_assembly_id: object (nullable=True)
+      Sample: Assembly0002186, Assembly0002212, Assembly0001688
+    - sdt_bin_id: object (nullable=True)
+      Sample: Bin0000421, Bin0000422, Bin0000423
+    - sdt_community_id: object (nullable=True)
+      Sample: Community0002107, Community0002108, Community0002109
+    - sdt_dubseq_library_id: object (nullable=True)
+      Sample: DubSeq_Library0000001, DubSeq_Library0000002, DubSeq_Library0000003
+    - sdt_genome_id: object (nullable=True)
+      Sample: Genome0006051, Genome0006052, Genome0006053
+    - sdt_image_id: object (nullable=True)
+      Sample: Image0000043, Image0000044, Image0000045
+    - sdt_reads_id: object (nullable=True)
+      Sample: Reads0006362, Reads0006833, Reads0008728
+    - sdt_sample_id: object (nullable=True)
+      Sample: Sample0003962, Sample0003963, Sample0003964
+    - sdt_strain_id: object (nullable=True)
+      Sample: Strain0000001, Strain0000002, Strain0000003
+    - sdt_tnseq_library_id: object (nullable=True)
+      Sample: TnSeq_Library0000001
+
+
+================================================================================
+STATIC DATA TABLES (sdt_*) ANALYSIS
+================================================================================
+
+SDT_ASSEMBLY
+--------------------------------------------------------------------------------
+  Rows: 3,427
+  Columns: 5
+  Memory: 1.05 MB
+  Primary Key Candidates: sdt_assembly_id
+
+  Column Details:
+    - sdt_assembly_id: object (NOT NULL)
+      Sample: Assembly0000001, Assembly0000002
+    - sdt_assembly_name: object (NOT NULL)
+      Sample: FW305-37-reassembled.contigs, FW507-29LB-reassembled.contigs
+    - sdt_strain_name: object (NULL)
+      Sample: FW305-37, FW507-29LB
+    - n_contigs: int32 (NOT NULL)
+    - link: object (NOT NULL)
+
+SDT_ASV
+--------------------------------------------------------------------------------
+  Rows: 213,044
+  Columns: 2
+  Memory: 27.22 MB
+  Primary Key Candidates: sdt_asv_id
+
+  Column Details:
+    - sdt_asv_id: object (NOT NULL)
+      Sample: ASV0000001, ASV0000002
+    - sdt_asv_name: object (NOT NULL)
+      Sample: 1000161, 100054
+
+SDT_BIN
+--------------------------------------------------------------------------------
+  Rows: 623
+  Columns: 4
+  Memory: 0.18 MB
+  Primary Key Candidates: sdt_bin_id
+
+  Column Details:
+    - sdt_bin_id: object (NOT NULL)
+      Sample: Bin0000001, Bin0000002
+    - sdt_bin_name: object (NOT NULL)
+      Sample: FW215_bin_47, FW215_bin_1
+    - sdt_assembly_name: object (NOT NULL)
+      Sample: FW215.contigs, FW215.contigs
+    - contigs: object (NOT NULL)
+
+SDT_COMMUNITY
+--------------------------------------------------------------------------------
+  Rows: 2,209
+  Columns: 9
+  Memory: 1.15 MB
+  Primary Key Candidates: sdt_community_id
+  Ontology Term Fields: community_type_sys_oterm_id, community_type_sys_oterm_name
+
+  Column Details:
+    - sdt_community_id: object (NOT NULL)
+      Sample: Community0000001, Community0000002
+    - sdt_community_name: object (NOT NULL)
+      Sample: EB106-02-01 BONCAT community, EB106-02-02 BONCAT community
+    - community_type_sys_oterm_id: object (NOT NULL)
+      Sample: ME:0000237, ME:0000237
+    - community_type_sys_oterm_name: object (NOT NULL)
+      Sample: Active Fraction, Active Fraction
+    - sdt_sample_name: object (NULL)
+      Sample: EB106-02-01, EB106-02-02
+    - parent_sdt_community_name: object (NULL)
+      Sample: EB106-02-01, EB106-02-02
+    - sdt_condition_name: object (NULL)
+      Sample: 30°C + aerobic + Sediment extract to 1/25 LB, 25°C + aerobic + aphotic + filter on  1/25 R2A
+    - defined_sdt_strain_names: object (NOT NULL)
+      Sample: [], []
+    - sdt_community_description: object (NULL)
+
+SDT_CONDITION
+--------------------------------------------------------------------------------
+  Rows: 1,046
+  Columns: 2
+  Memory: 0.19 MB
+  Primary Key Candidates: sdt_condition_id
+
+  Column Details:
+    - sdt_condition_id: object (NOT NULL)
+      Sample: Condition0000001, Condition0000002
+    - sdt_condition_name: object (NOT NULL)
+      Sample: set12IT085, set12IT086
+
+SDT_DUBSEQ_LIBRARY
+--------------------------------------------------------------------------------
+  Rows: 3
+  Columns: 4
+  Memory: 0.00 MB
+  Primary Key Candidates: sdt_dubseq_library_id
+
+  Column Details:
+    - sdt_dubseq_library_id: object (NOT NULL)
+      Sample: DubSeq_Library0000001, DubSeq_Library0000002
+    - sdt_dubseq_library_name: object (NOT NULL)
+      Sample: Escherichia-coli-BW25113.dubseq_library, Pseudomonas-putida-KT2440.dubseq_library
+    - sdt_genome_name: object (NOT NULL)
+      Sample: Escherichia-coli-BW25113.genome, Pseudomonas-putida-KT2440.genome
+    - n_fragments: float64 (NULL)
+
+SDT_ENIGMA
+--------------------------------------------------------------------------------
+  Rows: 1
+  Columns: 1
+  Memory: 0.00 MB
+  Primary Key Candidates: sdt_enigma_id
+
+  Column Details:
+    - sdt_enigma_id: object (NULL)
+
+SDT_GENE
+--------------------------------------------------------------------------------
+  Rows: 15,015
+  Columns: 9
+  Memory: 6.52 MB
+  Primary Key Candidates: sdt_gene_id
+
+  Column Details:
+    - sdt_gene_id: object (NOT NULL)
+      Sample: Gene0000001, Gene0000002
+    - sdt_gene_name: object (NOT NULL)
+      Sample: MEPIHFMG_04711, MEPIHFMG_04712
+    - sdt_genome_name: object (NOT NULL)
+      Sample: FW300-N2A2.genome, FW300-N2A2.genome
+    - aliases: object (NOT NULL)
+    - contig_number: int32 (NOT NULL)
+    - strand: object (NOT NULL)
+    - start: int32 (NOT NULL)
+    - stop: int32 (NOT NULL)
+    - function: object (NOT NULL)
+
+SDT_GENOME
+--------------------------------------------------------------------------------
+  Rows: 6,688
+  Columns: 6
+  Memory: 2.12 MB
+  Primary Key Candidates: sdt_genome_id
+
+  Column Details:
+    - sdt_genome_id: object (NOT NULL)
+      Sample: Genome0000001, Genome0000002
+    - sdt_genome_name: object (NOT NULL)
+      Sample: FW305-37-reassembled.genome, FW507-29LB-reassembled.genome
+    - sdt_strain_name: object (NULL)
+      Sample: FW305-37, FW507-29LB
+    - n_contigs: int32 (NOT NULL)
+    - n_features: int32 (NOT NULL)
+    - link: object (NOT NULL)
+
+SDT_IMAGE
+--------------------------------------------------------------------------------
+  Rows: 218
+  Columns: 7
+  Memory: 0.09 MB
+  Primary Key Candidates: sdt_image_id
+
+  Column Details:
+    - sdt_image_id: object (NOT NULL)
+      Sample: Image0000001, Image0000002
+    - sdt_image_name: object (NOT NULL)
+      Sample: EB106-02-01-aodc.jpg, EB106-02-02-aodc.jpg
+    - sdt_image_description: object (NOT NULL)
+    - mime_type: object (NOT NULL)
+      Sample: image/jpeg, image/jpeg
+    - size: int32 (NOT NULL)
+    - dimensions: object (NOT NULL)
+    - link: object (NOT NULL)
+
+SDT_LOCATION
+--------------------------------------------------------------------------------
+  Rows: 594
+  Columns: 13
+  Memory: 0.42 MB
+  Primary Key Candidates: sdt_location_id
+  Ontology Term Fields: continent_sys_oterm_id, continent_sys_oterm_name, country_sys_oterm_id, country_sys_oterm_name, biome_sys_oterm_id, biome_sys_oterm_name, feature_sys_oterm_id, feature_sys_oterm_name
+
+  Column Details:
+    - sdt_location_id: object (NOT NULL)
+      Sample: Location0000001, Location0000002
+    - sdt_location_name: object (NOT NULL)
+      Sample: CPT1, CPT2
+    - latitude: float64 (NOT NULL)
+    - longitude: float64 (NOT NULL)
+    - continent_sys_oterm_id: object (NOT NULL)
+      Sample: CONTINENT:0000007, CONTINENT:0000007
+    - continent_sys_oterm_name: object (NOT NULL)
+      Sample: North America, North America
+    - country_sys_oterm_id: object (NOT NULL)
+      Sample: COUNTRY:0000263, COUNTRY:0000263
+    - country_sys_oterm_name: object (NOT NULL)
+      Sample: USA, USA
+    - region: object (NOT NULL)
+    - biome_sys_oterm_id: object (NOT NULL)
+      Sample: ENVO:01000221, ENVO:01000221
+    - biome_sys_oterm_name: object (NOT NULL)
+      Sample: temperate woodland biome, temperate woodland biome
+    - feature_sys_oterm_id: object (NOT NULL)
+      Sample: ENVO:00002226, ENVO:00002226
+    - feature_sys_oterm_name: object (NOT NULL)
+      Sample: borehole, borehole
+
+SDT_PROTOCOL
+--------------------------------------------------------------------------------
+  Rows: 42
+  Columns: 4
+  Memory: 0.03 MB
+  Primary Key Candidates: sdt_protocol_id
+
+  Column Details:
+    - sdt_protocol_id: object (NOT NULL)
+      Sample: Protocol0000001, Protocol0000002
+    - sdt_protocol_name: object (NOT NULL)
+      Sample: spencer-2017-cutadapt, spencer-2017-trimmomatic
+    - sdt_protocol_description: object (NOT NULL)
+    - link: object (NULL)
+
+SDT_READS
+--------------------------------------------------------------------------------
+  Rows: 19,307
+  Columns: 8
+  Memory: 10.08 MB
+  Primary Key Candidates: sdt_reads_id
+  Ontology Term Fields: read_type_sys_oterm_id, read_type_sys_oterm_name, sequencing_technology_sys_oterm_id, sequencing_technology_sys_oterm_name
+
+  Column Details:
+    - sdt_reads_id: object (NOT NULL)
+      Sample: Reads0000001, Reads0000002
+    - sdt_reads_name: object (NOT NULL)
+      Sample: FW511_7_26_13_02.reads, DP16D_67_11_27_12_02.reads
+    - read_count: int32 (NOT NULL)
+    - read_type_sys_oterm_id: object (NOT NULL)
+      Sample: ME:0000114, ME:0000114
+    - read_type_sys_oterm_name: object (NOT NULL)
+      Sample: Single End Read, Single End Read
+    - sequencing_technology_sys_oterm_id: object (NOT NULL)
+      Sample: ME:0000117, ME:0000117
+    - sequencing_technology_sys_oterm_name: object (NOT NULL)
+      Sample: Illumina, Illumina
+    - link: object (NOT NULL)
+
+SDT_SAMPLE
+--------------------------------------------------------------------------------
+  Rows: 4,330
+  Columns: 13
+  Memory: 2.67 MB
+  Primary Key Candidates: sdt_sample_id
+  Ontology Term Fields: material_sys_oterm_id, material_sys_oterm_name, env_package_sys_oterm_id, env_package_sys_oterm_name
+
+  Column Details:
+    - sdt_sample_id: object (NOT NULL)
+      Sample: Sample0000001, Sample0000002
+    - sdt_sample_name: object (NOT NULL)
+      Sample: EU02-D01, EU03-D01
+    - sdt_location_name: object (NOT NULL)
+      Sample: EU02, EU03
+    - depth: float64 (NOT NULL)
+    - elevation: float64 (NULL)
+    - date: object (NOT NULL)
+    - time: object (NULL)
+    - timezone: object (NULL)
+    - material_sys_oterm_id: object (NOT NULL)
+      Sample: ENVO:00002041, ENVO:00002041
+    - material_sys_oterm_name: object (NOT NULL)
+      Sample: ground water, ground water
+    - env_package_sys_oterm_id: object (NOT NULL)
+      Sample: MIxS:0000017, MIxS:0000017
+    - env_package_sys_oterm_name: object (NOT NULL)
+      Sample: water, water
+    - sdt_sample_description: object (NULL)
+
+SDT_STRAIN
+--------------------------------------------------------------------------------
+  Rows: 3,110
+  Columns: 6
+  Memory: 0.94 MB
+  Primary Key Candidates: sdt_strain_id
+
+  Column Details:
+    - sdt_strain_id: object (NOT NULL)
+      Sample: Strain0000001, Strain0000002
+    - sdt_strain_name: object (NOT NULL)
+      Sample: FW305-130, FW305-BF6
+    - sdt_strain_description: object (NULL)
+    - sdt_genome_name: object (NULL)
+      Sample: Escherichia-coli-BW25113.genome, Pseudomonas-putida-KT2440.genome
+    - derived_from_sdt_strain_name: object (NULL)
+    - sdt_gene_names_changed: object (NOT NULL)
+      Sample: [], []
+
+SDT_TAXON
+--------------------------------------------------------------------------------
+  Rows: 3,276
+  Columns: 3
+  Memory: 0.56 MB
+  Primary Key Candidates: sdt_taxon_id
+
+  Column Details:
+    - sdt_taxon_id: object (NOT NULL)
+      Sample: Taxon0000001, Taxon0000002
+    - sdt_taxon_name: object (NOT NULL)
+      Sample: 0319-6G20, 053A03-B-DI-P58
+    - ncbi_taxid: object (NULL)
+
+SDT_TNSEQ_LIBRARY
+--------------------------------------------------------------------------------
+  Rows: 1
+  Columns: 10
+  Memory: 0.00 MB
+  Primary Key Candidates: sdt_tnseq_library_id
+
+  Column Details:
+    - sdt_tnseq_library_id: object (NOT NULL)
+      Sample: TnSeq_Library0000001
+    - sdt_tnseq_library_name: object (NOT NULL)
+      Sample: FW300-N2E2.tnseq_library
+    - sdt_genome_name: object (NOT NULL)
+      Sample: FW300-N2E2-reassembled.genome
+    - primers_model: object (NOT NULL)
+    - n_mapped_reads: float64 (NULL)
+    - n_barcodes: float64 (NULL)
+    - n_usable_barcodes: float64 (NULL)
+    - n_insertion_locations: float64 (NULL)
+    - hit_rate_essential: float64 (NULL)
+    - hit_rate_other: float64 (NULL)
+
+
+STATIC TABLES SUMMARY:
+  Total tables: 17
+  Total rows: 272,934
+  Tables by size:
+    sdt_asv: 213,044 rows
+    sdt_reads: 19,307 rows
+    sdt_gene: 15,015 rows
+    sdt_genome: 6,688 rows
+    sdt_sample: 4,330 rows
+    sdt_assembly: 3,427 rows
+    sdt_taxon: 3,276 rows
+    sdt_strain: 3,110 rows
+    sdt_community: 2,209 rows
+    sdt_condition: 1,046 rows
+
+
+================================================================================
+DYNAMIC DATA TABLES (ddt_*) ANALYSIS
+================================================================================
+
+DDT_NDARRAY (Brick Index)
+--------------------------------------------------------------------------------
+  Rows: 20
+  Columns: 15
+
+  Column Details:
+    - ddt_ndarray_id: object (nullable=False)
+      Sample: Brick0000010, Brick0000072
+    - ddt_ndarray_name: object (nullable=False)
+      Sample: adams_metals_100ws.ndarray, adams_metals_corepilot_271.ndarray
+    - ddt_ndarray_description: object (nullable=False)
+      Sample: Adams Lab Metals Measurements for 100 Well Survey, Adams Lab Metals Measurements from Core Pilot
+    - ddt_ndarray_metadata: object (nullable=False)
+      Sample: [], []
+    - ddt_ndarray_type_sys_oterm_id: object (nullable=False)
+      Sample: DA:0000005, DA:0000005
+    - ddt_ndarray_type_sys_oterm_name: object (nullable=False)
+      Sample: Chemical Measurement, Chemical Measurement
+    - ddt_ndarray_shape: object (nullable=False)
+      Sample: [209, 52, 3, 3], [3, 2, 9, 35]
+    - ddt_ndarray_dimension_types_sys_oterm_id: object (nullable=False)
+      Sample: ['"DA:0000042"' '"ME:0000027"' '"ME:0000037"' '"ME, ['"ME:0000037"' '"ME:0000146"' '"ME:0000100"' '"ME
+    - ddt_ndarray_dimension_types_sys_oterm_name: object (nullable=False)
+      Sample: ['"Environmental Sample"' '"Molecule"' '"State"' ', ['"State"' '"Statistic"' '"Environmental Sample"' 
+    - ddt_ndarray_dimension_variable_types_sys_oterm_id: object (nullable=False)
+      Sample: ['["ME:0000102"]' '["ME:0000381"' '"ME:0000350"' ', ['["ME:0000037"]' '["ME:0000146"]' '["ME:0000102"]
+    - ddt_ndarray_dimension_variable_types_sys_oterm_name: object (nullable=False)
+      Sample: ['["Environmental Sample ID"]' '["Molecule from li, ['["State"]' '["Statistic"]' '["Environmental Samp
+    - ddt_ndarray_variable_types_sys_oterm_id: object (nullable=False)
+      Sample: ['"ME:0000129"'], ['"ME:0000129"']
+    - ddt_ndarray_variable_types_sys_oterm_name: object (nullable=False)
+      Sample: ['"Concentration"'], ['"Concentration"']
+    - withdrawn_date: object (nullable=True)
+    - superceded_by_ddt_ndarray_id: object (nullable=True)
+
+
+BRICK TABLES (20 total)
+--------------------------------------------------------------------------------
+
+DDT_BRICK0000010
+  ----------------------------------------------------------------------------
+  Rows: 52,884
+  Columns: 9
+  Memory: 17.00 MB
+
+  Columns:
+    - sdt_sample_name: object
+    - molecule_from_list_sys_oterm_id: object
+    - molecule_from_list_sys_oterm_name: object
+    - molecule_molecular_weight_dalton: float64
+    - molecule_algorithm_parameter: object
+    - molecule_detection_limit_micromolar: float64
+    - state: object
+    - replicate_series_count_unit: int32
+    - concentration_micromolar: float64
+
+DDT_BRICK0000072
+  ----------------------------------------------------------------------------
+  Rows: 1,890
+  Columns: 9
+  Memory: 0.68 MB
+
+  Columns:
+    - state: object
+    - statistic_sys_oterm_id: object
+    - statistic_sys_oterm_name: object
+    - sdt_sample_name: object
+    - molecule_from_list_sys_oterm_id: object
+    - molecule_from_list_sys_oterm_name: object
+    - molecule_molecular_weight_dalton: float64
+    - molecule_presence_molecule_from_list_helium_0: bool
+    - concentration_milligram_per_kilogram: float64
+
+DDT_BRICK0000073
+  ----------------------------------------------------------------------------
+  Rows: 3,564
+  Columns: 9
+  Memory: 1.28 MB
+
+  Columns:
+    - state: object
+    - statistic_sys_oterm_id: object
+    - statistic_sys_oterm_name: object
+    - sdt_sample_name: object
+    - molecule_from_list_sys_oterm_id: object
+    - molecule_from_list_sys_oterm_name: object
+    - molecule_molecular_weight_dalton: float64
+    - molecule_presence_molecule_from_list_helium_0: bool
+    - concentration_milligram_per_kilogram: float64
+
+DDT_BRICK0000080
+  ----------------------------------------------------------------------------
+  Rows: 98,176
+  Columns: 8
+  Memory: 19.83 MB
+
+  Columns:
+    - sdt_sample_name: object
+    - molecule_from_list_sys_oterm_id: object
+    - molecule_from_list_sys_oterm_name: object
+    - molecule_molecular_weight_dalton: float64
+    - molecule_presence_molecule_from_list_helium_0: bool
+    - concentration_statistic_average_parts_per_billion: float64
+    - concentration_statistic_standard_deviation_parts_per_billion: float64
+    - detection_limit_parts_per_billion: float64
+
+DDT_BRICK0000452
+  ----------------------------------------------------------------------------
+  Rows: 113,741
+  Columns: 2
+  Memory: 41.57 MB
+
+  Columns:
+    - sdt_asv_name: object
+    - sequence_sequence_type_16s_sequence: object
+
+  ... and 15 more brick tables
+
+  All brick table IDs:
+    0000010, 0000072, 0000073, 0000080, 0000452, 0000454, 0000457, 0000458, 0000459, 0000460, 0000461, 0000462, 0000476, 0000477, 0000478, 0000479, 0000495, 0000501, 0000507, 0000508
+
+
+================================================================================
+SCHEMA DIFFERENCES ANALYSIS
+================================================================================
+
+Key observations:
+
+1. ONTOLOGY TERM SPLITTING PATTERN:
+   sdt_sample:
+     material → material_sys_oterm_id + material_sys_oterm_name
+     env_package → env_package_sys_oterm_id + env_package_sys_oterm_name
+   sdt_location:
+     continent → continent_sys_oterm_id + continent_sys_oterm_name
+     feature → feature_sys_oterm_id + feature_sys_oterm_name
+     biome → biome_sys_oterm_id + biome_sys_oterm_name
+     country → country_sys_oterm_id + country_sys_oterm_name
+
+2. NAMING CONVENTIONS:
+   - Tables: sdt_<snake_case>
+   - Primary keys: <table_name>_id
+   - Foreign keys: <referenced_table>_id
+   - Ontology refs: <field>_sys_oterm_id + <field>_sys_oterm_name
+
+
+================================================================================
+COMPREHENSIVE ANALYSIS REPORT
+================================================================================
+
+TABLE INVENTORY:
+  System tables (sys_*): 6
+  Static data tables (sdt_*): 17
+  Dynamic data tables (ddt_*): 21
+  Total tables: 44
+
+SYSTEM TABLES:
+  - sys_ddt_typedef
+  - sys_oterm
+  - sys_process
+  - sys_process_input
+  - sys_process_output
+  - sys_typedef
+
+STATIC DATA TABLES:
+  - sdt_assembly
+  - sdt_asv
+  - sdt_bin
+  - sdt_community
+  - sdt_condition
+  - sdt_dubseq_library
+  - sdt_enigma
+  - sdt_gene
+  - sdt_genome
+  - sdt_image
+  - sdt_location
+  - sdt_protocol
+  - sdt_reads
+  - sdt_sample
+  - sdt_strain
+  - sdt_taxon
+  - sdt_tnseq_library
+
+DYNAMIC DATA TABLES:
+  - ddt_ndarray (brick index)
+  - 20 brick tables: brick0000010, brick0000072, brick0000073, brick0000080, brick0000452, brick0000454, brick0000457, brick0000458, brick0000459, brick0000460, brick0000461, brick0000462, brick0000476, brick0000477, brick0000478, brick0000479, brick0000495, brick0000501, brick0000507, brick0000508
+
+
+================================================================================
+ANALYSIS COMPLETE
+================================================================================

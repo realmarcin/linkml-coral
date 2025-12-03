@@ -3,24 +3,18 @@ erDiagram
 Assembly {
     string assembly_id  
     string assembly_name  
-    string assembly_strain  
-    integer assembly_n_contigs  
-    string assembly_link  
+    Count assembly_n_contigs  
+    Link assembly_link  
 }
 Bin {
     string bin_id  
     string bin_name  
-    string bin_assembly  
     stringList bin_contigs  
 }
 Community {
     string community_id  
     string community_name  
-    string community_community_type  
-    string community_sample  
-    string community_parent_community  
-    string community_condition  
-    stringList community_defined_strains  
+    CommunityTypeEnum community_community_type  
     string community_description  
 }
 Condition {
@@ -30,16 +24,14 @@ Condition {
 DubSeqLibrary {
     string dubseq_library_id  
     string dubseq_library_name  
-    string dubseq_library_genome  
-    integer dubseq_library_n_fragments  
+    Count dubseq_library_n_fragments  
 }
 Gene {
     string gene_id  
     string gene_gene_id  
-    string gene_genome  
     stringList gene_aliases  
     integer gene_contig_number  
-    string gene_strand  
+    StrandEnum gene_strand  
     integer gene_start  
     integer gene_stop  
     string gene_function  
@@ -47,25 +39,24 @@ Gene {
 Genome {
     string genome_id  
     string genome_name  
-    string genome_strain  
-    integer genome_n_contigs  
-    integer genome_n_features  
-    string genome_link  
+    Count genome_n_contigs  
+    Count genome_n_features  
+    Link genome_link  
 }
 Image {
     string image_id  
     string image_name  
     string image_description  
     string image_MIME_type  
-    integer image_size  
+    Size image_size  
     string image_dimensions  
-    string image_link  
+    Link image_link  
 }
 Location {
     string location_id  
     string location_name  
-    float location_latitude  
-    float location_longitude  
+    Latitude location_latitude  
+    Longitude location_longitude  
     string location_continent  
     string location_country  
     string location_region  
@@ -81,9 +72,8 @@ Process {
     string process_process  
     string process_person  
     string process_campaign  
-    string process_protocol  
-    string process_date_start  
-    string process_date_end  
+    Date process_date_start  
+    Date process_date_end  
     stringList process_input_objects  
     stringList process_output_objects  
 }
@@ -91,25 +81,24 @@ Protocol {
     string protocol_id  
     string protocol_name  
     string protocol_description  
-    string protocol_link  
+    Link protocol_link  
 }
 Reads {
     string reads_id  
     string reads_name  
-    integer reads_read_count  
-    string reads_read_type  
-    string reads_sequencing_technology  
-    string reads_link  
+    Count reads_read_count  
+    ReadTypeEnum reads_read_type  
+    SequencingTechnologyEnum reads_sequencing_technology  
+    Link reads_link  
 }
 Sample {
     string sample_id  
     string sample_name  
-    string sample_location  
-    float sample_depth  
-    float sample_elevation  
-    string sample_date  
-    string sample_time  
-    string sample_timezone  
+    Depth sample_depth  
+    Elevation sample_elevation  
+    Date sample_date  
+    Time sample_time  
+    Time sample_timezone  
     string sample_material  
     string sample_env_package  
     string sample_description  
@@ -118,9 +107,6 @@ Strain {
     string strain_id  
     string strain_name  
     string strain_description  
-    string strain_genome  
-    string strain_derived_from  
-    stringList strain_genes_changed  
 }
 Taxon {
     string taxon_id  
@@ -130,12 +116,26 @@ Taxon {
 TnSeqLibrary {
     string tnseq_library_id  
     string tnseq_library_name  
-    string tnseq_library_genome  
     string tnseq_library_primers_model  
     integer tnseq_library_n_mapped_reads  
     integer tnseq_library_n_barcodes  
     integer tnseq_library_n_usable_barcodes  
     integer tnseq_library_n_insertion_locations  
-    float tnseq_library_hit_rate_essential  
-    float tnseq_library_hit_rate_other  
+    Rate tnseq_library_hit_rate_essential  
+    Rate tnseq_library_hit_rate_other  
 }
+Assembly ||--|o Strain : "assembly_strain"
+Bin ||--|| Assembly : "bin_assembly"
+Community ||--|o Community : "community_parent_community"
+Community ||--|o Condition : "community_condition"
+Community ||--|o Sample : "community_sample"
+Community ||--|o Strain : "community_defined_strains"
+DubSeqLibrary ||--|| Genome : "dubseq_library_genome"
+Gene ||--|| Genome : "gene_genome"
+Genome ||--|o Strain : "genome_strain"
+Process ||--|o Protocol : "process_protocol"
+Sample ||--|| Location : "sample_location"
+Strain ||--|o Genome : "strain_genome"
+Strain ||--|o Strain : "strain_derived_from"
+Strain ||--}o Gene : "strain_genes_changed"
+TnSeqLibrary ||--|| Genome : "tnseq_library_genome"

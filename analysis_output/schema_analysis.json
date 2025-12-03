@@ -311,7 +311,9 @@
       "multivalued": null,
       "pattern": null,
       "annotations": {
-        "type_term": "ME:0000277"
+        "type_term": "ME:0000277",
+        "microtype": "ME:0000277",
+        "microtype_data_type": "object_ref"
       }
     },
     "process_process": {
@@ -321,7 +323,9 @@
       "pattern": null,
       "annotations": {
         "constraint": "PROCESS:0000001",
-        "type_term": "ME:0000204"
+        "type_term": "ME:0000204",
+        "microtype": "ME:0000204",
+        "microtype_data_type": "oterm_ref"
       }
     },
     "process_person": {
@@ -331,7 +335,9 @@
       "pattern": null,
       "annotations": {
         "constraint": "ENIGMA:0000029",
-        "type_term": "ME:0000205"
+        "type_term": "ME:0000205",
+        "microtype": "ME:0000205",
+        "microtype_data_type": "string"
       }
     },
     "process_campaign": {
@@ -340,35 +346,43 @@
       "multivalued": null,
       "pattern": null,
       "annotations": {
-        "type_term": "ME:0000206"
+        "type_term": "ME:0000206",
+        "microtype": "ME:0000206",
+        "microtype_data_type": "string"
       }
     },
     "process_protocol": {
-      "range": "string",
+      "range": "Protocol",
       "required": null,
       "multivalued": null,
       "pattern": null,
       "annotations": {
         "foreign_key": "Protocol.name",
-        "type_term": "ME:0000328"
+        "type_term": "ME:0000328",
+        "microtype": "ME:0000328",
+        "microtype_data_type": "object_ref"
       }
     },
     "process_date_start": {
-      "range": "string",
+      "range": "Date",
       "required": null,
       "multivalued": null,
-      "pattern": "\\d\\d\\d\\d(-\\d\\d(-\\d\\d)?)?",
+      "pattern": null,
       "annotations": {
-        "type_term": "ME:0000009"
+        "type_term": "ME:0000009",
+        "microtype": "ME:0000009",
+        "microtype_data_type": "string"
       }
     },
     "process_date_end": {
-      "range": "string",
+      "range": "Date",
       "required": null,
       "multivalued": null,
-      "pattern": "\\d\\d\\d\\d(-\\d\\d(-\\d\\d)?)?",
+      "pattern": null,
       "annotations": {
-        "type_term": "ME:0000009"
+        "type_term": "ME:0000009",
+        "microtype": "ME:0000009",
+        "microtype_data_type": "string"
       }
     },
     "process_input_objects": {
@@ -378,7 +392,9 @@
       "pattern": null,
       "annotations": {
         "constraint": "[Entity|Brick]",
-        "type_term": "ME:0000207"
+        "type_term": "ME:0000207",
+        "microtype": "ME:0000207",
+        "microtype_data_type": "string"
       }
     },
     "process_output_objects": {
@@ -388,7 +404,9 @@
       "pattern": null,
       "annotations": {
         "constraint": "[Entity|Brick]",
-        "type_term": "ME:0000208"
+        "type_term": "ME:0000208",
+        "microtype": "ME:0000208",
+        "microtype_data_type": "string"
       }
     },
     "location_id": {
@@ -397,7 +415,9 @@
       "multivalued": null,
       "pattern": null,
       "annotations": {
-        "type_term": "ME:0000266"
+        "type_term": "ME:0000266",
+        "microtype": "ME:0000266",
+        "microtype_data_type": "object_ref"
       }
     },
     "location_name": {
@@ -407,27 +427,33 @@
       "pattern": null,
       "annotations": {
         "unique": "True",
-        "type_term": "ME:0000228"
+        "type_term": "ME:0000228",
+        "microtype": "ME:0000228",
+        "microtype_data_type": "object_ref"
       }
     },
     "location_latitude": {
-      "range": "float",
+      "range": "Latitude",
       "required": true,
       "multivalued": null,
       "pattern": null,
       "annotations": {
         "units_term": "UO:0000185",
-        "type_term": "ME:0000211"
+        "type_term": "ME:0000211",
+        "microtype": "ME:0000211",
+        "microtype_data_type": "float"
       }
     },
     "location_longitude": {
-      "range": "float",
+      "range": "Longitude",
       "required": true,
       "multivalued": null,
       "pattern": null,
       "annotations": {
         "units_term": "UO:0000185",
-        "type_term": "ME:0000212"
+        "type_term": "ME:0000212",
+        "microtype": "ME:0000212",
+        "microtype_data_type": "float"
       }
     },
     "location_continent": {
@@ -437,7 +463,9 @@
       "pattern": null,
       "annotations": {
         "constraint": "CONTINENT:0000001",
-        "type_term": "ME:0000213"
+        "type_term": "ME:0000213",
+        "microtype": "ME:0000213",
+        "microtype_data_type": "oterm_ref"
       }
     },
     "location_country": {
@@ -447,7 +475,9 @@
       "pattern": null,
       "annotations": {
         "constraint": "COUNTRY:0000001",
-        "type_term": "ME:0000214"
+        "type_term": "ME:0000214",
+        "microtype": "ME:0000214",
+        "microtype_data_type": "oterm_ref"
       }
     },
     "location_region": {
@@ -456,7 +486,9 @@
       "multivalued": null,
       "pattern": null,
       "annotations": {
-        "type_term": "ME:0000215"
+        "type_term": "ME:0000215",
+        "microtype": "ME:0000215",
+        "microtype_data_type": "string"
       }
     },
     "location_biome": {
@@ -466,7 +498,9 @@
       "pattern": null,
       "annotations": {
         "constraint": "ENVO:01000254",
-        "type_term": "ME:0000216"
+        "type_term": "ME:0000216",
+        "microtype": "ME:0000216",
+        "microtype_data_type": "oterm_ref"
       }
     },
     "location_feature": {
@@ -476,7 +510,9 @@
       "pattern": null,
       "annotations": {
         "constraint": "ENVO:00002297",
-        "type_term": "ME:0000217"
+        "type_term": "ME:0000217",
+        "microtype": "ME:0000217",
+        "microtype_data_type": "oterm_ref"
       }
     },
     "sample_id": {
@@ -485,7 +521,9 @@
       "multivalued": null,
       "pattern": null,
       "annotations": {
-        "type_term": "ME:0000267"
+        "type_term": "ME:0000267",
+        "microtype": "ME:0000267",
+        "microtype_data_type": "object_ref"
       }
     },
     "sample_name": {
@@ -495,64 +533,78 @@
       "pattern": null,
       "annotations": {
         "unique": "True",
-        "type_term": "ME:0000102"
+        "type_term": "ME:0000102",
+        "microtype": "ME:0000102",
+        "microtype_data_type": "object_ref"
       }
     },
     "sample_location": {
-      "range": "string",
+      "range": "Location",
       "required": true,
       "multivalued": null,
       "pattern": null,
       "annotations": {
         "foreign_key": "Location.name",
-        "type_term": "ME:0000228"
+        "type_term": "ME:0000228",
+        "microtype": "ME:0000228",
+        "microtype_data_type": "object_ref"
       }
     },
     "sample_depth": {
-      "range": "float",
+      "range": "Depth",
       "required": null,
       "multivalued": null,
       "pattern": null,
       "annotations": {
         "units_term": "UO:0000008",
-        "type_term": "ME:0000219"
+        "type_term": "ME:0000219",
+        "microtype": "ME:0000219",
+        "microtype_data_type": "float"
       }
     },
     "sample_elevation": {
-      "range": "float",
+      "range": "Elevation",
       "required": null,
       "multivalued": null,
       "pattern": null,
       "annotations": {
         "units_term": "UO:0000008",
-        "type_term": "ME:0000220"
+        "type_term": "ME:0000220",
+        "microtype": "ME:0000220",
+        "microtype_data_type": "float"
       }
     },
     "sample_date": {
-      "range": "string",
+      "range": "Date",
       "required": true,
       "multivalued": null,
-      "pattern": "\\d\\d\\d\\d(-\\d\\d(-\\d\\d)?)?",
+      "pattern": null,
       "annotations": {
-        "type_term": "ME:0000009"
+        "type_term": "ME:0000009",
+        "microtype": "ME:0000009",
+        "microtype_data_type": "string"
       }
     },
     "sample_time": {
-      "range": "string",
-      "required": null,
-      "multivalued": null,
-      "pattern": "\\d(\\d)?(:\\d\\d(:\\d\\d)?)?\\s*([apAP][mM])?",
-      "annotations": {
-        "type_term": "ME:0000010"
-      }
-    },
-    "sample_timezone": {
-      "range": "string",
+      "range": "Time",
       "required": null,
       "multivalued": null,
       "pattern": null,
       "annotations": {
-        "type_term": "ME:0000201"
+        "type_term": "ME:0000010",
+        "microtype": "ME:0000010",
+        "microtype_data_type": "string"
+      }
+    },
+    "sample_timezone": {
+      "range": "Time",
+      "required": null,
+      "multivalued": null,
+      "pattern": null,
+      "annotations": {
+        "type_term": "ME:0000201",
+        "microtype": "ME:0000201",
+        "microtype_data_type": "string"
       }
     },
     "sample_material": {
@@ -562,7 +614,9 @@
       "pattern": null,
       "annotations": {
         "constraint": "ENVO:00010483",
-        "type_term": "ME:0000230"
+        "type_term": "ME:0000230",
+        "microtype": "ME:0000230",
+        "microtype_data_type": "oterm_ref"
       }
     },
     "sample_env_package": {
@@ -572,7 +626,9 @@
       "pattern": null,
       "annotations": {
         "constraint": "MIxS:0000002",
-        "type_term": "ME:0000229"
+        "type_term": "ME:0000229",
+        "microtype": "ME:0000229",
+        "microtype_data_type": "oterm_ref"
       }
     },
     "sample_description": {
@@ -581,7 +637,9 @@
       "multivalued": null,
       "pattern": null,
       "annotations": {
-        "type_term": "ME:0000202"
+        "type_term": "ME:0000202",
+        "microtype": "ME:0000202",
+        "microtype_data_type": "string"
       }
     },
     "taxon_id": {
@@ -590,7 +648,9 @@
       "multivalued": null,
       "pattern": null,
       "annotations": {
-        "type_term": "ME:0000268"
+        "type_term": "ME:0000268",
+        "microtype": "ME:0000268",
+        "microtype_data_type": "object_ref"
       }
     },
     "taxon_name": {
@@ -600,7 +660,9 @@
       "pattern": null,
       "annotations": {
         "unique": "True",
-        "type_term": "ME:0000046"
+        "type_term": "ME:0000046",
+        "microtype": "ME:0000046",
+        "microtype_data_type": "string"
       }
     },
     "taxon_ncbi_taxid": {
@@ -609,7 +671,9 @@
       "multivalued": null,
       "pattern": null,
       "annotations": {
-        "type_term": "ME:0000047"
+        "type_term": "ME:0000047",
+        "microtype": "ME:0000047",
+        "microtype_data_type": "object_ref"
       }
     },
     "otu_id": {
@@ -618,7 +682,9 @@
       "multivalued": null,
       "pattern": null,
       "annotations": {
-        "type_term": "ME:0000269"
+        "type_term": "ME:0000269",
+        "microtype": "ME:0000269",
+        "microtype_data_type": "object_ref"
       }
     },
     "otu_name": {
@@ -628,7 +694,9 @@
       "pattern": null,
       "annotations": {
         "unique": "True",
-        "type_term": "ME:0000221"
+        "type_term": "ME:0000221",
+        "microtype": "ME:0000221",
+        "microtype_data_type": "string"
       }
     },
     "condition_id": {
@@ -637,7 +705,9 @@
       "multivalued": null,
       "pattern": null,
       "annotations": {
-        "type_term": "ME:0000270"
+        "type_term": "ME:0000270",
+        "microtype": "ME:0000270",
+        "microtype_data_type": "object_ref"
       }
     },
     "condition_name": {
@@ -647,7 +717,9 @@
       "pattern": null,
       "annotations": {
         "unique": "True",
-        "type_term": "ME:0000200"
+        "type_term": "ME:0000200",
+        "microtype": "ME:0000200",
+        "microtype_data_type": "object_ref"
       }
     },
     "strain_id": {
@@ -656,7 +728,9 @@
       "multivalued": null,
       "pattern": null,
       "annotations": {
-        "type_term": "ME:0000271"
+        "type_term": "ME:0000271",
+        "microtype": "ME:0000271",
+        "microtype_data_type": "object_ref"
       }
     },
     "strain_name": {
@@ -666,7 +740,9 @@
       "pattern": null,
       "annotations": {
         "unique": "True",
-        "type_term": "ME:0000044"
+        "type_term": "ME:0000044",
+        "microtype": "ME:0000044",
+        "microtype_data_type": "object_ref"
       }
     },
     "strain_description": {
@@ -675,37 +751,44 @@
       "multivalued": null,
       "pattern": null,
       "annotations": {
-        "type_term": "ME:0000202"
+        "type_term": "ME:0000202",
+        "microtype": "ME:0000202",
+        "microtype_data_type": "string"
       }
     },
     "strain_genome": {
-      "range": "string",
+      "range": "Genome",
       "required": null,
       "multivalued": null,
       "pattern": null,
       "annotations": {
         "foreign_key": "Genome.name",
-        "type_term": "ME:0000246"
+        "type_term": "ME:0000246",
+        "microtype": "ME:0000246",
+        "microtype_data_type": "object_ref"
       }
     },
     "strain_derived_from": {
-      "range": "string",
+      "range": "Strain",
       "required": null,
       "multivalued": null,
       "pattern": null,
       "annotations": {
         "foreign_key": "Strain.name",
-        "type_term": "ME:0000044"
+        "type_term": "ME:0000044",
+        "microtype": "ME:0000044",
+        "microtype_data_type": "object_ref"
       }
     },
     "strain_genes_changed": {
-      "range": "string",
+      "range": "Gene",
       "required": null,
       "multivalued": true,
       "pattern": null,
       "annotations": {
         "foreign_key": "Gene.gene_id",
-        "type_term": "ME:0000091"
+        "type_term": "ME:0000091",
+        "microtype": "ME:0000091"
       }
     },
     "community_id": {
@@ -714,7 +797,9 @@
       "multivalued": null,
       "pattern": null,
       "annotations": {
-        "type_term": "ME:0000272"
+        "type_term": "ME:0000272",
+        "microtype": "ME:0000272",
+        "microtype_data_type": "object_ref"
       }
     },
     "community_name": {
@@ -724,57 +809,68 @@
       "pattern": null,
       "annotations": {
         "unique": "True",
-        "type_term": "ME:0000233"
+        "type_term": "ME:0000233",
+        "microtype": "ME:0000233",
+        "microtype_data_type": "object_ref"
       }
     },
     "community_community_type": {
-      "range": "string",
+      "range": "CommunityTypeEnum",
       "required": true,
       "multivalued": null,
       "pattern": null,
       "annotations": {
-        "constraint": "ME:0000234",
-        "type_term": "ME:0000234"
+        "type_term": "ME:0000234",
+        "microtype": "ME:0000234",
+        "microtype_data_type": "oterm_ref"
       }
     },
     "community_sample": {
-      "range": "string",
+      "range": "Sample",
       "required": null,
       "multivalued": null,
       "pattern": null,
       "annotations": {
         "foreign_key": "Sample.name",
-        "type_term": "ME:0000102"
+        "type_term": "ME:0000102",
+        "microtype": "ME:0000102",
+        "microtype_data_type": "object_ref"
       }
     },
     "community_parent_community": {
-      "range": "string",
+      "range": "Community",
       "required": null,
       "multivalued": null,
       "pattern": null,
       "annotations": {
         "foreign_key": "Community.name",
-        "type_term": "ME:0000233"
+        "type_term": "ME:0000233",
+        "microtype": "ME:0000233",
+        "microtype_data_type": "object_ref"
       }
     },
     "community_condition": {
-      "range": "string",
+      "range": "Condition",
       "required": null,
       "multivalued": null,
       "pattern": null,
       "annotations": {
         "foreign_key": "Condition.name",
-        "type_term": "ME:0000200"
+        "type_term": "ME:0000200",
+        "microtype": "ME:0000200",
+        "microtype_data_type": "object_ref"
       }
     },
     "community_defined_strains": {
-      "range": "string",
+      "range": "Strain",
       "required": null,
-      "multivalued": true,
+      "multivalued": false,
       "pattern": null,
       "annotations": {
         "foreign_key": "Strain.name",
-        "type_term": "ME:0000044"
+        "type_term": "ME:0000044",
+        "microtype": "ME:0000044",
+        "microtype_data_type": "object_ref"
       }
     },
     "community_description": {
@@ -783,7 +879,9 @@
       "multivalued": null,
       "pattern": null,
       "annotations": {
-        "type_term": "ME:0000202"
+        "type_term": "ME:0000202",
+        "microtype": "ME:0000202",
+        "microtype_data_type": "string"
       }
     },
     "reads_id": {
@@ -792,7 +890,9 @@
       "multivalued": null,
       "pattern": null,
       "annotations": {
-        "type_term": "ME:0000273"
+        "type_term": "ME:0000273",
+        "microtype": "ME:0000273",
+        "microtype_data_type": "object_ref"
       }
     },
     "reads_name": {
@@ -802,46 +902,54 @@
       "pattern": null,
       "annotations": {
         "unique": "True",
-        "type_term": "ME:0000248"
+        "type_term": "ME:0000248",
+        "microtype": "ME:0000248",
+        "microtype_data_type": "object_ref"
       }
     },
     "reads_read_count": {
-      "range": "integer",
+      "range": "Count",
       "required": true,
       "multivalued": null,
       "pattern": null,
       "annotations": {
         "units_term": "UO:0000189",
-        "type_term": "ME:0000126"
+        "type_term": "ME:0000126",
+        "microtype": "ME:0000126",
+        "microtype_data_type": "int"
       }
     },
     "reads_read_type": {
-      "range": "string",
+      "range": "ReadTypeEnum",
       "required": true,
       "multivalued": null,
       "pattern": null,
       "annotations": {
-        "constraint": "ME:0000112",
-        "type_term": "ME:0000112"
+        "type_term": "ME:0000112",
+        "microtype": "ME:0000112",
+        "microtype_data_type": "oterm_ref"
       }
     },
     "reads_sequencing_technology": {
-      "range": "string",
+      "range": "SequencingTechnologyEnum",
       "required": true,
       "multivalued": null,
       "pattern": null,
       "annotations": {
-        "constraint": "ME:0000116",
-        "type_term": "ME:0000116"
+        "type_term": "ME:0000116",
+        "microtype": "ME:0000116",
+        "microtype_data_type": "oterm_ref"
       }
     },
     "reads_link": {
-      "range": "string",
+      "range": "Link",
       "required": true,
       "multivalued": null,
       "pattern": null,
       "annotations": {
-        "type_term": "ME:0000203"
+        "type_term": "ME:0000203",
+        "microtype": "ME:0000203",
+        "microtype_data_type": "string"
       }
     },
     "assembly_id": {
@@ -850,7 +958,9 @@
       "multivalued": null,
       "pattern": null,
       "annotations": {
-        "type_term": "ME:0000281"
+        "type_term": "ME:0000281",
+        "microtype": "ME:0000281",
+        "microtype_data_type": "object_ref"
       }
     },
     "assembly_name": {
@@ -860,36 +970,44 @@
       "pattern": null,
       "annotations": {
         "unique": "True",
-        "type_term": "ME:0000280"
+        "type_term": "ME:0000280",
+        "microtype": "ME:0000280",
+        "microtype_data_type": "object_ref"
       }
     },
     "assembly_strain": {
-      "range": "string",
+      "range": "Strain",
       "required": null,
       "multivalued": null,
       "pattern": null,
       "annotations": {
         "foreign_key": "Strain.name",
-        "type_term": "ME:0000044"
+        "type_term": "ME:0000044",
+        "microtype": "ME:0000044",
+        "microtype_data_type": "object_ref"
       }
     },
     "assembly_n_contigs": {
-      "range": "integer",
+      "range": "Count",
       "required": true,
       "multivalued": null,
       "pattern": null,
       "annotations": {
         "units_term": "UO:0000189",
-        "type_term": "ME:0000126"
+        "type_term": "ME:0000126",
+        "microtype": "ME:0000126",
+        "microtype_data_type": "int"
       }
     },
     "assembly_link": {
-      "range": "string",
-      "required": true,
+      "range": "Link",
+      "required": false,
       "multivalued": null,
       "pattern": null,
       "annotations": {
-        "type_term": "ME:0000203"
+        "type_term": "ME:0000203",
+        "microtype": "ME:0000203",
+        "microtype_data_type": "string"
       }
     },
     "genome_id": {
@@ -898,7 +1016,9 @@
       "multivalued": null,
       "pattern": null,
       "annotations": {
-        "type_term": "ME:0000274"
+        "type_term": "ME:0000274",
+        "microtype": "ME:0000274",
+        "microtype_data_type": "object_ref"
       }
     },
     "genome_name": {
@@ -908,46 +1028,56 @@
       "pattern": null,
       "annotations": {
         "unique": "True",
-        "type_term": "ME:0000246"
+        "type_term": "ME:0000246",
+        "microtype": "ME:0000246",
+        "microtype_data_type": "object_ref"
       }
     },
     "genome_strain": {
-      "range": "string",
+      "range": "Strain",
       "required": null,
       "multivalued": null,
       "pattern": null,
       "annotations": {
         "foreign_key": "Strain.name",
-        "type_term": "ME:0000044"
+        "type_term": "ME:0000044",
+        "microtype": "ME:0000044",
+        "microtype_data_type": "object_ref"
       }
     },
     "genome_n_contigs": {
-      "range": "integer",
+      "range": "Count",
       "required": true,
       "multivalued": null,
       "pattern": null,
       "annotations": {
         "units_term": "UO:0000189",
-        "type_term": "ME:0000126"
+        "type_term": "ME:0000126",
+        "microtype": "ME:0000126",
+        "microtype_data_type": "int"
       }
     },
     "genome_n_features": {
-      "range": "integer",
+      "range": "Count",
       "required": true,
       "multivalued": null,
       "pattern": null,
       "annotations": {
         "units_term": "UO:0000189",
-        "type_term": "ME:0000126"
+        "type_term": "ME:0000126",
+        "microtype": "ME:0000126",
+        "microtype_data_type": "int"
       }
     },
     "genome_link": {
-      "range": "string",
+      "range": "Link",
       "required": true,
       "multivalued": null,
       "pattern": null,
       "annotations": {
-        "type_term": "ME:0000203"
+        "type_term": "ME:0000203",
+        "microtype": "ME:0000203",
+        "microtype_data_type": "string"
       }
     },
     "gene_id": {
@@ -956,7 +1086,9 @@
       "multivalued": null,
       "pattern": null,
       "annotations": {
-        "type_term": "ME:0000275"
+        "type_term": "ME:0000275",
+        "microtype": "ME:0000275",
+        "microtype_data_type": "object_ref"
       }
     },
     "gene_gene_id": {
@@ -966,17 +1098,21 @@
       "pattern": null,
       "annotations": {
         "unique": "True",
-        "type_term": "ME:0000224"
+        "type_term": "ME:0000224",
+        "microtype": "ME:0000224",
+        "microtype_data_type": "object_ref"
       }
     },
     "gene_genome": {
-      "range": "string",
+      "range": "Genome",
       "required": true,
       "multivalued": null,
       "pattern": null,
       "annotations": {
         "foreign_key": "Genome.name",
-        "type_term": "ME:0000246"
+        "type_term": "ME:0000246",
+        "microtype": "ME:0000246",
+        "microtype_data_type": "object_ref"
       }
     },
     "gene_aliases": {
@@ -985,7 +1121,9 @@
       "multivalued": true,
       "pattern": null,
       "annotations": {
-        "type_term": "ME:0000060"
+        "type_term": "ME:0000060",
+        "microtype": "ME:0000060",
+        "microtype_data_type": "object_ref"
       }
     },
     "gene_contig_number": {
@@ -995,16 +1133,20 @@
       "pattern": null,
       "annotations": {
         "units_term": "UO:0000189",
-        "type_term": "ME:0000126"
+        "type_term": "ME:0000126",
+        "microtype": "ME:0000126",
+        "microtype_data_type": "int"
       }
     },
     "gene_strand": {
-      "range": "string",
+      "range": "StrandEnum",
       "required": true,
       "multivalued": null,
-      "pattern": "[+-]",
+      "pattern": null,
       "annotations": {
-        "type_term": "ME:0000186"
+        "type_term": "ME:0000186",
+        "microtype": "ME:0000186",
+        "microtype_data_type": "oterm_ref"
       }
     },
     "gene_start": {
@@ -1014,7 +1156,9 @@
       "pattern": null,
       "annotations": {
         "units_term": "UO:0000244",
-        "type_term": "ME:0000242"
+        "type_term": "ME:0000242",
+        "microtype": "ME:0000242",
+        "microtype_data_type": "int"
       }
     },
     "gene_stop": {
@@ -1024,7 +1168,9 @@
       "pattern": null,
       "annotations": {
         "units_term": "UO:0000244",
-        "type_term": "ME:0000243"
+        "type_term": "ME:0000243",
+        "microtype": "ME:0000243",
+        "microtype_data_type": "int"
       }
     },
     "gene_function": {
@@ -1033,7 +1179,8 @@
       "multivalued": null,
       "pattern": null,
       "annotations": {
-        "type_term": "ME:0000250"
+        "type_term": "ME:0000250",
+        "microtype": "ME:0000250"
       }
     },
     "bin_id": {
@@ -1042,7 +1189,9 @@
       "multivalued": null,
       "pattern": null,
       "annotations": {
-        "type_term": "ME:0000331"
+        "type_term": "ME:0000331",
+        "microtype": "ME:0000331",
+        "microtype_data_type": "object_ref"
       }
     },
     "bin_name": {
@@ -1052,17 +1201,21 @@
       "pattern": null,
       "annotations": {
         "unique": "True",
-        "type_term": "ME:0000330"
+        "type_term": "ME:0000330",
+        "microtype": "ME:0000330",
+        "microtype_data_type": "object_ref"
       }
     },
     "bin_assembly": {
-      "range": "string",
+      "range": "Assembly",
       "required": true,
       "multivalued": null,
       "pattern": null,
       "annotations": {
         "foreign_key": "Assembly.name",
-        "type_term": "ME:0000280"
+        "type_term": "ME:0000280",
+        "microtype": "ME:0000280",
+        "microtype_data_type": "object_ref"
       }
     },
     "bin_contigs": {
@@ -1071,7 +1224,9 @@
       "multivalued": true,
       "pattern": null,
       "annotations": {
-        "type_term": "ME:0000240"
+        "type_term": "ME:0000240",
+        "microtype": "ME:0000240",
+        "microtype_data_type": "string"
       }
     },
     "protocol_id": {
@@ -1080,7 +1235,9 @@
       "multivalued": null,
       "pattern": null,
       "annotations": {
-        "type_term": "ME:0000332"
+        "type_term": "ME:0000332",
+        "microtype": "ME:0000332",
+        "microtype_data_type": "object_ref"
       }
     },
     "protocol_name": {
@@ -1090,7 +1247,9 @@
       "pattern": null,
       "annotations": {
         "unique": "True",
-        "type_term": "ME:0000328"
+        "type_term": "ME:0000328",
+        "microtype": "ME:0000328",
+        "microtype_data_type": "object_ref"
       }
     },
     "protocol_description": {
@@ -1099,16 +1258,20 @@
       "multivalued": null,
       "pattern": null,
       "annotations": {
-        "type_term": "ME:0000202"
+        "type_term": "ME:0000202",
+        "microtype": "ME:0000202",
+        "microtype_data_type": "string"
       }
     },
     "protocol_link": {
-      "range": "string",
+      "range": "Link",
       "required": null,
       "multivalued": null,
-      "pattern": "http.*",
+      "pattern": null,
       "annotations": {
-        "type_term": "ME:0000203"
+        "type_term": "ME:0000203",
+        "microtype": "ME:0000203",
+        "microtype_data_type": "string"
       }
     },
     "image_id": {
@@ -1117,7 +1280,9 @@
       "multivalued": null,
       "pattern": null,
       "annotations": {
-        "type_term": "ME:0000356"
+        "type_term": "ME:0000356",
+        "microtype": "ME:0000356",
+        "microtype_data_type": "object_ref"
       }
     },
     "image_name": {
@@ -1127,7 +1292,9 @@
       "pattern": null,
       "annotations": {
         "unique": "True",
-        "type_term": "ME:0000355"
+        "type_term": "ME:0000355",
+        "microtype": "ME:0000355",
+        "microtype_data_type": "object_ref"
       }
     },
     "image_description": {
@@ -1136,7 +1303,9 @@
       "multivalued": null,
       "pattern": null,
       "annotations": {
-        "type_term": "ME:0000202"
+        "type_term": "ME:0000202",
+        "microtype": "ME:0000202",
+        "microtype_data_type": "string"
       }
     },
     "image_MIME_type": {
@@ -1145,17 +1314,21 @@
       "multivalued": null,
       "pattern": null,
       "annotations": {
-        "type_term": "ME:0000357"
+        "type_term": "ME:0000357",
+        "microtype": "ME:0000357",
+        "microtype_data_type": "string"
       }
     },
     "image_size": {
-      "range": "integer",
+      "range": "Size",
       "required": null,
       "multivalued": null,
       "pattern": null,
       "annotations": {
         "units_term": "UO:0000233",
-        "type_term": "ME:0000128"
+        "type_term": "ME:0000128",
+        "microtype": "ME:0000128",
+        "microtype_data_type": "float"
       }
     },
     "image_dimensions": {
@@ -1165,16 +1338,19 @@
       "pattern": null,
       "annotations": {
         "units_term": "UO:0000236",
-        "type_term": "ME:0000292"
+        "type_term": "ME:0000292",
+        "microtype": "ME:0000292"
       }
     },
     "image_link": {
-      "range": "string",
+      "range": "Link",
       "required": null,
       "multivalued": null,
       "pattern": null,
       "annotations": {
-        "type_term": "ME:0000203"
+        "type_term": "ME:0000203",
+        "microtype": "ME:0000203",
+        "microtype_data_type": "string"
       }
     },
     "tnseq_library_id": {
@@ -1183,7 +1359,9 @@
       "multivalued": null,
       "pattern": null,
       "annotations": {
-        "type_term": "ME:0000276"
+        "type_term": "ME:0000276",
+        "microtype": "ME:0000276",
+        "microtype_data_type": "object_ref"
       }
     },
     "tnseq_library_name": {
@@ -1193,17 +1371,21 @@
       "pattern": null,
       "annotations": {
         "unique": "True",
-        "type_term": "ME:0000262"
+        "type_term": "ME:0000262",
+        "microtype": "ME:0000262",
+        "microtype_data_type": "object_ref"
       }
     },
     "tnseq_library_genome": {
-      "range": "string",
+      "range": "Genome",
       "required": true,
       "multivalued": null,
       "pattern": null,
       "annotations": {
         "foreign_key": "Genome.name",
-        "type_term": "ME:0000246"
+        "type_term": "ME:0000246",
+        "microtype": "ME:0000246",
+        "microtype_data_type": "object_ref"
       }
     },
     "tnseq_library_primers_model": {
@@ -1212,7 +1394,9 @@
       "multivalued": null,
       "pattern": null,
       "annotations": {
-        "type_term": "ME:0000263"
+        "type_term": "ME:0000263",
+        "microtype": "ME:0000263",
+        "microtype_data_type": "string"
       }
     },
     "tnseq_library_n_mapped_reads": {
@@ -1222,7 +1406,9 @@
       "pattern": null,
       "annotations": {
         "units_term": "UO:0000189",
-        "type_term": "ME:0000126"
+        "type_term": "ME:0000126",
+        "microtype": "ME:0000126",
+        "microtype_data_type": "int"
       }
     },
     "tnseq_library_n_barcodes": {
@@ -1232,7 +1418,9 @@
       "pattern": null,
       "annotations": {
         "units_term": "UO:0000189",
-        "type_term": "ME:0000126"
+        "type_term": "ME:0000126",
+        "microtype": "ME:0000126",
+        "microtype_data_type": "int"
       }
     },
     "tnseq_library_n_usable_barcodes": {
@@ -1242,7 +1430,9 @@
       "pattern": null,
       "annotations": {
         "units_term": "UO:0000189",
-        "type_term": "ME:0000126"
+        "type_term": "ME:0000126",
+        "microtype": "ME:0000126",
+        "microtype_data_type": "int"
       }
     },
     "tnseq_library_n_insertion_locations": {
@@ -1252,27 +1442,33 @@
       "pattern": null,
       "annotations": {
         "units_term": "UO:0000189",
-        "type_term": "ME:0000126"
+        "type_term": "ME:0000126",
+        "microtype": "ME:0000126",
+        "microtype_data_type": "int"
       }
     },
     "tnseq_library_hit_rate_essential": {
-      "range": "float",
+      "range": "Rate",
       "required": null,
       "multivalued": null,
       "pattern": null,
       "annotations": {
         "units_term": "UO:0000190",
-        "type_term": "ME:0000264"
+        "type_term": "ME:0000264",
+        "microtype": "ME:0000264",
+        "microtype_data_type": "float"
       }
     },
     "tnseq_library_hit_rate_other": {
-      "range": "float",
+      "range": "Rate",
       "required": null,
       "multivalued": null,
       "pattern": null,
       "annotations": {
         "units_term": "UO:0000190",
-        "type_term": "ME:0000264"
+        "type_term": "ME:0000264",
+        "microtype": "ME:0000264",
+        "microtype_data_type": "float"
       }
     },
     "dubseq_library_id": {
@@ -1281,7 +1477,9 @@
       "multivalued": null,
       "pattern": null,
       "annotations": {
-        "type_term": "ME:0000276"
+        "type_term": "ME:0000276",
+        "microtype": "ME:0000276",
+        "microtype_data_type": "object_ref"
       }
     },
     "dubseq_library_name": {
@@ -1291,27 +1489,33 @@
       "pattern": null,
       "annotations": {
         "unique": "True",
-        "type_term": "ME:0000262"
+        "type_term": "ME:0000262",
+        "microtype": "ME:0000262",
+        "microtype_data_type": "object_ref"
       }
     },
     "dubseq_library_genome": {
-      "range": "string",
+      "range": "Genome",
       "required": true,
       "multivalued": null,
       "pattern": null,
       "annotations": {
         "foreign_key": "Genome.name",
-        "type_term": "ME:0000246"
+        "type_term": "ME:0000246",
+        "microtype": "ME:0000246",
+        "microtype_data_type": "object_ref"
       }
     },
     "dubseq_library_n_fragments": {
-      "range": "integer",
+      "range": "Count",
       "required": null,
       "multivalued": null,
       "pattern": null,
       "annotations": {
         "units_term": "UO:0000189",
-        "type_term": "ME:0000126"
+        "type_term": "ME:0000126",
+        "microtype": "ME:0000126",
+        "microtype_data_type": "int"
       }
     }
   },
@@ -1409,108 +1613,105 @@
   ],
   "ontology_terms": {
     "class_terms": [
+      "DA:0000066",
+      "DA:0000062",
+      "DA:0000060",
+      "DA:0000061",
+      "DA:0000040",
       "DA:0000073",
-      "DA:0000037",
+      "DA:0000048",
+      "DA:0000041",
       "DA:0000063",
+      "DA:0000072",
+      "DA:0000039",
+      "DA:0000045",
+      "DA:0000042",
+      "DA:0000054",
       "DA:0000074",
       "DA:0000075",
-      "DA:0000054",
-      "DA:0000061",
-      "DA:0000062",
-      "DA:0000066",
-      "DA:0000042",
-      "DA:0000045",
-      "DA:0000039",
-      "DA:0000040",
-      "DA:0000048",
-      "DA:0000072",
-      "DA:0000041",
-      "DA:0000060"
+      "DA:0000037"
     ],
     "slot_terms": [
-      "ME:0000091",
-      "ME:0000213",
-      "ME:0000230",
-      "ME:0000047",
-      "ME:0000250",
-      "ME:0000207",
-      "ME:0000356",
-      "ME:0000328",
-      "ME:0000271",
-      "ME:0000221",
-      "ME:0000220",
-      "ME:0000274",
-      "ME:0000269",
-      "ME:0000202",
-      "ME:0000046",
-      "ME:0000211",
-      "ME:0000215",
-      "ME:0000272",
-      "ME:0000112",
-      "ME:0000224",
-      "ME:0000262",
-      "ME:0000275",
       "ME:0000204",
-      "ME:0000217",
-      "ME:0000212",
       "ME:0000240",
-      "ME:0000044",
-      "ME:0000270",
-      "ME:0000246",
-      "ME:0000200",
-      "ME:0000126",
-      "ME:0000248",
-      "ME:0000205",
-      "ME:0000280",
-      "ME:0000203",
-      "ME:0000216",
-      "ME:0000234",
-      "ME:0000355",
-      "ME:0000060",
-      "ME:0000102",
-      "ME:0000219",
-      "ME:0000229",
       "ME:0000214",
+      "ME:0000356",
+      "ME:0000208",
+      "ME:0000230",
+      "ME:0000357",
+      "ME:0000229",
+      "ME:0000292",
+      "ME:0000217",
+      "ME:0000010",
+      "ME:0000246",
+      "ME:0000233",
+      "ME:0000281",
+      "ME:0000248",
+      "ME:0000091",
+      "ME:0000060",
+      "ME:0000186",
+      "ME:0000203",
+      "ME:0000215",
+      "ME:0000207",
+      "ME:0000250",
       "ME:0000268",
+      "ME:0000273",
+      "ME:0000201",
+      "ME:0000009",
+      "ME:0000276",
+      "ME:0000219",
+      "ME:0000275",
+      "ME:0000270",
+      "ME:0000224",
+      "ME:0000264",
+      "ME:0000234",
+      "ME:0000272",
+      "ME:0000206",
+      "ME:0000280",
       "ME:0000243",
       "ME:0000331",
-      "ME:0000330",
-      "ME:0000264",
-      "ME:0000266",
-      "ME:0000263",
-      "ME:0000242",
-      "ME:0000201",
-      "ME:0000281",
-      "ME:0000277",
-      "ME:0000186",
-      "ME:0000276",
-      "ME:0000009",
-      "ME:0000267",
-      "ME:0000357",
-      "ME:0000228",
-      "ME:0000116",
+      "ME:0000269",
+      "ME:0000112",
+      "ME:0000216",
       "ME:0000332",
+      "ME:0000328",
+      "ME:0000263",
+      "ME:0000212",
+      "ME:0000102",
+      "ME:0000228",
+      "ME:0000330",
+      "ME:0000221",
+      "ME:0000202",
+      "ME:0000242",
+      "ME:0000220",
       "ME:0000128",
-      "ME:0000010",
-      "ME:0000233",
-      "ME:0000273",
-      "ME:0000208",
-      "ME:0000206",
-      "ME:0000292"
+      "ME:0000274",
+      "ME:0000277",
+      "ME:0000044",
+      "ME:0000266",
+      "ME:0000271",
+      "ME:0000267",
+      "ME:0000355",
+      "ME:0000126",
+      "ME:0000046",
+      "ME:0000213",
+      "ME:0000200",
+      "ME:0000116",
+      "ME:0000262",
+      "ME:0000211",
+      "ME:0000047",
+      "ME:0000205"
     ],
     "constraints": [
-      "ME:0000112",
+      "ENVO:00002297",
+      "CONTINENT:0000001",
+      "ENIGMA:0000029",
       "[Entity|Brick]",
       "MIxS:0000002",
-      "ME:0000234",
-      "COUNTRY:0000001",
-      "CONTINENT:0000001",
-      "ENVO:00002297",
-      "ENVO:00010483",
-      "ME:0000116",
       "ENVO:01000254",
-      "PROCESS:0000001",
-      "ENIGMA:0000029"
+      "COUNTRY:0000001",
+      "ENVO:00010483",
+      "PROCESS:0000001"
     ]
   },
   "foreign_keys": [
@@ -1579,7 +1780,6 @@
     "process_input_objects",
     "process_output_objects",
     "strain_genes_changed",
-    "community_defined_strains",
     "gene_aliases",
     "bin_contigs"
   ],
@@ -1623,7 +1823,6 @@
     "assembly_id",
     "assembly_name",
     "assembly_n_contigs",
-    "assembly_link",
     "genome_id",
     "genome_name",
     "genome_n_contigs",

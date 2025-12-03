@@ -5,8 +5,8 @@ CORAL LinkML Schema - Relationship Analysis
 ## Summary
 
 Total relationships: 15
-  - One-to-one/Many-to-one: 11
-  - Many-to-many: 2
+  - One-to-one/Many-to-one: 12
+  - Many-to-many: 1
   - Self-referential: 2
   - Provenance-tracked entities: 0
 
@@ -16,6 +16,7 @@ Total relationships: 15
   Bin.bin_assembly → Assembly.name [REQUIRED]
   Community.community_condition → Condition.name [OPTIONAL]
   Community.community_sample → Sample.name [OPTIONAL]
+  Community.community_defined_strains → Strain.name [OPTIONAL]
   DubSeq_Library.dubseq_library_genome → Genome.name [REQUIRED]
   Gene.gene_genome → Genome.name [REQUIRED]
   Genome.genome_strain → Strain.name [OPTIONAL]
@@ -26,7 +27,6 @@ Total relationships: 15
 
 ## Many-to-Many Relationships
 
-  Community.community_defined_strains → Strain.name [OPTIONAL]
   Strain.strain_genes_changed → Gene.gene_id [OPTIONAL]
 
 ## Self-Referential Relationships
@@ -49,7 +49,7 @@ Community:
   → Sample via community_sample
   → Community via community_parent_community (self)
   → Condition via community_condition
-  ⟹ Strain via community_defined_strains
+  → Strain via community_defined_strains
 
 DubSeq_Library:
   → Genome via dubseq_library_genome

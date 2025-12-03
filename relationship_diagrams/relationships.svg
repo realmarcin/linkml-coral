@@ -42,7 +42,7 @@
 <text text-anchor="middle" x="686.25" y="-174.95" font-family="Times,serif" font-size="14.00">Genome</text>
 </g>
 <!-- Strain&#45;&gt;Genome -->
-<g id="edge10" class="edge">
+<g id="edge11" class="edge">
 <title>Strain&#45;&gt;Genome</title>
 <path fill="none" stroke="black" stroke-dasharray="5,2" d="M369.81,-195.29C395.04,-214.24 437.74,-242.65 480,-254 525.82,-266.31 541.39,-267.9 586.75,-254 615.48,-245.19 642.34,-223.77 660.73,-206.23"/>
 <polygon fill="black" stroke="black" points="662.83,-209.08 667.48,-199.56 657.91,-204.09 662.83,-209.08"/>
@@ -81,10 +81,10 @@
 <text text-anchor="middle" x="171.75" y="-76.95" font-family="Times,serif" font-size="14.00">Community</text>
 </g>
 <!-- Community&#45;&gt;Strain -->
-<g id="edge12" class="edge">
+<g id="edge5" class="edge">
 <title>Community&#45;&gt;Strain</title>
-<path fill="none" stroke="blue" stroke-dasharray="5,2" d="M205.96,-100.32C235.73,-116.73 279.27,-140.75 309.67,-157.51"/>
-<polygon fill="blue" stroke="blue" points="309.6,-157.48 316.19,-166.25 314.27,-160.05 318.07,-162.15 318.07,-162.15 318.07,-162.15 314.27,-160.05 320.53,-158.37 309.6,-157.48"/>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M205.96,-100.32C235.47,-116.59 278.52,-140.33 308.88,-157.08"/>
+<polygon fill="black" stroke="black" points="306.88,-159.97 317.33,-161.74 310.26,-153.84 306.88,-159.97"/>
 <text text-anchor="middle" x="261.88" y="-148.02" font-family="Times,serif" font-size="10.00">defined_strains</text>
 </g>
 <!-- Community&#45;&gt;Community -->
@@ -127,7 +127,7 @@
 <text text-anchor="middle" x="533.38" y="-12.95" font-family="Times,serif" font-size="14.00">Location</text>
 </g>
 <!-- Sample&#45;&gt;Location -->
-<g id="edge9" class="edge">
+<g id="edge10" class="edge">
 <title>Sample&#45;&gt;Location</title>
 <path fill="none" stroke="black" d="M374.75,-21.4C405.15,-20.75 454.28,-19.69 489.61,-18.92"/>
 <polygon fill="black" stroke="black" points="489.58,-22.42 499.5,-18.71 489.43,-15.43 489.58,-22.42"/>
@@ -140,21 +140,21 @@
 <text text-anchor="middle" x="533.38" y="-221.95" font-family="Times,serif" font-size="14.00">DubSeq_Library</text>
 </g>
 <!-- DubSeq_Library&#45;&gt;Genome -->
-<g id="edge5" class="edge">
+<g id="edge6" class="edge">
 <title>DubSeq_Library&#45;&gt;Genome</title>
 <path fill="none" stroke="black" d="M587.14,-210.56C605.86,-204.73 626.63,-198.26 644.23,-192.78"/>
 <polygon fill="black" stroke="black" points="644.77,-196.28 653.28,-189.96 642.69,-189.59 644.77,-196.28"/>
 <text text-anchor="middle" x="620.88" y="-206.66" font-family="Times,serif" font-size="10.00">genome</text>
 </g>
 <!-- Genome&#45;&gt;Strain -->
-<g id="edge7" class="edge">
+<g id="edge8" class="edge">
 <title>Genome&#45;&gt;Strain</title>
 <path fill="none" stroke="black" stroke-dasharray="5,2" d="M654.92,-179.73C593.01,-179.18 452.23,-177.93 384.62,-177.33"/>
 <polygon fill="black" stroke="black" points="384.8,-173.84 374.77,-177.25 384.74,-180.83 384.8,-173.84"/>
 <text text-anchor="middle" x="533.38" y="-180.84" font-family="Times,serif" font-size="10.00">strain</text>
 </g>
 <!-- Gene&#45;&gt;Genome -->
-<g id="edge6" class="edge">
+<g id="edge7" class="edge">
 <title>Gene&#45;&gt;Genome</title>
 <path fill="none" stroke="black" d="M560.6,-131.74C581.63,-136.73 611.72,-144.72 637,-154.75 639.45,-155.72 641.93,-156.78 644.42,-157.89"/>
 <polygon fill="black" stroke="black" points="642.65,-160.93 653.19,-162.07 645.66,-154.61 642.65,-160.93"/>
@@ -173,7 +173,7 @@
 <text text-anchor="middle" x="171.75" y="-225.95" font-family="Times,serif" font-size="14.00">Protocol</text>
 </g>
 <!-- Process&#45;&gt;Protocol -->
-<g id="edge8" class="edge">
+<g id="edge9" class="edge">
 <title>Process&#45;&gt;Protocol</title>
 <path fill="none" stroke="black" stroke-dasharray="5,2" d="M57.51,-231C77.98,-231 106.15,-231 129.26,-231"/>
 <polygon fill="black" stroke="black" points="128.97,-234.5 138.97,-231 128.97,-227.5 128.97,-234.5"/>
@@ -186,7 +186,7 @@
 <text text-anchor="middle" x="533.38" y="-66.95" font-family="Times,serif" font-size="14.00">TnSeq_Library</text>
 </g>
 <!-- TnSeq_Library&#45;&gt;Genome -->
-<g id="edge11" class="edge">
+<g id="edge12" class="edge">
 <title>TnSeq_Library&#45;&gt;Genome</title>
 <path fill="none" stroke="black" d="M570.87,-90.46C576.22,-93.27 581.65,-96.18 586.75,-99 609.46,-111.56 616.74,-112.53 637,-128.75 646.06,-136.01 655.04,-144.93 662.76,-153.29"/>
 <polygon fill="black" stroke="black" points="660,-155.46 669.27,-160.58 665.21,-150.79 660,-155.46"/>

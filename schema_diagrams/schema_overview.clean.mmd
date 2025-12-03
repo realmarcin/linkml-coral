@@ -33,3 +33,18 @@ Taxon {
 }
 TnSeqLibrary {
 }
+Assembly ||--|o Strain : "assembly_strain"
+Bin ||--|| Assembly : "bin_assembly"
+Community ||--|o Community : "community_parent_community"
+Community ||--|o Condition : "community_condition"
+Community ||--|o Sample : "community_sample"
+Community ||--|o Strain : "community_defined_strains"
+DubSeqLibrary ||--|| Genome : "dubseq_library_genome"
+Gene ||--|| Genome : "gene_genome"
+Genome ||--|o Strain : "genome_strain"
+Process ||--|o Protocol : "process_protocol"
+Sample ||--|| Location : "sample_location"
+Strain ||--|o Genome : "strain_genome"
+Strain ||--|o Strain : "strain_derived_from"
+Strain ||--}o Gene : "strain_genes_changed"
+TnSeqLibrary ||--|| Genome : "tnseq_library_genome"

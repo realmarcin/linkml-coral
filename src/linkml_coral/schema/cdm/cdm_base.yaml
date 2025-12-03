@@ -1,0 +1,279 @@
+id: https://w3id.org/enigma/kbase-cdm-base
+name: kbase-cdm-base
+title: KBase CDM Base Schema
+description: |
+  Base schema module for KBase Common Data Model (CDM) LinkML schema.
+
+  This module defines:
+  - Common types imported from original CORAL schema
+  - CDM-specific mixins (OntologyTermPair, CDMEntity)
+  - Naming convention patterns (sdt_* prefixes, snake_case)
+  - Shared validation rules
+
+  The KBase CDM schema is derived from the CORAL schema but includes:
+  - Ontology term splitting (field → field_sys_oterm_id + field_sys_oterm_name)
+  - Standardized naming conventions with entity prefixes
+  - Centralized ontology catalog (sys_oterm table)
+  - Denormalized provenance model
+
+version: 1.0.0
+license: MIT
+
+prefixes:
+  linkml: https://w3id.org/linkml/
+  enigma: https://w3id.org/enigma/
+  kbase_cdm: https://w3id.org/enigma/kbase-cdm/
+  DA: http://purl.obolibrary.org/obo/DA_
+  ME: http://purl.obolibrary.org/obo/ME_
+  ENVO: http://purl.obolibrary.org/obo/ENVO_
+  UO: http://purl.obolibrary.org/obo/UO_
+  PROCESS: http://purl.obolibrary.org/obo/PROCESS_
+  ENIGMA_TERM: http://purl.obolibrary.org/obo/ENIGMA_
+  CONTINENT: http://purl.obolibrary.org/obo/CONTINENT_
+  COUNTRY: http://purl.obolibrary.org/obo/COUNTRY_
+  MIxS: http://purl.obolibrary.org/obo/MIxS_
+
+default_prefix: kbase_cdm
+
+imports:
+  - linkml:types
+
+# ============================================================
+# TYPES - Semantic types from original CORAL schema
+# ============================================================
+types:
+  Date:
+    typeof: string
+    pattern: '^\d{4}-\d{2}-\d{2}$'
+    description: ISO 8601 date format (YYYY-MM-DD)
+    annotations:
+      microtype:
+        tag: microtype
+        value: ME:0000040
+      microtype_data_type:
+        tag: microtype_data_type
+        value: string
+
+  Time:
+    typeof: string
+    pattern: '^\d{2}:\d{2}(:\d{2})?$'
+    description: Time in HH:MM or HH:MM:SS format
+    annotations:
+      microtype:
+        tag: microtype
+        value: ME:0000041
+      microtype_data_type:
+        tag: microtype_data_type
+        value: string
+
+  Link:
+    typeof: string
+    pattern: '^(http.*|/.*)$'
+    description: HTTP/HTTPS URL or file path
+    annotations:
+      microtype:
+        tag: microtype
+        value: ME:0000042
+      microtype_data_type:
+        tag: microtype_data_type
+        value: string
+
+  Latitude:
+    typeof: float
+    minimum_value: -90.0
+    maximum_value: 90.0
+    description: Latitude in decimal degrees
+    annotations:
+      microtype:
+        tag: microtype
+        value: ME:0000043
+      microtype_data_type:
+        tag: microtype_data_type
+        value: float
+
+  Longitude:
+    typeof: float
+    minimum_value: -180.0
+    maximum_value: 180.0
+    description: Longitude in decimal degrees
+    annotations:
+      microtype:
+        tag: microtype
+        value: ME:0000044
+      microtype_data_type:
+        tag: microtype_data_type
+        value: float
+
+  Count:
+    typeof: integer
+    minimum_value: 0
+    description: Non-negative integer count
+    annotations:
+      microtype:
+        tag: microtype
+        value: ME:0000045
+      microtype_data_type:
+        tag: microtype_data_type
+        value: int
+
+  Size:
+    typeof: integer
+    minimum_value: 0
+    description: Size in bytes
+    annotations:
+      microtype:
+        tag: microtype
+        value: ME:0000046
+      microtype_data_type:
+        tag: microtype_data_type
+        value: int
+
+  Rate:
+    typeof: float
+    minimum_value: 0.0
+    description: Rate or frequency measurement
+    annotations:
+      microtype:
+        tag: microtype
+        value: ME:0000047
+      microtype_data_type:
+        tag: microtype_data_type
+        value: float
+
+  Depth:
+    typeof: float
+    description: Depth measurement (meters)
+    annotations:
+      microtype:
+        tag: microtype
+        value: ME:0000048
+      microtype_data_type:
+        tag: microtype_data_type
+        value: float
+
+  Elevation:
+    typeof: float
+    description: Elevation measurement (meters)
+    annotations:
+      microtype:
+        tag: microtype
+        value: ME:0000049
+      microtype_data_type:
+        tag: microtype_data_type
+        value: float
+
+  OntologyTermID:
+    typeof: string
+    pattern: '^[A-Z_]+:\d+$'
+    description: CURIE format ontology term identifier (e.g., ME:0000129, ENVO:00002041)
+    comments:
+      - References sys_oterm table in CDM
+      - Standard OBO format with prefix and numeric ID
+
+  EntityName:
+    typeof: string
+    pattern: '^[A-Za-z0-9_\-. ]+$'
+    description: Human-readable entity name
+    comments:
+      - Used for foreign key references in CDM (not ID)
+      - Allows alphanumeric, underscore, hyphen, dot, and space
+
+# ============================================================
+# MIXINS - Reusable patterns for CDM entities
+# ============================================================
+classes:
+  OntologyTermPair:
+    mixin: true
+    description: |
+      Mixin for ontology-constrained fields in KBase CDM.
+
+      The CDM splits each ontology-controlled field into two columns:
+      - {field}_sys_oterm_id: CURIE identifier (FK to sys_oterm)
+      - {field}_sys_oterm_name: Human-readable term name
+
+      This pattern enables:
+      - Ontology validation via FK constraint
+      - Human-readable labels without joins
+      - Ontology evolution without data migration
+
+      Examples:
+      - material → material_sys_oterm_id + material_sys_oterm_name
+      - biome → biome_sys_oterm_id + biome_sys_oterm_name
+      - read_type → read_type_sys_oterm_id + read_type_sys_oterm_name
+    abstract: true
+    comments:
+      - Use this mixin when defining ontology-constrained slot pairs
+      - Ensures consistent naming and typing across all entities
+
+  CDMEntity:
+    mixin: true
+    description: |
+      Base mixin for all CDM static data tables (sdt_*).
+
+      Enforces CDM naming conventions:
+      - Primary key: sdt_{entity}_id with pattern EntityName\d{7}
+      - Name field: sdt_{entity}_name (unique, used for FK references)
+      - All columns use snake_case with entity prefix
+
+      Example:
+      - Location: sdt_location_id, sdt_location_name
+      - Sample: sdt_sample_id, sdt_sample_name
+
+      Note: Each entity class must define its own id and name slots
+      with entity-specific names (e.g., sdt_location_id, sdt_location_name).
+    abstract: true
+    comments:
+      - This mixin does not define slots - each entity defines its own
+      - Used for grouping and documentation purposes
+
+  SystemEntity:
+    mixin: true
+    description: |
+      Base mixin for CDM system tables (sys_*).
+
+      System tables provide metadata, type definitions, provenance tracking,
+      and ontology catalogs. They support the static and dynamic data tables
+      but are not directly linked to experimental entities.
+
+      System tables: sys_typedef, sys_ddt_typedef, sys_oterm, sys_process,
+      sys_process_input, sys_process_output
+    abstract: true
+    comments:
+      - System tables have their own identifier conventions
+      - No sdt_ prefix (use sys_ instead)
+      - May have composite keys or generated IDs
+
+# ============================================================
+# ENUMS - Not defined here, inherited from main schema
+# ============================================================
+# Note: Enums are defined in the original CORAL schema and imported
+# via linkml_coral_cdm.yaml. The CDM schema reuses these enums but
+# stores them in split format (ID + name) in the database.
+
+# ============================================================
+# SLOTS - Common slots used across entities
+# ============================================================
+slots:
+  sys_oterm_id:
+    description: Ontology term identifier (CURIE format)
+    range: OntologyTermID
+    required: false
+    comments:
+      - Foreign key to sys_oterm table
+      - Standard format: PREFIX:NNNNNN (e.g., ME:0000129)
+
+  sys_oterm_name:
+    description: Human-readable ontology term name
+    range: string
+    required: false
+    comments:
+      - Denormalized from sys_oterm for query performance
+      - Must match the name in sys_oterm catalog
+
+  link:
+    description: External reference URL or file path
+    range: Link
+    required: false
+    comments:
+      - Used for Assembly, Genome, Reads, Image, Protocol
+      - May point to files in object storage or external databases

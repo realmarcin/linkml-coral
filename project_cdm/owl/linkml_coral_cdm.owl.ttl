@@ -1,0 +1,3789 @@
+@prefix ENVO: <http://purl.obolibrary.org/obo/ENVO_> .
+@prefix ME: <http://purl.obolibrary.org/obo/ME_> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix enigma: <https://w3id.org/enigma/> .
+@prefix kbase_cdm: <https://w3id.org/enigma/kbase-cdm/> .
+@prefix linkml: <https://w3id.org/linkml/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix pav: <http://purl.org/pav/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+enigma:kbase-cdm a owl:Ontology ;
+    rdfs:label "kbase-cdm" ;
+    dcterms:license "MIT" ;
+    dcterms:title "KBase Common Data Model (CDM) for ENIGMA CORAL" ;
+    pav:version "1.0.0" ;
+    skos:definition """LinkML schema for KBase Common Data Model (CDM) representing ENIGMA CORAL data.
+
+This schema is derived from the original CORAL LinkML schema but includes
+transformations specific to the KBase CDM implementation:
+
+**Key CDM Patterns:**
+
+1. **Ontology Term Splitting**
+   - CORAL: Single field with ontology constraint
+   - CDM: Two fields (ID + name) for each ontology term
+   - Example: `material` → `material_sys_oterm_id` + `material_sys_oterm_name`
+   - Enables FK validation + human-readable labels without joins
+
+2. **CDM Naming Conventions**
+   - Tables: `sdt_*` (static), `ddt_*` (dynamic), `sys_*` (system)
+   - IDs: `sdt_{entity}_id` with pattern `EntityName\\d{7}`
+   - Names: `sdt_{entity}_name` (unique, used for FK references)
+   - All columns: snake_case with entity prefix
+
+3. **Centralized Ontology Catalog**
+   - All ontology terms stored in `sys_oterm` table
+   - 10,594 terms from multiple ontologies (ME, ENVO, UO, etc.)
+   - Hierarchical relationships via `parent_sys_oterm_id`
+   - Single source of truth for semantic metadata
+
+4. **Denormalized Provenance Model**
+   - Process workflows stored in `sys_process` table
+   - Input/output relationships in `sys_process_input`, `sys_process_output`
+   - Complete lineage tracing from samples to analyses
+   - 142,958 process records documenting all transformations
+
+5. **Dynamic Data Bricks**
+   - N-dimensional measurement arrays in `ddt_brick*` tables
+   - Flexible schema defined in `sys_ddt_typedef`
+   - Semantic dimensions and variables via ontology terms
+   - 82.6M rows across 20 brick tables
+
+**Schema Organization:**
+
+This schema is modular, organized into:
+- `cdm_base.yaml`: Common types, mixins, validation patterns
+- `cdm_static_entities.yaml`: 17 sdt_* entity classes
+- `cdm_system_tables.yaml`: 6 sys_* system classes
+- `cdm_dynamic_data.yaml`: Brick infrastructure (ddt_*)
+- `linkml_coral_cdm.yaml`: Main schema (this file)
+
+**Data Volume:**
+- 272,934 rows across 17 static entity tables
+- 142,958 process records (provenance)
+- 10,594 ontology terms
+- 82.6M rows in dynamic data tables
+
+**Comparison to Original CORAL:**
+- Maintains same 17 core entity types
+- Adds 6 new system table classes
+- Preserves provenance annotations
+- Extends with CDM-specific patterns
+
+**Documentation:**
+- Analysis Report: `docs/cdm_analysis/CDM_PARQUET_ANALYSIS_REPORT.md`
+- Schema Comparison: `docs/CORAL_TO_CDM_MAPPING.md`
+- Validation Guide: `docs/CDM_VALIDATION_GUIDE.md`
+""" ;
+    skos:note """Brick System Usage:
+- Store measurements too diverse for static schema
+- Examples: metabolomics, proteomics, time series, spatial arrays
+- Each brick defines its own N-dimensional structure
+- Semantic metadata enables cross-brick queries
+""",
+        """Foreign Key References:
+- All FK references in CDM use _name columns (not _id)
+- Example: Sample.sdt_location_name → Location.sdt_location_name
+- Self-referential FKs: Community.parent, Strain.derived_from
+""",
+        """Migration from CORAL to CDM:
+- Original CORAL data can be transformed to CDM format
+- Key transformations documented in docs/CORAL_TO_CDM_MAPPING.md
+- Migration scripts available in scripts/cdm_analysis/
+""",
+        """Ontology Term Splitting:
+- 15 fields affected across 5 entity types
+- Location: 4 fields (continent, country, biome, feature)
+- Sample: 2 fields (material, env_package)
+- Reads: 2 fields (read_type, sequencing_technology)
+- Community: 1 field (community_type)
+- Process: 6 fields (process_type, person, campaign, etc.)
+""",
+        """Provenance Lineage Examples:
+- Sample → Reads → Assembly → Genome → Gene
+- Sample → Community → (defined strains)
+- Location → Sample → (multiple downstream entities)
+""",
+        """Reproducible Analysis:
+- All analysis scripts in scripts/cdm_analysis/
+- Justfile targets: just analyze-cdm, just cdm-report
+- Analysis outputs in docs/cdm_analysis/
+- Machine-readable schema in cdm_schema_report.json
+""",
+        """This schema represents the KBase CDM implementation of ENIGMA CORAL data.
+It maintains compatibility with the original CORAL schema while adding
+CDM-specific patterns for ontology management, provenance tracking, and
+dynamic data storage.
+""",
+        """Validation Strategy:
+1. Static entities: Validate against cdm_static_entities.yaml classes
+2. System tables: Validate against cdm_system_tables.yaml classes
+3. Dynamic bricks: Validate against sys_ddt_typedef at runtime
+""" ;
+    kbase_cdm:analysis_date "2025-12-01" ;
+    kbase_cdm:cdm_version "1.0.0" ;
+    kbase_cdm:n_dynamic_tables "21" ;
+    kbase_cdm:n_ontology_terms "10,594" ;
+    kbase_cdm:n_processes "142,958" ;
+    kbase_cdm:n_static_tables "17" ;
+    kbase_cdm:n_system_tables "6" ;
+    kbase_cdm:parquet_database "/Users/marcin/Documents/VIMSS/ENIGMA/KBase/ENIGMA_in_CDM/minio/jmc_coral.db" ;
+    kbase_cdm:source_schema "https://w3id.org/enigma/enigma-cdm (original CORAL LinkML schema)" ;
+    kbase_cdm:total_dynamic_rows "82,643,066" ;
+    kbase_cdm:total_static_rows "272,934" .
+
+kbase_cdm:Assembly a owl:Class,
+        linkml:ClassDefinition ;
+    rdfs:label "Assembly" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:sdt_assembly_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:link ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:strain_ref ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:total_size ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:total_size ],
+        [ a owl:Restriction ;
+            owl:minCardinality 1 ;
+            owl:onProperty kbase_cdm:sdt_assembly_name ],
+        [ a owl:Restriction ;
+            owl:minCardinality 1 ;
+            owl:onProperty kbase_cdm:sdt_assembly_id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:Size ;
+            owl:onProperty kbase_cdm:total_size ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:EntityName ;
+            owl:onProperty kbase_cdm:sdt_assembly_name ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:strain_ref ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:n_contigs ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:EntityName ;
+            owl:onProperty kbase_cdm:strain_ref ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:sdt_assembly_name ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:n_contigs ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:Link ;
+            owl:onProperty kbase_cdm:link ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:link ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:Count ;
+            owl:onProperty kbase_cdm:n_contigs ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom [ a rdfs:Datatype ;
+                    owl:intersectionOf ( linkml:String [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:string ;
+                                owl:withRestrictions ( [ xsd:pattern "^Assembly\\d{7}$" ] ) ] ) ] ;
+            owl:onProperty kbase_cdm:sdt_assembly_id ],
+        kbase_cdm:CDMEntity ;
+    skos:definition """Genome assembly from sequencing reads.
+
+CDM changes from CORAL:
+- FK reference: strain → strain_ref
+- Added 'link' field
+""" ;
+    skos:inScheme enigma:kbase-cdm-static-entities ;
+    kbase_cdm:term "DA:0000066" .
+
+kbase_cdm:Bin a owl:Class,
+        linkml:ClassDefinition ;
+    rdfs:label "Bin" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:EntityName ;
+            owl:onProperty kbase_cdm:assembly_ref ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:assembly_ref ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:contigs ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:sdt_bin_id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:EntityName ;
+            owl:onProperty kbase_cdm:sdt_bin_name ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:sdt_bin_name ],
+        [ a owl:Restriction ;
+            owl:minCardinality 1 ;
+            owl:onProperty kbase_cdm:sdt_bin_name ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom linkml:String ;
+            owl:onProperty kbase_cdm:contigs ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom [ a rdfs:Datatype ;
+                    owl:intersectionOf ( linkml:String [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:string ;
+                                owl:withRestrictions ( [ xsd:pattern "^Bin\\d{7}$" ] ) ] ) ] ;
+            owl:onProperty kbase_cdm:sdt_bin_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 1 ;
+            owl:onProperty kbase_cdm:sdt_bin_id ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:assembly_ref ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:contigs ],
+        kbase_cdm:CDMEntity ;
+    skos:definition """Genome bin extracted from metagenomic assembly.
+
+CDM changes from CORAL:
+- FK reference: assembly → assembly_ref
+- contigs field contains comma-separated contig names
+""" ;
+    skos:inScheme enigma:kbase-cdm-static-entities ;
+    kbase_cdm:term "DA:0000072" .
+
+kbase_cdm:Brick a owl:Class,
+        linkml:ClassDefinition ;
+    rdfs:label "Brick" ;
+    skos:definition """Abstract base for all brick data tables (ddt_brick*).
+
+Each brick table stores measurement values in a denormalized format
+where each row represents one cell in the N-dimensional array.
+
+Common structure:
+- Dimension indices (dim0_index, dim1_index, dim2_index, ...)
+- Dimension values (dim0_value, dim1_value, dim2_value, ...)
+- Variable values (var0_value, var1_value, var2_value, ...)
+
+Schema is defined in sys_ddt_typedef and varies per brick.
+
+Note: Individual brick classes (Brick0000001, Brick0000002, etc.)
+are not explicitly defined in this schema because they have
+heterogeneous structures. They should be validated against
+sys_ddt_typedef at runtime.
+""" ;
+    skos:inScheme enigma:kbase-cdm-dynamic-data ;
+    skos:note "Brick tables are created dynamically based on measurement needs",
+        "Each brick can have different dimensions and variables",
+        "Schema flexibility enables diverse experimental data types" .
+
+kbase_cdm:BrickDimension a owl:Class,
+        linkml:ClassDefinition ;
+    rdfs:label "BrickDimension" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:dimension_values ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:dimension_oterm_id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom [ a rdfs:Datatype ;
+                    owl:intersectionOf ( linkml:Integer [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:integer ;
+                                owl:withRestrictions ( [ xsd:minInclusive 0 ] ) ] ) ] ;
+            owl:onProperty kbase_cdm:dimension_number ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:dimension_size ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:dimension_oterm_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:dimension_size ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom [ a rdfs:Datatype ;
+                    owl:intersectionOf ( linkml:Integer [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:integer ;
+                                owl:withRestrictions ( [ xsd:minInclusive 1 ] ) ] ) ] ;
+            owl:onProperty kbase_cdm:dimension_size ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:dimension_oterm_name ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom linkml:String ;
+            owl:onProperty kbase_cdm:dimension_values ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:dimension_number ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:OntologyTermID ;
+            owl:onProperty kbase_cdm:dimension_oterm_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:dimension_oterm_name ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:dimension_number ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:dimension_values ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom linkml:String ;
+            owl:onProperty kbase_cdm:dimension_oterm_name ] ;
+    skos:definition """Abstract base for brick dimension metadata.
+
+Dimensions define the axes of N-dimensional measurement arrays:
+- Environmental Sample: Different samples measured
+- Molecule: Different molecules/compounds measured
+- State: Different conditions (e.g., time points, treatments)
+- Statistic: Different statistical measures (mean, std, etc.)
+
+Each dimension has:
+- Semantic meaning (ontology term)
+- Size (number of values along axis)
+- Index values (entity names or numeric indices)
+""" ;
+    skos:inScheme enigma:kbase-cdm-dynamic-data .
+
+kbase_cdm:BrickVariable a owl:Class,
+        linkml:ClassDefinition ;
+    rdfs:label "BrickVariable" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:allValuesFrom [ a rdfs:Datatype ;
+                    owl:intersectionOf ( linkml:String [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:string ;
+                                owl:withRestrictions ( [ xsd:pattern "^(float|int|bool|text|oterm_ref|object_ref)$" ] ) ] ) ] ;
+            owl:onProperty kbase_cdm:variable_data_type ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:max_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom linkml:String ;
+            owl:onProperty kbase_cdm:unit_sys_oterm_name ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:variable_number ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:variable_oterm_id ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:variable_oterm_name ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:unit_sys_oterm_id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom linkml:Float ;
+            owl:onProperty kbase_cdm:max_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:min_value ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:variable_data_type ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:unit_sys_oterm_name ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:unit_sys_oterm_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:variable_number ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:max_value ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:variable_data_type ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:OntologyTermID ;
+            owl:onProperty kbase_cdm:unit_sys_oterm_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:variable_oterm_id ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:min_value ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom linkml:String ;
+            owl:onProperty kbase_cdm:variable_oterm_name ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:OntologyTermID ;
+            owl:onProperty kbase_cdm:variable_oterm_id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom [ a rdfs:Datatype ;
+                    owl:intersectionOf ( linkml:Integer [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:integer ;
+                                owl:withRestrictions ( [ xsd:minInclusive 0 ] ) ] ) ] ;
+            owl:onProperty kbase_cdm:variable_number ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:unit_sys_oterm_name ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:variable_oterm_name ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom linkml:Float ;
+            owl:onProperty kbase_cdm:min_value ] ;
+    skos:definition """Abstract base for brick variable metadata.
+
+Variables define what is measured at each point in the N-dimensional array:
+- Concentration (with units: mg/L, µM, etc.)
+- Molecular Weight (with units: Da, kDa, etc.)
+- Activity Rate (with units: nmol/min, etc.)
+- Expression Level (with units: RPKM, TPM, etc.)
+
+Each variable has:
+- Semantic meaning (ontology term)
+- Data type (float, int, bool, oterm_ref, object_ref)
+- Units (ontology term)
+- Value range constraints
+""" ;
+    skos:inScheme enigma:kbase-cdm-dynamic-data .
+
+kbase_cdm:Community a owl:Class,
+        linkml:ClassDefinition ;
+    rdfs:label "Community" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:EntityName ;
+            owl:onProperty kbase_cdm:sdt_community_name ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:community_type_sys_oterm_id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:EntityName ;
+            owl:onProperty kbase_cdm:defined_strains_ref ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:parent_community_ref ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:parent_community_ref ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:EntityName ;
+            owl:onProperty kbase_cdm:sample_ref ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:community_type_sys_oterm_name ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:sample_ref ],
+        [ a owl:Restriction ;
+            owl:minCardinality 1 ;
+            owl:onProperty kbase_cdm:sdt_community_name ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:defined_strains_ref ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:sdt_community_id ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:sdt_community_name ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:community_type_sys_oterm_id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:OntologyTermID ;
+            owl:onProperty kbase_cdm:community_type_sys_oterm_id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom [ a rdfs:Datatype ;
+                    owl:intersectionOf ( linkml:String [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:string ;
+                                owl:withRestrictions ( [ xsd:pattern "^Community\\d{7}$" ] ) ] ) ] ;
+            owl:onProperty kbase_cdm:sdt_community_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 1 ;
+            owl:onProperty kbase_cdm:sdt_community_id ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:community_type_sys_oterm_name ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:sample_ref ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom linkml:String ;
+            owl:onProperty kbase_cdm:community_type_sys_oterm_name ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:EntityName ;
+            owl:onProperty kbase_cdm:parent_community_ref ],
+        kbase_cdm:CDMEntity ;
+    skos:definition """Microbial community (isolate, enrichment, assemblage, or environmental).
+
+CDM changes from CORAL:
+- 1 ontology term field split: community_type
+- FK references: sample → sample_ref, parent_community → parent_community_ref
+- Multivalued FK: defined_strains → defined_strains_ref
+""" ;
+    skos:inScheme enigma:kbase-cdm-static-entities ;
+    kbase_cdm:term "DA:0000071" .
+
+kbase_cdm:Condition a owl:Class,
+        linkml:ClassDefinition ;
+    rdfs:label "Condition" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:sdt_condition_name ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:sdt_condition_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 1 ;
+            owl:onProperty kbase_cdm:sdt_condition_name ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom [ a rdfs:Datatype ;
+                    owl:intersectionOf ( linkml:String [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:string ;
+                                owl:withRestrictions ( [ xsd:pattern "^Condition\\d{7}$" ] ) ] ) ] ;
+            owl:onProperty kbase_cdm:sdt_condition_id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:EntityName ;
+            owl:onProperty kbase_cdm:sdt_condition_name ],
+        [ a owl:Restriction ;
+            owl:minCardinality 1 ;
+            owl:onProperty kbase_cdm:sdt_condition_id ],
+        kbase_cdm:CDMEntity ;
+    skos:definition """Growth or experimental condition.
+""" ;
+    skos:inScheme enigma:kbase-cdm-static-entities ;
+    kbase_cdm:term "DA:0000075" .
+
+kbase_cdm:ENIGMA a owl:Class,
+        linkml:ClassDefinition ;
+    rdfs:label "ENIGMA" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:minCardinality 1 ;
+            owl:onProperty kbase_cdm:sdt_enigma_id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom [ a rdfs:Datatype ;
+                    owl:intersectionOf ( linkml:String [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:string ;
+                                owl:withRestrictions ( [ xsd:pattern "^ENIGMA1$" ] ) ] ) ] ;
+            owl:onProperty kbase_cdm:sdt_enigma_id ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:sdt_enigma_id ],
+        kbase_cdm:CDMEntity ;
+    skos:definition """Root entity (database singleton).
+""" ;
+    skos:inScheme enigma:kbase-cdm-static-entities ;
+    kbase_cdm:term "DA:0000001" .
+
+kbase_cdm:Gene a owl:Class,
+        linkml:ClassDefinition ;
+    rdfs:label "Gene" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:contig_number ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:strand ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:sdt_gene_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:start ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:stop ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:genome_ref ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom [ a rdfs:Datatype ;
+                    owl:intersectionOf ( linkml:String [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:string ;
+                                owl:withRestrictions ( [ xsd:pattern "^[+-]$" ] ) ] ) ] ;
+            owl:onProperty kbase_cdm:strand ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:EntityName ;
+            owl:onProperty kbase_cdm:sdt_gene_name ],
+        [ a owl:Restriction ;
+            owl:minCardinality 1 ;
+            owl:onProperty kbase_cdm:sdt_gene_name ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:EntityName ;
+            owl:onProperty kbase_cdm:genome_ref ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:contig_number ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:sdt_gene_name ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom [ a rdfs:Datatype ;
+                    owl:intersectionOf ( linkml:String [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:string ;
+                                owl:withRestrictions ( [ xsd:pattern "^Gene\\d{7}$" ] ) ] ) ] ;
+            owl:onProperty kbase_cdm:sdt_gene_id ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:function ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:start ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:genome_ref ],
+        [ a owl:Restriction ;
+            owl:minCardinality 1 ;
+            owl:onProperty kbase_cdm:sdt_gene_id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom linkml:Integer ;
+            owl:onProperty kbase_cdm:stop ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:stop ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom linkml:Integer ;
+            owl:onProperty kbase_cdm:start ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom linkml:Integer ;
+            owl:onProperty kbase_cdm:contig_number ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom linkml:String ;
+            owl:onProperty kbase_cdm:function ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:strand ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:function ],
+        kbase_cdm:CDMEntity ;
+    skos:definition """Annotated gene within a genome.
+
+CDM changes from CORAL:
+- FK reference: genome → genome_ref
+- Gene ID convention: GeneName{genome_name}_{contig}_{start}_{stop}
+""" ;
+    skos:inScheme enigma:kbase-cdm-static-entities ;
+    kbase_cdm:term "DA:0000069" .
+
+kbase_cdm:Genome a owl:Class,
+        linkml:ClassDefinition ;
+    rdfs:label "Genome" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:EntityName ;
+            owl:onProperty kbase_cdm:sdt_genome_name ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:total_size ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:Count ;
+            owl:onProperty kbase_cdm:n_contigs ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:total_size ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:link ],
+        [ a owl:Restriction ;
+            owl:minCardinality 1 ;
+            owl:onProperty kbase_cdm:sdt_genome_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:link ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:n_features ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:Size ;
+            owl:onProperty kbase_cdm:total_size ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:strain_ref ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:strain_ref ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:Count ;
+            owl:onProperty kbase_cdm:n_features ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:EntityName ;
+            owl:onProperty kbase_cdm:strain_ref ],
+        [ a owl:Restriction ;
+            owl:minCardinality 1 ;
+            owl:onProperty kbase_cdm:sdt_genome_name ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom [ a rdfs:Datatype ;
+                    owl:intersectionOf ( linkml:String [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:string ;
+                                owl:withRestrictions ( [ xsd:pattern "^Genome\\d{7}$" ] ) ] ) ] ;
+            owl:onProperty kbase_cdm:sdt_genome_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:n_features ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:Link ;
+            owl:onProperty kbase_cdm:link ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:n_contigs ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:sdt_genome_name ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:sdt_genome_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:n_contigs ],
+        kbase_cdm:CDMEntity ;
+    skos:definition """Assembled and annotated genome.
+
+CDM changes from CORAL:
+- FK reference: strain → strain_ref
+- Added 'link' field
+""" ;
+    skos:inScheme enigma:kbase-cdm-static-entities ;
+    kbase_cdm:term "DA:0000068" .
+
+kbase_cdm:Image a owl:Class,
+        linkml:ClassDefinition ;
+    rdfs:label "Image" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:allValuesFrom linkml:String ;
+            owl:onProperty kbase_cdm:dimensions ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom linkml:String ;
+            owl:onProperty kbase_cdm:mime_type ],
+        [ a owl:Restriction ;
+            owl:minCardinality 1 ;
+            owl:onProperty kbase_cdm:sdt_image_name ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:Link ;
+            owl:onProperty kbase_cdm:link ],
+        [ a owl:Restriction ;
+            owl:minCardinality 1 ;
+            owl:onProperty kbase_cdm:sdt_image_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:dimensions ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:sdt_image_name ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:link ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:sdt_image_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:mime_type ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:size ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:Size ;
+            owl:onProperty kbase_cdm:size ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:dimensions ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:mime_type ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:size ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:link ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:EntityName ;
+            owl:onProperty kbase_cdm:sdt_image_name ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom [ a rdfs:Datatype ;
+                    owl:intersectionOf ( linkml:String [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:string ;
+                                owl:withRestrictions ( [ xsd:pattern "^Image\\d{7}$" ] ) ] ) ] ;
+            owl:onProperty kbase_cdm:sdt_image_id ],
+        kbase_cdm:CDMEntity ;
+    skos:definition """Microscopy or other image data.
+
+CDM changes from CORAL:
+- Added 'link' field for image files
+""" ;
+    skos:inScheme enigma:kbase-cdm-static-entities ;
+    kbase_cdm:term "DA:0000074" .
+
+kbase_cdm:Location a owl:Class,
+        linkml:ClassDefinition ;
+    rdfs:label "Location" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:biome_sys_oterm_name ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:Latitude ;
+            owl:onProperty kbase_cdm:latitude ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom linkml:String ;
+            owl:onProperty kbase_cdm:country_sys_oterm_name ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:country_sys_oterm_name ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:continent_sys_oterm_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 1 ;
+            owl:onProperty kbase_cdm:sdt_location_name ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:country_sys_oterm_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:biome_sys_oterm_name ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:biome_sys_oterm_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:latitude ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom [ a rdfs:Datatype ;
+                    owl:intersectionOf ( linkml:String [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:string ;
+                                owl:withRestrictions ( [ xsd:pattern "^Location\\d{7}$" ] ) ] ) ] ;
+            owl:onProperty kbase_cdm:sdt_location_id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:Longitude ;
+            owl:onProperty kbase_cdm:longitude ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:OntologyTermID ;
+            owl:onProperty kbase_cdm:country_sys_oterm_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:continent_sys_oterm_name ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom linkml:String ;
+            owl:onProperty kbase_cdm:continent_sys_oterm_name ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:OntologyTermID ;
+            owl:onProperty kbase_cdm:feature_sys_oterm_id ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:country_sys_oterm_id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:EntityName ;
+            owl:onProperty kbase_cdm:sdt_location_name ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:latitude ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:country_sys_oterm_name ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:feature_sys_oterm_name ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:OntologyTermID ;
+            owl:onProperty kbase_cdm:continent_sys_oterm_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:region ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:longitude ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:feature_sys_oterm_name ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:continent_sys_oterm_id ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:region ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:feature_sys_oterm_id ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:sdt_location_name ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:longitude ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:OntologyTermID ;
+            owl:onProperty kbase_cdm:biome_sys_oterm_id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom linkml:String ;
+            owl:onProperty kbase_cdm:biome_sys_oterm_name ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom linkml:String ;
+            owl:onProperty kbase_cdm:feature_sys_oterm_name ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:biome_sys_oterm_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:feature_sys_oterm_id ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:continent_sys_oterm_name ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom linkml:String ;
+            owl:onProperty kbase_cdm:region ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:sdt_location_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 1 ;
+            owl:onProperty kbase_cdm:sdt_location_id ],
+        kbase_cdm:CDMEntity ;
+    skos:definition """Sampling location with geographic coordinates and environmental context.
+
+CDM changes from CORAL:
+- 4 ontology term fields split into ID+name pairs:
+  continent, country, biome, feature
+""" ;
+    skos:inScheme enigma:kbase-cdm-static-entities ;
+    kbase_cdm:term "DA:0000041" .
+
+kbase_cdm:OntologyTermPair a owl:Class,
+        linkml:ClassDefinition ;
+    rdfs:label "OntologyTermPair" ;
+    skos:definition """Mixin for ontology-constrained fields in KBase CDM.
+
+The CDM splits each ontology-controlled field into two columns:
+- {field}_sys_oterm_id: CURIE identifier (FK to sys_oterm)
+- {field}_sys_oterm_name: Human-readable term name
+
+This pattern enables:
+- Ontology validation via FK constraint
+- Human-readable labels without joins
+- Ontology evolution without data migration
+
+Examples:
+- material → material_sys_oterm_id + material_sys_oterm_name
+- biome → biome_sys_oterm_id + biome_sys_oterm_name
+- read_type → read_type_sys_oterm_id + read_type_sys_oterm_name
+""" ;
+    skos:inScheme enigma:kbase-cdm-base ;
+    skos:note "Ensures consistent naming and typing across all entities",
+        "Use this mixin when defining ontology-constrained slot pairs" .
+
+kbase_cdm:Protocol a owl:Class,
+        linkml:ClassDefinition ;
+    rdfs:label "Protocol" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:allValuesFrom [ a rdfs:Datatype ;
+                    owl:intersectionOf ( linkml:String [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:string ;
+                                owl:withRestrictions ( [ xsd:pattern "^Protocol\\d{7}$" ] ) ] ) ] ;
+            owl:onProperty kbase_cdm:sdt_protocol_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 1 ;
+            owl:onProperty kbase_cdm:sdt_protocol_name ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:Link ;
+            owl:onProperty kbase_cdm:link ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:sdt_protocol_name ],
+        [ a owl:Restriction ;
+            owl:minCardinality 1 ;
+            owl:onProperty kbase_cdm:sdt_protocol_id ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:sdt_protocol_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:description ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:description ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:EntityName ;
+            owl:onProperty kbase_cdm:sdt_protocol_name ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:link ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom linkml:String ;
+            owl:onProperty kbase_cdm:description ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:link ],
+        kbase_cdm:CDMEntity ;
+    skos:definition """Experimental protocol.
+
+CDM changes from CORAL:
+- Added 'link' field for protocol documents
+""" ;
+    skos:inScheme enigma:kbase-cdm-static-entities ;
+    kbase_cdm:term "DA:0000062" .
+
+kbase_cdm:Rate a owl:Class,
+        linkml:TypeDefinition ;
+    rdfs:subClassOf linkml:Float .
+
+kbase_cdm:Reads a owl:Class,
+        linkml:ClassDefinition ;
+    rdfs:label "Reads" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:sequencing_technology_sys_oterm_name ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:sdt_reads_id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom linkml:String ;
+            owl:onProperty kbase_cdm:sequencing_technology_sys_oterm_name ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:OntologyTermID ;
+            owl:onProperty kbase_cdm:read_type_sys_oterm_id ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:read_type_sys_oterm_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:link ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:read_count ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:read_type_sys_oterm_name ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:Count ;
+            owl:onProperty kbase_cdm:read_count ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:base_count ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:sdt_reads_name ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom linkml:String ;
+            owl:onProperty kbase_cdm:read_type_sys_oterm_name ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:sequencing_technology_sys_oterm_id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:OntologyTermID ;
+            owl:onProperty kbase_cdm:sequencing_technology_sys_oterm_id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:Count ;
+            owl:onProperty kbase_cdm:base_count ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:read_type_sys_oterm_name ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:EntityName ;
+            owl:onProperty kbase_cdm:sdt_reads_name ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom [ a rdfs:Datatype ;
+                    owl:intersectionOf ( linkml:String [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:string ;
+                                owl:withRestrictions ( [ xsd:pattern "^Reads\\d{7}$" ] ) ] ) ] ;
+            owl:onProperty kbase_cdm:sdt_reads_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:read_type_sys_oterm_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:base_count ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:sequencing_technology_sys_oterm_name ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:sequencing_technology_sys_oterm_id ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:link ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:Link ;
+            owl:onProperty kbase_cdm:link ],
+        [ a owl:Restriction ;
+            owl:minCardinality 1 ;
+            owl:onProperty kbase_cdm:sdt_reads_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 1 ;
+            owl:onProperty kbase_cdm:sdt_reads_name ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:read_count ],
+        kbase_cdm:CDMEntity ;
+    skos:definition """Sequencing reads dataset.
+
+CDM changes from CORAL:
+- 2 ontology term fields split: read_type, sequencing_technology
+- Added 'link' field for external data references
+""" ;
+    skos:inScheme enigma:kbase-cdm-static-entities ;
+    kbase_cdm:term "DA:0000063" .
+
+kbase_cdm:Sample a owl:Class,
+        linkml:ClassDefinition ;
+    rdfs:label "Sample" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:allValuesFrom linkml:String ;
+            owl:onProperty kbase_cdm:description ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:Elevation ;
+            owl:onProperty kbase_cdm:elevation ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:OntologyTermID ;
+            owl:onProperty kbase_cdm:material_sys_oterm_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:material_sys_oterm_name ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:depth ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:material_sys_oterm_name ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:elevation ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:depth ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:sdt_sample_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 1 ;
+            owl:onProperty kbase_cdm:sdt_sample_id ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:elevation ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom [ a rdfs:Datatype ;
+                    owl:intersectionOf ( linkml:String [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:string ;
+                                owl:withRestrictions ( [ xsd:pattern "^Sample\\d{7}$" ] ) ] ) ] ;
+            owl:onProperty kbase_cdm:sdt_sample_id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:Date ;
+            owl:onProperty kbase_cdm:date ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:env_package_sys_oterm_name ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:EntityName ;
+            owl:onProperty kbase_cdm:location_ref ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:description ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:date ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:description ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:OntologyTermID ;
+            owl:onProperty kbase_cdm:env_package_sys_oterm_id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:EntityName ;
+            owl:onProperty kbase_cdm:sdt_sample_name ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom linkml:String ;
+            owl:onProperty kbase_cdm:material_sys_oterm_name ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:env_package_sys_oterm_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:time ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:material_sys_oterm_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:timezone ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:location_ref ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom linkml:String ;
+            owl:onProperty kbase_cdm:timezone ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:location_ref ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:env_package_sys_oterm_name ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:sdt_sample_name ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:date ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:material_sys_oterm_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 1 ;
+            owl:onProperty kbase_cdm:sdt_sample_name ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:time ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:Time ;
+            owl:onProperty kbase_cdm:time ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:timezone ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom linkml:String ;
+            owl:onProperty kbase_cdm:env_package_sys_oterm_name ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:env_package_sys_oterm_id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:Depth ;
+            owl:onProperty kbase_cdm:depth ],
+        kbase_cdm:CDMEntity ;
+    skos:definition """Environmental sample collected from a location.
+
+CDM changes from CORAL:
+- 2 ontology term fields split: material, env_package
+- FK reference: location → location_ref
+""" ;
+    skos:inScheme enigma:kbase-cdm-static-entities ;
+    kbase_cdm:term "DA:0000042" .
+
+kbase_cdm:Strain a owl:Class,
+        linkml:ClassDefinition ;
+    rdfs:label "Strain" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:EntityName ;
+            owl:onProperty kbase_cdm:gene_names_changed ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:derived_from_strain_ref ],
+        [ a owl:Restriction ;
+            owl:minCardinality 1 ;
+            owl:onProperty kbase_cdm:sdt_strain_id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:EntityName ;
+            owl:onProperty kbase_cdm:genome_ref ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:EntityName ;
+            owl:onProperty kbase_cdm:derived_from_strain_ref ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:sdt_strain_id ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:sdt_strain_name ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:EntityName ;
+            owl:onProperty kbase_cdm:sdt_strain_name ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:genome_ref ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom [ a rdfs:Datatype ;
+                    owl:intersectionOf ( linkml:String [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:string ;
+                                owl:withRestrictions ( [ xsd:pattern "^Strain\\d{7}$" ] ) ] ) ] ;
+            owl:onProperty kbase_cdm:sdt_strain_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 1 ;
+            owl:onProperty kbase_cdm:sdt_strain_name ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:gene_names_changed ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:genome_ref ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:derived_from_strain_ref ],
+        kbase_cdm:CDMEntity ;
+    skos:definition """Microbial strain (isolated or derived).
+
+CDM changes from CORAL:
+- FK references: genome → genome_ref, derived_from → derived_from_strain_ref
+- Self-referential for strain derivation lineage
+""" ;
+    skos:inScheme enigma:kbase-cdm-static-entities ;
+    kbase_cdm:term "DA:0000067" .
+
+kbase_cdm:Taxon a owl:Class,
+        linkml:ClassDefinition ;
+    rdfs:label "Taxon" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:ncbi_taxid ],
+        [ a owl:Restriction ;
+            owl:minCardinality 1 ;
+            owl:onProperty kbase_cdm:sdt_taxon_id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom linkml:Integer ;
+            owl:onProperty kbase_cdm:ncbi_taxid ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:EntityName ;
+            owl:onProperty kbase_cdm:sdt_taxon_name ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom [ a rdfs:Datatype ;
+                    owl:intersectionOf ( linkml:String [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:string ;
+                                owl:withRestrictions ( [ xsd:pattern "^Taxon\\d{7}$" ] ) ] ) ] ;
+            owl:onProperty kbase_cdm:sdt_taxon_id ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:sdt_taxon_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 1 ;
+            owl:onProperty kbase_cdm:sdt_taxon_name ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:ncbi_taxid ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:sdt_taxon_name ],
+        kbase_cdm:CDMEntity ;
+    skos:definition """Taxonomic classification.
+""" ;
+    skos:inScheme enigma:kbase-cdm-static-entities ;
+    kbase_cdm:term "DA:0000070" .
+
+kbase_cdm:ASV a owl:Class,
+        linkml:ClassDefinition ;
+    rdfs:label "ASV" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:sequence ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:sdt_asv_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 1 ;
+            owl:onProperty kbase_cdm:sdt_asv_name ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:sdt_asv_name ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:EntityName ;
+            owl:onProperty kbase_cdm:sdt_asv_name ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:sequence ],
+        [ a owl:Restriction ;
+            owl:minCardinality 1 ;
+            owl:onProperty kbase_cdm:sdt_asv_id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom [ a rdfs:Datatype ;
+                    owl:intersectionOf ( linkml:String [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:string ;
+                                owl:withRestrictions ( [ xsd:pattern "^ASV\\d{7}$" ] ) ] ) ] ;
+            owl:onProperty kbase_cdm:sdt_asv_id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom linkml:String ;
+            owl:onProperty kbase_cdm:sequence ],
+        kbase_cdm:CDMEntity ;
+    skos:definition """Amplicon Sequence Variant (formerly OTU).
+
+CDM changes from CORAL:
+- Entity renamed from OTU to ASV (Amplicon Sequence Variant)
+- Table name: sdt_asv
+""" ;
+    skos:exactMatch kbase_cdm:ASV ;
+    skos:inScheme enigma:kbase-cdm-static-entities ;
+    kbase_cdm:preferred_name "ASV" ;
+    kbase_cdm:term "DA:0000073" .
+
+kbase_cdm:DubSeqLibrary a owl:Class,
+        linkml:ClassDefinition ;
+    rdfs:label "DubSeqLibrary" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:genome_ref ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:sdt_dubseq_library_id ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:genome_ref ],
+        [ a owl:Restriction ;
+            owl:minCardinality 1 ;
+            owl:onProperty kbase_cdm:sdt_dubseq_library_id ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:n_fragments ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom [ a rdfs:Datatype ;
+                    owl:intersectionOf ( linkml:String [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:string ;
+                                owl:withRestrictions ( [ xsd:pattern "^DubSeqLibrary\\d{7}$" ] ) ] ) ] ;
+            owl:onProperty kbase_cdm:sdt_dubseq_library_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 1 ;
+            owl:onProperty kbase_cdm:sdt_dubseq_library_name ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:sdt_dubseq_library_name ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:EntityName ;
+            owl:onProperty kbase_cdm:sdt_dubseq_library_name ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:EntityName ;
+            owl:onProperty kbase_cdm:genome_ref ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:Count ;
+            owl:onProperty kbase_cdm:n_fragments ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:n_fragments ],
+        kbase_cdm:CDMEntity ;
+    skos:definition """Dual Barcoded Sequencing (DubSeq) library.
+
+CDM changes from CORAL:
+- FK reference: genome → genome_ref
+""" ;
+    skos:exactMatch kbase_cdm:DubSeqLibrary ;
+    skos:inScheme enigma:kbase-cdm-static-entities ;
+    kbase_cdm:term "DA:0000076" .
+
+kbase_cdm:DynamicDataArray a owl:Class,
+        linkml:ClassDefinition ;
+    rdfs:label "DynamicDataArray" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:allValuesFrom [ a rdfs:Datatype ;
+                    owl:intersectionOf ( linkml:Integer [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:integer ;
+                                owl:withRestrictions ( [ xsd:minInclusive 1 ] ) ] ) ] ;
+            owl:onProperty kbase_cdm:n_variables ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom linkml:String ;
+            owl:onProperty kbase_cdm:associated_entity_type ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:n_dimensions ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom [ a rdfs:Datatype ;
+                    owl:intersectionOf ( linkml:Integer [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:integer ;
+                                owl:withRestrictions ( [ xsd:minInclusive 1 ] ) ] ) ] ;
+            owl:onProperty kbase_cdm:n_dimensions ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom [ a rdfs:Datatype ;
+                    owl:intersectionOf ( linkml:Integer [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:integer ;
+                                owl:withRestrictions ( [ xsd:minInclusive 0 ] ) ] ) ] ;
+            owl:onProperty kbase_cdm:total_rows ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:creation_date ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:OntologyTermID ;
+            owl:onProperty kbase_cdm:measurement_type_sys_oterm_id ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:measurement_type_sys_oterm_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:measurement_type_sys_oterm_name ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:n_dimensions ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:brick_table_name ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:EntityName ;
+            owl:onProperty kbase_cdm:associated_entity_names ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:description ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom linkml:String ;
+            owl:onProperty kbase_cdm:description ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom linkml:String ;
+            owl:onProperty kbase_cdm:measurement_type_sys_oterm_name ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:n_variables ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:n_variables ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:dimension_sizes ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom [ a rdfs:Datatype ;
+                    owl:intersectionOf ( linkml:String [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:string ;
+                                owl:withRestrictions ( [ xsd:pattern "^ddt_brick\\d{7}$" ] ) ] ) ] ;
+            owl:onProperty kbase_cdm:brick_table_name ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:measurement_type_sys_oterm_name ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom [ a rdfs:Datatype ;
+                    owl:intersectionOf ( linkml:String [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:string ;
+                                owl:withRestrictions ( [ xsd:pattern "^\\d+(,\\d+)*$" ] ) ] ) ] ;
+            owl:onProperty kbase_cdm:dimension_sizes ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:creation_date ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:associated_entity_type ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:measurement_type_sys_oterm_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 1 ;
+            owl:onProperty kbase_cdm:ddt_ndarray_id ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:associated_entity_type ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:brick_table_name ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:total_rows ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom linkml:String ;
+            owl:onProperty kbase_cdm:ddt_ndarray_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:associated_entity_names ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:Date ;
+            owl:onProperty kbase_cdm:creation_date ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:ddt_ndarray_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:description ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:dimension_sizes ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:total_rows ],
+        kbase_cdm:SystemEntity ;
+    skos:definition """Brick index table (ddt_ndarray).
+
+Catalogs all available measurement bricks with:
+- Brick identifiers (Brick0000001, Brick0000002, etc.)
+- Shape metadata (dimensions and sizes)
+- Entity relationships (which samples, communities, etc.)
+- Semantic metadata (measurement types, units)
+
+Each brick corresponds to:
+- One ddt_brick* table with actual measurement data
+- Multiple rows in sys_ddt_typedef defining brick schema
+""" ;
+    skos:exactMatch kbase_cdm:DynamicDataArray ;
+    skos:inScheme enigma:kbase-cdm-dynamic-data .
+
+kbase_cdm:SystemDDTTypedef a owl:Class,
+        linkml:ClassDefinition ;
+    rdfs:label "SystemDDTTypedef" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:dimension_number ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:variable_oterm_id ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:cdm_column_data_type ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:unit_sys_oterm_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:unit_sys_oterm_name ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:OntologyTermID ;
+            owl:onProperty kbase_cdm:variable_oterm_id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom linkml:String ;
+            owl:onProperty kbase_cdm:ddt_ndarray_id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom linkml:String ;
+            owl:onProperty kbase_cdm:scalar_type ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom [ a rdfs:Datatype ;
+                    owl:intersectionOf ( linkml:Integer [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:integer ;
+                                owl:withRestrictions ( [ xsd:minInclusive 0 ] ) ] ) ] ;
+            owl:onProperty kbase_cdm:dimension_number ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:ddt_ndarray_id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom linkml:String ;
+            owl:onProperty kbase_cdm:unit_sys_oterm_name ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:dimension_oterm_name ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:variable_oterm_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:dimension_oterm_name ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:variable_oterm_name ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:scalar_type ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom linkml:String ;
+            owl:onProperty kbase_cdm:cdm_column_name ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom [ a rdfs:Datatype ;
+                    owl:intersectionOf ( linkml:Integer [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:integer ;
+                                owl:withRestrictions ( [ xsd:minInclusive 0 ] ) ] ) ] ;
+            owl:onProperty kbase_cdm:variable_number ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:OntologyTermID ;
+            owl:onProperty kbase_cdm:dimension_oterm_id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom linkml:String ;
+            owl:onProperty kbase_cdm:variable_oterm_name ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:OntologyTermID ;
+            owl:onProperty kbase_cdm:unit_sys_oterm_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 1 ;
+            owl:onProperty kbase_cdm:ddt_ndarray_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:dimension_number ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom [ a rdfs:Datatype ;
+                    owl:intersectionOf ( linkml:String [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:string ;
+                                owl:withRestrictions ( [ xsd:pattern "^(variable|dimension_variable|dimension_index)$" ] ) ] ) ] ;
+            owl:onProperty kbase_cdm:cdm_column_data_type ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:dimension_oterm_id ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:unit_sys_oterm_id ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:variable_number ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:scalar_type ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:variable_oterm_name ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom linkml:String ;
+            owl:onProperty kbase_cdm:dimension_oterm_name ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:variable_number ],
+        [ a owl:Restriction ;
+            owl:minCardinality 1 ;
+            owl:onProperty kbase_cdm:cdm_column_name ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:cdm_column_name ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:cdm_column_data_type ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:dimension_oterm_id ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:unit_sys_oterm_name ],
+        kbase_cdm:SystemEntity ;
+    skos:definition """Type definitions for dynamic data tables (bricks).
+
+Defines schema for N-dimensional measurement arrays including:
+- Dimension semantics (Environmental Sample, Molecule, State, Statistic)
+- Variable semantics (Concentration, Molecular Weight, etc.)
+- Data types and units
+- Brick structure metadata
+
+Each brick can have different dimensionality and variable sets,
+enabling flexible storage of heterogeneous measurement data.
+""" ;
+    skos:exactMatch kbase_cdm:SystemDDTTypedef ;
+    skos:inScheme enigma:kbase-cdm-system-tables .
+
+kbase_cdm:SystemOntologyTerm a owl:Class,
+        linkml:ClassDefinition ;
+    rdfs:label "SystemOntologyTerm" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:sys_oterm_ontology ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:sys_oterm_ontology ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:OntologyTermID ;
+            owl:onProperty kbase_cdm:sys_oterm_id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom linkml:String ;
+            owl:onProperty kbase_cdm:sys_oterm_ontology ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom linkml:String ;
+            owl:onProperty kbase_cdm:sys_oterm_definition ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:sys_oterm_synonyms ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:sys_oterm_synonyms ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom linkml:String ;
+            owl:onProperty kbase_cdm:sys_oterm_synonyms ],
+        [ a owl:Restriction ;
+            owl:minCardinality 1 ;
+            owl:onProperty kbase_cdm:sys_oterm_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:sys_oterm_properties ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:sys_oterm_links ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:sys_oterm_name ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:sys_oterm_id ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:sys_oterm_links ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:OntologyTermID ;
+            owl:onProperty kbase_cdm:parent_sys_oterm_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:parent_sys_oterm_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:sys_oterm_definition ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:sys_oterm_properties ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom linkml:String ;
+            owl:onProperty kbase_cdm:sys_oterm_links ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:sys_oterm_definition ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:parent_sys_oterm_id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom linkml:String ;
+            owl:onProperty kbase_cdm:sys_oterm_properties ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom linkml:String ;
+            owl:onProperty kbase_cdm:sys_oterm_name ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:sys_oterm_name ],
+        kbase_cdm:SystemEntity ;
+    skos:definition """Centralized ontology term catalog.
+
+Stores all ontology terms used across the CDM with:
+- CURIE identifiers (ME:, ENVO:, UO:, etc.)
+- Human-readable names
+- Hierarchical relationships (parent terms)
+- Definitions, synonyms, and external links
+
+Benefits:
+- Single source of truth for ontology terms
+- Supports ontology evolution without data migration
+- Enables semantic queries and reasoning
+- Foreign key target for all *_sys_oterm_id columns
+""" ;
+    skos:exactMatch kbase_cdm:SystemOntologyTerm ;
+    skos:inScheme enigma:kbase-cdm-system-tables .
+
+kbase_cdm:SystemProcess a owl:Class,
+        linkml:ClassDefinition ;
+    rdfs:label "SystemProcess" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:date_start ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:input_objects ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:EntityName ;
+            owl:onProperty kbase_cdm:sdt_protocol_name ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom [ a rdfs:Datatype ;
+                    owl:intersectionOf ( linkml:String [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:string ;
+                                owl:withRestrictions ( [ xsd:pattern "^Process\\d{7}$" ] ) ] ) ] ;
+            owl:onProperty kbase_cdm:sys_process_id ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:person_sys_oterm_name ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:process_type_sys_oterm_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:campaign_sys_oterm_name ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:OntologyTermID ;
+            owl:onProperty kbase_cdm:campaign_sys_oterm_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 1 ;
+            owl:onProperty kbase_cdm:sdt_protocol_name ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom linkml:String ;
+            owl:onProperty kbase_cdm:person_sys_oterm_name ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:process_type_sys_oterm_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 1 ;
+            owl:onProperty kbase_cdm:sys_process_id ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:campaign_sys_oterm_id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:Date ;
+            owl:onProperty kbase_cdm:date_end ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:Date ;
+            owl:onProperty kbase_cdm:date_start ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:campaign_sys_oterm_name ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:sys_process_id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom linkml:String ;
+            owl:onProperty kbase_cdm:process_type_sys_oterm_name ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:output_objects ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:process_type_sys_oterm_name ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:person_sys_oterm_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:person_sys_oterm_id ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:sdt_protocol_name ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:OntologyTermID ;
+            owl:onProperty kbase_cdm:person_sys_oterm_id ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:process_type_sys_oterm_name ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:person_sys_oterm_name ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom linkml:String ;
+            owl:onProperty kbase_cdm:output_objects ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom linkml:String ;
+            owl:onProperty kbase_cdm:campaign_sys_oterm_name ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:date_end ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:date_end ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom linkml:String ;
+            owl:onProperty kbase_cdm:input_objects ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:OntologyTermID ;
+            owl:onProperty kbase_cdm:process_type_sys_oterm_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:campaign_sys_oterm_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:date_start ],
+        kbase_cdm:SystemEntity ;
+    skos:definition """Provenance tracking for all data transformations.
+
+Records experimental processes with:
+- Process type (Assay Growth, Sequencing, etc.)
+- People, protocols, campaigns
+- Temporal metadata (start/end dates)
+- Input/output relationships (denormalized arrays)
+
+Enables complete lineage tracing from raw samples to final analyses.
+""" ;
+    skos:exactMatch kbase_cdm:SystemProcess ;
+    skos:inScheme enigma:kbase-cdm-system-tables .
+
+kbase_cdm:SystemProcessInput a owl:Class,
+        linkml:ClassDefinition ;
+    rdfs:label "SystemProcessInput" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:input_object_name ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom linkml:String ;
+            owl:onProperty kbase_cdm:input_object_type ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom [ a rdfs:Datatype ;
+                    owl:intersectionOf ( linkml:String [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:string ;
+                                owl:withRestrictions ( [ xsd:pattern "^Process\\d{7}$" ] ) ] ) ] ;
+            owl:onProperty kbase_cdm:sys_process_id ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:sys_process_id ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:input_index ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:input_object_type ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:input_index ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:input_object_name ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:EntityName ;
+            owl:onProperty kbase_cdm:input_object_name ],
+        [ a owl:Restriction ;
+            owl:minCardinality 1 ;
+            owl:onProperty kbase_cdm:sys_process_id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom [ a rdfs:Datatype ;
+                    owl:intersectionOf ( linkml:Integer [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:integer ;
+                                owl:withRestrictions ( [ xsd:minInclusive 0 ] ) ] ) ] ;
+            owl:onProperty kbase_cdm:input_index ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:input_object_type ],
+        kbase_cdm:SystemEntity ;
+    skos:definition """Normalized process input relationships.
+
+Denormalizes the input_objects array from sys_process for efficient
+querying. Each row represents one input entity to one process.
+
+Enables queries like:
+- "Find all processes that used this sample"
+- "What samples were used in sequencing processes?"
+""" ;
+    skos:exactMatch kbase_cdm:SystemProcessInput ;
+    skos:inScheme enigma:kbase-cdm-system-tables .
+
+kbase_cdm:SystemProcessOutput a owl:Class,
+        linkml:ClassDefinition ;
+    rdfs:label "SystemProcessOutput" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:output_object_type ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:sys_process_id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom [ a rdfs:Datatype ;
+                    owl:intersectionOf ( linkml:String [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:string ;
+                                owl:withRestrictions ( [ xsd:pattern "^Process\\d{7}$" ] ) ] ) ] ;
+            owl:onProperty kbase_cdm:sys_process_id ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:output_object_type ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:output_object_name ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:output_index ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:EntityName ;
+            owl:onProperty kbase_cdm:output_object_name ],
+        [ a owl:Restriction ;
+            owl:minCardinality 1 ;
+            owl:onProperty kbase_cdm:sys_process_id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom [ a rdfs:Datatype ;
+                    owl:intersectionOf ( linkml:Integer [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:integer ;
+                                owl:withRestrictions ( [ xsd:minInclusive 0 ] ) ] ) ] ;
+            owl:onProperty kbase_cdm:output_index ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:output_index ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:output_object_name ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom linkml:String ;
+            owl:onProperty kbase_cdm:output_object_type ],
+        kbase_cdm:SystemEntity ;
+    skos:definition """Normalized process output relationships.
+
+Denormalizes the output_objects array from sys_process for efficient
+querying. Each row represents one output entity from one process.
+
+Enables queries like:
+- "What process created this assembly?"
+- "Find all assemblies from sequencing processes"
+""" ;
+    skos:exactMatch kbase_cdm:SystemProcessOutput ;
+    skos:inScheme enigma:kbase-cdm-system-tables .
+
+kbase_cdm:SystemTypedef a owl:Class,
+        linkml:ClassDefinition ;
+    rdfs:label "SystemTypedef" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:allValuesFrom linkml:Boolean ;
+            owl:onProperty kbase_cdm:upk ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:OntologyTermID ;
+            owl:onProperty kbase_cdm:units_sys_oterm_id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom linkml:String ;
+            owl:onProperty kbase_cdm:cdm_column_name ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:fk ],
+        [ a owl:Restriction ;
+            owl:minCardinality 1 ;
+            owl:onProperty kbase_cdm:cdm_column_name ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom linkml:String ;
+            owl:onProperty kbase_cdm:scalar_type ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:upk ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom linkml:String ;
+            owl:onProperty kbase_cdm:constraint ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom linkml:String ;
+            owl:onProperty kbase_cdm:field_name ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:OntologyTermID ;
+            owl:onProperty kbase_cdm:type_sys_oterm_id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom linkml:Boolean ;
+            owl:onProperty kbase_cdm:pk ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:cdm_column_name ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom linkml:String ;
+            owl:onProperty kbase_cdm:type_name ],
+        [ a owl:Restriction ;
+            owl:minCardinality 1 ;
+            owl:onProperty kbase_cdm:type_name ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:scalar_type ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom linkml:String ;
+            owl:onProperty kbase_cdm:fk ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:constraint ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:field_name ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:scalar_type ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:pk ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:units_sys_oterm_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:fk ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:constraint ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:type_name ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:upk ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:pk ],
+        [ a owl:Restriction ;
+            owl:minCardinality 1 ;
+            owl:onProperty kbase_cdm:field_name ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:type_sys_oterm_id ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:units_sys_oterm_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:type_sys_oterm_id ],
+        kbase_cdm:SystemEntity ;
+    skos:definition """Type definitions for static entity tables (equivalent to typedef.json).
+
+Maps CORAL entity types and fields to CDM table/column names with
+constraints, data types, and ontology references.
+
+This table documents the schema transformation from CORAL to CDM and
+enables automated validation and migration.
+""" ;
+    skos:exactMatch kbase_cdm:SystemTypedef ;
+    skos:inScheme enigma:kbase-cdm-system-tables .
+
+kbase_cdm:TnSeqLibrary a owl:Class,
+        linkml:ClassDefinition ;
+    rdfs:label "TnSeqLibrary" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:n_mapped_reads ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:n_genes_hit ],
+        [ a owl:Restriction ;
+            owl:minCardinality 1 ;
+            owl:onProperty kbase_cdm:sdt_tnseq_library_name ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom [ a rdfs:Datatype ;
+                    owl:intersectionOf ( linkml:String [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:string ;
+                                owl:withRestrictions ( [ xsd:pattern "^TnSeqLibrary\\d{7}$" ] ) ] ) ] ;
+            owl:onProperty kbase_cdm:sdt_tnseq_library_id ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:n_good_reads ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:Count ;
+            owl:onProperty kbase_cdm:n_good_reads ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:EntityName ;
+            owl:onProperty kbase_cdm:genome_ref ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:Count ;
+            owl:onProperty kbase_cdm:n_genes_hit ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:sdt_tnseq_library_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:n_genes_hit ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:sdt_tnseq_library_name ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:EntityName ;
+            owl:onProperty kbase_cdm:sdt_tnseq_library_name ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:n_mapped_reads ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:primers_model ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:genome_ref ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:n_good_reads ],
+        [ a owl:Restriction ;
+            owl:minCardinality 1 ;
+            owl:onProperty kbase_cdm:sdt_tnseq_library_id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom linkml:String ;
+            owl:onProperty kbase_cdm:primers_model ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom kbase_cdm:Count ;
+            owl:onProperty kbase_cdm:n_mapped_reads ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty kbase_cdm:primers_model ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty kbase_cdm:genome_ref ],
+        kbase_cdm:CDMEntity ;
+    skos:definition """Transposon Sequencing (TnSeq) library.
+
+CDM changes from CORAL:
+- FK reference: genome → genome_ref
+""" ;
+    skos:exactMatch kbase_cdm:TnSeqLibrary ;
+    skos:inScheme enigma:kbase-cdm-static-entities ;
+    kbase_cdm:term "DA:0000077" .
+
+ENVO:00000446 a owl:Class,
+        kbase_cdm:BiomeEnum ;
+    rdfs:label "terrestrial" ;
+    rdfs:subClassOf kbase_cdm:BiomeEnum .
+
+ENVO:00000447 a owl:Class,
+        kbase_cdm:BiomeEnum ;
+    rdfs:label "marine" ;
+    rdfs:subClassOf kbase_cdm:BiomeEnum .
+
+ENVO:00001998 a owl:Class,
+        kbase_cdm:MaterialEnum ;
+    rdfs:label "soil" ;
+    rdfs:subClassOf kbase_cdm:MaterialEnum .
+
+ENVO:00002006 a owl:Class,
+        kbase_cdm:MaterialEnum ;
+    rdfs:label "water" ;
+    rdfs:subClassOf kbase_cdm:MaterialEnum .
+
+ENVO:00002007 a owl:Class,
+        kbase_cdm:MaterialEnum ;
+    rdfs:label "sediment" ;
+    rdfs:subClassOf kbase_cdm:MaterialEnum .
+
+ENVO:00002030 a owl:Class,
+        kbase_cdm:BiomeEnum ;
+    rdfs:label "aquatic" ;
+    rdfs:subClassOf kbase_cdm:BiomeEnum .
+
+ENVO:00002034 a owl:Class,
+        kbase_cdm:MaterialEnum ;
+    rdfs:label "biofilm" ;
+    rdfs:subClassOf kbase_cdm:MaterialEnum .
+
+ME:0000113 a owl:Class,
+        kbase_cdm:ReadTypeEnum ;
+    rdfs:label "paired_end" ;
+    rdfs:subClassOf kbase_cdm:ReadTypeEnum .
+
+ME:0000114 a owl:Class,
+        kbase_cdm:ReadTypeEnum ;
+    rdfs:label "single_end" ;
+    rdfs:subClassOf kbase_cdm:ReadTypeEnum .
+
+ME:0000115 a owl:Class,
+        kbase_cdm:SequencingTechnologyEnum ;
+    rdfs:label "illumina" ;
+    rdfs:subClassOf kbase_cdm:SequencingTechnologyEnum .
+
+ME:0000116 a owl:Class,
+        kbase_cdm:SequencingTechnologyEnum ;
+    rdfs:label "pacbio" ;
+    rdfs:subClassOf kbase_cdm:SequencingTechnologyEnum .
+
+ME:0000117 a owl:Class,
+        kbase_cdm:SequencingTechnologyEnum ;
+    rdfs:label "nanopore" ;
+    rdfs:subClassOf kbase_cdm:SequencingTechnologyEnum .
+
+ME:0000118 a owl:Class,
+        kbase_cdm:SequencingTechnologyEnum ;
+    rdfs:label "sanger" ;
+    rdfs:subClassOf kbase_cdm:SequencingTechnologyEnum .
+
+ME:0000193 a owl:Class,
+        kbase_cdm:StrandEnum ;
+    rdfs:label "forward" ;
+    rdfs:subClassOf kbase_cdm:StrandEnum .
+
+ME:0000194 a owl:Class,
+        kbase_cdm:StrandEnum ;
+    rdfs:label "reverse_complement" ;
+    rdfs:subClassOf kbase_cdm:StrandEnum .
+
+ME:0000200 a owl:Class,
+        kbase_cdm:CommunityTypeEnum ;
+    rdfs:label "isolate_community" ;
+    rdfs:subClassOf kbase_cdm:CommunityTypeEnum .
+
+ME:0000201 a owl:Class,
+        kbase_cdm:CommunityTypeEnum ;
+    rdfs:label "enrichment" ;
+    rdfs:subClassOf kbase_cdm:CommunityTypeEnum .
+
+ME:0000202 a owl:Class,
+        kbase_cdm:CommunityTypeEnum ;
+    rdfs:label "assemblage" ;
+    rdfs:subClassOf kbase_cdm:CommunityTypeEnum .
+
+ME:0000203 a owl:Class,
+        kbase_cdm:CommunityTypeEnum ;
+    rdfs:label "environmental_community" ;
+    rdfs:subClassOf kbase_cdm:CommunityTypeEnum .
+
+ME:0000237 a owl:Class,
+        kbase_cdm:CommunityTypeEnum ;
+    rdfs:label "active_fraction" ;
+    rdfs:subClassOf kbase_cdm:CommunityTypeEnum .
+
+ME:0000501 a owl:Class,
+        kbase_cdm:DimensionSemantics ;
+    rdfs:label "environmental_sample" ;
+    rdfs:subClassOf kbase_cdm:DimensionSemantics .
+
+ME:0000502 a owl:Class,
+        kbase_cdm:DimensionSemantics ;
+    rdfs:label "molecule" ;
+    rdfs:subClassOf kbase_cdm:DimensionSemantics .
+
+ME:0000503 a owl:Class,
+        kbase_cdm:DimensionSemantics ;
+    rdfs:label "state" ;
+    rdfs:subClassOf kbase_cdm:DimensionSemantics .
+
+ME:0000504 a owl:Class,
+        kbase_cdm:DimensionSemantics ;
+    rdfs:label "statistic" ;
+    rdfs:subClassOf kbase_cdm:DimensionSemantics .
+
+ME:0000505 a owl:Class,
+        kbase_cdm:DimensionSemantics ;
+    rdfs:label "gene" ;
+    rdfs:subClassOf kbase_cdm:DimensionSemantics .
+
+ME:0000506 a owl:Class,
+        kbase_cdm:DimensionSemantics ;
+    rdfs:label "taxon" ;
+    rdfs:subClassOf kbase_cdm:DimensionSemantics .
+
+ME:0000507 a owl:Class,
+        kbase_cdm:DimensionSemantics ;
+    rdfs:label "location" ;
+    rdfs:subClassOf kbase_cdm:DimensionSemantics .
+
+ME:0000508 a owl:Class,
+        kbase_cdm:DimensionSemantics ;
+    rdfs:label "time" ;
+    rdfs:subClassOf kbase_cdm:DimensionSemantics .
+
+ME:0000601 a owl:Class,
+        kbase_cdm:VariableSemantics ;
+    rdfs:label "concentration" ;
+    rdfs:subClassOf kbase_cdm:VariableSemantics .
+
+ME:0000602 a owl:Class,
+        kbase_cdm:VariableSemantics ;
+    rdfs:label "molecular_weight" ;
+    rdfs:subClassOf kbase_cdm:VariableSemantics .
+
+ME:0000603 a owl:Class,
+        kbase_cdm:VariableSemantics ;
+    rdfs:label "activity_rate" ;
+    rdfs:subClassOf kbase_cdm:VariableSemantics .
+
+ME:0000604 a owl:Class,
+        kbase_cdm:VariableSemantics ;
+    rdfs:label "expression_level" ;
+    rdfs:subClassOf kbase_cdm:VariableSemantics .
+
+ME:0000605 a owl:Class,
+        kbase_cdm:VariableSemantics ;
+    rdfs:label "abundance" ;
+    rdfs:subClassOf kbase_cdm:VariableSemantics .
+
+ME:0000606 a owl:Class,
+        kbase_cdm:VariableSemantics ;
+    rdfs:label "ph" ;
+    rdfs:subClassOf kbase_cdm:VariableSemantics .
+
+ME:0000607 a owl:Class,
+        kbase_cdm:VariableSemantics ;
+    rdfs:label "temperature" ;
+    rdfs:subClassOf kbase_cdm:VariableSemantics .
+
+ME:0000608 a owl:Class,
+        kbase_cdm:VariableSemantics ;
+    rdfs:label "growth_rate" ;
+    rdfs:subClassOf kbase_cdm:VariableSemantics .
+
+<https://w3id.org/enigma/kbase-cdm/BrickDataType#bool> a owl:Class,
+        kbase_cdm:BrickDataType ;
+    rdfs:label "bool" ;
+    rdfs:subClassOf kbase_cdm:BrickDataType .
+
+<https://w3id.org/enigma/kbase-cdm/BrickDataType#float> a owl:Class,
+        kbase_cdm:BrickDataType ;
+    rdfs:label "float" ;
+    rdfs:subClassOf kbase_cdm:BrickDataType .
+
+<https://w3id.org/enigma/kbase-cdm/BrickDataType#int> a owl:Class,
+        kbase_cdm:BrickDataType ;
+    rdfs:label "int" ;
+    rdfs:subClassOf kbase_cdm:BrickDataType .
+
+<https://w3id.org/enigma/kbase-cdm/BrickDataType#object_ref> a owl:Class,
+        kbase_cdm:BrickDataType ;
+    rdfs:label "object_ref" ;
+    rdfs:subClassOf kbase_cdm:BrickDataType .
+
+<https://w3id.org/enigma/kbase-cdm/BrickDataType#oterm_ref> a owl:Class,
+        kbase_cdm:BrickDataType ;
+    rdfs:label "oterm_ref" ;
+    rdfs:subClassOf kbase_cdm:BrickDataType .
+
+<https://w3id.org/enigma/kbase-cdm/BrickDataType#text> a owl:Class,
+        kbase_cdm:BrickDataType ;
+    rdfs:label "text" ;
+    rdfs:subClassOf kbase_cdm:BrickDataType .
+
+kbase_cdm:Depth a owl:Class,
+        linkml:TypeDefinition ;
+    rdfs:subClassOf linkml:Float .
+
+kbase_cdm:Elevation a owl:Class,
+        linkml:TypeDefinition ;
+    rdfs:subClassOf linkml:Float .
+
+kbase_cdm:Latitude a owl:Class,
+        linkml:TypeDefinition ;
+    rdfs:subClassOf linkml:Float .
+
+kbase_cdm:Longitude a owl:Class,
+        linkml:TypeDefinition ;
+    rdfs:subClassOf linkml:Float .
+
+kbase_cdm:Time a owl:Class,
+        linkml:TypeDefinition ;
+    rdfs:subClassOf linkml:String .
+
+kbase_cdm:associated_entity_names a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "associated_entity_names" ;
+    rdfs:range kbase_cdm:EntityName ;
+    skos:definition "Names of entities associated with this brick" ;
+    skos:inScheme enigma:kbase-cdm-dynamic-data .
+
+kbase_cdm:defined_strains_ref a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "defined_strains_ref" ;
+    rdfs:range kbase_cdm:EntityName ;
+    skos:definition "References to defined strain names (multivalued FK to Strain.sdt_strain_name)" ;
+    skos:inScheme enigma:kbase-cdm-static-entities ;
+    skos:note "Multivalued FK for assemblage communities",
+        "References Strain.sdt_strain_name" .
+
+kbase_cdm:gene_names_changed a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "gene_names_changed" ;
+    rdfs:range kbase_cdm:EntityName ;
+    skos:definition "Names of genes that were changed" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:input_objects a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "input_objects" ;
+    rdfs:range linkml:String ;
+    skos:definition "Array of input entity references (type:name format)" ;
+    skos:inScheme enigma:kbase-cdm-system-tables .
+
+kbase_cdm:output_objects a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "output_objects" ;
+    rdfs:range linkml:String ;
+    skos:definition "Array of output entity references (type:name format)" ;
+    skos:inScheme enigma:kbase-cdm-system-tables .
+
+kbase_cdm:assembly_ref a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "assembly_ref" ;
+    rdfs:range kbase_cdm:EntityName ;
+    skos:definition "Reference to assembly name (FK to Assembly.sdt_assembly_name)" ;
+    skos:inScheme enigma:kbase-cdm-static-entities ;
+    skos:note "References Assembly.sdt_assembly_name",
+        "{'CDM convention': 'FK references use entity name, not ID'}" .
+
+kbase_cdm:associated_entity_type a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "associated_entity_type" ;
+    rdfs:range linkml:String ;
+    skos:definition "Type of entities measured (e.g., \"Sample\", \"Community\")" ;
+    skos:inScheme enigma:kbase-cdm-dynamic-data .
+
+kbase_cdm:base_count a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "base_count" ;
+    rdfs:range kbase_cdm:Count ;
+    skos:definition "Total number of bases" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:biome_sys_oterm_id a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "biome_sys_oterm_id" ;
+    rdfs:range kbase_cdm:OntologyTermID ;
+    skos:definition "Biome ontology term ID (ENVO)" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:biome_sys_oterm_name a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "biome_sys_oterm_name" ;
+    rdfs:range linkml:String ;
+    skos:definition "Biome ontology term name" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:brick_table_name a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "brick_table_name" ;
+    rdfs:range [ a rdfs:Datatype ;
+            owl:intersectionOf ( linkml:String [ a rdfs:Datatype ;
+                        owl:onDatatype xsd:string ;
+                        owl:withRestrictions ( [ xsd:pattern "^ddt_brick\\d{7}$" ] ) ] ) ] ;
+    skos:definition "Name of brick table (e.g., \"ddt_brick0000010\")" ;
+    skos:inScheme enigma:kbase-cdm-dynamic-data .
+
+kbase_cdm:campaign_sys_oterm_id a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "campaign_sys_oterm_id" ;
+    rdfs:range kbase_cdm:OntologyTermID ;
+    skos:definition "Research campaign ontology term ID" ;
+    skos:inScheme enigma:kbase-cdm-system-tables .
+
+kbase_cdm:campaign_sys_oterm_name a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "campaign_sys_oterm_name" ;
+    rdfs:range linkml:String ;
+    skos:definition "Research campaign ontology term name" ;
+    skos:inScheme enigma:kbase-cdm-system-tables .
+
+kbase_cdm:cdm_column_data_type a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "cdm_column_data_type" ;
+    rdfs:range [ a rdfs:Datatype ;
+            owl:intersectionOf ( linkml:String [ a rdfs:Datatype ;
+                        owl:onDatatype xsd:string ;
+                        owl:withRestrictions ( [ xsd:pattern "^(variable|dimension_variable|dimension_index)$" ] ) ] ) ] ;
+    skos:definition "Column type (variable, dimension_variable, or dimension_index)" ;
+    skos:inScheme enigma:kbase-cdm-system-tables .
+
+kbase_cdm:community_type_sys_oterm_id a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "community_type_sys_oterm_id" ;
+    rdfs:range kbase_cdm:OntologyTermID ;
+    skos:definition "Community type ontology term ID" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:community_type_sys_oterm_name a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "community_type_sys_oterm_name" ;
+    rdfs:range linkml:String ;
+    skos:definition "Community type ontology term name" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:constraint a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "constraint" ;
+    rdfs:range linkml:String ;
+    skos:definition "Validation pattern or ontology constraint" ;
+    skos:inScheme enigma:kbase-cdm-system-tables .
+
+kbase_cdm:contig_number a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "contig_number" ;
+    rdfs:range linkml:Integer ;
+    skos:definition "Contig number where gene is located" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:contigs a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "contigs" ;
+    rdfs:range linkml:String ;
+    skos:definition "Comma-separated list of contig names" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:continent_sys_oterm_id a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "continent_sys_oterm_id" ;
+    rdfs:range kbase_cdm:OntologyTermID ;
+    skos:definition "Continent ontology term ID" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:continent_sys_oterm_name a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "continent_sys_oterm_name" ;
+    rdfs:range linkml:String ;
+    skos:definition "Continent ontology term name" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:country_sys_oterm_id a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "country_sys_oterm_id" ;
+    rdfs:range kbase_cdm:OntologyTermID ;
+    skos:definition "Country ontology term ID" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:country_sys_oterm_name a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "country_sys_oterm_name" ;
+    rdfs:range linkml:String ;
+    skos:definition "Country ontology term name" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:creation_date a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "creation_date" ;
+    rdfs:range kbase_cdm:Date ;
+    skos:definition "Date brick was created" ;
+    skos:inScheme enigma:kbase-cdm-dynamic-data .
+
+kbase_cdm:date a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "date" ;
+    rdfs:range kbase_cdm:Date ;
+    skos:definition "Collection date" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:date_end a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "date_end" ;
+    rdfs:range kbase_cdm:Date ;
+    skos:definition "Process end date" ;
+    skos:inScheme enigma:kbase-cdm-system-tables .
+
+kbase_cdm:date_start a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "date_start" ;
+    rdfs:range kbase_cdm:Date ;
+    skos:definition "Process start date" ;
+    skos:inScheme enigma:kbase-cdm-system-tables .
+
+kbase_cdm:depth a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "depth" ;
+    rdfs:range kbase_cdm:Depth ;
+    skos:definition "Depth in meters" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:derived_from_strain_ref a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "derived_from_strain_ref" ;
+    rdfs:range kbase_cdm:EntityName ;
+    skos:definition "Reference to parent strain name (FK, self-referential to Strain.sdt_strain_name)" ;
+    skos:inScheme enigma:kbase-cdm-static-entities ;
+    skos:note "References Strain.sdt_strain_name",
+        "Self-referential FK for strain derivation lineage" .
+
+kbase_cdm:dimension_size a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "dimension_size" ;
+    rdfs:range [ a rdfs:Datatype ;
+            owl:intersectionOf ( linkml:Integer [ a rdfs:Datatype ;
+                        owl:onDatatype xsd:integer ;
+                        owl:withRestrictions ( [ xsd:minInclusive 1 ] ) ] ) ] ;
+    skos:definition "Number of values along this dimension" ;
+    skos:inScheme enigma:kbase-cdm-dynamic-data .
+
+kbase_cdm:dimension_sizes a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "dimension_sizes" ;
+    rdfs:range [ a rdfs:Datatype ;
+            owl:intersectionOf ( linkml:String [ a rdfs:Datatype ;
+                        owl:onDatatype xsd:string ;
+                        owl:withRestrictions ( [ xsd:pattern "^\\d+(,\\d+)*$" ] ) ] ) ] ;
+    skos:definition "Comma-separated dimension sizes (e.g., \"209,52,3,3\")" ;
+    skos:inScheme enigma:kbase-cdm-dynamic-data .
+
+kbase_cdm:dimension_values a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "dimension_values" ;
+    rdfs:range linkml:String ;
+    skos:definition "Comma-separated dimension value labels" ;
+    skos:inScheme enigma:kbase-cdm-dynamic-data ;
+    skos:note "{'For entity dimensions': 'entity names'}",
+        "{'For numeric dimensions': 'numeric values or labels'}" .
+
+kbase_cdm:dimensions a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "dimensions" ;
+    rdfs:range linkml:String ;
+    skos:definition "Image dimensions (e.g., \"1024x768\")" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:elevation a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "elevation" ;
+    rdfs:range kbase_cdm:Elevation ;
+    skos:definition "Elevation in meters" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:env_package_sys_oterm_id a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "env_package_sys_oterm_id" ;
+    rdfs:range kbase_cdm:OntologyTermID ;
+    skos:definition "Environment package ontology term ID" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:env_package_sys_oterm_name a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "env_package_sys_oterm_name" ;
+    rdfs:range linkml:String ;
+    skos:definition "Environment package ontology term name" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:feature_sys_oterm_id a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "feature_sys_oterm_id" ;
+    rdfs:range kbase_cdm:OntologyTermID ;
+    skos:definition "Environmental feature ontology term ID" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:feature_sys_oterm_name a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "feature_sys_oterm_name" ;
+    rdfs:range linkml:String ;
+    skos:definition "Environmental feature ontology term name" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:field_name a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "field_name" ;
+    rdfs:range linkml:String ;
+    skos:definition "Original CORAL field name" ;
+    skos:inScheme enigma:kbase-cdm-system-tables .
+
+kbase_cdm:fk a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "fk" ;
+    rdfs:range linkml:String ;
+    skos:definition "Foreign key reference" ;
+    skos:inScheme enigma:kbase-cdm-system-tables .
+
+kbase_cdm:function a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "function" ;
+    rdfs:range linkml:String ;
+    skos:definition "Predicted gene function" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:input_index a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "input_index" ;
+    rdfs:range [ a rdfs:Datatype ;
+            owl:intersectionOf ( linkml:Integer [ a rdfs:Datatype ;
+                        owl:onDatatype xsd:integer ;
+                        owl:withRestrictions ( [ xsd:minInclusive 0 ] ) ] ) ] ;
+    skos:definition "Index in input_objects array" ;
+    skos:inScheme enigma:kbase-cdm-system-tables .
+
+kbase_cdm:input_object_name a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "input_object_name" ;
+    rdfs:range kbase_cdm:EntityName ;
+    skos:definition "Name of input entity" ;
+    skos:inScheme enigma:kbase-cdm-system-tables .
+
+kbase_cdm:input_object_type a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "input_object_type" ;
+    rdfs:range linkml:String ;
+    skos:definition "Type of input entity (e.g., \"Sample\", \"Reads\")" ;
+    skos:inScheme enigma:kbase-cdm-system-tables .
+
+kbase_cdm:latitude a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "latitude" ;
+    rdfs:range kbase_cdm:Latitude ;
+    skos:definition "Latitude in decimal degrees" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:location_ref a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "location_ref" ;
+    rdfs:range kbase_cdm:EntityName ;
+    skos:definition "Reference to location name (FK to Location.sdt_location_name)" ;
+    skos:inScheme enigma:kbase-cdm-static-entities ;
+    skos:note "References Location.sdt_location_name",
+        "{'CDM convention': 'FK references use entity name, not ID'}" .
+
+kbase_cdm:longitude a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "longitude" ;
+    rdfs:range kbase_cdm:Longitude ;
+    skos:definition "Longitude in decimal degrees" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:material_sys_oterm_id a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "material_sys_oterm_id" ;
+    rdfs:range kbase_cdm:OntologyTermID ;
+    skos:definition "Material type ontology term ID" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:material_sys_oterm_name a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "material_sys_oterm_name" ;
+    rdfs:range linkml:String ;
+    skos:definition "Material type ontology term name" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:max_value a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "max_value" ;
+    rdfs:range linkml:Float ;
+    skos:definition "Maximum allowed value (for numeric variables)" ;
+    skos:inScheme enigma:kbase-cdm-dynamic-data .
+
+kbase_cdm:measurement_type_sys_oterm_id a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "measurement_type_sys_oterm_id" ;
+    rdfs:range kbase_cdm:OntologyTermID ;
+    skos:definition "Type of measurement ontology term ID" ;
+    skos:inScheme enigma:kbase-cdm-dynamic-data .
+
+kbase_cdm:measurement_type_sys_oterm_name a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "measurement_type_sys_oterm_name" ;
+    rdfs:range linkml:String ;
+    skos:definition "Type of measurement ontology term name" ;
+    skos:inScheme enigma:kbase-cdm-dynamic-data .
+
+kbase_cdm:mime_type a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "mime_type" ;
+    rdfs:range linkml:String ;
+    skos:definition "MIME type of image" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:min_value a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "min_value" ;
+    rdfs:range linkml:Float ;
+    skos:definition "Minimum allowed value (for numeric variables)" ;
+    skos:inScheme enigma:kbase-cdm-dynamic-data .
+
+kbase_cdm:n_dimensions a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "n_dimensions" ;
+    rdfs:range [ a rdfs:Datatype ;
+            owl:intersectionOf ( linkml:Integer [ a rdfs:Datatype ;
+                        owl:onDatatype xsd:integer ;
+                        owl:withRestrictions ( [ xsd:minInclusive 1 ] ) ] ) ] ;
+    skos:definition "Number of dimensions in array" ;
+    skos:inScheme enigma:kbase-cdm-dynamic-data .
+
+kbase_cdm:n_features a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "n_features" ;
+    rdfs:range kbase_cdm:Count ;
+    skos:definition "Number of annotated features" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:n_fragments a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "n_fragments" ;
+    rdfs:range kbase_cdm:Count ;
+    skos:definition "Number of fragments" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:n_genes_hit a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "n_genes_hit" ;
+    rdfs:range kbase_cdm:Count ;
+    skos:definition "Number of genes with transposon insertions" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:n_good_reads a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "n_good_reads" ;
+    rdfs:range kbase_cdm:Count ;
+    skos:definition "Number of good quality reads" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:n_mapped_reads a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "n_mapped_reads" ;
+    rdfs:range kbase_cdm:Count ;
+    skos:definition "Number of mapped reads" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:n_variables a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "n_variables" ;
+    rdfs:range [ a rdfs:Datatype ;
+            owl:intersectionOf ( linkml:Integer [ a rdfs:Datatype ;
+                        owl:onDatatype xsd:integer ;
+                        owl:withRestrictions ( [ xsd:minInclusive 1 ] ) ] ) ] ;
+    skos:definition "Number of measured variables" ;
+    skos:inScheme enigma:kbase-cdm-dynamic-data .
+
+kbase_cdm:ncbi_taxid a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "ncbi_taxid" ;
+    rdfs:range linkml:Integer ;
+    skos:definition "NCBI Taxonomy ID" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:output_index a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "output_index" ;
+    rdfs:range [ a rdfs:Datatype ;
+            owl:intersectionOf ( linkml:Integer [ a rdfs:Datatype ;
+                        owl:onDatatype xsd:integer ;
+                        owl:withRestrictions ( [ xsd:minInclusive 0 ] ) ] ) ] ;
+    skos:definition "Index in output_objects array" ;
+    skos:inScheme enigma:kbase-cdm-system-tables .
+
+kbase_cdm:output_object_name a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "output_object_name" ;
+    rdfs:range kbase_cdm:EntityName ;
+    skos:definition "Name of output entity" ;
+    skos:inScheme enigma:kbase-cdm-system-tables .
+
+kbase_cdm:output_object_type a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "output_object_type" ;
+    rdfs:range linkml:String ;
+    skos:definition "Type of output entity (e.g., \"Assembly\", \"Genome\")" ;
+    skos:inScheme enigma:kbase-cdm-system-tables .
+
+kbase_cdm:parent_community_ref a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "parent_community_ref" ;
+    rdfs:range kbase_cdm:EntityName ;
+    skos:definition "Reference to parent community name (FK, self-referential to Community.sdt_community_name)" ;
+    skos:inScheme enigma:kbase-cdm-static-entities ;
+    skos:note "References Community.sdt_community_name",
+        "Self-referential FK for community hierarchies" .
+
+kbase_cdm:parent_sys_oterm_id a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "parent_sys_oterm_id" ;
+    rdfs:range kbase_cdm:OntologyTermID ;
+    skos:definition "Parent term in ontology hierarchy (FK to sys_oterm)" ;
+    skos:inScheme enigma:kbase-cdm-system-tables .
+
+kbase_cdm:person_sys_oterm_id a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "person_sys_oterm_id" ;
+    rdfs:range kbase_cdm:OntologyTermID ;
+    skos:definition "Person who performed process (ontology term ID)" ;
+    skos:inScheme enigma:kbase-cdm-system-tables .
+
+kbase_cdm:person_sys_oterm_name a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "person_sys_oterm_name" ;
+    rdfs:range linkml:String ;
+    skos:definition "Person who performed process (ontology term name)" ;
+    skos:inScheme enigma:kbase-cdm-system-tables .
+
+kbase_cdm:pk a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "pk" ;
+    rdfs:range linkml:Boolean ;
+    skos:definition "Primary key flag" ;
+    skos:inScheme enigma:kbase-cdm-system-tables .
+
+kbase_cdm:primers_model a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "primers_model" ;
+    rdfs:range linkml:String ;
+    skos:definition "Primers model used" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:process_type_sys_oterm_id a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "process_type_sys_oterm_id" ;
+    rdfs:range kbase_cdm:OntologyTermID ;
+    skos:definition "Process type ontology term ID" ;
+    skos:inScheme enigma:kbase-cdm-system-tables .
+
+kbase_cdm:process_type_sys_oterm_name a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "process_type_sys_oterm_name" ;
+    rdfs:range linkml:String ;
+    skos:definition "Process type ontology term name" ;
+    skos:inScheme enigma:kbase-cdm-system-tables .
+
+kbase_cdm:read_count a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "read_count" ;
+    rdfs:range kbase_cdm:Count ;
+    skos:definition "Number of reads" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:read_type_sys_oterm_id a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "read_type_sys_oterm_id" ;
+    rdfs:range kbase_cdm:OntologyTermID ;
+    skos:definition "Read type ontology term ID (e.g., paired-end, single-end)" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:read_type_sys_oterm_name a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "read_type_sys_oterm_name" ;
+    rdfs:range linkml:String ;
+    skos:definition "Read type ontology term name" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:region a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "region" ;
+    rdfs:range linkml:String ;
+    skos:definition "Geographic region" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:sample_ref a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "sample_ref" ;
+    rdfs:range kbase_cdm:EntityName ;
+    skos:definition "Reference to sample name (FK to Sample.sdt_sample_name)" ;
+    skos:inScheme enigma:kbase-cdm-static-entities ;
+    skos:note "References Sample.sdt_sample_name",
+        "{'CDM convention': 'FK references use entity name, not ID'}" .
+
+kbase_cdm:sdt_assembly_id a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "sdt_assembly_id" ;
+    rdfs:range [ a rdfs:Datatype ;
+            owl:intersectionOf ( linkml:String [ a rdfs:Datatype ;
+                        owl:onDatatype xsd:string ;
+                        owl:withRestrictions ( [ xsd:pattern "^Assembly\\d{7}$" ] ) ] ) ] ;
+    skos:definition "Unique identifier for Assembly" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:sdt_assembly_name a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "sdt_assembly_name" ;
+    rdfs:range kbase_cdm:EntityName ;
+    skos:definition "Name of assembly" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:sdt_asv_id a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "sdt_asv_id" ;
+    rdfs:range [ a rdfs:Datatype ;
+            owl:intersectionOf ( linkml:String [ a rdfs:Datatype ;
+                        owl:onDatatype xsd:string ;
+                        owl:withRestrictions ( [ xsd:pattern "^ASV\\d{7}$" ] ) ] ) ] ;
+    skos:definition "Unique identifier for ASV" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:sdt_asv_name a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "sdt_asv_name" ;
+    rdfs:range kbase_cdm:EntityName ;
+    skos:definition "Name of ASV" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:sdt_bin_id a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "sdt_bin_id" ;
+    rdfs:range [ a rdfs:Datatype ;
+            owl:intersectionOf ( linkml:String [ a rdfs:Datatype ;
+                        owl:onDatatype xsd:string ;
+                        owl:withRestrictions ( [ xsd:pattern "^Bin\\d{7}$" ] ) ] ) ] ;
+    skos:definition "Unique identifier for Bin" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:sdt_bin_name a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "sdt_bin_name" ;
+    rdfs:range kbase_cdm:EntityName ;
+    skos:definition "Name of bin" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:sdt_community_id a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "sdt_community_id" ;
+    rdfs:range [ a rdfs:Datatype ;
+            owl:intersectionOf ( linkml:String [ a rdfs:Datatype ;
+                        owl:onDatatype xsd:string ;
+                        owl:withRestrictions ( [ xsd:pattern "^Community\\d{7}$" ] ) ] ) ] ;
+    skos:definition "Unique identifier for Community" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:sdt_community_name a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "sdt_community_name" ;
+    rdfs:range kbase_cdm:EntityName ;
+    skos:definition "Name of community" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:sdt_condition_id a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "sdt_condition_id" ;
+    rdfs:range [ a rdfs:Datatype ;
+            owl:intersectionOf ( linkml:String [ a rdfs:Datatype ;
+                        owl:onDatatype xsd:string ;
+                        owl:withRestrictions ( [ xsd:pattern "^Condition\\d{7}$" ] ) ] ) ] ;
+    skos:definition "Unique identifier for Condition" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:sdt_condition_name a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "sdt_condition_name" ;
+    rdfs:range kbase_cdm:EntityName ;
+    skos:definition "Name of condition" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:sdt_dubseq_library_id a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "sdt_dubseq_library_id" ;
+    rdfs:range [ a rdfs:Datatype ;
+            owl:intersectionOf ( linkml:String [ a rdfs:Datatype ;
+                        owl:onDatatype xsd:string ;
+                        owl:withRestrictions ( [ xsd:pattern "^DubSeqLibrary\\d{7}$" ] ) ] ) ] ;
+    skos:definition "Unique identifier for DubSeqLibrary" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:sdt_dubseq_library_name a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "sdt_dubseq_library_name" ;
+    rdfs:range kbase_cdm:EntityName ;
+    skos:definition "Name of DubSeq library" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:sdt_enigma_id a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "sdt_enigma_id" ;
+    rdfs:range [ a rdfs:Datatype ;
+            owl:intersectionOf ( linkml:String [ a rdfs:Datatype ;
+                        owl:onDatatype xsd:string ;
+                        owl:withRestrictions ( [ xsd:pattern "^ENIGMA1$" ] ) ] ) ] ;
+    skos:definition "Unique identifier for ENIGMA root entity" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:sdt_gene_id a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "sdt_gene_id" ;
+    rdfs:range [ a rdfs:Datatype ;
+            owl:intersectionOf ( linkml:String [ a rdfs:Datatype ;
+                        owl:onDatatype xsd:string ;
+                        owl:withRestrictions ( [ xsd:pattern "^Gene\\d{7}$" ] ) ] ) ] ;
+    skos:definition "Unique identifier for Gene" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:sdt_gene_name a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "sdt_gene_name" ;
+    rdfs:range kbase_cdm:EntityName ;
+    skos:definition "Name of gene" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:sdt_genome_id a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "sdt_genome_id" ;
+    rdfs:range [ a rdfs:Datatype ;
+            owl:intersectionOf ( linkml:String [ a rdfs:Datatype ;
+                        owl:onDatatype xsd:string ;
+                        owl:withRestrictions ( [ xsd:pattern "^Genome\\d{7}$" ] ) ] ) ] ;
+    skos:definition "Unique identifier for Genome" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:sdt_genome_name a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "sdt_genome_name" ;
+    rdfs:range kbase_cdm:EntityName ;
+    skos:definition "Name of genome" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:sdt_image_id a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "sdt_image_id" ;
+    rdfs:range [ a rdfs:Datatype ;
+            owl:intersectionOf ( linkml:String [ a rdfs:Datatype ;
+                        owl:onDatatype xsd:string ;
+                        owl:withRestrictions ( [ xsd:pattern "^Image\\d{7}$" ] ) ] ) ] ;
+    skos:definition "Unique identifier for Image" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:sdt_image_name a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "sdt_image_name" ;
+    rdfs:range kbase_cdm:EntityName ;
+    skos:definition "Name of image" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:sdt_location_id a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "sdt_location_id" ;
+    rdfs:range [ a rdfs:Datatype ;
+            owl:intersectionOf ( linkml:String [ a rdfs:Datatype ;
+                        owl:onDatatype xsd:string ;
+                        owl:withRestrictions ( [ xsd:pattern "^Location\\d{7}$" ] ) ] ) ] ;
+    skos:definition "Unique identifier for Location" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:sdt_location_name a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "sdt_location_name" ;
+    rdfs:range kbase_cdm:EntityName ;
+    skos:definition "Name of location" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:sdt_protocol_id a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "sdt_protocol_id" ;
+    rdfs:range [ a rdfs:Datatype ;
+            owl:intersectionOf ( linkml:String [ a rdfs:Datatype ;
+                        owl:onDatatype xsd:string ;
+                        owl:withRestrictions ( [ xsd:pattern "^Protocol\\d{7}$" ] ) ] ) ] ;
+    skos:definition "Unique identifier for Protocol" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:sdt_reads_id a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "sdt_reads_id" ;
+    rdfs:range [ a rdfs:Datatype ;
+            owl:intersectionOf ( linkml:String [ a rdfs:Datatype ;
+                        owl:onDatatype xsd:string ;
+                        owl:withRestrictions ( [ xsd:pattern "^Reads\\d{7}$" ] ) ] ) ] ;
+    skos:definition "Unique identifier for Reads" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:sdt_reads_name a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "sdt_reads_name" ;
+    rdfs:range kbase_cdm:EntityName ;
+    skos:definition "Name of reads dataset" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:sdt_sample_id a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "sdt_sample_id" ;
+    rdfs:range [ a rdfs:Datatype ;
+            owl:intersectionOf ( linkml:String [ a rdfs:Datatype ;
+                        owl:onDatatype xsd:string ;
+                        owl:withRestrictions ( [ xsd:pattern "^Sample\\d{7}$" ] ) ] ) ] ;
+    skos:definition "Unique identifier for Sample" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:sdt_sample_name a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "sdt_sample_name" ;
+    rdfs:range kbase_cdm:EntityName ;
+    skos:definition "Name of sample" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:sdt_strain_id a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "sdt_strain_id" ;
+    rdfs:range [ a rdfs:Datatype ;
+            owl:intersectionOf ( linkml:String [ a rdfs:Datatype ;
+                        owl:onDatatype xsd:string ;
+                        owl:withRestrictions ( [ xsd:pattern "^Strain\\d{7}$" ] ) ] ) ] ;
+    skos:definition "Unique identifier for Strain" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:sdt_strain_name a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "sdt_strain_name" ;
+    rdfs:range kbase_cdm:EntityName ;
+    skos:definition "Name of strain" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:sdt_taxon_id a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "sdt_taxon_id" ;
+    rdfs:range [ a rdfs:Datatype ;
+            owl:intersectionOf ( linkml:String [ a rdfs:Datatype ;
+                        owl:onDatatype xsd:string ;
+                        owl:withRestrictions ( [ xsd:pattern "^Taxon\\d{7}$" ] ) ] ) ] ;
+    skos:definition "Unique identifier for Taxon" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:sdt_taxon_name a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "sdt_taxon_name" ;
+    rdfs:range kbase_cdm:EntityName ;
+    skos:definition "Taxonomic name" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:sdt_tnseq_library_id a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "sdt_tnseq_library_id" ;
+    rdfs:range [ a rdfs:Datatype ;
+            owl:intersectionOf ( linkml:String [ a rdfs:Datatype ;
+                        owl:onDatatype xsd:string ;
+                        owl:withRestrictions ( [ xsd:pattern "^TnSeqLibrary\\d{7}$" ] ) ] ) ] ;
+    skos:definition "Unique identifier for TnSeqLibrary" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:sdt_tnseq_library_name a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "sdt_tnseq_library_name" ;
+    rdfs:range kbase_cdm:EntityName ;
+    skos:definition "Name of TnSeq library" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:sequence a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "sequence" ;
+    rdfs:range linkml:String ;
+    skos:definition "DNA sequence" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:sequencing_technology_sys_oterm_id a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "sequencing_technology_sys_oterm_id" ;
+    rdfs:range kbase_cdm:OntologyTermID ;
+    skos:definition "Sequencing technology ontology term ID" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:sequencing_technology_sys_oterm_name a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "sequencing_technology_sys_oterm_name" ;
+    rdfs:range linkml:String ;
+    skos:definition "Sequencing technology ontology term name" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:size a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "size" ;
+    rdfs:range kbase_cdm:Size ;
+    skos:definition "File size in bytes" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:start a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "start" ;
+    rdfs:range linkml:Integer ;
+    skos:definition "Start position on contig" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:stop a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "stop" ;
+    rdfs:range linkml:Integer ;
+    skos:definition "Stop position on contig" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:strand a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "strand" ;
+    rdfs:range [ a rdfs:Datatype ;
+            owl:intersectionOf ( linkml:String [ a rdfs:Datatype ;
+                        owl:onDatatype xsd:string ;
+                        owl:withRestrictions ( [ xsd:pattern "^[+-]$" ] ) ] ) ] ;
+    skos:definition "DNA strand (+ or -)" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:sys_oterm_definition a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "sys_oterm_definition" ;
+    rdfs:range linkml:String ;
+    skos:definition "Formal term definition" ;
+    skos:inScheme enigma:kbase-cdm-system-tables .
+
+kbase_cdm:sys_oterm_id a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "sys_oterm_id" ;
+    rdfs:range kbase_cdm:OntologyTermID ;
+    skos:definition "Ontology term identifier (CURIE format)" ;
+    skos:inScheme enigma:kbase-cdm-base ;
+    skos:note "Foreign key to sys_oterm table",
+        "{'Standard format': 'PREFIX:NNNNNN (e.g., ME:0000129)'}" .
+
+kbase_cdm:sys_oterm_links a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "sys_oterm_links" ;
+    rdfs:range linkml:String ;
+    skos:definition "External links (URLs, pipe-separated)" ;
+    skos:inScheme enigma:kbase-cdm-system-tables .
+
+kbase_cdm:sys_oterm_name a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "sys_oterm_name" ;
+    rdfs:range linkml:String ;
+    skos:definition "Human-readable ontology term name" ;
+    skos:inScheme enigma:kbase-cdm-base ;
+    skos:note "Denormalized from sys_oterm for query performance",
+        "Must match the name in sys_oterm catalog" .
+
+kbase_cdm:sys_oterm_ontology a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "sys_oterm_ontology" ;
+    rdfs:range linkml:String ;
+    skos:definition "Source ontology name" ;
+    skos:inScheme enigma:kbase-cdm-system-tables .
+
+kbase_cdm:sys_oterm_properties a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "sys_oterm_properties" ;
+    rdfs:range linkml:String ;
+    skos:definition "Additional term properties (JSON or key=value pairs)" ;
+    skos:inScheme enigma:kbase-cdm-system-tables .
+
+kbase_cdm:sys_oterm_synonyms a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "sys_oterm_synonyms" ;
+    rdfs:range linkml:String ;
+    skos:definition "Alternative term names (pipe-separated)" ;
+    skos:inScheme enigma:kbase-cdm-system-tables .
+
+kbase_cdm:time a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "time" ;
+    rdfs:range kbase_cdm:Time ;
+    skos:definition "Collection time" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:timezone a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "timezone" ;
+    rdfs:range linkml:String ;
+    skos:definition "Timezone" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:total_rows a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "total_rows" ;
+    rdfs:range [ a rdfs:Datatype ;
+            owl:intersectionOf ( linkml:Integer [ a rdfs:Datatype ;
+                        owl:onDatatype xsd:integer ;
+                        owl:withRestrictions ( [ xsd:minInclusive 0 ] ) ] ) ] ;
+    skos:definition "Total number of data rows in brick table" ;
+    skos:inScheme enigma:kbase-cdm-dynamic-data ;
+    skos:note "May be less if array is sparse",
+        "Should equal product of dimension sizes" .
+
+kbase_cdm:type_name a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "type_name" ;
+    rdfs:range linkml:String ;
+    skos:definition "CORAL entity type name (e.g., \"Gene\", \"Sample\")" ;
+    skos:inScheme enigma:kbase-cdm-system-tables .
+
+kbase_cdm:type_sys_oterm_id a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "type_sys_oterm_id" ;
+    rdfs:range kbase_cdm:OntologyTermID ;
+    skos:definition "Ontology term for data type" ;
+    skos:inScheme enigma:kbase-cdm-system-tables .
+
+kbase_cdm:units_sys_oterm_id a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "units_sys_oterm_id" ;
+    rdfs:range kbase_cdm:OntologyTermID ;
+    skos:definition "Ontology term for measurement units" ;
+    skos:inScheme enigma:kbase-cdm-system-tables .
+
+kbase_cdm:upk a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "upk" ;
+    rdfs:range linkml:Boolean ;
+    skos:definition "Unique key flag" ;
+    skos:inScheme enigma:kbase-cdm-system-tables .
+
+kbase_cdm:variable_data_type a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "variable_data_type" ;
+    rdfs:range [ a rdfs:Datatype ;
+            owl:intersectionOf ( linkml:String [ a rdfs:Datatype ;
+                        owl:onDatatype xsd:string ;
+                        owl:withRestrictions ( [ xsd:pattern "^(float|int|bool|text|oterm_ref|object_ref)$" ] ) ] ) ] ;
+    skos:definition "Data type of variable (float, int, bool, oterm_ref, object_ref)" ;
+    skos:inScheme enigma:kbase-cdm-dynamic-data .
+
+kbase_cdm:ReadTypeEnum a owl:Class,
+        linkml:EnumDefinition ;
+    owl:unionOf ( ME:0000113 ME:0000114 ) ;
+    linkml:permissible_values ME:0000113,
+        ME:0000114 .
+
+kbase_cdm:StrandEnum a owl:Class,
+        linkml:EnumDefinition ;
+    owl:unionOf ( ME:0000193 ME:0000194 ) ;
+    linkml:permissible_values ME:0000193,
+        ME:0000194 .
+
+kbase_cdm:Size a owl:Class,
+        linkml:TypeDefinition ;
+    rdfs:subClassOf linkml:Integer .
+
+kbase_cdm:BiomeEnum a owl:Class,
+        linkml:EnumDefinition ;
+    owl:unionOf ( ENVO:00000446 ENVO:00002030 ENVO:00000447 ) ;
+    linkml:permissible_values ENVO:00000446,
+        ENVO:00000447,
+        ENVO:00002030 .
+
+kbase_cdm:Link a owl:Class,
+        linkml:TypeDefinition ;
+    rdfs:subClassOf linkml:String .
+
+kbase_cdm:cdm_column_name a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "cdm_column_name" ;
+    rdfs:range linkml:String ;
+    skos:definition "Mapped CDM column name (snake_case with prefixes)" ;
+    skos:inScheme enigma:kbase-cdm-system-tables .
+
+kbase_cdm:ddt_ndarray_id a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "ddt_ndarray_id" ;
+    rdfs:range linkml:String ;
+    skos:definition "Brick identifier (e.g., \"Brick0000010\")" ;
+    skos:inScheme enigma:kbase-cdm-system-tables .
+
+kbase_cdm:dimension_number a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "dimension_number" ;
+    rdfs:range [ a rdfs:Datatype ;
+            owl:intersectionOf ( linkml:Integer [ a rdfs:Datatype ;
+                        owl:onDatatype xsd:integer ;
+                        owl:withRestrictions ( [ xsd:minInclusive 0 ] ) ] ) ] ;
+    skos:definition "Position in N-dimensional array (0-indexed)" ;
+    skos:inScheme enigma:kbase-cdm-system-tables .
+
+kbase_cdm:dimension_oterm_id a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "dimension_oterm_id" ;
+    rdfs:range kbase_cdm:OntologyTermID ;
+    skos:definition "Dimension semantic ontology term ID" ;
+    skos:inScheme enigma:kbase-cdm-system-tables .
+
+kbase_cdm:dimension_oterm_name a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "dimension_oterm_name" ;
+    rdfs:range linkml:String ;
+    skos:definition "Dimension semantic ontology term name" ;
+    skos:inScheme enigma:kbase-cdm-system-tables .
+
+kbase_cdm:n_contigs a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "n_contigs" ;
+    rdfs:range kbase_cdm:Count ;
+    skos:definition "Number of contigs" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:scalar_type a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "scalar_type" ;
+    rdfs:range linkml:String ;
+    skos:definition "Data type (text, int, float, [text] for arrays)" ;
+    skos:inScheme enigma:kbase-cdm-system-tables .
+
+kbase_cdm:sdt_protocol_name a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "sdt_protocol_name" ;
+    rdfs:range kbase_cdm:EntityName ;
+    skos:definition "Name of protocol" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:strain_ref a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "strain_ref" ;
+    rdfs:range kbase_cdm:EntityName ;
+    skos:definition "Reference to strain name (FK to Strain.sdt_strain_name)" ;
+    skos:inScheme enigma:kbase-cdm-static-entities ;
+    skos:note "References Strain.sdt_strain_name",
+        "{'CDM convention': 'FK references use entity name, not ID'}" .
+
+kbase_cdm:total_size a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "total_size" ;
+    rdfs:range kbase_cdm:Size ;
+    skos:definition "Total assembly size in base pairs" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:unit_sys_oterm_id a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "unit_sys_oterm_id" ;
+    rdfs:range kbase_cdm:OntologyTermID ;
+    skos:definition "Measurement unit ontology term ID" ;
+    skos:inScheme enigma:kbase-cdm-system-tables .
+
+kbase_cdm:unit_sys_oterm_name a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "unit_sys_oterm_name" ;
+    rdfs:range linkml:String ;
+    skos:definition "Measurement unit ontology term name" ;
+    skos:inScheme enigma:kbase-cdm-system-tables .
+
+kbase_cdm:variable_number a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "variable_number" ;
+    rdfs:range [ a rdfs:Datatype ;
+            owl:intersectionOf ( linkml:Integer [ a rdfs:Datatype ;
+                        owl:onDatatype xsd:integer ;
+                        owl:withRestrictions ( [ xsd:minInclusive 0 ] ) ] ) ] ;
+    skos:definition "Variable index in brick" ;
+    skos:inScheme enigma:kbase-cdm-system-tables .
+
+kbase_cdm:variable_oterm_id a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "variable_oterm_id" ;
+    rdfs:range kbase_cdm:OntologyTermID ;
+    skos:definition "Variable semantic ontology term ID" ;
+    skos:inScheme enigma:kbase-cdm-system-tables .
+
+kbase_cdm:variable_oterm_name a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "variable_oterm_name" ;
+    rdfs:range linkml:String ;
+    skos:definition "Variable semantic ontology term name" ;
+    skos:inScheme enigma:kbase-cdm-system-tables .
+
+kbase_cdm:SystemEntity a owl:Class,
+        linkml:ClassDefinition ;
+    rdfs:label "SystemEntity" ;
+    skos:definition """Base mixin for CDM system tables (sys_*).
+
+System tables provide metadata, type definitions, provenance tracking,
+and ontology catalogs. They support the static and dynamic data tables
+but are not directly linked to experimental entities.
+
+System tables: sys_typedef, sys_ddt_typedef, sys_oterm, sys_process,
+sys_process_input, sys_process_output
+""" ;
+    skos:inScheme enigma:kbase-cdm-base ;
+    skos:note "May have composite keys or generated IDs",
+        "No sdt_ prefix (use sys_ instead)",
+        "System tables have their own identifier conventions" .
+
+kbase_cdm:Date a owl:Class,
+        linkml:TypeDefinition ;
+    rdfs:subClassOf linkml:String .
+
+kbase_cdm:MaterialEnum a owl:Class,
+        linkml:EnumDefinition ;
+    owl:unionOf ( ENVO:00001998 ENVO:00002007 ENVO:00002006 ENVO:00002034 ) ;
+    linkml:permissible_values ENVO:00001998,
+        ENVO:00002006,
+        ENVO:00002007,
+        ENVO:00002034 .
+
+kbase_cdm:SequencingTechnologyEnum a owl:Class,
+        linkml:EnumDefinition ;
+    owl:unionOf ( ME:0000115 ME:0000116 ME:0000117 ME:0000118 ) ;
+    linkml:permissible_values ME:0000115,
+        ME:0000116,
+        ME:0000117,
+        ME:0000118 .
+
+kbase_cdm:description a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "description" ;
+    rdfs:range linkml:String ;
+    skos:definition "Free text description" ;
+    skos:inScheme enigma:kbase-cdm-static-entities .
+
+kbase_cdm:sys_process_id a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "sys_process_id" ;
+    rdfs:range [ a rdfs:Datatype ;
+            owl:intersectionOf ( linkml:String [ a rdfs:Datatype ;
+                        owl:onDatatype xsd:string ;
+                        owl:withRestrictions ( [ xsd:pattern "^Process\\d{7}$" ] ) ] ) ] ;
+    skos:definition "Unique process identifier" ;
+    skos:inScheme enigma:kbase-cdm-system-tables .
+
+kbase_cdm:CommunityTypeEnum a owl:Class,
+        linkml:EnumDefinition ;
+    owl:unionOf ( ME:0000200 ME:0000201 ME:0000202 ME:0000203 ME:0000237 ) ;
+    linkml:permissible_values ME:0000200,
+        ME:0000201,
+        ME:0000202,
+        ME:0000203,
+        ME:0000237 .
+
+kbase_cdm:BrickDataType a owl:Class,
+        linkml:EnumDefinition ;
+    owl:unionOf ( <https://w3id.org/enigma/kbase-cdm/BrickDataType#float> <https://w3id.org/enigma/kbase-cdm/BrickDataType#int> <https://w3id.org/enigma/kbase-cdm/BrickDataType#bool> <https://w3id.org/enigma/kbase-cdm/BrickDataType#text> <https://w3id.org/enigma/kbase-cdm/BrickDataType#oterm_ref> <https://w3id.org/enigma/kbase-cdm/BrickDataType#object_ref> ) ;
+    linkml:permissible_values <https://w3id.org/enigma/kbase-cdm/BrickDataType#bool>,
+        <https://w3id.org/enigma/kbase-cdm/BrickDataType#float>,
+        <https://w3id.org/enigma/kbase-cdm/BrickDataType#int>,
+        <https://w3id.org/enigma/kbase-cdm/BrickDataType#object_ref>,
+        <https://w3id.org/enigma/kbase-cdm/BrickDataType#oterm_ref>,
+        <https://w3id.org/enigma/kbase-cdm/BrickDataType#text> .
+
+kbase_cdm:genome_ref a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "genome_ref" ;
+    rdfs:range kbase_cdm:EntityName ;
+    skos:definition "Reference to genome name (FK to Genome.sdt_genome_name)" ;
+    skos:inScheme enigma:kbase-cdm-static-entities ;
+    skos:note "References Genome.sdt_genome_name",
+        "{'CDM convention': 'FK references use entity name, not ID'}",
+        "{'Used by': 'Gene, Strain, DubSeqLibrary, TnSeqLibrary'}" .
+
+kbase_cdm:link a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "link" ;
+    rdfs:range kbase_cdm:Link ;
+    skos:definition "External reference URL or file path" ;
+    skos:inScheme enigma:kbase-cdm-base ;
+    skos:note "May point to files in object storage or external databases",
+        "Used for Assembly, Genome, Reads, Image, Protocol" .
+
+kbase_cdm:DimensionSemantics a owl:Class,
+        linkml:EnumDefinition ;
+    owl:unionOf ( ME:0000501 ME:0000502 ME:0000503 ME:0000504 ME:0000505 ME:0000506 ME:0000507 ME:0000508 ) ;
+    linkml:permissible_values ME:0000501,
+        ME:0000502,
+        ME:0000503,
+        ME:0000504,
+        ME:0000505,
+        ME:0000506,
+        ME:0000507,
+        ME:0000508 .
+
+kbase_cdm:VariableSemantics a owl:Class,
+        linkml:EnumDefinition ;
+    owl:unionOf ( ME:0000601 ME:0000602 ME:0000603 ME:0000604 ME:0000605 ME:0000606 ME:0000607 ME:0000608 ) ;
+    linkml:permissible_values ME:0000601,
+        ME:0000602,
+        ME:0000603,
+        ME:0000604,
+        ME:0000605,
+        ME:0000606,
+        ME:0000607,
+        ME:0000608 .
+
+kbase_cdm:CDMEntity a owl:Class,
+        linkml:ClassDefinition ;
+    rdfs:label "CDMEntity" ;
+    skos:definition """Base mixin for all CDM static data tables (sdt_*).
+
+Enforces CDM naming conventions:
+- Primary key: sdt_{entity}_id with pattern EntityName\\d{7}
+- Name field: sdt_{entity}_name (unique, used for FK references)
+- All columns use snake_case with entity prefix
+
+Example:
+- Location: sdt_location_id, sdt_location_name
+- Sample: sdt_sample_id, sdt_sample_name
+
+Note: Each entity class must define its own id and name slots
+with entity-specific names (e.g., sdt_location_id, sdt_location_name).
+""" ;
+    skos:inScheme enigma:kbase-cdm-base ;
+    skos:note "This mixin does not define slots - each entity defines its own",
+        "Used for grouping and documentation purposes" .
+
+kbase_cdm:Count a owl:Class,
+        linkml:TypeDefinition ;
+    rdfs:subClassOf linkml:Integer .
+
+kbase_cdm:OntologyTermID a owl:Class,
+        linkml:TypeDefinition ;
+    rdfs:subClassOf linkml:String .
+
+kbase_cdm:EntityName a owl:Class,
+        linkml:TypeDefinition ;
+    rdfs:subClassOf linkml:String .
+

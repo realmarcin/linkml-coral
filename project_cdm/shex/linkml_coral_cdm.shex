@@ -1,0 +1,454 @@
+# metamodel_version: 1.7.0
+# version: 1.0.0
+BASE <https://w3id.org/enigma/kbase-cdm/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX linkml: <https://w3id.org/linkml/>
+
+
+linkml:String xsd:string
+
+linkml:Integer xsd:integer
+
+linkml:Boolean xsd:boolean
+
+linkml:Float xsd:float
+
+linkml:Double xsd:double
+
+linkml:Decimal xsd:decimal
+
+linkml:Time xsd:time
+
+linkml:Date xsd:date
+
+linkml:Datetime xsd:dateTime
+
+linkml:DateOrDatetime linkml:DateOrDatetime
+
+linkml:Uriorcurie IRI
+
+linkml:Curie xsd:string
+
+linkml:Uri IRI
+
+linkml:Ncname xsd:string
+
+linkml:Objectidentifier IRI
+
+linkml:Nodeidentifier NONLITERAL
+
+linkml:Jsonpointer xsd:string
+
+linkml:Jsonpath xsd:string
+
+linkml:Sparqlpath xsd:string
+
+<Date> xsd:string
+
+<Time> xsd:string
+
+<Link> xsd:string
+
+<Latitude> xsd:float
+
+<Longitude> xsd:float
+
+<Count> xsd:integer
+
+<Size> xsd:integer
+
+<Rate> xsd:float
+
+<Depth> xsd:float
+
+<Elevation> xsd:float
+
+<OntologyTermID> xsd:string
+
+<EntityName> xsd:string
+
+<Assembly> CLOSED {
+    (  $<Assembly_tes> (  &<CDMEntity_tes> ;
+          rdf:type [ <CDMEntity> ] ? ;
+          <sdt_assembly_name> @<EntityName> ;
+          <strain_ref> @<EntityName> ? ;
+          <n_contigs> @<Count> ? ;
+          <total_size> @<Size> ? ;
+          <link> @<Link> ?
+       ) ;
+       rdf:type [ <Assembly> ]
+    )
+}
+
+<ASV> CLOSED {
+    (  $<ASV_tes> (  &<CDMEntity_tes> ;
+          rdf:type [ <CDMEntity> ] ? ;
+          <sdt_asv_name> @<EntityName> ;
+          <sequence> @linkml:String ?
+       ) ;
+       rdf:type [ <ASV> ]
+    )
+}
+
+<Bin> CLOSED {
+    (  $<Bin_tes> (  &<CDMEntity_tes> ;
+          rdf:type [ <CDMEntity> ] ? ;
+          <sdt_bin_name> @<EntityName> ;
+          <assembly_ref> @<EntityName> ? ;
+          <contigs> @linkml:String ?
+       ) ;
+       rdf:type [ <Bin> ]
+    )
+}
+
+<Brick> {
+    (  $<Brick_tes> rdf:type . * ;
+       rdf:type [ <Brick> ] ?
+    )
+}
+
+<BrickDimension> {
+    (  $<BrickDimension_tes> (  <dimension_number> @linkml:Integer ? ;
+          <dimension_oterm_id> @<OntologyTermID> ? ;
+          <dimension_oterm_name> @linkml:String ? ;
+          <dimension_size> @linkml:Integer ? ;
+          <dimension_values> @linkml:String ?
+       ) ;
+       rdf:type [ <BrickDimension> ] ?
+    )
+}
+
+<BrickVariable> {
+    (  $<BrickVariable_tes> (  <variable_number> @linkml:Integer ? ;
+          <variable_oterm_id> @<OntologyTermID> ? ;
+          <variable_oterm_name> @linkml:String ? ;
+          <variable_data_type> @linkml:String ? ;
+          <unit_sys_oterm_id> @<OntologyTermID> ? ;
+          <unit_sys_oterm_name> @linkml:String ? ;
+          <min_value> @linkml:Float ? ;
+          <max_value> @linkml:Float ?
+       ) ;
+       rdf:type [ <BrickVariable> ] ?
+    )
+}
+
+<CDMEntity> {
+    (  $<CDMEntity_tes> rdf:type . * ;
+       rdf:type [ <CDMEntity> ] ?
+    )
+}
+
+<Community> CLOSED {
+    (  $<Community_tes> (  &<CDMEntity_tes> ;
+          rdf:type [ <CDMEntity> ] ? ;
+          <sdt_community_name> @<EntityName> ;
+          <community_type_sys_oterm_id> @<OntologyTermID> ? ;
+          <community_type_sys_oterm_name> @linkml:String ? ;
+          <sample_ref> @<EntityName> ? ;
+          <parent_community_ref> @<EntityName> ? ;
+          <defined_strains_ref> @<EntityName> *
+       ) ;
+       rdf:type [ <Community> ]
+    )
+}
+
+<Condition> CLOSED {
+    (  $<Condition_tes> (  &<CDMEntity_tes> ;
+          rdf:type [ <CDMEntity> ] ? ;
+          <sdt_condition_name> @<EntityName>
+       ) ;
+       rdf:type [ <Condition> ]
+    )
+}
+
+<DubSeqLibrary> CLOSED {
+    (  $<DubSeqLibrary_tes> (  &<CDMEntity_tes> ;
+          rdf:type [ <CDMEntity> ] ? ;
+          <sdt_dubseq_library_name> @<EntityName> ;
+          <genome_ref> @<EntityName> ? ;
+          <n_fragments> @<Count> ?
+       ) ;
+       rdf:type [ <DubSeqLibrary> ]
+    )
+}
+
+<DynamicDataArray> CLOSED {
+    (  $<DynamicDataArray_tes> (  &<SystemEntity_tes> ;
+          rdf:type [ <SystemEntity> ] ? ;
+          <brick_table_name> @linkml:String ? ;
+          <n_dimensions> @linkml:Integer ? ;
+          <dimension_sizes> @linkml:String ? ;
+          <n_variables> @linkml:Integer ? ;
+          <total_rows> @linkml:Integer ? ;
+          <associated_entity_type> @linkml:String ? ;
+          <associated_entity_names> @<EntityName> * ;
+          <measurement_type_sys_oterm_id> @<OntologyTermID> ? ;
+          <measurement_type_sys_oterm_name> @linkml:String ? ;
+          <creation_date> @<Date> ? ;
+          <description> @linkml:String ?
+       ) ;
+       rdf:type [ <DynamicDataArray> ]
+    )
+}
+
+<ENIGMA> CLOSED {
+    (  $<ENIGMA_tes> (  &<CDMEntity_tes> ;
+          rdf:type [ <CDMEntity> ] ?
+       ) ;
+       rdf:type [ <ENIGMA> ]
+    )
+}
+
+<Gene> CLOSED {
+    (  $<Gene_tes> (  &<CDMEntity_tes> ;
+          rdf:type [ <CDMEntity> ] ? ;
+          <sdt_gene_name> @<EntityName> ;
+          <genome_ref> @<EntityName> ? ;
+          <contig_number> @linkml:Integer ? ;
+          <strand> @linkml:String ? ;
+          <start> @linkml:Integer ? ;
+          <stop> @linkml:Integer ? ;
+          <function> @linkml:String ?
+       ) ;
+       rdf:type [ <Gene> ]
+    )
+}
+
+<Genome> CLOSED {
+    (  $<Genome_tes> (  &<CDMEntity_tes> ;
+          rdf:type [ <CDMEntity> ] ? ;
+          <sdt_genome_name> @<EntityName> ;
+          <strain_ref> @<EntityName> ? ;
+          <n_contigs> @<Count> ? ;
+          <n_features> @<Count> ? ;
+          <total_size> @<Size> ? ;
+          <link> @<Link> ?
+       ) ;
+       rdf:type [ <Genome> ]
+    )
+}
+
+<Image> CLOSED {
+    (  $<Image_tes> (  &<CDMEntity_tes> ;
+          rdf:type [ <CDMEntity> ] ? ;
+          <sdt_image_name> @<EntityName> ;
+          <mime_type> @linkml:String ? ;
+          <size> @<Size> ? ;
+          <dimensions> @linkml:String ? ;
+          <link> @<Link> ?
+       ) ;
+       rdf:type [ <Image> ]
+    )
+}
+
+<Location> CLOSED {
+    (  $<Location_tes> (  &<CDMEntity_tes> ;
+          rdf:type [ <CDMEntity> ] ? ;
+          <sdt_location_name> @<EntityName> ;
+          <latitude> @<Latitude> ? ;
+          <longitude> @<Longitude> ? ;
+          <continent_sys_oterm_id> @<OntologyTermID> ? ;
+          <continent_sys_oterm_name> @linkml:String ? ;
+          <country_sys_oterm_id> @<OntologyTermID> ? ;
+          <country_sys_oterm_name> @linkml:String ? ;
+          <region> @linkml:String ? ;
+          <biome_sys_oterm_id> @<OntologyTermID> ? ;
+          <biome_sys_oterm_name> @linkml:String ? ;
+          <feature_sys_oterm_id> @<OntologyTermID> ? ;
+          <feature_sys_oterm_name> @linkml:String ?
+       ) ;
+       rdf:type [ <Location> ]
+    )
+}
+
+<OntologyTermPair> {
+    (  $<OntologyTermPair_tes> rdf:type . * ;
+       rdf:type [ <OntologyTermPair> ] ?
+    )
+}
+
+<Protocol> CLOSED {
+    (  $<Protocol_tes> (  &<CDMEntity_tes> ;
+          rdf:type [ <CDMEntity> ] ? ;
+          <sdt_protocol_name> @<EntityName> ;
+          <description> @linkml:String ? ;
+          <link> @<Link> ?
+       ) ;
+       rdf:type [ <Protocol> ]
+    )
+}
+
+<Reads> CLOSED {
+    (  $<Reads_tes> (  &<CDMEntity_tes> ;
+          rdf:type [ <CDMEntity> ] ? ;
+          <sdt_reads_name> @<EntityName> ;
+          <read_count> @<Count> ? ;
+          <base_count> @<Count> ? ;
+          <read_type_sys_oterm_id> @<OntologyTermID> ? ;
+          <read_type_sys_oterm_name> @linkml:String ? ;
+          <sequencing_technology_sys_oterm_id> @<OntologyTermID> ? ;
+          <sequencing_technology_sys_oterm_name> @linkml:String ? ;
+          <link> @<Link> ?
+       ) ;
+       rdf:type [ <Reads> ]
+    )
+}
+
+<Sample> CLOSED {
+    (  $<Sample_tes> (  &<CDMEntity_tes> ;
+          rdf:type [ <CDMEntity> ] ? ;
+          <sdt_sample_name> @<EntityName> ;
+          <location_ref> @<EntityName> ? ;
+          <depth> @<Depth> ? ;
+          <elevation> @<Elevation> ? ;
+          <date> @<Date> ? ;
+          <time> @<Time> ? ;
+          <timezone> @linkml:String ? ;
+          <material_sys_oterm_id> @<OntologyTermID> ? ;
+          <material_sys_oterm_name> @linkml:String ? ;
+          <env_package_sys_oterm_id> @<OntologyTermID> ? ;
+          <env_package_sys_oterm_name> @linkml:String ? ;
+          <description> @linkml:String ?
+       ) ;
+       rdf:type [ <Sample> ]
+    )
+}
+
+<Strain> CLOSED {
+    (  $<Strain_tes> (  &<CDMEntity_tes> ;
+          rdf:type [ <CDMEntity> ] ? ;
+          <sdt_strain_name> @<EntityName> ;
+          <genome_ref> @<EntityName> ? ;
+          <derived_from_strain_ref> @<EntityName> ? ;
+          <gene_names_changed> @<EntityName> *
+       ) ;
+       rdf:type [ <Strain> ]
+    )
+}
+
+<SystemDDTTypedef> CLOSED {
+    (  $<SystemDDTTypedef_tes> (  &<SystemEntity_tes> ;
+          rdf:type [ <SystemEntity> ] ? ;
+          <ddt_ndarray_id> @linkml:String ;
+          <cdm_column_name> @linkml:String ;
+          <cdm_column_data_type> @linkml:String ? ;
+          <scalar_type> @linkml:String ? ;
+          <dimension_number> @linkml:Integer ? ;
+          <variable_number> @linkml:Integer ? ;
+          <dimension_oterm_id> @<OntologyTermID> ? ;
+          <dimension_oterm_name> @linkml:String ? ;
+          <variable_oterm_id> @<OntologyTermID> ? ;
+          <variable_oterm_name> @linkml:String ? ;
+          <unit_sys_oterm_id> @<OntologyTermID> ? ;
+          <unit_sys_oterm_name> @linkml:String ?
+       ) ;
+       rdf:type [ <SystemDDTTypedef> ] ?
+    )
+}
+
+<SystemEntity> {
+    (  $<SystemEntity_tes> rdf:type . * ;
+       rdf:type [ <SystemEntity> ] ?
+    )
+}
+
+<SystemOntologyTerm> CLOSED {
+    (  $<SystemOntologyTerm_tes> (  &<SystemEntity_tes> ;
+          rdf:type [ <SystemEntity> ] ? ;
+          <sys_oterm_name> @linkml:String ? ;
+          <sys_oterm_ontology> @linkml:String ? ;
+          <parent_sys_oterm_id> @<OntologyTermID> ? ;
+          <sys_oterm_definition> @linkml:String ? ;
+          <sys_oterm_synonyms> @linkml:String ? ;
+          <sys_oterm_links> @linkml:String ? ;
+          <sys_oterm_properties> @linkml:String ?
+       ) ;
+       rdf:type [ <SystemOntologyTerm> ]
+    )
+}
+
+<SystemProcess> CLOSED {
+    (  $<SystemProcess_tes> (  &<SystemEntity_tes> ;
+          rdf:type [ <SystemEntity> ] ? ;
+          <process_type_sys_oterm_id> @<OntologyTermID> ? ;
+          <process_type_sys_oterm_name> @linkml:String ? ;
+          <person_sys_oterm_id> @<OntologyTermID> ? ;
+          <person_sys_oterm_name> @linkml:String ? ;
+          <campaign_sys_oterm_id> @<OntologyTermID> ? ;
+          <campaign_sys_oterm_name> @linkml:String ? ;
+          <sdt_protocol_name> @<EntityName> ;
+          <date_start> @<Date> ? ;
+          <date_end> @<Date> ? ;
+          <input_objects> @linkml:String * ;
+          <output_objects> @linkml:String *
+       ) ;
+       rdf:type [ <SystemProcess> ]
+    )
+}
+
+<SystemProcessInput> CLOSED {
+    (  $<SystemProcessInput_tes> (  &<SystemEntity_tes> ;
+          rdf:type [ <SystemEntity> ] ? ;
+          <sys_process_id> @linkml:String ;
+          <input_object_type> @linkml:String ? ;
+          <input_object_name> @<EntityName> ? ;
+          <input_index> @linkml:Integer ?
+       ) ;
+       rdf:type [ <SystemProcessInput> ] ?
+    )
+}
+
+<SystemProcessOutput> CLOSED {
+    (  $<SystemProcessOutput_tes> (  &<SystemEntity_tes> ;
+          rdf:type [ <SystemEntity> ] ? ;
+          <sys_process_id> @linkml:String ;
+          <output_object_type> @linkml:String ? ;
+          <output_object_name> @<EntityName> ? ;
+          <output_index> @linkml:Integer ?
+       ) ;
+       rdf:type [ <SystemProcessOutput> ] ?
+    )
+}
+
+<SystemTypedef> CLOSED {
+    (  $<SystemTypedef_tes> (  &<SystemEntity_tes> ;
+          rdf:type [ <SystemEntity> ] ? ;
+          <type_name> @linkml:String ;
+          <field_name> @linkml:String ;
+          <cdm_column_name> @linkml:String ;
+          <scalar_type> @linkml:String ? ;
+          <pk> @linkml:Boolean ? ;
+          <upk> @linkml:Boolean ? ;
+          <fk> @linkml:String ? ;
+          <constraint> @linkml:String ? ;
+          <units_sys_oterm_id> @<OntologyTermID> ? ;
+          <type_sys_oterm_id> @<OntologyTermID> ?
+       ) ;
+       rdf:type [ <SystemTypedef> ] ?
+    )
+}
+
+<Taxon> CLOSED {
+    (  $<Taxon_tes> (  &<CDMEntity_tes> ;
+          rdf:type [ <CDMEntity> ] ? ;
+          <sdt_taxon_name> @<EntityName> ;
+          <ncbi_taxid> @linkml:Integer ?
+       ) ;
+       rdf:type [ <Taxon> ]
+    )
+}
+
+<TnSeqLibrary> CLOSED {
+    (  $<TnSeqLibrary_tes> (  &<CDMEntity_tes> ;
+          rdf:type [ <CDMEntity> ] ? ;
+          <sdt_tnseq_library_name> @<EntityName> ;
+          <genome_ref> @<EntityName> ? ;
+          <primers_model> @linkml:String ? ;
+          <n_mapped_reads> @<Count> ? ;
+          <n_good_reads> @<Count> ? ;
+          <n_genes_hit> @<Count> ?
+       ) ;
+       rdf:type [ <TnSeqLibrary> ]
+    )
+}

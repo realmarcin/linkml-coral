@@ -1,0 +1,175 @@
+{
+  "validation_date": "2025-11-19T19:28:13.936376",
+  "files": [
+    {
+      "filename": "Assembly.tsv",
+      "total_records": 3427,
+      "pass_count": 0,
+      "warning_count": 0,
+      "error_count": 0,
+      "pass_rate": 0.0,
+      "record_results": [],
+      "quality_metrics": {}
+    },
+    {
+      "filename": "Bin.tsv",
+      "total_records": 623,
+      "pass_count": 0,
+      "warning_count": 0,
+      "error_count": 0,
+      "pass_rate": 0.0,
+      "record_results": [],
+      "quality_metrics": {}
+    },
+    {
+      "filename": "Community.tsv",
+      "total_records": 2209,
+      "pass_count": 0,
+      "warning_count": 0,
+      "error_count": 0,
+      "pass_rate": 0.0,
+      "record_results": [],
+      "quality_metrics": {}
+    },
+    {
+      "filename": "Condition.tsv",
+      "total_records": 1046,
+      "pass_count": 0,
+      "warning_count": 0,
+      "error_count": 0,
+      "pass_rate": 0.0,
+      "record_results": [],
+      "quality_metrics": {}
+    },
+    {
+      "filename": "DubSeq_Library.tsv",
+      "total_records": 3,
+      "pass_count": 0,
+      "warning_count": 0,
+      "error_count": 0,
+      "pass_rate": 0.0,
+      "record_results": [],
+      "quality_metrics": {}
+    },
+    {
+      "filename": "Gene.tsv",
+      "total_records": 15015,
+      "pass_count": 0,
+      "warning_count": 0,
+      "error_count": 0,
+      "pass_rate": 0.0,
+      "record_results": [],
+      "quality_metrics": {}
+    },
+    {
+      "filename": "Genome.tsv",
+      "total_records": 6688,
+      "pass_count": 0,
+      "warning_count": 0,
+      "error_count": 0,
+      "pass_rate": 0.0,
+      "record_results": [],
+      "quality_metrics": {}
+    },
+    {
+      "filename": "Image.tsv",
+      "total_records": 218,
+      "pass_count": 0,
+      "warning_count": 0,
+      "error_count": 0,
+      "pass_rate": 0.0,
+      "record_results": [],
+      "quality_metrics": {}
+    },
+    {
+      "filename": "Location.tsv",
+      "total_records": 596,
+      "pass_count": 0,
+      "warning_count": 0,
+      "error_count": 0,
+      "pass_rate": 0.0,
+      "record_results": [],
+      "quality_metrics": {}
+    },
+    {
+      "filename": "OTU.tsv",
+      "total_records": 213044,
+      "pass_count": 0,
+      "warning_count": 0,
+      "error_count": 0,
+      "pass_rate": 0.0,
+      "record_results": [],
+      "quality_metrics": {}
+    },
+    {
+      "filename": "Process.tsv",
+      "total_records": 142974,
+      "pass_count": 0,
+      "warning_count": 0,
+      "error_count": 0,
+      "pass_rate": 0.0,
+      "record_results": [],
+      "quality_metrics": {}
+    },
+    {
+      "filename": "Protocol.tsv",
+      "total_records": 42,
+      "pass_count": 0,
+      "warning_count": 0,
+      "error_count": 0,
+      "pass_rate": 0.0,
+      "record_results": [],
+      "quality_metrics": {}
+    },
+    {
+      "filename": "Reads.tsv",
+      "total_records": 19307,
+      "pass_count": 0,
+      "warning_count": 0,
+      "error_count": 0,
+      "pass_rate": 0.0,
+      "record_results": [],
+      "quality_metrics": {}
+    },
+    {
+      "filename": "Sample.tsv",
+      "total_records": 4346,
+      "pass_count": 0,
+      "warning_count": 0,
+      "error_count": 0,
+      "pass_rate": 0.0,
+      "record_results": [],
+      "quality_metrics": {}
+    },
+    {
+      "filename": "Strain.tsv",
+      "total_records": 3110,
+      "pass_count": 0,
+      "warning_count": 0,
+      "error_count": 0,
+      "pass_rate": 0.0,
+      "record_results": [],
+      "quality_metrics": {}
+    },
+    {
+      "filename": "Taxon.tsv",
+      "total_records": 3276,
+      "pass_count": 0,
+      "warning_count": 0,
+      "error_count": 0,
+      "pass_rate": 0.0,
+      "record_results": [],
+      "quality_metrics": {}
+    },
+    {
+      "filename": "TnSeq_Library.tsv",
+      "total_records": 1,
+      "pass_count": 0,
+      "warning_count": 0,
+      "error_count": 0,
+      "pass_rate": 0.0,
+      "record_results": [],
+      "quality_metrics": {}
+    }
+  ]
+}

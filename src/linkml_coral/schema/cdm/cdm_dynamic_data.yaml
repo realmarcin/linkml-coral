@@ -1,0 +1,358 @@
+id: https://w3id.org/enigma/kbase-cdm-dynamic-data
+name: kbase-cdm-dynamic-data
+title: KBase CDM Dynamic Data Schema
+description: |
+  Dynamic data table classes for KBase Common Data Model (CDM).
+
+  This module defines the "brick" infrastructure for storing N-dimensional
+  measurement arrays with flexible schemas:
+
+  - DynamicDataArray (ddt_ndarray): Brick index and metadata
+  - Brick classes (ddt_brick*): Individual measurement array tables
+
+  The brick system enables:
+  - Heterogeneous measurement data with different dimensionality
+  - Flexible schema evolution without altering core tables
+  - Efficient storage of large-scale experimental data
+  - Semantic dimensions and variables via ontology terms
+
+  Example brick structure (Brick0000010):
+  - Dimensions: [Environmental Sample (209), Molecule (52), State (3), Statistic (3)]
+  - Variables: Concentration, Molecular Weight, etc.
+  - Shape: 209 × 52 × 3 × 3 = 52,884 rows
+
+version: 1.0.0
+license: MIT
+
+prefixes:
+  linkml: https://w3id.org/linkml/
+  kbase_cdm: https://w3id.org/enigma/kbase-cdm/
+  DA: http://purl.obolibrary.org/obo/DA_
+  ME: http://purl.obolibrary.org/obo/ME_
+  ENVO: http://purl.obolibrary.org/obo/ENVO_
+  UO: http://purl.obolibrary.org/obo/UO_
+
+default_prefix: kbase_cdm
+
+imports:
+  - linkml:types
+  - ./cdm_base
+
+# ============================================================
+# DYNAMIC DATA CLASSES (ddt_*)
+# ============================================================
+
+classes:
+  DynamicDataArray:
+    mixins:
+      - SystemEntity
+    description: |
+      Brick index table (ddt_ndarray).
+
+      Catalogs all available measurement bricks with:
+      - Brick identifiers (Brick0000001, Brick0000002, etc.)
+      - Shape metadata (dimensions and sizes)
+      - Entity relationships (which samples, communities, etc.)
+      - Semantic metadata (measurement types, units)
+
+      Each brick corresponds to:
+      - One ddt_brick* table with actual measurement data
+      - Multiple rows in sys_ddt_typedef defining brick schema
+    class_uri: kbase_cdm:DynamicDataArray
+    slots:
+      - ddt_ndarray_id
+      - brick_table_name
+      - n_dimensions
+      - dimension_sizes
+      - n_variables
+      - total_rows
+      - associated_entity_type
+      - associated_entity_names
+      - measurement_type_sys_oterm_id
+      - measurement_type_sys_oterm_name
+      - creation_date
+      - description
+    slot_usage:
+      ddt_ndarray_id:
+        identifier: true
+        required: true
+
+  BrickDimension:
+    abstract: true
+    description: |
+      Abstract base for brick dimension metadata.
+
+      Dimensions define the axes of N-dimensional measurement arrays:
+      - Environmental Sample: Different samples measured
+      - Molecule: Different molecules/compounds measured
+      - State: Different conditions (e.g., time points, treatments)
+      - Statistic: Different statistical measures (mean, std, etc.)
+
+      Each dimension has:
+      - Semantic meaning (ontology term)
+      - Size (number of values along axis)
+      - Index values (entity names or numeric indices)
+    slots:
+      - dimension_number
+      - dimension_oterm_id
+      - dimension_oterm_name
+      - dimension_size
+      - dimension_values
+
+  BrickVariable:
+    abstract: true
+    description: |
+      Abstract base for brick variable metadata.
+
+      Variables define what is measured at each point in the N-dimensional array:
+      - Concentration (with units: mg/L, µM, etc.)
+      - Molecular Weight (with units: Da, kDa, etc.)
+      - Activity Rate (with units: nmol/min, etc.)
+      - Expression Level (with units: RPKM, TPM, etc.)
+
+      Each variable has:
+      - Semantic meaning (ontology term)
+      - Data type (float, int, bool, oterm_ref, object_ref)
+      - Units (ontology term)
+      - Value range constraints
+    slots:
+      - variable_number
+      - variable_oterm_id
+      - variable_oterm_name
+      - variable_data_type
+      - unit_sys_oterm_id
+      - unit_sys_oterm_name
+      - min_value
+      - max_value
+
+  Brick:
+    abstract: true
+    description: |
+      Abstract base for all brick data tables (ddt_brick*).
+
+      Each brick table stores measurement values in a denormalized format
+      where each row represents one cell in the N-dimensional array.
+
+      Common structure:
+      - Dimension indices (dim0_index, dim1_index, dim2_index, ...)
+      - Dimension values (dim0_value, dim1_value, dim2_value, ...)
+      - Variable values (var0_value, var1_value, var2_value, ...)
+
+      Schema is defined in sys_ddt_typedef and varies per brick.
+
+      Note: Individual brick classes (Brick0000001, Brick0000002, etc.)
+      are not explicitly defined in this schema because they have
+      heterogeneous structures. They should be validated against
+      sys_ddt_typedef at runtime.
+    comments:
+      - Brick tables are created dynamically based on measurement needs
+      - Each brick can have different dimensions and variables
+      - Schema flexibility enables diverse experimental data types
+
+# ============================================================
+# SLOTS - Dynamic data-specific slots
+# ============================================================
+
+slots:
+  # DynamicDataArray slots
+  brick_table_name:
+    description: Name of brick table (e.g., "ddt_brick0000010")
+    range: string
+    required: false
+    pattern: '^ddt_brick\d{7}$'
+
+  n_dimensions:
+    description: Number of dimensions in array
+    range: integer
+    required: false
+    minimum_value: 1
+
+  dimension_sizes:
+    description: Comma-separated dimension sizes (e.g., "209,52,3,3")
+    range: string
+    required: false
+    pattern: '^\d+(,\d+)*$'
+
+  n_variables:
+    description: Number of measured variables
+    range: integer
+    required: false
+    minimum_value: 1
+
+  total_rows:
+    description: Total number of data rows in brick table
+    range: integer
+    required: false
+    minimum_value: 0
+    comments:
+      - Should equal product of dimension sizes
+      - May be less if array is sparse
+
+  associated_entity_type:
+    description: Type of entities measured (e.g., "Sample", "Community")
+    range: string
+    required: false
+
+  associated_entity_names:
+    description: Names of entities associated with this brick
+    range: EntityName
+    required: false
+    multivalued: true
+
+  measurement_type_sys_oterm_id:
+    description: Type of measurement ontology term ID
+    range: OntologyTermID
+    required: false
+
+  measurement_type_sys_oterm_name:
+    description: Type of measurement ontology term name
+    range: string
+    required: false
+
+  creation_date:
+    description: Date brick was created
+    range: Date
+    required: false
+
+  # BrickDimension slots
+  dimension_size:
+    description: Number of values along this dimension
+    range: integer
+    required: false
+    minimum_value: 1
+
+  dimension_values:
+    description: Comma-separated dimension value labels
+    range: string
+    required: false
+    comments:
+      - For entity dimensions: entity names
+      - For numeric dimensions: numeric values or labels
+
+  # BrickVariable slots
+  variable_data_type:
+    description: Data type of variable (float, int, bool, oterm_ref, object_ref)
+    range: string
+    required: false
+    pattern: '^(float|int|bool|text|oterm_ref|object_ref)$'
+
+  min_value:
+    description: Minimum allowed value (for numeric variables)
+    range: float
+    required: false
+
+  max_value:
+    description: Maximum allowed value (for numeric variables)
+    range: float
+    required: false
+
+# ============================================================
+# ENUMS - Data type enumerations
+# ============================================================
+
+enums:
+  BrickDataType:
+    description: Data types for brick variables
+    permissible_values:
+      float:
+        description: Floating point number
+      int:
+        description: Integer
+      bool:
+        description: Boolean (true/false)
+      text:
+        description: Free text string
+      oterm_ref:
+        description: Reference to ontology term (sys_oterm_id)
+      object_ref:
+        description: Reference to entity by name
+
+  DimensionSemantics:
+    description: Common dimension semantic types
+    permissible_values:
+      environmental_sample:
+        description: Environmental sample dimension
+        meaning: ME:0000501
+      molecule:
+        description: Molecule/compound dimension
+        meaning: ME:0000502
+      state:
+        description: Experimental state dimension (time, treatment, etc.)
+        meaning: ME:0000503
+      statistic:
+        description: Statistical measure dimension (mean, std, etc.)
+        meaning: ME:0000504
+      gene:
+        description: Gene dimension
+        meaning: ME:0000505
+      taxon:
+        description: Taxonomic dimension
+        meaning: ME:0000506
+      location:
+        description: Location dimension
+        meaning: ME:0000507
+      time:
+        description: Time point dimension
+        meaning: ME:0000508
+
+  VariableSemantics:
+    description: Common variable semantic types
+    permissible_values:
+      concentration:
+        description: Chemical concentration
+        meaning: ME:0000601
+      molecular_weight:
+        description: Molecular weight
+        meaning: ME:0000602
+      activity_rate:
+        description: Enzymatic or metabolic activity rate
+        meaning: ME:0000603
+      expression_level:
+        description: Gene expression level
+        meaning: ME:0000604
+      abundance:
+        description: Relative or absolute abundance
+        meaning: ME:0000605
+      ph:
+        description: pH measurement
+        meaning: ME:0000606
+      temperature:
+        description: Temperature
+        meaning: ME:0000607
+      growth_rate:
+        description: Cell or organism growth rate
+        meaning: ME:0000608
+
+# ============================================================
+# COMMENTS ON BRICK IMPLEMENTATION
+# ============================================================
+
+# Note: Individual brick tables (ddt_brick0000001, ddt_brick0000002, etc.)
+# are NOT explicitly defined as LinkML classes because:
+#
+# 1. They have heterogeneous schemas (different columns per brick)
+# 2. New bricks can be added without schema changes
+# 3. Their structure is fully defined in sys_ddt_typedef
+#
+# Validation approach:
+# - Read sys_ddt_typedef for a specific brick
+# - Generate expected schema dynamically
+# - Validate brick table data against generated schema
+#
+# Example brick structure (Brick0000010):
+#
+# Columns:
+# - dim0_index: integer (Environmental Sample index 0-208)
+# - dim0_value: string (Sample name)
+# - dim1_index: integer (Molecule index 0-51)
+# - dim1_value: string (Molecule name or CURIE)
+# - dim2_index: integer (State index 0-2)
+# - dim2_value: string (State label)
+# - dim3_index: integer (Statistic index 0-2)
+# - dim3_value: string (Statistic label: mean, std, etc.)
+# - var0_value: float (Concentration value)
+# - var0_unit: string (Unit CURIE from sys_oterm)
+# - var1_value: float (Molecular Weight value)
+# - var1_unit: string (Unit CURIE from sys_oterm)
+#
+# Total rows: 209 × 52 × 3 × 3 = 52,884 measurements

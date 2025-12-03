@@ -61,18 +61,19 @@ Never use `pip` directly - this project uses `uv` for dependency management.
 - `tests/data/invalid/` - Invalid examples for negative testing (used to verify validation catches errors)
 
 **TSV validation tools:**
-- `validate_tsv_linkml.py` - Main TSV validation script using linkml-validate
+- `scripts/validate_tsv_linkml.py` - Main TSV validation script using linkml-validate
 - `validate_small_files.sh` - Batch validation for files <10K records
 - `validate_large_files.sh` - Validation for large TSV files with timeout handling
 - `validate_all.sh` - Comprehensive validation of all TSV files
 - Target data: `/Users/marcin/Documents/KBase/CDM/ENIGMA/ENIGMA_ASV_export/*.tsv`
 
-**Utility scripts (root directory):**
+**Utility scripts (scripts/ directory):**
 - `analyze_schema.py`, `visualize_schema.py`, `visualize_relationships.py` - Production schema analysis tools
 - `load_tsv_to_store.py`, `enigma_query.py`, `query_provenance_tracker.py` - Database and query tools
 - `linkml_to_cdm.py` - CDM table naming converter
 - `generate_enums_from_obo.py` - Auto-generate LinkML enums from OBO microtypes
 - `update_schema_with_microtypes.py` - Update schema with semantic types and enums
+- `validate_all_exported_tsvs.py`, `generate_html_validation_report.py` - Batch validation and reporting
 - `test_*.py`, `debug_*.py`, `fix_*.py` - Exploratory/debug scripts (not part of test suite)
 
 **Utility modules (src/linkml_coral/utils/):**
@@ -127,11 +128,11 @@ The schema integrates semantic type definitions from CORAL's `context_measuremen
 **Regenerating enums from OBO:**
 ```bash
 # Auto-generate enum definitions from OBO file
-uv run python generate_enums_from_obo.py --obo CORAL/example/enigma/ontologies/context_measurement_ontology.obo --output generated_enums.yaml
+uv run python scripts/generate_enums_from_obo.py --obo CORAL/example/enigma/ontologies/context_measurement_ontology.obo --output generated_enums.yaml
 
 # Update schema with new enums and types
-uv run python update_schema_with_microtypes.py --dry-run  # Preview changes
-uv run python update_schema_with_microtypes.py            # Apply changes
+uv run python scripts/update_schema_with_microtypes.py --dry-run  # Preview changes
+uv run python scripts/update_schema_with_microtypes.py            # Apply changes
 ```
 
 **OBO Parser Utility** (`src/linkml_coral/utils/obo_parser.py`):
@@ -190,10 +191,10 @@ just validate-report-html validation_reports/validation_report_20241115_143022.j
 **Direct Python commands:**
 ```bash
 # Basic validation
-uv run python validate_tsv_linkml.py /path/to/file.tsv --verbose
+uv run python scripts/validate_tsv_linkml.py /path/to/file.tsv --verbose
 
 # Enhanced validation with all features
-uv run python validate_tsv_linkml.py /path/to/file.tsv \
+uv run python scripts/validate_tsv_linkml.py /path/to/file.tsv \
   --enum-validate \
   --fk-validate \
   --quality-metrics \
@@ -202,12 +203,12 @@ uv run python validate_tsv_linkml.py /path/to/file.tsv \
   --verbose
 
 # Batch validation of all TSV files
-uv run python validate_all_exported_tsvs.py \
+uv run python scripts/validate_all_exported_tsvs.py \
   --tsv-dir data/export/exported_tsvs \
   --report-format all
 
 # Generate HTML report from JSON results
-uv run python generate_html_validation_report.py validation_report.json
+uv run python scripts/generate_html_validation_report.py validation_report.json
 ```
 
 ### Validation Features
@@ -353,13 +354,13 @@ For backward compatibility, shell scripts are still available:
 just visualize
 
 # Or run scripts individually:
-uv run python visualize_schema.py           # Schema structure diagrams
-uv run python visualize_relationships.py    # Relationship-focused diagrams
+uv run python scripts/visualize_schema.py           # Schema structure diagrams
+uv run python scripts/visualize_relationships.py    # Relationship-focused diagrams
 
 # Specific formats
-uv run python visualize_schema.py --no-attributes     # Simplified overview
-uv run python visualize_schema.py --format all        # All formats (requires mermaid-cli)
-uv run python visualize_relationships.py --format mermaid  # Mermaid only
+uv run python scripts/visualize_schema.py --no-attributes     # Simplified overview
+uv run python scripts/visualize_schema.py --format all        # All formats (requires mermaid-cli)
+uv run python scripts/visualize_relationships.py --format mermaid  # Mermaid only
 ```
 
 **Outputs:**
@@ -385,13 +386,13 @@ uv run python visualize_relationships.py --format mermaid  # Mermaid only
 **Analyze schema structure and relationships:**
 ```bash
 # Basic analysis report
-uv run python analyze_schema.py
+uv run python scripts/analyze_schema.py
 
 # Generate relationship matrix
-uv run python analyze_schema.py --matrix
+uv run python scripts/analyze_schema.py --matrix
 
 # Save detailed analysis
-uv run python analyze_schema.py --output-dir analysis_output/ --matrix
+uv run python scripts/analyze_schema.py --output-dir analysis_output/ --matrix
 ```
 
 Provides statistics on classes, slots, foreign keys, ontology usage, and entity relationships.
@@ -407,7 +408,7 @@ just load-store
 just load-store /path/to/tsv/files enigma.db
 
 # Or run directly
-uv run python load_tsv_to_store.py ../ENIGMA_ASV_export --db enigma_data.db --create-indexes
+uv run python scripts/load_tsv_to_store.py ../ENIGMA_ASV_export --db enigma_data.db --create-indexes
 ```
 
 **Query the database:**
@@ -425,7 +426,7 @@ just query-lineage Assembly Assembly0000001
 just query-find Reads --query read_count_category=high --limit 20
 
 # Direct CLI usage
-uv run python enigma_query.py --help
+uv run python scripts/enigma_query.py --help
 ```
 
 **Key queries available:**
@@ -443,13 +444,13 @@ uv run python enigma_query.py --help
 **Provenance Tracking:**
 - Every query execution is automatically tracked
 - Complete metadata: user, system, database state, parameters, results
-- Execution history: `uv run python query_provenance_tracker.py --list`
+- Execution history: `uv run python scripts/query_provenance_tracker.py --list`
 - Reproducibility: Database checksums, environment snapshots, parameter recording
 
 **Documentation:**
-- [QUERY_REFERENCE.md](QUERY_REFERENCE.md) - Quick reference for all query commands
-- [DEPLOYMENT_PROVENANCE.md](DEPLOYMENT_PROVENANCE.md) - Deployment & provenance tracking guide
-- [LINKML_STORE_USAGE.md](LINKML_STORE_USAGE.md) - Comprehensive database usage guide
+- [docs/QUERY_REFERENCE.md](docs/QUERY_REFERENCE.md) - Quick reference for all query commands
+- [docs/DEPLOYMENT_PROVENANCE.md](docs/DEPLOYMENT_PROVENANCE.md) - Deployment & provenance tracking guide
+- [docs/LINKML_STORE_USAGE.md](docs/LINKML_STORE_USAGE.md) - Comprehensive database usage guide
 - All queries support JSON export for standardized output
 - All queries automatically create provenance records in `query_provenance/`
 
@@ -458,13 +459,13 @@ uv run python enigma_query.py --help
 **Convert LinkML schema to CDM table definitions:**
 ```bash
 # Generate CDM schema with naming conventions
-python linkml_to_cdm.py src/linkml_coral/schema/linkml_coral.yaml \
+python scripts/linkml_to_cdm.py src/linkml_coral/schema/linkml_coral.yaml \
   --typedef data/typedef.json \
   --json-output cdm_schema.json \
   --report-output cdm_report.txt
 
 # Check for schema issues only
-python linkml_to_cdm.py src/linkml_coral/schema/linkml_coral.yaml --check-only
+python scripts/linkml_to_cdm.py src/linkml_coral/schema/linkml_coral.yaml --check-only
 ```
 
 **CDM Naming Rules:**
@@ -480,9 +481,62 @@ python linkml_to_cdm.py src/linkml_coral/schema/linkml_coral.yaml --check-only
 - No changes required to LinkML schema
 
 **Documentation:**
-- [CDM_NAMING_CONVENTIONS.md](CDM_NAMING_CONVENTIONS.md) - Complete specification
-- [CDM_CONVERSION_SUMMARY.md](CDM_CONVERSION_SUMMARY.md) - Summary and examples
-- [linkml_to_cdm.py](linkml_to_cdm.py) - Conversion tool source code
+- [docs/CDM_NAMING_CONVENTIONS.md](docs/CDM_NAMING_CONVENTIONS.md) - Complete specification
+- [docs/CDM_CONVERSION_SUMMARY.md](docs/CDM_CONVERSION_SUMMARY.md) - Summary and examples
+- [scripts/linkml_to_cdm.py](scripts/linkml_to_cdm.py) - Conversion tool source code
+
+## CDM Parquet → linkml-store Database
+
+**Load KBase CDM parquet data into queryable linkml-store database:**
+
+```bash
+# Load core CDM tables (static entities + system tables, 515K rows)
+just load-cdm-store
+
+# Load with custom paths
+just load-cdm-store /path/to/jmc_coral.db output.db
+
+# Load including dynamic brick tables (sampled at 10K rows each)
+just load-cdm-store-full
+```
+
+**Query the CDM store database:**
+
+```bash
+# Show database statistics
+just cdm-store-stats
+
+# Find samples from a location
+just cdm-find-samples Location0000001
+
+# Search ontology terms
+just cdm-search-oterm "soil"
+
+# Trace provenance lineage
+just cdm-lineage Assembly Assembly0000001
+
+# Or use Python script directly
+uv run python scripts/cdm_analysis/query_cdm_store.py --help
+```
+
+**CDM Database Structure:**
+- **44 parquet tables** from KBase CDM (157 MB total)
+- **Static entities (sdt_*)**: Location, Sample, Reads, Assembly, Genome, Gene, etc. (17 tables, 273K rows)
+- **System tables (sys_*)**: Ontology terms, Type definitions, Process records (6 tables, 242K rows)
+- **Dynamic tables (ddt_*)**: Measurement arrays in brick tables (21 tables, 82.6M rows - optionally sampled)
+
+**Key Features:**
+- Fast DuckDB-based columnar storage (~50 MB database for core tables)
+- Schema validation against CDM LinkML schema
+- Computed fields (read_count_category, contig_count_category)
+- Parsed provenance arrays (input/output entity types and IDs)
+- Efficient querying and analysis
+
+**Documentation:**
+- [docs/CDM_PARQUET_STORE_GUIDE.md](docs/CDM_PARQUET_STORE_GUIDE.md) - Complete loading and querying guide
+- [docs/CDM_PARQUET_VALIDATION_GUIDE.md](docs/CDM_PARQUET_VALIDATION_GUIDE.md) - Parquet validation guide
+- [scripts/cdm_analysis/load_cdm_parquet_to_store.py](scripts/cdm_analysis/load_cdm_parquet_to_store.py) - Loader source code
+- [scripts/cdm_analysis/query_cdm_store.py](scripts/cdm_analysis/query_cdm_store.py) - Query interface
 
 ## Common Development Tasks
 

@@ -16,7 +16,7 @@ import json
 from linkml_store import Client
 from linkml_runtime.utils.schemaview import SchemaView
 
-# Import mapping functions from validation script
+# Import mapping functions from validation script (same directory)
 from validate_tsv_linkml import (
     read_tsv_file,
     map_tsv_to_schema_fields,

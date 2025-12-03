@@ -1,0 +1,10 @@
+Command: linkml-validate -s src/linkml_coral/schema/linkml_coral.yaml -C Strain --verbose debug_linkml_validate/Strain_for_validation.yaml
+Return code: 2
+STDOUT:
+
+STDERR:
+Usage: linkml-validate [OPTIONS] [DATA_SOURCES]...
+Try 'linkml-validate --help' for help.
+
+Error: No such option: --verbose Did you mean --version?
+
