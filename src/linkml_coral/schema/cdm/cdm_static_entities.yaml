@@ -34,8 +34,8 @@ prefixes:
 default_prefix: kbase_cdm
 
 imports:
-  - linkml:types
-  - ./cdm_base
+- linkml:types
+- ./cdm_base
 
 # ============================================================
 # STATIC ENTITY CLASSES (sdt_*)
@@ -44,7 +44,7 @@ imports:
 classes:
   Location:
     mixins:
-      - CDMEntity
+    - CDMEntity
     description: |
       Sampling location with geographic coordinates and environmental context.
 
@@ -56,23 +56,23 @@ classes:
         tag: term
         value: DA:0000041
     slots:
-      - sdt_location_id
-      - sdt_location_name
-      - latitude
-      - longitude
-      - continent_sys_oterm_id
-      - continent_sys_oterm_name
-      - country_sys_oterm_id
-      - country_sys_oterm_name
-      - region
-      - biome_sys_oterm_id
-      - biome_sys_oterm_name
-      - feature_sys_oterm_id
-      - feature_sys_oterm_name
+    - sdt_location_id
+    - sdt_location_name
+    - latitude
+    - longitude
+    - continent_sys_oterm_id
+    - continent_sys_oterm_name
+    - country_sys_oterm_id
+    - country_sys_oterm_name
+    - region
+    - biome_sys_oterm_id
+    - biome_sys_oterm_name
+    - feature_sys_oterm_id
+    - feature_sys_oterm_name
 
   Sample:
     mixins:
-      - CDMEntity
+    - CDMEntity
     description: |
       Environmental sample collected from a location.
 
@@ -84,23 +84,23 @@ classes:
         tag: term
         value: DA:0000042
     slots:
-      - sdt_sample_id
-      - sdt_sample_name
-      - location_ref
-      - depth
-      - elevation
-      - date
-      - time
-      - timezone
-      - material_sys_oterm_id
-      - material_sys_oterm_name
-      - env_package_sys_oterm_id
-      - env_package_sys_oterm_name
-      - description
+    - sdt_sample_id
+    - sdt_sample_name
+    - location_ref
+    - depth
+    - elevation
+    - date
+    - time
+    - timezone
+    - material_sys_oterm_id
+    - material_sys_oterm_name
+    - env_package_sys_oterm_id
+    - env_package_sys_oterm_name
+    - description
 
   Community:
     mixins:
-      - CDMEntity
+    - CDMEntity
     description: |
       Microbial community (isolate, enrichment, assemblage, or environmental).
 
@@ -113,17 +113,17 @@ classes:
         tag: term
         value: DA:0000071
     slots:
-      - sdt_community_id
-      - sdt_community_name
-      - community_type_sys_oterm_id
-      - community_type_sys_oterm_name
-      - sample_ref
-      - parent_community_ref
-      - defined_strains_ref
+    - sdt_community_id
+    - sdt_community_name
+    - community_type_sys_oterm_id
+    - community_type_sys_oterm_name
+    - sample_ref
+    - parent_community_ref
+    - defined_strains_ref
 
   Reads:
     mixins:
-      - CDMEntity
+    - CDMEntity
     description: |
       Sequencing reads dataset.
 
@@ -135,19 +135,19 @@ classes:
         tag: term
         value: DA:0000063
     slots:
-      - sdt_reads_id
-      - sdt_reads_name
-      - read_count
-      - base_count
-      - read_type_sys_oterm_id
-      - read_type_sys_oterm_name
-      - sequencing_technology_sys_oterm_id
-      - sequencing_technology_sys_oterm_name
-      - link
+    - sdt_reads_id
+    - sdt_reads_name
+    - read_count
+    - base_count
+    - read_type_sys_oterm_id
+    - read_type_sys_oterm_name
+    - sequencing_technology_sys_oterm_id
+    - sequencing_technology_sys_oterm_name
+    - link
 
   Assembly:
     mixins:
-      - CDMEntity
+    - CDMEntity
     description: |
       Genome assembly from sequencing reads.
 
@@ -159,16 +159,16 @@ classes:
         tag: term
         value: DA:0000066
     slots:
-      - sdt_assembly_id
-      - sdt_assembly_name
-      - strain_ref
-      - n_contigs
-      - total_size
-      - link
+    - sdt_assembly_id
+    - sdt_assembly_name
+    - strain_ref
+    - n_contigs
+    - total_size
+    - link
 
   Bin:
     mixins:
-      - CDMEntity
+    - CDMEntity
     description: |
       Genome bin extracted from metagenomic assembly.
 
@@ -180,14 +180,14 @@ classes:
         tag: term
         value: DA:0000072
     slots:
-      - sdt_bin_id
-      - sdt_bin_name
-      - assembly_ref
-      - contigs
+    - sdt_bin_id
+    - sdt_bin_name
+    - assembly_ref
+    - contigs
 
   Genome:
     mixins:
-      - CDMEntity
+    - CDMEntity
     description: |
       Assembled and annotated genome.
 
@@ -199,17 +199,17 @@ classes:
         tag: term
         value: DA:0000068
     slots:
-      - sdt_genome_id
-      - sdt_genome_name
-      - strain_ref
-      - n_contigs
-      - n_features
-      - total_size
-      - link
+    - sdt_genome_id
+    - sdt_genome_name
+    - strain_ref
+    - n_contigs
+    - n_features
+    - total_size
+    - link
 
   Gene:
     mixins:
-      - CDMEntity
+    - CDMEntity
     description: |
       Annotated gene within a genome.
 
@@ -221,18 +221,18 @@ classes:
         tag: term
         value: DA:0000069
     slots:
-      - sdt_gene_id
-      - sdt_gene_name
-      - genome_ref
-      - contig_number
-      - strand
-      - start
-      - stop
-      - function
+    - sdt_gene_id
+    - sdt_gene_name
+    - genome_ref
+    - contig_number
+    - strand
+    - start
+    - stop
+    - function
 
   Strain:
     mixins:
-      - CDMEntity
+    - CDMEntity
     description: |
       Microbial strain (isolated or derived).
 
@@ -244,15 +244,15 @@ classes:
         tag: term
         value: DA:0000067
     slots:
-      - sdt_strain_id
-      - sdt_strain_name
-      - genome_ref
-      - derived_from_strain_ref
-      - gene_names_changed
+    - sdt_strain_id
+    - sdt_strain_name
+    - genome_ref
+    - derived_from_strain_ref
+    - gene_names_changed
 
   Taxon:
     mixins:
-      - CDMEntity
+    - CDMEntity
     description: |
       Taxonomic classification.
     annotations:
@@ -260,13 +260,13 @@ classes:
         tag: term
         value: DA:0000070
     slots:
-      - sdt_taxon_id
-      - sdt_taxon_name
-      - ncbi_taxid
+    - sdt_taxon_id
+    - sdt_taxon_name
+    - ncbi_taxid
 
   ASV:
     mixins:
-      - CDMEntity
+    - CDMEntity
     description: |
       Amplicon Sequence Variant (formerly OTU).
 
@@ -282,13 +282,13 @@ classes:
         tag: preferred_name
         value: ASV
     slots:
-      - sdt_asv_id
-      - sdt_asv_name
-      - sequence
+    - sdt_asv_id
+    - sdt_asv_name
+    - sequence
 
   Protocol:
     mixins:
-      - CDMEntity
+    - CDMEntity
     description: |
       Experimental protocol.
 
@@ -300,14 +300,14 @@ classes:
         tag: term
         value: DA:0000062
     slots:
-      - sdt_protocol_id
-      - sdt_protocol_name
-      - sdt_protocol_description
-      - link
+    - sdt_protocol_id
+    - sdt_protocol_name
+    - sdt_protocol_description
+    - link
 
   Image:
     mixins:
-      - CDMEntity
+    - CDMEntity
     description: |
       Microscopy or other image data.
 
@@ -318,16 +318,16 @@ classes:
         tag: term
         value: DA:0000074
     slots:
-      - sdt_image_id
-      - sdt_image_name
-      - mime_type
-      - size
-      - dimensions
-      - link
+    - sdt_image_id
+    - sdt_image_name
+    - mime_type
+    - size
+    - dimensions
+    - link
 
   Condition:
     mixins:
-      - CDMEntity
+    - CDMEntity
     description: |
       Growth or experimental condition.
     annotations:
@@ -335,12 +335,12 @@ classes:
         tag: term
         value: DA:0000075
     slots:
-      - sdt_condition_id
-      - sdt_condition_name
+    - sdt_condition_id
+    - sdt_condition_name
 
   DubSeqLibrary:
     mixins:
-      - CDMEntity
+    - CDMEntity
     description: |
       Dual Barcoded Sequencing (DubSeq) library.
 
@@ -352,14 +352,14 @@ classes:
         tag: term
         value: DA:0000076
     slots:
-      - sdt_dubseq_library_id
-      - sdt_dubseq_library_name
-      - genome_ref
-      - n_fragments
+    - sdt_dubseq_library_id
+    - sdt_dubseq_library_name
+    - genome_ref
+    - n_fragments
 
   TnSeqLibrary:
     mixins:
-      - CDMEntity
+    - CDMEntity
     description: |
       Transposon Sequencing (TnSeq) library.
 
@@ -371,17 +371,17 @@ classes:
         tag: term
         value: DA:0000077
     slots:
-      - sdt_tnseq_library_id
-      - sdt_tnseq_library_name
-      - genome_ref
-      - primers_model
-      - n_mapped_reads
-      - n_good_reads
-      - n_genes_hit
+    - sdt_tnseq_library_id
+    - sdt_tnseq_library_name
+    - genome_ref
+    - primers_model
+    - n_mapped_reads
+    - n_good_reads
+    - n_genes_hit
 
   ENIGMA:
     mixins:
-      - CDMEntity
+    - CDMEntity
     description: |
       Root entity (database singleton).
     annotations:
@@ -389,7 +389,7 @@ classes:
         tag: term
         value: DA:0000001
     slots:
-      - sdt_enigma_id
+    - sdt_enigma_id
 
 # ============================================================
 # SLOTS - Entity-specific slots with CDM naming
@@ -404,67 +404,114 @@ slots:
     identifier: true
     pattern: '^Location\d{7}$'
 
+    annotations:
+      microtype: ME:0000266
+      constraint_type: primary_key
+      original_name: id
   sdt_location_name:
     description: Name of location
     range: EntityName
     required: true
 
+    annotations:
+      microtype: ME:0000228
+      constraint_type: unique_key
+      original_name: name
   latitude:
     description: Latitude in decimal degrees
     range: Latitude
-    required: false
+    required: true
 
+    annotations:
+      microtype: ME:0000211
+      units: UO:0000185
+      original_name: latitude
   longitude:
     description: Longitude in decimal degrees
     range: Longitude
-    required: false
+    required: true
 
+    annotations:
+      microtype: ME:0000212
+      units: UO:0000185
+      original_name: longitude
   continent_sys_oterm_id:
     description: Continent ontology term ID
     range: OntologyTermID
-    required: false
+    required: true
 
+    annotations:
+      microtype: ME:0000213
+      constraint_type: foreign_key
+      original_name: continent
   continent_sys_oterm_name:
     description: Continent ontology term name
     range: string
-    required: false
+    required: true
 
+    annotations:
+      microtype: ME:0000213
+      original_name: continent
   country_sys_oterm_id:
     description: Country ontology term ID
     range: OntologyTermID
-    required: false
+    required: true
 
+    annotations:
+      microtype: ME:0000214
+      constraint_type: foreign_key
+      original_name: country
   country_sys_oterm_name:
     description: Country ontology term name
     range: string
-    required: false
+    required: true
 
+    annotations:
+      microtype: ME:0000214
+      original_name: country
   region:
     description: Geographic region
     range: string
-    required: false
+    required: true
 
+    annotations:
+      microtype: ME:0000215
+      original_name: region
   biome_sys_oterm_id:
     description: Biome ontology term ID (ENVO)
     range: OntologyTermID
-    required: false
+    required: true
 
+    annotations:
+      microtype: ME:0000216
+      constraint_type: foreign_key
+      original_name: biome
   biome_sys_oterm_name:
     description: Biome ontology term name
     range: string
-    required: false
+    required: true
 
+    annotations:
+      microtype: ME:0000216
+      original_name: biome
   feature_sys_oterm_id:
     description: Environmental feature ontology term ID
     range: OntologyTermID
     required: false
 
+    annotations:
+      microtype: ME:0000217
+      constraint_type: foreign_key
+      original_name: feature
   feature_sys_oterm_name:
     description: Environmental feature ontology term name
     range: string
     required: false
 
   # Sample slots
+    annotations:
+      microtype: ME:0000217
+      original_name: feature
   sdt_sample_id:
     description: Unique identifier for Sample
     range: string
@@ -472,64 +519,105 @@ slots:
     identifier: true
     pattern: '^Sample\d{7}$'
 
+    annotations:
+      microtype: ME:0000267
+      constraint_type: primary_key
+      original_name: id
   sdt_sample_name:
     description: Name of sample
     range: EntityName
     required: true
 
+    annotations:
+      microtype: ME:0000102
+      constraint_type: foreign_key
+      original_name: sample
   location_ref:
     description: Reference to location name (FK to Location.sdt_location_name)
     range: EntityName
     required: false
     comments:
-      - CDM convention: FK references use entity name, not ID
-      - References Location.sdt_location_name
+    - CDM convention: FK references use entity name, not ID
+    - References Location.sdt_location_name
 
   depth:
     description: Depth in meters
     range: Depth
     required: false
 
+    annotations:
+      microtype: ME:0000219
+      units: UO:0000008
+      original_name: depth
   elevation:
     description: Elevation in meters
     range: Elevation
     required: false
 
+    annotations:
+      microtype: ME:0000220
+      units: UO:0000008
+      original_name: elevation
   date:
     description: Collection date
     range: Date
-    required: false
+    required: true
 
+    annotations:
+      microtype: ME:0000009
+      original_name: date
+    pattern: \d\d\d\d(-\d\d(-\d\d)?)?
   time:
     description: Collection time
     range: Time
     required: false
 
+    annotations:
+      microtype: ME:0000010
+      original_name: time
+    pattern: \d(\d)?(:\d\d(:\d\d)?)?\s*([apAP][mM])?
   timezone:
     description: Timezone
     range: string
     required: false
 
+    annotations:
+      microtype: ME:0000201
+      original_name: timezone
   material_sys_oterm_id:
     description: Material type ontology term ID
     range: OntologyTermID
     required: false
 
+    annotations:
+      microtype: ME:0000230
+      constraint_type: foreign_key
+      original_name: material
   material_sys_oterm_name:
     description: Material type ontology term name
     range: string
     required: false
 
+    annotations:
+      microtype: ME:0000230
+      original_name: material
   env_package_sys_oterm_id:
     description: Environment package ontology term ID
     range: OntologyTermID
-    required: false
+    required: true
 
+    annotations:
+      microtype: ME:0000229
+      constraint_type: foreign_key
+      original_name: env_package
   env_package_sys_oterm_name:
     description: Environment package ontology term name
     range: string
-    required: false
+    required: true
 
+    annotations:
+      microtype: ME:0000229
+      original_name: env_package
   description:
     description: Free text description
     range: string
@@ -543,36 +631,51 @@ slots:
     identifier: true
     pattern: '^Community\d{7}$'
 
+    annotations:
+      microtype: ME:0000272
+      constraint_type: primary_key
+      original_name: id
   sdt_community_name:
     description: Name of community
     range: EntityName
     required: true
 
+    annotations:
+      microtype: ME:0000233
+      constraint_type: unique_key
+      original_name: name
   community_type_sys_oterm_id:
     description: Community type ontology term ID
     range: OntologyTermID
-    required: false
+    required: true
 
+    annotations:
+      microtype: ME:0000234
+      constraint_type: foreign_key
+      original_name: community_type
   community_type_sys_oterm_name:
     description: Community type ontology term name
     range: string
-    required: false
+    required: true
 
+    annotations:
+      microtype: ME:0000234
+      original_name: community_type
   sample_ref:
     description: Reference to sample name (FK to Sample.sdt_sample_name)
     range: EntityName
     required: false
     comments:
-      - CDM convention: FK references use entity name, not ID
-      - References Sample.sdt_sample_name
+    - CDM convention: FK references use entity name, not ID
+    - References Sample.sdt_sample_name
 
   parent_community_ref:
     description: Reference to parent community name (FK, self-referential to Community.sdt_community_name)
     range: EntityName
     required: false
     comments:
-      - Self-referential FK for community hierarchies
-      - References Community.sdt_community_name
+    - Self-referential FK for community hierarchies
+    - References Community.sdt_community_name
 
   defined_strains_ref:
     description: References to defined strain names (multivalued FK to Strain.sdt_strain_name)
@@ -580,8 +683,8 @@ slots:
     required: false
     multivalued: true
     comments:
-      - Multivalued FK for assemblage communities
-      - References Strain.sdt_strain_name
+    - Multivalued FK for assemblage communities
+    - References Strain.sdt_strain_name
 
   # Reads slots
   sdt_reads_id:
@@ -591,16 +694,28 @@ slots:
     identifier: true
     pattern: '^Reads\d{7}$'
 
+    annotations:
+      microtype: ME:0000273
+      constraint_type: primary_key
+      original_name: id
   sdt_reads_name:
     description: Name of reads dataset
     range: EntityName
     required: true
 
+    annotations:
+      microtype: ME:0000248
+      constraint_type: unique_key
+      original_name: name
   read_count:
     description: Number of reads
     range: Count
-    required: false
+    required: true
 
+    annotations:
+      microtype: ME:0000126
+      units: UO:0000189
+      original_name: read_count
   base_count:
     description: Total number of bases
     range: Count
@@ -609,24 +724,38 @@ slots:
   read_type_sys_oterm_id:
     description: Read type ontology term ID (e.g., paired-end, single-end)
     range: OntologyTermID
-    required: false
+    required: true
 
+    annotations:
+      microtype: ME:0000112
+      constraint_type: foreign_key
+      original_name: read_type
   read_type_sys_oterm_name:
     description: Read type ontology term name
     range: string
-    required: false
+    required: true
 
+    annotations:
+      microtype: ME:0000112
+      original_name: read_type
   sequencing_technology_sys_oterm_id:
     description: Sequencing technology ontology term ID
     range: OntologyTermID
-    required: false
+    required: true
 
+    annotations:
+      microtype: ME:0000116
+      constraint_type: foreign_key
+      original_name: sequencing_technology
   sequencing_technology_sys_oterm_name:
     description: Sequencing technology ontology term name
     range: string
-    required: false
+    required: true
 
   # Assembly slots
+    annotations:
+      microtype: ME:0000116
+      original_name: sequencing_technology
   sdt_assembly_id:
     description: Unique identifier for Assembly
     range: string
@@ -634,24 +763,36 @@ slots:
     identifier: true
     pattern: '^Assembly\d{7}$'
 
+    annotations:
+      microtype: ME:0000281
+      constraint_type: primary_key
+      original_name: id
   sdt_assembly_name:
     description: Name of assembly
     range: EntityName
     required: true
 
+    annotations:
+      microtype: ME:0000280
+      constraint_type: unique_key
+      original_name: name
   strain_ref:
     description: Reference to strain name (FK to Strain.sdt_strain_name)
     range: EntityName
     required: false
     comments:
-      - CDM convention: FK references use entity name, not ID
-      - References Strain.sdt_strain_name
+    - CDM convention: FK references use entity name, not ID
+    - References Strain.sdt_strain_name
 
   n_contigs:
     description: Number of contigs
     range: Count
-    required: false
+    required: true
 
+    annotations:
+      microtype: ME:0000126
+      units: UO:0000189
+      original_name: n_contigs
   total_size:
     description: Total assembly size in base pairs
     range: Size
@@ -665,25 +806,36 @@ slots:
     identifier: true
     pattern: '^Bin\d{7}$'
 
+    annotations:
+      microtype: ME:0000331
+      constraint_type: primary_key
+      original_name: id
   sdt_bin_name:
     description: Name of bin
     range: EntityName
     required: true
 
+    annotations:
+      microtype: ME:0000330
+      constraint_type: unique_key
+      original_name: name
   assembly_ref:
     description: Reference to assembly name (FK to Assembly.sdt_assembly_name)
     range: EntityName
     required: false
     comments:
-      - CDM convention: FK references use entity name, not ID
-      - References Assembly.sdt_assembly_name
+    - CDM convention: FK references use entity name, not ID
+    - References Assembly.sdt_assembly_name
 
   contigs:
     description: Comma-separated list of contig names
     range: string
-    required: false
+    required: true
 
   # Genome slots
+    annotations:
+      microtype: ME:0000240
+      original_name: contigs
   sdt_genome_id:
     description: Unique identifier for Genome
     range: string
@@ -691,26 +843,38 @@ slots:
     identifier: true
     pattern: '^Genome\d{7}$'
 
+    annotations:
+      microtype: ME:0000274
+      constraint_type: primary_key
+      original_name: id
   sdt_genome_name:
     description: Name of genome
     range: EntityName
     required: true
 
+    annotations:
+      microtype: ME:0000246
+      constraint_type: foreign_key
+      original_name: genome
   genome_ref:
     description: Reference to genome name (FK to Genome.sdt_genome_name)
     range: EntityName
     required: false
     comments:
-      - CDM convention: FK references use entity name, not ID
-      - References Genome.sdt_genome_name
-      - Used by: Gene, Strain, DubSeqLibrary, TnSeqLibrary
+    - CDM convention: FK references use entity name, not ID
+    - References Genome.sdt_genome_name
+    - Used by: Gene, Strain, DubSeqLibrary, TnSeqLibrary
 
   n_features:
     description: Number of annotated features
     range: Count
-    required: false
+    required: true
 
   # Gene slots
+    annotations:
+      microtype: ME:0000126
+      units: UO:0000189
+      original_name: n_features
   sdt_gene_id:
     description: Unique identifier for Gene
     range: string
@@ -718,38 +882,64 @@ slots:
     identifier: true
     pattern: '^Gene\d{7}$'
 
+    annotations:
+      microtype: ME:0000275
+      constraint_type: primary_key
+      original_name: id
   sdt_gene_name:
     description: Name of gene
     range: EntityName
     required: true
 
+    annotations:
+      microtype: ME:0000224
+      constraint_type: unique_key
+      original_name: gene_id
   contig_number:
     description: Contig number where gene is located
     range: integer
-    required: false
+    required: true
 
+    annotations:
+      microtype: ME:0000126
+      units: UO:0000189
+      original_name: contig_number
   strand:
     description: DNA strand (+ or -)
     range: string
-    required: false
+    required: true
     pattern: '^[+-]$'
 
+    annotations:
+      microtype: ME:0000186
+      original_name: strand
   start:
     description: Start position on contig
     range: integer
-    required: false
+    required: true
 
+    annotations:
+      microtype: ME:0000242
+      units: UO:0000244
+      original_name: start
   stop:
     description: Stop position on contig
     range: integer
-    required: false
+    required: true
 
+    annotations:
+      microtype: ME:0000243
+      units: UO:0000244
+      original_name: stop
   function:
     description: Predicted gene function
     range: string
     required: false
 
   # Strain slots
+    annotations:
+      microtype: ME:0000250
+      original_name: function
   sdt_strain_id:
     description: Unique identifier for Strain
     range: string
@@ -757,18 +947,26 @@ slots:
     identifier: true
     pattern: '^Strain\d{7}$'
 
+    annotations:
+      microtype: ME:0000271
+      constraint_type: primary_key
+      original_name: id
   sdt_strain_name:
     description: Name of strain
     range: EntityName
     required: true
 
+    annotations:
+      microtype: ME:0000044
+      constraint_type: foreign_key
+      original_name: strain
   derived_from_strain_ref:
     description: Reference to parent strain name (FK, self-referential to Strain.sdt_strain_name)
     range: EntityName
     required: false
     comments:
-      - Self-referential FK for strain derivation lineage
-      - References Strain.sdt_strain_name
+    - Self-referential FK for strain derivation lineage
+    - References Strain.sdt_strain_name
 
   gene_names_changed:
     description: Names of genes that were changed
@@ -784,17 +982,28 @@ slots:
     identifier: true
     pattern: '^Taxon\d{7}$'
 
+    annotations:
+      microtype: ME:0000268
+      constraint_type: primary_key
+      original_name: id
   sdt_taxon_name:
     description: Taxonomic name
     range: EntityName
     required: true
 
+    annotations:
+      microtype: ME:0000047
+      constraint_type: unique_key
+      original_name: name
   ncbi_taxid:
     description: NCBI Taxonomy ID
     range: integer
     required: false
 
   # ASV slots
+    annotations:
+      microtype: ME:0000223
+      original_name: ncbi_taxid
   sdt_asv_id:
     description: Unique identifier for ASV
     range: string
@@ -802,11 +1011,19 @@ slots:
     identifier: true
     pattern: '^ASV\d{7}$'
 
+    annotations:
+      microtype: ME:0000269
+      constraint_type: primary_key
+      original_name: id
   sdt_asv_name:
     description: Name of ASV
     range: EntityName
     required: true
 
+    annotations:
+      microtype: ME:0000222
+      constraint_type: unique_key
+      original_name: name
   sequence:
     description: DNA sequence
     range: string
@@ -820,17 +1037,28 @@ slots:
     identifier: true
     pattern: '^Protocol\d{7}$'
 
+    annotations:
+      microtype: ME:0000332
+      constraint_type: primary_key
+      original_name: id
   sdt_protocol_name:
     description: Name of protocol
     range: EntityName
     required: true
 
+    annotations:
+      microtype: ME:0000328
+      constraint_type: unique_key
+      original_name: name
   sdt_protocol_description:
     description: Protocol description
     range: string
     required: false
 
   # Image slots
+    annotations:
+      microtype: ME:0000202
+      original_name: description
   sdt_image_id:
     description: Unique identifier for Image
     range: string
@@ -838,27 +1066,46 @@ slots:
     identifier: true
     pattern: '^Image\d{7}$'
 
+    annotations:
+      microtype: ME:0000356
+      constraint_type: primary_key
+      original_name: id
   sdt_image_name:
     description: Name of image
     range: EntityName
     required: true
 
+    annotations:
+      microtype: ME:0000355
+      constraint_type: unique_key
+      original_name: name
   mime_type:
     description: MIME type of image
     range: string
     required: false
 
+    annotations:
+      microtype: ME:0000357
+      original_name: MIME type
   size:
     description: File size in bytes
     range: Size
     required: false
 
+    annotations:
+      microtype: ME:0000128
+      units: UO:0000233
+      original_name: size
   dimensions:
     description: Image dimensions (e.g., "1024x768")
     range: string
     required: false
 
   # Condition slots
+    annotations:
+      microtype: ME:0000292
+      units: UO:0000236
+      original_name: dimensions
   sdt_condition_id:
     description: Unique identifier for Condition
     range: string
@@ -866,12 +1113,20 @@ slots:
     identifier: true
     pattern: '^Condition\d{7}$'
 
+    annotations:
+      microtype: ME:0000270
+      constraint_type: primary_key
+      original_name: id
   sdt_condition_name:
     description: Name of condition
     range: EntityName
     required: true
 
   # DubSeqLibrary slots
+    annotations:
+      microtype: ME:0000200
+      constraint_type: foreign_key
+      original_name: condition
   sdt_dubseq_library_id:
     description: Unique identifier for DubSeqLibrary
     range: string
@@ -879,17 +1134,29 @@ slots:
     identifier: true
     pattern: '^DubSeqLibrary\d{7}$'
 
+    annotations:
+      microtype: ME:0000276
+      constraint_type: primary_key
+      original_name: id
   sdt_dubseq_library_name:
     description: Name of DubSeq library
     range: EntityName
     required: true
 
+    annotations:
+      microtype: ME:0000262
+      constraint_type: unique_key
+      original_name: name
   n_fragments:
     description: Number of fragments
     range: Count
     required: false
 
   # TnSeqLibrary slots
+    annotations:
+      microtype: ME:0000126
+      units: UO:0000189
+      original_name: n_fragments
   sdt_tnseq_library_id:
     description: Unique identifier for TnSeqLibrary
     range: string
@@ -897,21 +1164,36 @@ slots:
     identifier: true
     pattern: '^TnSeqLibrary\d{7}$'
 
+    annotations:
+      microtype: ME:0000276
+      constraint_type: primary_key
+      original_name: id
   sdt_tnseq_library_name:
     description: Name of TnSeq library
     range: EntityName
     required: true
 
+    annotations:
+      microtype: ME:0000262
+      constraint_type: unique_key
+      original_name: name
   primers_model:
     description: Primers model used
     range: string
-    required: false
+    required: true
 
+    annotations:
+      microtype: ME:0000263
+      original_name: primers_model
   n_mapped_reads:
     description: Number of mapped reads
     range: Count
     required: false
 
+    annotations:
+      microtype: ME:0000126
+      units: UO:0000189
+      original_name: n_mapped_reads
   n_good_reads:
     description: Number of good quality reads
     range: Count
@@ -929,3 +1211,5 @@ slots:
     required: true
     identifier: true
     pattern: '^ENIGMA1$'
+    annotations:
+      constraint_type: primary_key

@@ -36,7 +36,7 @@ prefixes:
 default_prefix: kbase_cdm
 
 imports:
-  - linkml:types
+- linkml:types
 
 # ============================================================
 # TYPES - Semantic types from original CORAL schema
@@ -167,16 +167,16 @@ types:
     pattern: '^[A-Z_]+:\d+$'
     description: CURIE format ontology term identifier (e.g., ME:0000129, ENVO:00002041)
     comments:
-      - References sys_oterm table in CDM
-      - Standard OBO format with prefix and numeric ID
+    - References sys_oterm table in CDM
+    - Standard OBO format with prefix and numeric ID
 
   EntityName:
     typeof: string
     pattern: '^[A-Za-z0-9_\-. ]+$'
     description: Human-readable entity name
     comments:
-      - Used for foreign key references in CDM (not ID)
-      - Allows alphanumeric, underscore, hyphen, dot, and space
+    - Used for foreign key references in CDM (not ID)
+    - Allows alphanumeric, underscore, hyphen, dot, and space
 
 # ============================================================
 # MIXINS - Reusable patterns for CDM entities
@@ -202,8 +202,8 @@ classes:
       - read_type → read_type_sys_oterm_id + read_type_sys_oterm_name
     abstract: true
     comments:
-      - Use this mixin when defining ontology-constrained slot pairs
-      - Ensures consistent naming and typing across all entities
+    - Use this mixin when defining ontology-constrained slot pairs
+    - Ensures consistent naming and typing across all entities
 
   CDMEntity:
     mixin: true
@@ -223,8 +223,8 @@ classes:
       with entity-specific names (e.g., sdt_location_id, sdt_location_name).
     abstract: true
     comments:
-      - This mixin does not define slots - each entity defines its own
-      - Used for grouping and documentation purposes
+    - This mixin does not define slots - each entity defines its own
+    - Used for grouping and documentation purposes
 
   SystemEntity:
     mixin: true
@@ -239,9 +239,9 @@ classes:
       sys_process_input, sys_process_output
     abstract: true
     comments:
-      - System tables have their own identifier conventions
-      - No sdt_ prefix (use sys_ instead)
-      - May have composite keys or generated IDs
+    - System tables have their own identifier conventions
+    - No sdt_ prefix (use sys_ instead)
+    - May have composite keys or generated IDs
 
 # ============================================================
 # ENUMS - Not defined here, inherited from main schema
@@ -259,21 +259,26 @@ slots:
     range: OntologyTermID
     required: false
     comments:
-      - Foreign key to sys_oterm table
-      - Standard format: PREFIX:NNNNNN (e.g., ME:0000129)
+    - Foreign key to sys_oterm table
+    - Standard format: PREFIX:NNNNNN (e.g., ME:0000129)
 
+    annotations:
+      constraint_type: primary_key
   sys_oterm_name:
     description: Human-readable ontology term name
     range: string
     required: false
     comments:
-      - Denormalized from sys_oterm for query performance
-      - Must match the name in sys_oterm catalog
+    - Denormalized from sys_oterm for query performance
+    - Must match the name in sys_oterm catalog
 
   link:
     description: External reference URL or file path
     range: Link
-    required: false
+    required: true
     comments:
-      - Used for Assembly, Genome, Reads, Image, Protocol
-      - May point to files in object storage or external databases
+    - Used for Assembly, Genome, Reads, Image, Protocol
+    - May point to files in object storage or external databases
+    annotations:
+      microtype: ME:0000203
+      original_name: link

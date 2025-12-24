@@ -31,8 +31,8 @@ prefixes:
 default_prefix: kbase_cdm
 
 imports:
-  - linkml:types
-  - ./cdm_base
+- linkml:types
+- ./cdm_base
 
 # ============================================================
 # SYSTEM TABLE CLASSES (sys_*)
@@ -41,7 +41,7 @@ imports:
 classes:
   SystemTypedef:
     mixins:
-      - SystemEntity
+    - SystemEntity
     description: |
       Type definitions for static entity tables (equivalent to typedef.json).
 
@@ -52,20 +52,20 @@ classes:
       enables automated validation and migration.
     class_uri: kbase_cdm:SystemTypedef
     slots:
-      - type_name
-      - field_name
-      - cdm_column_name
-      - scalar_type
-      - pk
-      - upk
-      - fk
-      - constraint
-      - units_sys_oterm_id
-      - type_sys_oterm_id
+    - type_name
+    - field_name
+    - cdm_column_name
+    - scalar_type
+    - pk
+    - upk
+    - fk
+    - constraint
+    - units_sys_oterm_id
+    - type_sys_oterm_id
 
   SystemDDTTypedef:
     mixins:
-      - SystemEntity
+    - SystemEntity
     description: |
       Type definitions for dynamic data tables (bricks).
 
@@ -79,22 +79,22 @@ classes:
       enabling flexible storage of heterogeneous measurement data.
     class_uri: kbase_cdm:SystemDDTTypedef
     slots:
-      - ddt_ndarray_id
-      - cdm_column_name
-      - cdm_column_data_type
-      - scalar_type
-      - dimension_number
-      - variable_number
-      - dimension_oterm_id
-      - dimension_oterm_name
-      - variable_oterm_id
-      - variable_oterm_name
-      - unit_sys_oterm_id
-      - unit_sys_oterm_name
+    - ddt_ndarray_id
+    - cdm_column_name
+    - cdm_column_data_type
+    - scalar_type
+    - dimension_number
+    - variable_number
+    - dimension_oterm_id
+    - dimension_oterm_name
+    - variable_oterm_id
+    - variable_oterm_name
+    - unit_sys_oterm_id
+    - unit_sys_oterm_name
 
   SystemOntologyTerm:
     mixins:
-      - SystemEntity
+    - SystemEntity
     description: |
       Centralized ontology term catalog.
 
@@ -111,14 +111,14 @@ classes:
       - Foreign key target for all *_sys_oterm_id columns
     class_uri: kbase_cdm:SystemOntologyTerm
     slots:
-      - sys_oterm_id
-      - sys_oterm_name
-      - sys_oterm_ontology
-      - parent_sys_oterm_id
-      - sys_oterm_definition
-      - sys_oterm_synonyms
-      - sys_oterm_links
-      - sys_oterm_properties
+    - sys_oterm_id
+    - sys_oterm_name
+    - sys_oterm_ontology
+    - parent_sys_oterm_id
+    - sys_oterm_definition
+    - sys_oterm_synonyms
+    - sys_oterm_links
+    - sys_oterm_properties
     slot_usage:
       sys_oterm_id:
         identifier: true
@@ -126,7 +126,7 @@ classes:
 
   SystemProcess:
     mixins:
-      - SystemEntity
+    - SystemEntity
     description: |
       Provenance tracking for all data transformations.
 
@@ -139,18 +139,18 @@ classes:
       Enables complete lineage tracing from raw samples to final analyses.
     class_uri: kbase_cdm:SystemProcess
     slots:
-      - sys_process_id
-      - process_type_sys_oterm_id
-      - process_type_sys_oterm_name
-      - person_sys_oterm_id
-      - person_sys_oterm_name
-      - campaign_sys_oterm_id
-      - campaign_sys_oterm_name
-      - sdt_protocol_name
-      - date_start
-      - date_end
-      - input_objects
-      - output_objects
+    - sys_process_id
+    - process_type_sys_oterm_id
+    - process_type_sys_oterm_name
+    - person_sys_oterm_id
+    - person_sys_oterm_name
+    - campaign_sys_oterm_id
+    - campaign_sys_oterm_name
+    - sdt_protocol_name
+    - date_start
+    - date_end
+    - input_objects
+    - output_objects
     slot_usage:
       sys_process_id:
         identifier: true
@@ -158,7 +158,7 @@ classes:
 
   SystemProcessInput:
     mixins:
-      - SystemEntity
+    - SystemEntity
     description: |
       Normalized process input relationships.
 
@@ -170,14 +170,14 @@ classes:
       - "What samples were used in sequencing processes?"
     class_uri: kbase_cdm:SystemProcessInput
     slots:
-      - sys_process_id
-      - input_object_type
-      - input_object_name
-      - input_index
+    - sys_process_id
+    - input_object_type
+    - input_object_name
+    - input_index
 
   SystemProcessOutput:
     mixins:
-      - SystemEntity
+    - SystemEntity
     description: |
       Normalized process output relationships.
 
@@ -189,10 +189,10 @@ classes:
       - "Find all assemblies from sequencing processes"
     class_uri: kbase_cdm:SystemProcessOutput
     slots:
-      - sys_process_id
-      - output_object_type
-      - output_object_name
-      - output_index
+    - sys_process_id
+    - output_object_type
+    - output_object_name
+    - output_index
 
 # ============================================================
 # SLOTS - System table-specific slots
@@ -256,6 +256,8 @@ slots:
     range: string
     required: true
 
+    annotations:
+      constraint_type: foreign_key
   cdm_column_data_type:
     description: Column type (variable, dimension_variable, or dimension_index)
     range: string
@@ -279,6 +281,8 @@ slots:
     range: OntologyTermID
     required: false
 
+    annotations:
+      constraint_type: foreign_key
   dimension_oterm_name:
     description: Dimension semantic ontology term name
     range: string
@@ -289,6 +293,8 @@ slots:
     range: OntologyTermID
     required: false
 
+    annotations:
+      constraint_type: foreign_key
   variable_oterm_name:
     description: Variable semantic ontology term name
     range: string
@@ -299,6 +305,8 @@ slots:
     range: OntologyTermID
     required: false
 
+    annotations:
+      constraint_type: foreign_key
   unit_sys_oterm_name:
     description: Measurement unit ontology term name
     range: string
@@ -315,6 +323,8 @@ slots:
     range: OntologyTermID
     required: false
 
+    annotations:
+      constraint_type: foreign_key
   sys_oterm_definition:
     description: Formal term definition
     range: string
@@ -342,6 +352,11 @@ slots:
     required: true
     pattern: '^Process\d{7}$'
 
+    annotations:
+      microtype: ME:0000277
+      constraint_type: primary_key
+      original_name: id
+    identifier: true
   process_type_sys_oterm_id:
     description: Process type ontology term ID
     range: OntologyTermID
@@ -355,46 +370,74 @@ slots:
   person_sys_oterm_id:
     description: Person who performed process (ontology term ID)
     range: OntologyTermID
-    required: false
+    required: true
 
+    annotations:
+      microtype: ME:0000205
+      constraint_type: foreign_key
+      original_name: person
   person_sys_oterm_name:
     description: Person who performed process (ontology term name)
     range: string
-    required: false
+    required: true
 
+    annotations:
+      microtype: ME:0000205
+      original_name: person
   campaign_sys_oterm_id:
     description: Research campaign ontology term ID
     range: OntologyTermID
-    required: false
+    required: true
 
+    annotations:
+      microtype: ME:0000206
+      constraint_type: foreign_key
+      original_name: campaign
   campaign_sys_oterm_name:
     description: Research campaign ontology term name
     range: string
-    required: false
+    required: true
 
+    annotations:
+      microtype: ME:0000206
+      original_name: campaign
   date_start:
     description: Process start date
     range: Date
     required: false
 
+    annotations:
+      microtype: ME:0000009
+      original_name: date_start
+    pattern: \d\d\d\d(-\d\d(-\d\d)?)?
   date_end:
     description: Process end date
     range: Date
     required: false
 
+    annotations:
+      microtype: ME:0000009
+      original_name: date_end
+    pattern: \d\d\d\d(-\d\d(-\d\d)?)?
   input_objects:
     description: Array of input entity references (type:name format)
     range: string
-    required: false
+    required: true
     multivalued: true
 
+    annotations:
+      microtype: ME:0000207
+      original_name: input_objects
   output_objects:
     description: Array of output entity references (type:name format)
     range: string
-    required: false
+    required: true
     multivalued: true
 
   # SystemProcessInput/Output slots
+    annotations:
+      microtype: ME:0000208
+      original_name: output_objects
   input_object_type:
     description: Type of input entity (e.g., "Sample", "Reads")
     range: string

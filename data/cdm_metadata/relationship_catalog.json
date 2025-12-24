@@ -1,0 +1,974 @@
+[
+  {
+    "source_table": "sdt_assembly",
+    "source_column": "sdt_strain_name",
+    "target_table": "Strain",
+    "target_column": "name",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Strain name from which the assembly was derived (foreign key to Strain.name)."
+  },
+  {
+    "source_table": "sdt_bin",
+    "source_column": "sdt_assembly_name",
+    "target_table": "Assembly",
+    "target_column": null,
+    "relationship_type": "many_to_one",
+    "is_required": true,
+    "description": "Identifier of the metagenomic assembly that the bin belongs to (foreign key to Assembly.name)"
+  },
+  {
+    "source_table": "sdt_community",
+    "source_column": "community_type_sys_oterm_id",
+    "target_table": "sys_oterm",
+    "target_column": "id",
+    "relationship_type": "many_to_one",
+    "is_required": true,
+    "description": "Type of community, e.g., isolate or enrichment"
+  },
+  {
+    "source_table": "sdt_community",
+    "source_column": "sdt_sample_name",
+    "target_table": "Sample",
+    "target_column": "name",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Reference to the Sample from which the community was obtained."
+  },
+  {
+    "source_table": "sdt_community",
+    "source_column": "parent_sdt_community_name",
+    "target_table": "Community",
+    "target_column": "name",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Reference to the name of a parent community, establishing hierarchical relationships"
+  },
+  {
+    "source_table": "sdt_community",
+    "source_column": "sdt_condition_name",
+    "target_table": "Condition",
+    "target_column": "name",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Reference to the experimental or environmental condition associated with the community"
+  },
+  {
+    "source_table": "sdt_community",
+    "source_column": "defined_sdt_strain_names",
+    "target_table": "[Strain",
+    "target_column": "name]",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "List of strains that comprise the community, if the community is defined"
+  },
+  {
+    "source_table": "sdt_dubseq_library",
+    "source_column": "sdt_genome_name",
+    "target_table": "Genome",
+    "target_column": null,
+    "relationship_type": "many_to_one",
+    "is_required": true,
+    "description": "Foreign key to the associated genome (Genome.name) from which the library was derived"
+  },
+  {
+    "source_table": "sdt_gene",
+    "source_column": "sdt_genome_name",
+    "target_table": "Genome",
+    "target_column": null,
+    "relationship_type": "many_to_one",
+    "is_required": true,
+    "description": "Name of the genome to which the gene belongs (foreign key)"
+  },
+  {
+    "source_table": "sdt_genome",
+    "source_column": "sdt_strain_name",
+    "target_table": "Strain",
+    "target_column": "name",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Name of the microbial strain associated with the genome (foreign key)"
+  },
+  {
+    "source_table": "sdt_location",
+    "source_column": "continent_sys_oterm_id",
+    "target_table": "sys_oterm",
+    "target_column": "id",
+    "relationship_type": "many_to_one",
+    "is_required": true,
+    "description": "Continent where the location is situated"
+  },
+  {
+    "source_table": "sdt_location",
+    "source_column": "country_sys_oterm_id",
+    "target_table": "sys_oterm",
+    "target_column": "id",
+    "relationship_type": "many_to_one",
+    "is_required": true,
+    "description": "Country of the location"
+  },
+  {
+    "source_table": "sdt_location",
+    "source_column": "biome_sys_oterm_id",
+    "target_table": "sys_oterm",
+    "target_column": "id",
+    "relationship_type": "many_to_one",
+    "is_required": true,
+    "description": "Biome classification of the location"
+  },
+  {
+    "source_table": "sdt_location",
+    "source_column": "feature_sys_oterm_id",
+    "target_table": "sys_oterm",
+    "target_column": "id",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Environmental or geographic feature at the location"
+  },
+  {
+    "source_table": "sdt_reads",
+    "source_column": "read_type_sys_oterm_id",
+    "target_table": "sys_oterm",
+    "target_column": "id",
+    "relationship_type": "many_to_one",
+    "is_required": true,
+    "description": "Category of reads (e.g., single-end, paired-end)"
+  },
+  {
+    "source_table": "sdt_reads",
+    "source_column": "sequencing_technology_sys_oterm_id",
+    "target_table": "sys_oterm",
+    "target_column": "id",
+    "relationship_type": "many_to_one",
+    "is_required": true,
+    "description": "Sequencing technology used (e.g., Illumina)"
+  },
+  {
+    "source_table": "sdt_sample",
+    "source_column": "sdt_location_name",
+    "target_table": "Location",
+    "target_column": "name",
+    "relationship_type": "many_to_one",
+    "is_required": true,
+    "description": "Location where the sample was collected (Foreign key)"
+  },
+  {
+    "source_table": "sdt_sample",
+    "source_column": "material_sys_oterm_id",
+    "target_table": "sys_oterm",
+    "target_column": "id",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Material type of the sample"
+  },
+  {
+    "source_table": "sdt_sample",
+    "source_column": "env_package_sys_oterm_id",
+    "target_table": "sys_oterm",
+    "target_column": "id",
+    "relationship_type": "many_to_one",
+    "is_required": true,
+    "description": "MIxS environmental package classification of the sample"
+  },
+  {
+    "source_table": "sdt_strain",
+    "source_column": "sdt_genome_name",
+    "target_table": "Genome",
+    "target_column": "name",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Genome object for sequenced, wild type strains"
+  },
+  {
+    "source_table": "sdt_strain",
+    "source_column": "derived_from_sdt_strain_name",
+    "target_table": "Strain",
+    "target_column": "name",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Name of the parent strain from which this strain was derived, if created by genetic modification or similar process"
+  },
+  {
+    "source_table": "sdt_strain",
+    "source_column": "sdt_gene_names_changed",
+    "target_table": "[Gene",
+    "target_column": "gene_id]",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "List of gene identifiers that have been altered in this strain, if created by genetic modification, if known"
+  },
+  {
+    "source_table": "sdt_tnseq_library",
+    "source_column": "sdt_genome_name",
+    "target_table": "Genome",
+    "target_column": null,
+    "relationship_type": "many_to_one",
+    "is_required": true,
+    "description": "Foreign key to the associated genome (Genome.name) from which the library was derived"
+  },
+  {
+    "source_table": "sys_ddt_typedef",
+    "source_column": "ddt_ndarray_id",
+    "target_table": "ddt_ndarray",
+    "target_column": "ddt_ndarray_id",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Key for dynamic data type (N-dimensional array)"
+  },
+  {
+    "source_table": "sys_ddt_typedef",
+    "source_column": "unit_sys_oterm_id",
+    "target_table": "sys_oterm",
+    "target_column": "sys_oterm_id",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Unit, ontology term CURIE"
+  },
+  {
+    "source_table": "sys_ddt_typedef",
+    "source_column": "dimension_oterm_id",
+    "target_table": "sys_oterm",
+    "target_column": "sys_oterm_id",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Dimension data type, ontology term CURIE"
+  },
+  {
+    "source_table": "sys_ddt_typedef",
+    "source_column": "variable_oterm_id",
+    "target_table": "sys_oterm",
+    "target_column": "sys_oterm_id",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Dimension variable data type, ontology term CURIE"
+  },
+  {
+    "source_table": "sys_oterm",
+    "source_column": "parent_sys_oterm_id",
+    "target_table": "sys_oterm",
+    "target_column": "sys_oterm_id",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Parent term identifier"
+  },
+  {
+    "source_table": "sys_process",
+    "source_column": "process_sys_oterm_id",
+    "target_table": "sys_oterm",
+    "target_column": "id",
+    "relationship_type": "many_to_one",
+    "is_required": true,
+    "description": "Reference to the specific process type used to generate the outputs"
+  },
+  {
+    "source_table": "sys_process",
+    "source_column": "person_sys_oterm_id",
+    "target_table": "sys_oterm",
+    "target_column": "id",
+    "relationship_type": "many_to_one",
+    "is_required": true,
+    "description": "Reference to the person or lab that performed the process"
+  },
+  {
+    "source_table": "sys_process",
+    "source_column": "campaign_sys_oterm_id",
+    "target_table": "sys_oterm",
+    "target_column": "id",
+    "relationship_type": "many_to_one",
+    "is_required": true,
+    "description": "Reference to the ENIGMA campaign under which the data were generated"
+  },
+  {
+    "source_table": "sys_process",
+    "source_column": "sdt_protocol_name",
+    "target_table": "Protocol",
+    "target_column": "name",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Protocol used in this process (foreign key to Protocol.name)"
+  },
+  {
+    "source_table": "sys_process_input",
+    "source_column": "sys_process_id",
+    "target_table": "sys_process",
+    "target_column": "sys_process_id",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Foreign key to sys_process"
+  },
+  {
+    "source_table": "sys_process_input",
+    "source_column": "sdt_assembly_id",
+    "target_table": "sdt_assembly",
+    "target_column": "sdt_assembly_id",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Input object from sdt_assembly"
+  },
+  {
+    "source_table": "sys_process_input",
+    "source_column": "sdt_bin_id",
+    "target_table": "sdt_bin",
+    "target_column": "sdt_bin_id",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Input object from sdt_bin"
+  },
+  {
+    "source_table": "sys_process_input",
+    "source_column": "sdt_community_id",
+    "target_table": "sdt_community",
+    "target_column": "sdt_community_id",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Input object from sdt_community"
+  },
+  {
+    "source_table": "sys_process_input",
+    "source_column": "sdt_genome_id",
+    "target_table": "sdt_genome",
+    "target_column": "sdt_genome_id",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Input object from sdt_genome"
+  },
+  {
+    "source_table": "sys_process_input",
+    "source_column": "sdt_location_id",
+    "target_table": "sdt_location",
+    "target_column": "sdt_location_id",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Input object from sdt_location"
+  },
+  {
+    "source_table": "sys_process_input",
+    "source_column": "sdt_reads_id",
+    "target_table": "sdt_reads",
+    "target_column": "sdt_reads_id",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Input object from sdt_reads"
+  },
+  {
+    "source_table": "sys_process_input",
+    "source_column": "sdt_sample_id",
+    "target_table": "sdt_sample",
+    "target_column": "sdt_sample_id",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Input object from sdt_sample"
+  },
+  {
+    "source_table": "sys_process_input",
+    "source_column": "sdt_strain_id",
+    "target_table": "sdt_strain",
+    "target_column": "sdt_strain_id",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Input object from sdt_strain"
+  },
+  {
+    "source_table": "sys_process_input",
+    "source_column": "sdt_tnseq_library_id",
+    "target_table": "sdt_tnseq_library",
+    "target_column": "sdt_tnseq_library_id",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Input object from sdt_tnseq_library"
+  },
+  {
+    "source_table": "sys_process_output",
+    "source_column": "sys_process_id",
+    "target_table": "sys_process",
+    "target_column": "sys_process_id",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Foreign key to sys_process"
+  },
+  {
+    "source_table": "sys_process_output",
+    "source_column": "ddt_ndarray_id",
+    "target_table": "ddt_ndarray",
+    "target_column": "ddt_ndarray_id",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Output object from ddt_ndarray"
+  },
+  {
+    "source_table": "sys_process_output",
+    "source_column": "sdt_assembly_id",
+    "target_table": "sdt_assembly",
+    "target_column": "sdt_assembly_id",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Output object from sdt_assembly"
+  },
+  {
+    "source_table": "sys_process_output",
+    "source_column": "sdt_bin_id",
+    "target_table": "sdt_bin",
+    "target_column": "sdt_bin_id",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Output object from sdt_bin"
+  },
+  {
+    "source_table": "sys_process_output",
+    "source_column": "sdt_community_id",
+    "target_table": "sdt_community",
+    "target_column": "sdt_community_id",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Output object from sdt_community"
+  },
+  {
+    "source_table": "sys_process_output",
+    "source_column": "sdt_dubseq_library_id",
+    "target_table": "sdt_dubseq_library",
+    "target_column": "sdt_dubseq_library_id",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Output object from sdt_dubseq_library"
+  },
+  {
+    "source_table": "sys_process_output",
+    "source_column": "sdt_genome_id",
+    "target_table": "sdt_genome",
+    "target_column": "sdt_genome_id",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Output object from sdt_genome"
+  },
+  {
+    "source_table": "sys_process_output",
+    "source_column": "sdt_image_id",
+    "target_table": "sdt_image",
+    "target_column": "sdt_image_id",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Output object from sdt_image"
+  },
+  {
+    "source_table": "sys_process_output",
+    "source_column": "sdt_reads_id",
+    "target_table": "sdt_reads",
+    "target_column": "sdt_reads_id",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Output object from sdt_reads"
+  },
+  {
+    "source_table": "sys_process_output",
+    "source_column": "sdt_sample_id",
+    "target_table": "sdt_sample",
+    "target_column": "sdt_sample_id",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Output object from sdt_sample"
+  },
+  {
+    "source_table": "sys_process_output",
+    "source_column": "sdt_strain_id",
+    "target_table": "sdt_strain",
+    "target_column": "sdt_strain_id",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Output object from sdt_strain"
+  },
+  {
+    "source_table": "sys_process_output",
+    "source_column": "sdt_tnseq_library_id",
+    "target_table": "sdt_tnseq_library",
+    "target_column": "sdt_tnseq_library_id",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Output object from sdt_tnseq_library"
+  },
+  {
+    "source_table": "ddt_brick0000010",
+    "source_column": "sdt_sample_name",
+    "target_table": "sdt_sample",
+    "target_column": "sdt_sample_name",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Environmental Sample ID"
+  },
+  {
+    "source_table": "ddt_brick0000010",
+    "source_column": "molecule_from_list_sys_oterm_id",
+    "target_table": "sys_oterm",
+    "target_column": "sys_oterm_id",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Molecule from list, ontology term CURIE"
+  },
+  {
+    "source_table": "ddt_brick0000072",
+    "source_column": "statistic_sys_oterm_id",
+    "target_table": "sys_oterm",
+    "target_column": "sys_oterm_id",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Statistic, ontology term CURIE"
+  },
+  {
+    "source_table": "ddt_brick0000072",
+    "source_column": "sdt_sample_name",
+    "target_table": "sdt_sample",
+    "target_column": "sdt_sample_name",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Environmental Sample ID"
+  },
+  {
+    "source_table": "ddt_brick0000072",
+    "source_column": "molecule_from_list_sys_oterm_id",
+    "target_table": "sys_oterm",
+    "target_column": "sys_oterm_id",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Molecule from list, ontology term CURIE"
+  },
+  {
+    "source_table": "ddt_brick0000073",
+    "source_column": "statistic_sys_oterm_id",
+    "target_table": "sys_oterm",
+    "target_column": "sys_oterm_id",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Statistic, ontology term CURIE"
+  },
+  {
+    "source_table": "ddt_brick0000073",
+    "source_column": "sdt_sample_name",
+    "target_table": "sdt_sample",
+    "target_column": "sdt_sample_name",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Environmental Sample ID"
+  },
+  {
+    "source_table": "ddt_brick0000073",
+    "source_column": "molecule_from_list_sys_oterm_id",
+    "target_table": "sys_oterm",
+    "target_column": "sys_oterm_id",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Molecule from list, ontology term CURIE"
+  },
+  {
+    "source_table": "ddt_brick0000080",
+    "source_column": "sdt_sample_name",
+    "target_table": "sdt_sample",
+    "target_column": "sdt_sample_name",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Environmental Sample ID"
+  },
+  {
+    "source_table": "ddt_brick0000080",
+    "source_column": "molecule_from_list_sys_oterm_id",
+    "target_table": "sys_oterm",
+    "target_column": "sys_oterm_id",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Molecule from list, ontology term CURIE"
+  },
+  {
+    "source_table": "ddt_brick0000452",
+    "source_column": "sdt_asv_name",
+    "target_table": "sdt_asv",
+    "target_column": "sdt_asv_name",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "ASV ID"
+  },
+  {
+    "source_table": "ddt_brick0000454",
+    "source_column": "sdt_asv_name",
+    "target_table": "sdt_asv",
+    "target_column": "sdt_asv_name",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "ASV ID"
+  },
+  {
+    "source_table": "ddt_brick0000454",
+    "source_column": "taxonomic_level_sys_oterm_id",
+    "target_table": "sys_oterm",
+    "target_column": "sys_oterm_id",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Taxonomic Level, ontology term CURIE"
+  },
+  {
+    "source_table": "ddt_brick0000454",
+    "source_column": "sdt_taxon_name",
+    "target_table": "sdt_taxon",
+    "target_column": "sdt_taxon_name",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Taxon ID"
+  },
+  {
+    "source_table": "ddt_brick0000457",
+    "source_column": "sdt_asv_name",
+    "target_table": "sdt_asv",
+    "target_column": "sdt_asv_name",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "ASV ID"
+  },
+  {
+    "source_table": "ddt_brick0000458",
+    "source_column": "sdt_asv_name",
+    "target_table": "sdt_asv",
+    "target_column": "sdt_asv_name",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "ASV ID"
+  },
+  {
+    "source_table": "ddt_brick0000458",
+    "source_column": "taxonomic_level_sys_oterm_id",
+    "target_table": "sys_oterm",
+    "target_column": "sys_oterm_id",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Taxonomic Level, ontology term CURIE"
+  },
+  {
+    "source_table": "ddt_brick0000458",
+    "source_column": "sdt_taxon_name",
+    "target_table": "sdt_taxon",
+    "target_column": "sdt_taxon_name",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Taxon ID"
+  },
+  {
+    "source_table": "ddt_brick0000459",
+    "source_column": "sdt_asv_name",
+    "target_table": "sdt_asv",
+    "target_column": "sdt_asv_name",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "ASV ID"
+  },
+  {
+    "source_table": "ddt_brick0000459",
+    "source_column": "sdt_community_name",
+    "target_table": "sdt_community",
+    "target_column": "sdt_community_name",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Community ID"
+  },
+  {
+    "source_table": "ddt_brick0000460",
+    "source_column": "sdt_asv_name",
+    "target_table": "sdt_asv",
+    "target_column": "sdt_asv_name",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "ASV ID"
+  },
+  {
+    "source_table": "ddt_brick0000461",
+    "source_column": "sdt_asv_name",
+    "target_table": "sdt_asv",
+    "target_column": "sdt_asv_name",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "ASV ID"
+  },
+  {
+    "source_table": "ddt_brick0000461",
+    "source_column": "taxonomic_level_sys_oterm_id",
+    "target_table": "sys_oterm",
+    "target_column": "sys_oterm_id",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Taxonomic Level, ontology term CURIE"
+  },
+  {
+    "source_table": "ddt_brick0000461",
+    "source_column": "sdt_taxon_name",
+    "target_table": "sdt_taxon",
+    "target_column": "sdt_taxon_name",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Taxon ID"
+  },
+  {
+    "source_table": "ddt_brick0000462",
+    "source_column": "sdt_asv_name",
+    "target_table": "sdt_asv",
+    "target_column": "sdt_asv_name",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "ASV ID"
+  },
+  {
+    "source_table": "ddt_brick0000462",
+    "source_column": "sdt_community_name",
+    "target_table": "sdt_community",
+    "target_column": "sdt_community_name",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Community ID"
+  },
+  {
+    "source_table": "ddt_brick0000476",
+    "source_column": "sdt_asv_name",
+    "target_table": "sdt_asv",
+    "target_column": "sdt_asv_name",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "ASV ID"
+  },
+  {
+    "source_table": "ddt_brick0000476",
+    "source_column": "sdt_community_name",
+    "target_table": "sdt_community",
+    "target_column": "sdt_community_name",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Community ID"
+  },
+  {
+    "source_table": "ddt_brick0000477",
+    "source_column": "sdt_asv_name",
+    "target_table": "sdt_asv",
+    "target_column": "sdt_asv_name",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "ASV ID"
+  },
+  {
+    "source_table": "ddt_brick0000478",
+    "source_column": "sdt_asv_name",
+    "target_table": "sdt_asv",
+    "target_column": "sdt_asv_name",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "ASV ID"
+  },
+  {
+    "source_table": "ddt_brick0000478",
+    "source_column": "taxonomic_level_sys_oterm_id",
+    "target_table": "sys_oterm",
+    "target_column": "sys_oterm_id",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Taxonomic Level, ontology term CURIE"
+  },
+  {
+    "source_table": "ddt_brick0000478",
+    "source_column": "sdt_taxon_name",
+    "target_table": "sdt_taxon",
+    "target_column": "sdt_taxon_name",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Taxon ID"
+  },
+  {
+    "source_table": "ddt_brick0000479",
+    "source_column": "sdt_asv_name",
+    "target_table": "sdt_asv",
+    "target_column": "sdt_asv_name",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "ASV ID"
+  },
+  {
+    "source_table": "ddt_brick0000479",
+    "source_column": "sdt_community_name",
+    "target_table": "sdt_community",
+    "target_column": "sdt_community_name",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Community ID"
+  },
+  {
+    "source_table": "ddt_brick0000495",
+    "source_column": "sdt_strain_name",
+    "target_table": "sdt_strain",
+    "target_column": "sdt_strain_name",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Strain ID"
+  },
+  {
+    "source_table": "ddt_brick0000495",
+    "source_column": "taxonomic_level_sys_oterm_id",
+    "target_table": "sys_oterm",
+    "target_column": "sys_oterm_id",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Taxonomic Level, ontology term CURIE"
+  },
+  {
+    "source_table": "ddt_brick0000495",
+    "source_column": "sdt_taxon_name",
+    "target_table": "sdt_taxon",
+    "target_column": "sdt_taxon_name",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Taxon ID"
+  },
+  {
+    "source_table": "ddt_brick0000501",
+    "source_column": "sdt_strain_name",
+    "target_table": "sdt_strain",
+    "target_column": "sdt_strain_name",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Strain ID"
+  },
+  {
+    "source_table": "ddt_brick0000501",
+    "source_column": "sdt_condition_name",
+    "target_table": "sdt_condition",
+    "target_column": "sdt_condition_name",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Condition ID"
+  },
+  {
+    "source_table": "ddt_brick0000501",
+    "source_column": "sdt_sample_name",
+    "target_table": "sdt_sample",
+    "target_column": "sdt_sample_name",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Environmental Sample ID"
+  },
+  {
+    "source_table": "ddt_brick0000501",
+    "source_column": "sdt_location_name",
+    "target_table": "sdt_location",
+    "target_column": "sdt_location_name",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Environmental Sample Location ID"
+  },
+  {
+    "source_table": "ddt_brick0000501",
+    "source_column": "enigma_campaign_sys_oterm_id",
+    "target_table": "sys_oterm",
+    "target_column": "sys_oterm_id",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "ENIGMA Campaign, ontology term CURIE"
+  },
+  {
+    "source_table": "ddt_brick0000501",
+    "source_column": "enigma_labs_and_personnel_comment_contact_person_or_lab_sys_oterm_id",
+    "target_table": "sys_oterm",
+    "target_column": "sys_oterm_id",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "ENIGMA Labs and Personnel, Comment=Contact Person or Lab, ontology term CURIE"
+  },
+  {
+    "source_table": "ddt_brick0000507",
+    "source_column": "sdt_strain_name",
+    "target_table": "sdt_strain",
+    "target_column": "sdt_strain_name",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Strain ID"
+  },
+  {
+    "source_table": "ddt_brick0000507",
+    "source_column": "sequence_type_sys_oterm_id",
+    "target_table": "sys_oterm",
+    "target_column": "sys_oterm_id",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Sequence Type, ontology term CURIE"
+  },
+  {
+    "source_table": "ddt_brick0000507",
+    "source_column": "strand_sys_oterm_id",
+    "target_table": "sys_oterm",
+    "target_column": "sys_oterm_id",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Strand, ontology term CURIE"
+  },
+  {
+    "source_table": "ddt_brick0000508",
+    "source_column": "sdt_sample_name",
+    "target_table": "sdt_sample",
+    "target_column": "sdt_sample_name",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Environmental Sample ID"
+  },
+  {
+    "source_table": "ddt_brick0000508",
+    "source_column": "sdt_strain_name",
+    "target_table": "sdt_strain",
+    "target_column": "sdt_strain_name",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Strain ID"
+  },
+  {
+    "source_table": "ddt_brick0000508",
+    "source_column": "sdt_genome_name",
+    "target_table": "sdt_genome",
+    "target_column": "sdt_genome_name",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Genome ID"
+  },
+  {
+    "source_table": "ddt_ndarray",
+    "source_column": "ddt_ndarray_type_sys_oterm_id",
+    "target_table": "sys_oterm",
+    "target_column": "sys_oterm_id",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Data type for this data brick, ontology term CURIE"
+  },
+  {
+    "source_table": "ddt_ndarray",
+    "source_column": "ddt_ndarray_dimension_types_sys_oterm_id",
+    "target_table": "[sys_oterm",
+    "target_column": "sys_oterm_id]",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Array of dimension data types, ontology term CURIEs"
+  },
+  {
+    "source_table": "ddt_ndarray",
+    "source_column": "ddt_ndarray_dimension_variable_types_sys_oterm_id",
+    "target_table": "[sys_oterm",
+    "target_column": "sys_oterm_id]",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Array of dimension variable types, ontology term CURIEs"
+  },
+  {
+    "source_table": "ddt_ndarray",
+    "source_column": "ddt_ndarray_variable_types_sys_oterm_id",
+    "target_table": "[sys_oterm",
+    "target_column": "sys_oterm_id]",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Array of variable types, ontology term CURIEs"
+  },
+  {
+    "source_table": "ddt_ndarray",
+    "source_column": "superceded_by_ddt_ndarray_id",
+    "target_table": "ddt_ndarray",
+    "target_column": "ddt_ndarray_id",
+    "relationship_type": "many_to_one",
+    "is_required": false,
+    "description": "Dataset that supercedes this one, if the dataset was withdrawn and replaced, or null if the dataset is currently valid"
+  }
+]

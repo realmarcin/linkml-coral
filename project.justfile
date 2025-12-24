@@ -110,6 +110,12 @@ query-unused-reads min_count='50000' db='enigma_data.db':
   @echo "🔍 Finding unused 'good' reads (min_count >= {{min_count}})..."
   uv run python scripts/enigma_query.py --db {{db}} unused-reads --min-count {{min_count}}
 
+# Query: Find unused good reads using SQL (faster)
+[group('data management')]
+query-unused-reads-sql min_count='10000' db='enigma_data.db':
+  @echo "🔍 Finding unused reads via SQL (min_count >= {{min_count}})..."
+  uv run python scripts/enigma_query.py --db {{db}} unused-reads-sql --min-count {{min_count}}
+
 # Query: Find unused isolate genome reads (exclude 16S/metagenome)
 [group('data management')]
 query-unused-isolates min_count='50000' db='enigma_data.db':
@@ -139,6 +145,49 @@ query-lineage entity_type entity_id db='enigma_data.db':
 query-find collection db='enigma_data.db' *query_args='':
   @echo "🔍 Finding {{collection}} records..."
   uv run python scripts/enigma_query.py --db {{db}} find {{collection}} {{query_args}}
+
+# Find samples by criteria (depth, date, location)
+[group('data management')]
+query-samples *args:
+  @echo "🔍 Finding samples..."
+  uv run python scripts/enigma_query.py samples {{args}}
+
+# Find high-count reads meeting threshold
+[group('data management')]
+query-high-reads min_reads='50000':
+  @echo "🔍 Finding reads with count >= {{min_reads}}..."
+  uv run python scripts/enigma_query.py samples-with-reads --min-reads {{min_reads}}
+
+# Run arbitrary SQL query against the database
+[group('data management')]
+query-sql sql db='enigma_data.db':
+  uv run python scripts/enigma_query.py --db {{db}} sql "{{sql}}"
+
+# ============== Advanced Query Features ==============
+
+# Validate collection data against LinkML schema
+[group('data management')]
+validate-collection collection db='enigma_data.db':
+  @echo "🔍 Validating {{collection}} against schema..."
+  uv run python scripts/enigma_advanced_query.py --db {{db}} validate {{collection}}
+
+# Semantic text search in a collection
+[group('data management')]
+search-collection collection query db='enigma_data.db':
+  @echo "🔍 Searching {{collection}} for: {{query}}"
+  uv run python scripts/enigma_advanced_query.py --db {{db}} search {{collection}} "{{query}}"
+
+# Search by ontology term across collections
+[group('data management')]
+query-oterm term db='enigma_data.db':
+  @echo "🔍 Searching for ontology term: {{term}}"
+  uv run python scripts/enigma_advanced_query.py --db {{db}} oterm "{{term}}"
+
+# Execute SPARQL query on RDF representation
+[group('data management')]
+query-sparql sparql db='enigma_data.db':
+  @echo "🔍 Executing SPARQL query..."
+  uv run python scripts/enigma_advanced_query.py --db {{db}} sparql "{{sparql}}"
 
 # Clean generated visualization and analysis outputs
 [group('project management')]
@@ -215,11 +264,41 @@ load-cdm-store db='/Users/marcin/Documents/VIMSS/ENIGMA/KBase/ENIGMA_in_CDM/mini
     --verbose
   @echo "✅ Database ready: {{output}}"
 
-# Load CDM parquet with dynamic brick tables (sampled)
+# Load CDM parquet with core tables + first 10 brick tables (sample)
+[group('CDM data management')]
+load-cdm-store-sample db='/Users/marcin/Documents/VIMSS/ENIGMA/KBase/ENIGMA_in_CDM/minio/jmc_coral.db' output='cdm_store_sample.db':
+  @echo "📦 Loading CDM parquet data (core + first 10 brick tables)..."
+  @echo "⚠️  Note: Loading complete brick data (no row sampling)"
+  uv run python scripts/cdm_analysis/load_cdm_parquet_to_store.py {{db}} \
+    --output {{output}} \
+    --include-system \
+    --include-static \
+    --num-bricks 10 \
+    --create-indexes \
+    --show-info \
+    --verbose
+  @echo "✅ Database ready: {{output}}"
+
+# Load CDM parquet with core tables + first 20 brick tables (complete)
+[group('CDM data management')]
+load-cdm-store-bricks db='/Users/marcin/Documents/VIMSS/ENIGMA/KBase/ENIGMA_in_CDM/minio/jmc_coral.db' output='cdm_store_bricks.db' num_bricks='20':
+  @echo "📦 Loading CDM parquet data (core + first {{num_bricks}} complete brick tables)..."
+  @echo "⚠️  Note: Loading complete brick data (no row sampling)"
+  uv run python scripts/cdm_analysis/load_cdm_parquet_to_store.py {{db}} \
+    --output {{output}} \
+    --include-system \
+    --include-static \
+    --num-bricks {{num_bricks}} \
+    --create-indexes \
+    --show-info \
+    --verbose
+  @echo "✅ Database ready: {{output}}"
+
+# Load CDM parquet with ALL dynamic brick tables (sampled at 10K rows)
 [group('CDM data management')]
 load-cdm-store-full db='/Users/marcin/Documents/VIMSS/ENIGMA/KBase/ENIGMA_in_CDM/minio/jmc_coral.db' output='cdm_store_full.db':
-  @echo "📦 Loading CDM parquet data (including dynamic tables)..."
-  @echo "⚠️  Note: Dynamic brick tables sampled at 10K rows each"
+  @echo "📦 Loading CDM parquet data (including ALL ~500 brick tables)..."
+  @echo "⚠️  Note: Each brick sampled at 10K rows (prevents huge database)"
   uv run python scripts/cdm_analysis/load_cdm_parquet_to_store.py {{db}} \
     --output {{output}} \
     --include-system \
@@ -255,9 +334,112 @@ cdm-lineage entity_type entity_id db='cdm_store.db':
   @echo "🔗 Tracing lineage for {{entity_type}}:{{entity_id}}..."
   uv run python scripts/cdm_analysis/query_cdm_store.py --db {{db}} lineage {{entity_type}} {{entity_id}}
 
+# Demo: Complex query - Location → Samples → Molecular Measurements (brick data)
+[group('CDM data management')]
+cdm-demo-location-molecules db='cdm_store_sample.db' limit='3':
+  @echo "🔬 DEMO: Complex query across static tables and bricks..."
+  @echo "   Query: Location → Samples → Molecular Measurements"
+  uv run python scripts/cdm_analysis/demo_complex_query.py --db {{db}} --limit {{limit}} location-molecules
+
+# Demo: Complex query - Sample → Reads → Assembly → Genome → Genes pipeline
+[group('CDM data management')]
+cdm-demo-pipeline db='cdm_store_sample.db':
+  @echo "🧬 DEMO: Complex query through sequencing pipeline..."
+  @echo "   Query: Sample → Reads → Assembly → Genome → Genes"
+  uv run python scripts/cdm_analysis/demo_complex_query.py --db {{db}} pipeline
+
+# Demo: Complex query - ASV → Taxonomy + Community Abundance (brick data)
+[group('CDM data management')]
+cdm-demo-asv-taxonomy db='cdm_store_sample.db' limit='5':
+  @echo "🦠 DEMO: Complex query for ASV taxonomy and abundance..."
+  @echo "   Query: ASV → Taxonomic Classification + Community Abundance"
+  uv run python scripts/cdm_analysis/demo_complex_query.py --db {{db}} --limit {{limit}} asv-taxonomy
+
+# Demo: Run all complex queries
+[group('CDM data management')]
+cdm-demo-all db='cdm_store_sample.db':
+  @echo "🚀 DEMO: Running all complex query demonstrations..."
+  uv run python scripts/cdm_analysis/demo_complex_query.py --db {{db}} all
+
 # Clean CDM store databases
 [group('CDM data management')]
 clean-cdm-store:
   @echo "🧹 Cleaning CDM store databases..."
   rm -f cdm_store.db cdm_store_full.db
   @echo "✅ Cleaned CDM store databases"
+
+# ============== CORAL Brick Data Management ==============
+
+# Index all brick files (fast metadata scan)
+[group('brick data management')]
+index-bricks brick_dir='data/export/exported_bricks':
+  @echo "📋 Indexing brick files..."
+  uv run python scripts/index_bricks.py {{brick_dir}} -o brick_index.json --report -v
+  @echo "✅ Index saved to brick_index.json"
+
+# Parse and preview brick files (dry run)
+[group('brick data management')]
+parse-bricks brick_dir='data/export/exported_bricks' limit='5':
+  @echo "📦 Parsing brick files from {{brick_dir}}..."
+  uv run python scripts/brick_parser.py {{brick_dir}} --limit {{limit}} --verbose
+
+# Load CORAL brick files into DuckDB (optimized)
+[group('brick data management')]
+load-bricks brick_dir='data/export/exported_bricks' db='brick_data.db':
+  @echo "📦 Loading brick files into {{db}}..."
+  uv run python scripts/load_bricks_to_store.py {{brick_dir}} --db {{db}} --show-stats
+  @echo "✅ Bricks loaded to {{db}}"
+
+# Load only small bricks (< 1MB) for quick testing
+[group('brick data management')]
+load-bricks-small db='brick_small.db':
+  @echo "📦 Loading small bricks (< 1MB)..."
+  uv run python scripts/load_bricks_to_store.py data/export/exported_bricks \
+    --index brick_index.json --max-size 1000000 --db {{db}} --show-stats -v
+  @echo "✅ Small bricks loaded to {{db}}"
+
+# Load bricks by data type
+[group('brick data management')]
+load-bricks-type data_type db='brick_data.db':
+  @echo "📦 Loading bricks of type: {{data_type}}..."
+  uv run python scripts/load_bricks_to_store.py data/export/exported_bricks \
+    --index brick_index.json --data-type "{{data_type}}" --db {{db}} --show-stats -v
+  @echo "✅ Loaded {{data_type}} bricks to {{db}}"
+
+# Load bricks with limit (for testing)
+[group('brick data management')]
+load-bricks-test brick_dir='data/export/exported_bricks' db='brick_test.db' limit='10':
+  @echo "📦 Loading {{limit}} brick files into {{db}}..."
+  uv run python scripts/load_bricks_to_store.py {{brick_dir}} --db {{db}} --limit {{limit}} --show-stats --verbose
+  @echo "✅ Test load complete"
+
+# Show brick database statistics
+[group('brick data management')]
+brick-stats db='brick_data.db':
+  @echo "📊 Brick database statistics..."
+  uv run python scripts/load_bricks_to_store.py data/export/exported_bricks --db {{db}} --show-stats 2>/dev/null || uv run python -c "import duckdb; conn = duckdb.connect('{{db}}', read_only=True); print(conn.execute('SELECT COUNT(*) as bricks FROM brick_index').fetchone()[0], 'bricks'); print(conn.execute('SELECT COUNT(*) as rows FROM brick_data').fetchone()[0], 'data rows')"
+
+# Query brick data by type
+[group('brick data management')]
+query-bricks-by-type data_type db='brick_data.db':
+  @echo "🔍 Finding bricks of type: {{data_type}}..."
+  uv run python -c "import duckdb; conn = duckdb.connect('{{db}}', read_only=True); r = conn.execute(\"SELECT brick_id, name, total_rows FROM brick_index WHERE data_type LIKE '%{{data_type}}%' ORDER BY total_rows DESC\").fetchall(); [print(f'{x[0]}: {x[2]:,} rows - {x[1]}') for x in r]"
+
+# Query specific brick metadata
+[group('brick data management')]
+query-brick brick_id db='brick_data.db':
+  @echo "📦 Brick: {{brick_id}}"
+  uv run python -c "import duckdb, json; conn = duckdb.connect('{{db}}', read_only=True); r = conn.execute(\"SELECT * FROM brick_index WHERE brick_id = '{{brick_id}}'\").fetchone(); cols = [d[0] for d in conn.description]; print('\\n'.join(f'{c}: {v}' for c, v in zip(cols, r) if v))"
+
+# Query brick dimension metadata
+[group('brick data management')]
+query-brick-dims brick_id db='brick_data.db':
+  @echo "📐 Dimensions for {{brick_id}}..."
+  uv run python -c "import duckdb; conn = duckdb.connect('{{db}}', read_only=True); r = conn.execute(\"SELECT dim_number, dim_name, entity_type, dim_size FROM brick_dimensions WHERE brick_id = '{{brick_id}}' ORDER BY dim_number\").fetchall(); [print(f'Dim {x[0]}: {x[1]} ({x[2]}) - {x[3]} values') for x in r]"
+
+# Clean brick databases and index
+[group('brick data management')]
+clean-bricks:
+  @echo "🧹 Cleaning brick databases and index..."
+  rm -f brick_data.db brick_test.db brick_small.db brick_index.json
+  @echo "✅ Cleaned brick databases"
