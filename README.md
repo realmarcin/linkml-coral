@@ -254,6 +254,12 @@ linkml-coral/
 │   │   └── query_cdm_store.py
 │   └── [other scripts]
 │
+├── output/                        # Generated reports & databases (gitignored)
+│   ├── *.db                       # Test database files
+│   ├── *_ANALYSIS.md              # Analysis reports
+│   ├── *_GUIDE.md                 # Implementation guides
+│   └── README.md                  # Output directory documentation
+│
 ├── tests/                         # Unit tests and test data
 ├── examples/                      # Usage examples
 └── project/                       # Generated files (auto)
