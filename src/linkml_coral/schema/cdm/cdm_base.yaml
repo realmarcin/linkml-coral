@@ -173,12 +173,12 @@ types:
 
   EntityName:
     typeof: string
-    pattern: "^[A-Za-z0-9_\\-./;=(),\\[\\] '+:°µ]+$"
+    pattern: "^[A-Za-z0-9_\\-./;=(),\\[\\] '+:°µ%]+$"
     description: Human-readable entity name
     comments:
     - Used for foreign key references in CDM (not ID)
     - Allows alphanumeric, underscore, hyphen, dot, space, and special characters
-    - "Special characters include: / ; = ( ) , [ ] ' + : ° µ for complex identifiers and descriptions"
+    - "Special characters include: / ; = ( ) , [ ] ' + : ° µ % for complex identifiers and descriptions"
 
 # ============================================================
 # MIXINS - Reusable patterns for CDM entities
