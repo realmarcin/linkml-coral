@@ -21,7 +21,7 @@ After thorough analysis, the 90,080 remaining "errors" break down as follows:
 |----------|-------|--------|--------|
 | **Process Entity ID Fields** | 88,594 | ⚠️ Expected | Fields exist in parquet but are 99%+ NULL |
 | **sys_ddt_typedef Old Names** | 1,346 | ⚠️ Legacy Data | Only appears when testing against old parquet |
-| **sdt_condition Pattern** | 135 | ✅ Fixed Round 3 | EntityName pattern now includes `:` and `°` |
+| **sdt_condition Pattern** | 135 + 14 | ✅ Fixed Round 3 & 5 | EntityName pattern now includes `:` `°` `µ` |
 | **sdt_dubseq_library** | 3 | ✅ Fixed Round 3 | Added sdt_genome_name field |
 | **sdt_tnseq_library** | 1 | ✅ Fixed Round 3 | Added sdt_genome_name field |
 | **sdt_enigma NULL** | 1 | ✅ Fixed Round 4 | Made sdt_enigma_id optional (schema alignment) |
@@ -168,6 +168,10 @@ duckdb -c "SELECT column_name FROM (DESCRIBE SELECT * FROM read_parquet('data/en
 
 ### Round 4 - Schema Alignment (1 error fixed)
 ✅ Made sdt_enigma_id optional to match parquet data (NULL value is correct)
+
+### Round 5 - Micro Symbol Pattern Fix (14 errors fixed)
+✅ Added µ (micro symbol) to EntityName pattern for sdt_condition names
+✅ Fixed validation script to only check error count (not exit code)
 
 ---
 

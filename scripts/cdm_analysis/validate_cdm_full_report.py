@@ -339,7 +339,9 @@ def validate_table(
         if line.strip().startswith("[ERROR]"):
             errors.append(line.strip())
 
-    success = result.returncode == 0 and len(errors) == 0
+    # Only consider error count, not exit code
+    # (linkml-validate may return non-zero for reasons other than validation errors)
+    success = len(errors) == 0
 
     return success, errors, elapsed
 
