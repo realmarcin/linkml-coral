@@ -200,7 +200,7 @@ clean-viz:
 
 # Analyze KBase CDM parquet tables
 [group('CDM analysis')]
-analyze-cdm db='/Users/marcin/Documents/VIMSS/ENIGMA/KBase/ENIGMA_in_CDM/minio/jmc_coral.db':
+analyze-cdm db='data/enigma_coral.db':
   @echo "🔍 Analyzing KBase CDM parquet tables..."
   uv run python scripts/cdm_analysis/analyze_cdm_parquet.py {{db}}
   @echo "✅ Analysis complete!"
@@ -208,7 +208,7 @@ analyze-cdm db='/Users/marcin/Documents/VIMSS/ENIGMA/KBase/ENIGMA_in_CDM/minio/j
 
 # Generate CDM schema report (JSON + detailed text)
 [group('CDM analysis')]
-cdm-report db='/Users/marcin/Documents/VIMSS/ENIGMA/KBase/ENIGMA_in_CDM/minio/jmc_coral.db':
+cdm-report db='data/enigma_coral.db':
   @echo "📋 Generating CDM schema reports..."
   uv run python scripts/cdm_analysis/generate_cdm_schema_report.py {{db}}
   uv run python scripts/cdm_analysis/examine_typedef_details.py {{db}}
@@ -230,13 +230,13 @@ validate-cdm-parquet file class="":
 
 # Validate all CDM parquet tables (quick: sample validation)
 [group('CDM analysis')]
-validate-all-cdm-parquet db='/Users/marcin/Documents/VIMSS/ENIGMA/KBase/ENIGMA_in_CDM/minio/jmc_coral.db':
+validate-all-cdm-parquet db='data/enigma_coral.db':
   @echo "🔍 Validating all CDM parquet tables (sample mode)..."
   ./scripts/cdm_analysis/validate_all_cdm_parquet.sh {{db}}
 
 # Full validation of all CDM data with detailed error report
 [group('CDM analysis')]
-validate-cdm-full db='/Users/marcin/Documents/VIMSS/ENIGMA/KBase/ENIGMA_in_CDM/minio/jmc_coral.db':
+validate-cdm-full db='data/enigma_coral.db':
   @echo "🔍 Running full validation on all CDM parquet data..."
   @echo "⚠️  This may take a while for large tables..."
   uv run python scripts/cdm_analysis/validate_cdm_full_report.py {{db}}
@@ -253,7 +253,7 @@ clean-cdm:
 
 # Load CDM parquet data into linkml-store database
 [group('CDM data management')]
-load-cdm-store db='/Users/marcin/Documents/VIMSS/ENIGMA/KBase/ENIGMA_in_CDM/minio/jmc_coral.db' output='cdm_store.db':
+load-cdm-store db='data/enigma_coral.db' output='cdm_store.db':
   @echo "📦 Loading CDM parquet data into linkml-store..."
   uv run python scripts/cdm_analysis/load_cdm_parquet_to_store.py {{db}} \
     --output {{output}} \
@@ -266,7 +266,7 @@ load-cdm-store db='/Users/marcin/Documents/VIMSS/ENIGMA/KBase/ENIGMA_in_CDM/mini
 
 # Load CDM parquet with core tables + first 10 brick tables (sample)
 [group('CDM data management')]
-load-cdm-store-sample db='/Users/marcin/Documents/VIMSS/ENIGMA/KBase/ENIGMA_in_CDM/minio/jmc_coral.db' output='cdm_store_sample.db':
+load-cdm-store-sample db='data/enigma_coral.db' output='cdm_store_sample.db':
   @echo "📦 Loading CDM parquet data (core + first 10 brick tables)..."
   @echo "⚠️  Note: Loading complete brick data (no row sampling)"
   uv run python scripts/cdm_analysis/load_cdm_parquet_to_store.py {{db}} \
@@ -281,7 +281,7 @@ load-cdm-store-sample db='/Users/marcin/Documents/VIMSS/ENIGMA/KBase/ENIGMA_in_C
 
 # Load CDM parquet with core tables + first 20 brick tables (complete)
 [group('CDM data management')]
-load-cdm-store-bricks db='/Users/marcin/Documents/VIMSS/ENIGMA/KBase/ENIGMA_in_CDM/minio/jmc_coral.db' output='cdm_store_bricks.db' num_bricks='20':
+load-cdm-store-bricks db='data/enigma_coral.db' output='cdm_store_bricks.db' num_bricks='20':
   @echo "📦 Loading CDM parquet data (core + first {{num_bricks}} complete brick tables)..."
   @echo "⚠️  Note: Loading complete brick data (no row sampling)"
   uv run python scripts/cdm_analysis/load_cdm_parquet_to_store.py {{db}} \
@@ -296,7 +296,7 @@ load-cdm-store-bricks db='/Users/marcin/Documents/VIMSS/ENIGMA/KBase/ENIGMA_in_C
 
 # Load CDM parquet with ALL dynamic brick tables (sampled at 10K rows)
 [group('CDM data management')]
-load-cdm-store-full db='/Users/marcin/Documents/VIMSS/ENIGMA/KBase/ENIGMA_in_CDM/minio/jmc_coral.db' output='cdm_store_full.db':
+load-cdm-store-full db='data/enigma_coral.db' output='cdm_store_full.db':
   @echo "📦 Loading CDM parquet data (including ALL ~500 brick tables)..."
   @echo "⚠️  Note: Each brick sampled at 10K rows (prevents huge database)"
   uv run python scripts/cdm_analysis/load_cdm_parquet_to_store.py {{db}} \
