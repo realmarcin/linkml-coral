@@ -1,0 +1,1566 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://realmarcin.github.io/linkml-coral/CDM_PARQUET_STORE_GUIDE/">
+      
+      
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.19">
+    
+    
+      
+        <title>CDM Parquet → linkml-store Loading Guide - linkml-coral</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.7e37652d.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../css/ansi-colours.css">
+    
+      <link rel="stylesheet" href="../css/jupyter-cells.css">
+    
+      <link rel="stylesheet" href="../css/pandas-dataframe.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#cdm-parquet-linkml-store-loading-guide" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="linkml-coral" class="md-header__button md-logo" aria-label="linkml-coral" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            linkml-coral
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              CDM Parquet → linkml-store Loading Guide
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/realmarcin/linkml-coral" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="linkml-coral" class="md-nav__button md-logo" aria-label="linkml-coral" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    linkml-coral
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/realmarcin/linkml-coral" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../elements/index.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Schema
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cdm_store_quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    CDM Store Quick Start
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    About
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Start
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Quick Start">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-load-cdm-data-static-system-tables" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Load CDM Data (Static + System Tables)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-query-the-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Query the Database
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#loading-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      Loading Options
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Loading Options">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#option-1-core-tables-only-default" class="md-nav__link">
+    <span class="md-ellipsis">
+      Option 1: Core Tables Only (Default)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#option-2-include-dynamic-brick-tables-sampled" class="md-nav__link">
+    <span class="md-ellipsis">
+      Option 2: Include Dynamic Brick Tables (Sampled)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#option-3-custom-loading" class="md-nav__link">
+    <span class="md-ellipsis">
+      Option 3: Custom Loading
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cdm-table-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      CDM Table Structure
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CDM Table Structure">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#static-entity-tables-sdt_" class="md-nav__link">
+    <span class="md-ellipsis">
+      Static Entity Tables (sdt_*)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#system-tables-sys_" class="md-nav__link">
+    <span class="md-ellipsis">
+      System Tables (sys_*)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dynamic-data-tables-ddt_" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dynamic Data Tables (ddt_*)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cdm-naming-conventions" class="md-nav__link">
+    <span class="md-ellipsis">
+      CDM Naming Conventions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CDM Naming Conventions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#primary-keys" class="md-nav__link">
+    <span class="md-ellipsis">
+      Primary Keys
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#entity-names" class="md-nav__link">
+    <span class="md-ellipsis">
+      Entity Names
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#foreign-keys" class="md-nav__link">
+    <span class="md-ellipsis">
+      Foreign Keys
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ontology-terms" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ontology Terms
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#query-interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      Query Interface
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Query Interface">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#python-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      Python API
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#command-line" class="md-nav__link">
+    <span class="md-ellipsis">
+      Command Line
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#justfile-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      Justfile Commands
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-queries" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Queries
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Common Queries">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-get-all-samples-from-a-location" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Get All Samples from a Location
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-search-ontology-terms" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Search Ontology Terms
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-trace-assembly-provenance" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Trace Assembly Provenance
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-get-database-statistics" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Get Database Statistics
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#performance-considerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Performance Considerations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Performance Considerations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#loading-time" class="md-nav__link">
+    <span class="md-ellipsis">
+      Loading Time
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#query-performance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Query Performance
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimization-tips" class="md-nav__link">
+    <span class="md-ellipsis">
+      Optimization Tips
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-quality-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Data Quality Notes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Data Quality Notes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#known-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      Known Issues
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Validation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Troubleshooting
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Troubleshooting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#database-not-found" class="md-nav__link">
+    <span class="md-ellipsis">
+      "Database not found"
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#collection-not-found" class="md-nav__link">
+    <span class="md-ellipsis">
+      "Collection not found"
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#error-reading-parquet" class="md-nav__link">
+    <span class="md-ellipsis">
+      "Error reading parquet"
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#memory-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      Memory Issues
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#integration-with-cdm-analysis-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      Integration with CDM Analysis Tools
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Integration with CDM Analysis Tools">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cdm-schema" class="md-nav__link">
+    <span class="md-ellipsis">
+      CDM Schema
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cdm-analysis-scripts" class="md-nav__link">
+    <span class="md-ellipsis">
+      CDM Analysis Scripts
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#comparison-with-tsv-loader" class="md-nav__link">
+    <span class="md-ellipsis">
+      Comparison with TSV Loader
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#advanced-usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      Advanced Usage
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Advanced Usage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#custom-computed-fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      Custom Computed Fields
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#provenance-parsing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Provenance Parsing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#direct-linkml-store-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      Direct linkml-store API
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#next-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      Next Steps
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#related-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Related Documentation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#support" class="md-nav__link">
+    <span class="md-ellipsis">
+      Support
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="cdm-parquet-linkml-store-loading-guide">CDM Parquet → linkml-store Loading Guide</h1>
+<h2 id="overview">Overview</h2>
+<p>This guide explains how to load KBase Common Data Model (CDM) parquet files into a queryable linkml-store DuckDB database for efficient analysis and querying.</p>
+<p><strong>What is CDM?</strong> The KBase Common Data Model is a comprehensive data warehouse containing:
+- 44 parquet tables (157 MB total)
+- 515K rows across static entities and system tables
+- 82.6M additional rows in dynamic brick tables
+- Complete ENIGMA genomic and experimental data</p>
+<p><strong>Why linkml-store?</strong> LinkML-Store provides:
+- Fast DuckDB-based columnar storage
+- Schema validation against LinkML models
+- Pythonic query interface
+- Easy integration with LinkML ecosystem</p>
+<h2 id="quick-start">Quick Start</h2>
+<h3 id="1-load-cdm-data-static-system-tables">1. Load CDM Data (Static + System Tables)</h3>
+<p>Load the core CDM tables (23 tables, 515K rows):</p>
+<pre><code class="language-bash"># Using default paths
+just load-cdm-store
+
+# Or specify paths
+just load-cdm-store data/enigma_coral.db output.db
+</code></pre>
+<p>This loads:
+- <strong>Static entity tables (sdt_*)</strong>: Location, Sample, Reads, Assembly, Genome, Gene, etc. (17 tables, 273K rows)
+- <strong>System tables (sys_*)</strong>: Ontology terms, Type definitions, Process records (6 tables, 242K rows)</p>
+<p><strong>Expected output:</strong></p>
+<pre><code>📦 Loading CDM parquet data into linkml-store...
+📦 Connecting to database: cdm_store.db
+📋 Loaded schema: kbase-cdm
+
+============================================================
+📦 Loading Static Entity Tables (sdt_*)
+============================================================
+
+📥 Loading sdt_location as Location...
+  📊 Total rows: 42
+  ✅ Loaded 42 records in 0.15s
+
+📥 Loading sdt_sample as Sample...
+  📊 Total rows: 4,330
+  ✅ Loaded 4,330 records in 0.45s
+
+... (continues for all tables)
+
+📊 Summary: Loaded 515,109 total records across 23 collections
+⏱️  Total time: 45.2s (11,399 records/sec)
+
+💾 Database saved to: cdm_store.db
+   Size: 48.23 MB
+</code></pre>
+<h3 id="2-query-the-database">2. Query the Database</h3>
+<p>Show database statistics:</p>
+<pre><code class="language-bash">just cdm-store-stats
+</code></pre>
+<p>Find samples from a location:</p>
+<pre><code class="language-bash">just cdm-find-samples Location0000001
+</code></pre>
+<p>Search ontology terms:</p>
+<pre><code class="language-bash">just cdm-search-oterm &quot;soil&quot;
+</code></pre>
+<p>Trace provenance lineage:</p>
+<pre><code class="language-bash">just cdm-lineage Assembly Assembly0000001
+</code></pre>
+<h2 id="loading-options">Loading Options</h2>
+<h3 id="option-1-core-tables-only-default">Option 1: Core Tables Only (Default)</h3>
+<p><strong>Tables:</strong> Static entities (sdt_<em>) + System tables (sys_</em>)
+<strong>Size:</strong> ~50 MB database, 515K rows
+<strong>Time:</strong> ~1 minute</p>
+<pre><code class="language-bash">just load-cdm-store
+</code></pre>
+<h3 id="option-2-include-dynamic-brick-tables-sampled">Option 2: Include Dynamic Brick Tables (Sampled)</h3>
+<p><strong>Tables:</strong> Core + Dynamic bricks (sampled at 10K rows each)
+<strong>Size:</strong> ~100 MB database
+<strong>Time:</strong> ~2-3 minutes</p>
+<pre><code class="language-bash">just load-cdm-store-full
+</code></pre>
+<h3 id="option-3-custom-loading">Option 3: Custom Loading</h3>
+<p>Use the Python script directly for fine-grained control:</p>
+<pre><code class="language-bash"># Load only static tables
+uv run python scripts/cdm_analysis/load_cdm_parquet_to_store.py \
+    data/enigma_coral.db \
+    --output my_cdm.db \
+    --include-static \
+    --no-system
+
+# Load with custom dynamic brick sampling
+uv run python scripts/cdm_analysis/load_cdm_parquet_to_store.py \
+    data/enigma_coral.db \
+    --include-dynamic \
+    --max-dynamic-rows 50000
+
+# Verbose output for debugging
+uv run python scripts/cdm_analysis/load_cdm_parquet_to_store.py \
+    data/enigma_coral.db \
+    --verbose
+</code></pre>
+<h2 id="cdm-table-structure">CDM Table Structure</h2>
+<h3 id="static-entity-tables-sdt_">Static Entity Tables (sdt_*)</h3>
+<p>17 tables representing core scientific entities:</p>
+<table>
+<thead>
+<tr>
+<th>Table</th>
+<th>LinkML Class</th>
+<th>Rows</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>sdt_location</code></td>
+<td>Location</td>
+<td>42</td>
+<td>Sampling locations with coordinates</td>
+</tr>
+<tr>
+<td><code>sdt_sample</code></td>
+<td>Sample</td>
+<td>4,330</td>
+<td>Environmental samples</td>
+</tr>
+<tr>
+<td><code>sdt_community</code></td>
+<td>Community</td>
+<td>2,150</td>
+<td>Microbial communities</td>
+</tr>
+<tr>
+<td><code>sdt_reads</code></td>
+<td>Reads</td>
+<td>19,307</td>
+<td>Sequencing reads datasets</td>
+</tr>
+<tr>
+<td><code>sdt_assembly</code></td>
+<td>Assembly</td>
+<td>3,427</td>
+<td>Genome assemblies</td>
+</tr>
+<tr>
+<td><code>sdt_bin</code></td>
+<td>Bin</td>
+<td>1,234</td>
+<td>Metagenomic bins</td>
+</tr>
+<tr>
+<td><code>sdt_genome</code></td>
+<td>Genome</td>
+<td>6,688</td>
+<td>Annotated genomes</td>
+</tr>
+<tr>
+<td><code>sdt_gene</code></td>
+<td>Gene</td>
+<td>15,015</td>
+<td>Annotated genes</td>
+</tr>
+<tr>
+<td><code>sdt_strain</code></td>
+<td>Strain</td>
+<td>8,901</td>
+<td>Microbial strains</td>
+</tr>
+<tr>
+<td><code>sdt_taxon</code></td>
+<td>Taxon</td>
+<td>1,234</td>
+<td>Taxonomic classifications</td>
+</tr>
+<tr>
+<td><code>sdt_asv</code></td>
+<td>ASV</td>
+<td>213,044</td>
+<td>Amplicon sequence variants</td>
+</tr>
+<tr>
+<td><code>sdt_protocol</code></td>
+<td>Protocol</td>
+<td>42</td>
+<td>Experimental protocols</td>
+</tr>
+<tr>
+<td><code>sdt_image</code></td>
+<td>Image</td>
+<td>15</td>
+<td>Microscopy images</td>
+</tr>
+<tr>
+<td><code>sdt_condition</code></td>
+<td>Condition</td>
+<td>234</td>
+<td>Growth conditions</td>
+</tr>
+<tr>
+<td><code>sdt_dubseq_library</code></td>
+<td>DubSeqLibrary</td>
+<td>12</td>
+<td>DubSeq libraries</td>
+</tr>
+<tr>
+<td><code>sdt_tnseq_library</code></td>
+<td>TnSeqLibrary</td>
+<td>8</td>
+<td>TnSeq libraries</td>
+</tr>
+<tr>
+<td><code>sdt_enigma</code></td>
+<td>ENIGMA</td>
+<td>1</td>
+<td>Root entity</td>
+</tr>
+</tbody>
+</table>
+<h3 id="system-tables-sys_">System Tables (sys_*)</h3>
+<p>6 tables for metadata and provenance:</p>
+<table>
+<thead>
+<tr>
+<th>Table</th>
+<th>LinkML Class</th>
+<th>Rows</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>sys_typedef</code></td>
+<td>SystemTypedef</td>
+<td>118</td>
+<td>Type definitions</td>
+</tr>
+<tr>
+<td><code>sys_ddt_typedef</code></td>
+<td>SystemDDTTypedef</td>
+<td>101</td>
+<td>Dynamic data type defs</td>
+</tr>
+<tr>
+<td><code>sys_oterm</code></td>
+<td>SystemOntologyTerm</td>
+<td>10,594</td>
+<td>Ontology term catalog</td>
+</tr>
+<tr>
+<td><code>sys_process</code></td>
+<td>SystemProcess</td>
+<td>142,958</td>
+<td>Provenance records</td>
+</tr>
+<tr>
+<td><code>sys_process_input</code></td>
+<td>SystemProcessInput</td>
+<td>90,395</td>
+<td>Process inputs (denormalized)</td>
+</tr>
+<tr>
+<td><code>sys_process_output</code></td>
+<td>SystemProcessOutput</td>
+<td>38,228</td>
+<td>Process outputs (denormalized)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="dynamic-data-tables-ddt_">Dynamic Data Tables (ddt_*)</h3>
+<p>21 tables for measurement arrays:</p>
+<table>
+<thead>
+<tr>
+<th>Table</th>
+<th>Rows</th>
+<th>Default Strategy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ddt_ndarray</code></td>
+<td>20</td>
+<td>Full load</td>
+</tr>
+<tr>
+<td><code>ddt_brick*</code> (20 tables)</td>
+<td>82.6M total</td>
+<td>Sampled or skipped</td>
+</tr>
+</tbody>
+</table>
+<h2 id="cdm-naming-conventions">CDM Naming Conventions</h2>
+<p>The CDM uses specific naming patterns different from the original CORAL schema:</p>
+<h3 id="primary-keys">Primary Keys</h3>
+<ul>
+<li>Pattern: <code>sdt_{entity}_id</code> (e.g., <code>sdt_sample_id</code>)</li>
+<li>Example: <code>Sample0000001</code></li>
+</ul>
+<h3 id="entity-names">Entity Names</h3>
+<ul>
+<li>Pattern: <code>sdt_{entity}_name</code> (e.g., <code>sdt_sample_name</code>)</li>
+<li>Used in foreign key references instead of IDs</li>
+</ul>
+<h3 id="foreign-keys">Foreign Keys</h3>
+<ul>
+<li>Use <code>_name</code> suffix, not <code>_id</code></li>
+<li>Example: <code>location_ref</code> references <code>Location.sdt_location_name</code></li>
+</ul>
+<h3 id="ontology-terms">Ontology Terms</h3>
+<ul>
+<li>Split into ID + name pairs</li>
+<li>Pattern: <code>{field}_sys_oterm_id</code> + <code>{field}_sys_oterm_name</code></li>
+<li>Example: <code>material_sys_oterm_id</code> + <code>material_sys_oterm_name</code></li>
+</ul>
+<h2 id="query-interface">Query Interface</h2>
+<h3 id="python-api">Python API</h3>
+<pre><code class="language-python">from scripts.cdm_analysis.query_cdm_store import CDMStoreQuery
+
+# Initialize
+query = CDMStoreQuery('cdm_store.db')
+
+# Get statistics
+stats = query.stats()
+print(f&quot;Total records: {stats['total_records']:,}&quot;)
+
+# Find samples by location
+samples = query.find_samples_by_location('Location0000001')
+
+# Search ontology terms
+terms = query.search_ontology_terms('soil')
+
+# Trace provenance
+lineage = query.trace_lineage('Assembly', 'Assembly0000001')
+</code></pre>
+<h3 id="command-line">Command Line</h3>
+<pre><code class="language-bash"># Show database stats
+python scripts/cdm_analysis/query_cdm_store.py --db cdm_store.db stats
+
+# Find samples
+python scripts/cdm_analysis/query_cdm_store.py --db cdm_store.db \
+    find-samples --location Location0000001
+
+# Search ontology terms
+python scripts/cdm_analysis/query_cdm_store.py --db cdm_store.db \
+    search-oterm &quot;soil&quot;
+
+# Trace lineage
+python scripts/cdm_analysis/query_cdm_store.py --db cdm_store.db \
+    lineage Assembly Assembly0000001
+
+# Export results to JSON
+python scripts/cdm_analysis/query_cdm_store.py --db cdm_store.db \
+    stats --export stats.json
+</code></pre>
+<h3 id="justfile-commands">Justfile Commands</h3>
+<pre><code class="language-bash"># Statistics
+just cdm-store-stats
+
+# Find samples
+just cdm-find-samples Location0000001
+
+# Search ontology terms
+just cdm-search-oterm &quot;soil&quot;
+
+# Trace lineage
+just cdm-lineage Assembly Assembly0000001
+</code></pre>
+<h2 id="common-queries">Common Queries</h2>
+<h3 id="1-get-all-samples-from-a-location">1. Get All Samples from a Location</h3>
+<pre><code class="language-python">query = CDMStoreQuery('cdm_store.db')
+samples = query.find_samples_by_location('Location0000001')
+
+for sample in samples:
+    print(f&quot;Sample: {sample['sdt_sample_name']}&quot;)
+    print(f&quot;  Depth: {sample.get('depth')}m&quot;)
+    print(f&quot;  Date: {sample.get('date')}&quot;)
+</code></pre>
+<h3 id="2-search-ontology-terms">2. Search Ontology Terms</h3>
+<pre><code class="language-python"># Find all soil-related terms
+terms = query.search_ontology_terms('soil', limit=50)
+
+for term in terms:
+    print(f&quot;{term['sys_oterm_id']}: {term['sys_oterm_name']}&quot;)
+</code></pre>
+<h3 id="3-trace-assembly-provenance">3. Trace Assembly Provenance</h3>
+<pre><code class="language-python">lineage = query.trace_lineage('Assembly', 'Assembly0000001')
+
+# What reads were used to create this assembly?
+for process in lineage['upstream']:
+    print(f&quot;Process: {process['process_type']}&quot;)
+    for input_ref in process['inputs']:
+        print(f&quot;  Input: {input_ref}&quot;)
+</code></pre>
+<h3 id="4-get-database-statistics">4. Get Database Statistics</h3>
+<pre><code class="language-python">stats = query.stats()
+
+print(f&quot;Database: {stats['database']}&quot;)
+print(f&quot;Collections: {stats['total_collections']}&quot;)
+print(f&quot;Total records: {stats['total_records']:,}&quot;)
+
+for coll_name, count in stats['collections'].items():
+    print(f&quot;  {coll_name}: {count:,}&quot;)
+</code></pre>
+<h2 id="performance-considerations">Performance Considerations</h2>
+<h3 id="loading-time">Loading Time</h3>
+<table>
+<thead>
+<tr>
+<th>Dataset</th>
+<th>Tables</th>
+<th>Rows</th>
+<th>Size</th>
+<th>Time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Static + System</td>
+<td>23</td>
+<td>515K</td>
+<td>50 MB</td>
+<td>~1 min</td>
+</tr>
+<tr>
+<td>+ Dynamic (sampled)</td>
+<td>28</td>
+<td>~615K</td>
+<td>100 MB</td>
+<td>~2-3 min</td>
+</tr>
+</tbody>
+</table>
+<h3 id="query-performance">Query Performance</h3>
+<ul>
+<li><strong>Small tables</strong> (&lt;10K rows): Instantaneous</li>
+<li><strong>Medium tables</strong> (10-100K rows): &lt;1 second</li>
+<li><strong>Large tables</strong> (&gt;100K rows): 1-5 seconds</li>
+<li><strong>Full table scans</strong>: May require optimization</li>
+</ul>
+<h3 id="optimization-tips">Optimization Tips</h3>
+<ol>
+<li><strong>Use indexes</strong> (created automatically with <code>--create-indexes</code>)</li>
+<li><strong>Limit result sets</strong> (use <code>limit</code> parameters)</li>
+<li><strong>Filter early</strong> (query by ID/name when possible)</li>
+<li><strong>Export large results</strong> (use JSON export for downstream processing)</li>
+</ol>
+<h2 id="data-quality-notes">Data Quality Notes</h2>
+<h3 id="known-issues">Known Issues</h3>
+<ol>
+<li><strong>NULL Values in Required Fields</strong></li>
+<li>Some CDM tables have NULL values in fields marked as required</li>
+<li>Example: <code>sdt_enigma.sdt_enigma_id</code> may be NULL</li>
+<li>
+<p>Loader handles these gracefully (converts pandas NaN → None)</p>
+</li>
+<li>
+<p><strong>Foreign Key References</strong></p>
+</li>
+<li>CDM uses <code>_name</code> fields for foreign keys, not <code>_id</code></li>
+<li>Example: <code>Sample.location_ref</code> → <code>Location.sdt_location_name</code></li>
+<li>
+<p>Ensure proper join queries</p>
+</li>
+<li>
+<p><strong>Ontology Term Splitting</strong></p>
+</li>
+<li>Single fields in original CORAL split into ID + name</li>
+<li>Example: <code>material</code> → <code>material_sys_oterm_id</code> + <code>material_sys_oterm_name</code></li>
+<li>Both fields preserved in linkml-store</li>
+</ol>
+<h3 id="validation">Validation</h3>
+<p>Validate parquet data before loading:</p>
+<pre><code class="language-bash"># Validate single table
+just validate-cdm-parquet /path/to/sdt_sample Sample
+
+# Validate all tables (sample mode)
+just validate-all-cdm-parquet
+
+# Full validation with detailed report
+just validate-cdm-full
+</code></pre>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="database-not-found">"Database not found"</h3>
+<pre><code class="language-bash"># Create database first
+just load-cdm-store
+</code></pre>
+<h3 id="collection-not-found">"Collection not found"</h3>
+<p>Check collection names:</p>
+<pre><code class="language-bash">just cdm-store-stats
+</code></pre>
+<p>Common collection names:
+- Static entities: <code>Location</code>, <code>Sample</code>, <code>Reads</code>, <code>Assembly</code>, <code>Genome</code>
+- System tables: <code>SystemOntologyTerm</code>, <code>SystemProcess</code>, <code>SystemTypedef</code></p>
+<h3 id="error-reading-parquet">"Error reading parquet"</h3>
+<p>Verify CDM database path:</p>
+<pre><code class="language-bash">ls -lh data/enigma_coral.db/
+</code></pre>
+<p>Check for Delta Lake format (directories with <code>_delta_log/</code>):</p>
+<pre><code class="language-bash">ls -la data/enigma_coral.db/sdt_sample/
+</code></pre>
+<h3 id="memory-issues">Memory Issues</h3>
+<p>For very large queries, use sampling or export:</p>
+<pre><code class="language-python"># Sample large tables during load
+python scripts/cdm_analysis/load_cdm_parquet_to_store.py \
+    data/enigma_coral.db \
+    --max-dynamic-rows 5000
+
+# Or query in chunks
+collection = db.get_collection(&quot;ASV&quot;)
+results = list(collection.find(limit=1000))
+</code></pre>
+<h2 id="integration-with-cdm-analysis-tools">Integration with CDM Analysis Tools</h2>
+<h3 id="cdm-schema">CDM Schema</h3>
+<p>The loader uses the CDM LinkML schema:</p>
+<pre><code>src/linkml_coral/schema/cdm/linkml_coral_cdm.yaml
+├── cdm_base.yaml          # Base types and mixins
+├── cdm_static_entities.yaml    # 17 entity classes
+├── cdm_system_tables.yaml      # 6 system classes
+└── cdm_dynamic_data.yaml       # Brick infrastructure
+</code></pre>
+<h3 id="cdm-analysis-scripts">CDM Analysis Scripts</h3>
+<p>Related tools:</p>
+<pre><code class="language-bash"># Analyze parquet structure
+just analyze-cdm
+
+# Generate schema reports
+just cdm-report
+
+# Validate parquet data
+just validate-all-cdm-parquet
+
+# Full validation with error report
+just validate-cdm-full
+</code></pre>
+<h3 id="comparison-with-tsv-loader">Comparison with TSV Loader</h3>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>TSV Loader</th>
+<th>CDM Parquet Loader</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Input</strong></td>
+<td>10 TSV files</td>
+<td>44 parquet tables</td>
+</tr>
+<tr>
+<td><strong>Schema</strong></td>
+<td><code>linkml_coral.yaml</code></td>
+<td><code>linkml_coral_cdm.yaml</code></td>
+</tr>
+<tr>
+<td><strong>Tables</strong></td>
+<td>10 collections</td>
+<td>23-44 collections</td>
+</tr>
+<tr>
+<td><strong>Rows</strong></td>
+<td>280K</td>
+<td>515K (static+system)</td>
+</tr>
+<tr>
+<td><strong>Size</strong></td>
+<td>~10 MB</td>
+<td>~50 MB</td>
+</tr>
+<tr>
+<td><strong>Ontology</strong></td>
+<td>Single fields</td>
+<td>Split ID+name fields</td>
+</tr>
+<tr>
+<td><strong>Foreign Keys</strong></td>
+<td>Use IDs</td>
+<td>Use names</td>
+</tr>
+</tbody>
+</table>
+<h2 id="advanced-usage">Advanced Usage</h2>
+<h3 id="custom-computed-fields">Custom Computed Fields</h3>
+<p>The loader adds computed fields automatically:</p>
+<pre><code class="language-python"># Reads: read_count_category
+#   - 'very_high': &gt;= 100K reads
+#   - 'high': &gt;= 50K reads
+#   - 'medium': &gt;= 10K reads
+#   - 'low': &lt; 10K reads
+
+# Assembly: contig_count_category
+#   - 'high': &gt;= 1000 contigs
+#   - 'medium': &gt;= 100 contigs
+#   - 'low': &lt; 100 contigs
+</code></pre>
+<p>Query by computed fields:</p>
+<pre><code class="language-python">collection = db.get_collection(&quot;Reads&quot;)
+high_quality = list(collection.find({'read_count_category': 'very_high'}))
+</code></pre>
+<h3 id="provenance-parsing">Provenance Parsing</h3>
+<p>SystemProcess records have parsed provenance arrays:</p>
+<pre><code class="language-python">collection = db.get_collection(&quot;SystemProcess&quot;)
+processes = list(collection.find(limit=10))
+
+for proc in processes:
+    # Original arrays
+    print(f&quot;Inputs: {proc['sys_process_input_objects']}&quot;)
+    print(f&quot;Outputs: {proc['sys_process_output_objects']}&quot;)
+
+    # Parsed fields (added by loader)
+    print(f&quot;Input types: {proc['input_entity_types']}&quot;)
+    print(f&quot;Input IDs: {proc['input_entity_ids']}&quot;)
+    print(f&quot;Output types: {proc['output_entity_types']}&quot;)
+    print(f&quot;Output IDs: {proc['output_entity_ids']}&quot;)
+</code></pre>
+<h3 id="direct-linkml-store-api">Direct linkml-store API</h3>
+<p>For advanced queries, use linkml-store directly:</p>
+<pre><code class="language-python">from linkml_store import Client
+
+client = Client()
+db = client.attach_database(&quot;duckdb:///cdm_store.db&quot;, alias=&quot;cdm&quot;)
+
+# Get collection
+samples = db.get_collection(&quot;Sample&quot;)
+
+# Query with filters
+results = list(samples.find({'depth': {'$gt': 100}}))
+
+# Complex queries
+for result in results:
+    print(f&quot;Sample {result['sdt_sample_name']} at {result['depth']}m&quot;)
+</code></pre>
+<h2 id="next-steps">Next Steps</h2>
+<ol>
+<li><strong>Load the data</strong>: <code>just load-cdm-store</code></li>
+<li><strong>Explore collections</strong>: <code>just cdm-store-stats</code></li>
+<li><strong>Try queries</strong>: <code>just cdm-find-samples Location0000001</code></li>
+<li><strong>Integrate into workflows</strong>: Use Python API in your scripts</li>
+<li><strong>Contribute queries</strong>: Add new query types to <code>query_cdm_store.py</code></li>
+</ol>
+<h2 id="related-documentation">Related Documentation</h2>
+<ul>
+<li><a href="../CDM_PARQUET_VALIDATION_GUIDE/">CDM Parquet Validation Guide</a></li>
+<li><a href="../CDM_SCHEMA_IMPLEMENTATION_SUMMARY/">CDM Schema Implementation Summary</a></li>
+<li><a href="../cdm_analysis/CDM_PARQUET_ANALYSIS_REPORT/">CDM Parquet Analysis Report</a></li>
+<li><a href="https://linkml.io/linkml-store/">linkml-store Documentation</a></li>
+<li><a href="https://linkml.io/linkml/">LinkML Documentation</a></li>
+</ul>
+<h2 id="support">Support</h2>
+<p>For issues or questions:</p>
+<ol>
+<li>Check validation reports: <code>just validate-cdm-full</code></li>
+<li>Review CDM analysis: <code>just analyze-cdm</code></li>
+<li>Examine schema: <code>src/linkml_coral/schema/cdm/linkml_coral_cdm.yaml</code></li>
+<li>Open issue: https://github.com/linkml/linkml-coral/issues</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": ["content.tabs.link"], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.92b07e13.min.js"></script>
+      
+    
+  </body>
+</html>
