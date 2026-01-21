@@ -18,15 +18,214 @@ This project converts CORAL typedef JSON definitions into semantic LinkML schema
 
 ---
 
-## 🚀 Quick Start
-
-### Initial Setup
+## 📋 Quick Setup Workflow
 
 ```bash
+# 1. Clone and install
+git clone https://github.com/realmarcin/linkml-coral
+cd linkml-coral && uv sync
+
+# 2. Obtain CDM parquet data (contact ENIGMA team)
+# Place in: data/enigma_coral.db/
+
+# 3. Load into DuckDB (creates cdm_store_sample.db)
+just load-cdm-store-sample    # ~2 minutes, 2.4M records
+
+# 4. Start querying!
+just cdm-store-stats           # View statistics
+just cdm-find-samples Location0000001  # Find samples
+duckdb cdm_store_sample.db     # Direct SQL access
+```
+
+**📖 See detailed instructions below in [Quick Start](#-quick-start) section**
+
+---
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+- **Python 3.10+** (3.13 recommended)
+- **uv** package manager - [Install uv](https://docs.astral.sh/uv/getting-started/installation/)
+- **DuckDB** (optional, for direct SQL queries) - Installed automatically with uv sync
+- **just** command runner (optional but recommended) - [Install just](https://github.com/casey/just#installation)
+
+### Step 1: Clone and Setup
+
+```bash
+# Clone the repository
 git clone https://github.com/realmarcin/linkml-coral
 cd linkml-coral
-git submodule update --init --recursive  # Initialize CORAL submodule
+
+# Initialize CORAL submodule (contains source typedef.json)
+git submodule update --init --recursive
+
+# Install dependencies with uv
 uv sync
+
+# Verify installation
+uv run python --version
+just --version  # Optional but recommended
+```
+
+### Step 2: Get CDM Parquet Data
+
+The CDM parquet data is stored in the `data/enigma_coral.db/` directory structure. You need to obtain this data from the ENIGMA project:
+
+**Option A: Copy from existing location** (if you have access):
+```bash
+# Example: copy from shared storage
+cp -r /path/to/enigma_coral.db data/
+```
+
+**Option B: Download from KBase** (contact ENIGMA team for access):
+```bash
+# Download instructions will be provided by the ENIGMA data team
+```
+
+**Verify parquet data structure:**
+```bash
+ls data/enigma_coral.db/
+# Should show directories like: sdt_sample/, sdt_reads/, sys_process/, etc.
+```
+
+### Step 3: Load Data into DuckDB
+
+**Quick Start - Core Tables Only (Fast, ~30 seconds):**
+```bash
+just load-cdm-store
+# Creates: cdm_store.db (23 collections, 515K records, ~50 MB)
+```
+
+**Recommended - Core + Sample Bricks (~2 minutes):**
+```bash
+just load-cdm-store-sample
+# Creates: cdm_store_sample.db (24 collections, 2.4M records, ~25 MB)
+# Includes: All static/system tables + 10 brick measurement tables
+```
+
+**Advanced Options:**
+```bash
+# Load core + 20 brick tables (~5 minutes)
+just load-cdm-store-bricks
+
+# Load ALL tables with sampling (~10 minutes)
+just load-cdm-store-full
+
+# Custom load with specific options
+uv run python scripts/cdm_analysis/load_cdm_parquet_to_store.py \
+  data/enigma_coral.db \
+  --output my_database.db \
+  --create-indexes \
+  --brick-limit 10 \
+  --brick-sample-size 10000
+```
+
+**What gets loaded:**
+- **Static entities (sdt_*)**: Location, Sample, Reads, Assembly, Genome, Gene, ASV, etc.
+- **System tables (sys_*)**: Ontology terms, Type definitions, Process provenance
+- **Dynamic bricks (ddt_*)**: N-dimensional measurement arrays (optional)
+- **Indexes**: Automatic indexing on ID fields for fast queries
+
+### Step 4: Run Queries
+
+**View database contents:**
+```bash
+just cdm-store-stats
+# Shows: Collection counts, memory usage, index status
+```
+
+**Simple queries:**
+```bash
+# Find samples from a specific location
+just cdm-find-samples Location0000001
+
+# Search ontology terms
+just cdm-search-oterm "soil"
+
+# Trace provenance lineage
+just cdm-lineage Assembly Assembly0000001
+```
+
+**Direct DuckDB queries:**
+```bash
+# Connect to database
+duckdb cdm_store.db
+
+# Example queries:
+SELECT COUNT(*) FROM sdt_sample;
+SELECT * FROM sdt_sample LIMIT 5;
+SELECT * FROM sys_oterm WHERE sys_oterm_name LIKE '%soil%';
+
+# Join samples with their locations
+SELECT
+  s.sdt_sample_name,
+  s.sdt_location_name,
+  s.depth_meter,
+  s.material_sys_oterm_name
+FROM sdt_sample s
+LIMIT 10;
+```
+
+**Python queries via linkml-store:**
+```bash
+# Run query scripts
+uv run python scripts/cdm_analysis/query_cdm_store.py --help
+
+# Custom queries in Python:
+from linkml_store import Client
+client = Client()
+db = client.attach_database("cdm_store.db", alias="cdm")
+collection = db.get_collection("sdt_sample")
+results = collection.find({"material_sys_oterm_name": "soil"})
+```
+
+### Troubleshooting Setup
+
+**Issue: Missing parquet data**
+```bash
+# Check if data directory exists
+ls data/enigma_coral.db/
+
+# If missing, you need to obtain the data:
+# 1. Contact ENIGMA data team for access
+# 2. Copy from shared storage if you have access
+# 3. Download from KBase (instructions from team)
+```
+
+**Issue: `uv` command not found**
+```bash
+# Install uv (macOS/Linux)
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Or with pip
+pip install uv
+
+# Verify installation
+uv --version
+```
+
+**Issue: `just` command not found**
+```bash
+# Install just (macOS)
+brew install just
+
+# Or download from: https://github.com/casey/just/releases
+# just is optional - you can use uv run python commands directly
+```
+
+**Issue: Database loading fails**
+```bash
+# Ensure parquet data structure is correct
+ls data/enigma_coral.db/ | head
+# Should show: sdt_sample/, sdt_reads/, sys_process/, etc.
+
+# Try loading with verbose output
+uv run python scripts/cdm_analysis/load_cdm_parquet_to_store.py \
+  data/enigma_coral.db \
+  --output test.db \
+  --create-indexes \
+  --verbose
 ```
 
 ### Explore the Data Dictionary
@@ -51,52 +250,270 @@ cat docs/CDM_DATA_DICTIONARY.md
 
 ## 📊 CDM Data Store: Query Examples
 
-### Load Sample Database (Static Tables + 10 Bricks)
+This section shows how to query the loaded DuckDB database using different interfaces.
+
+### Database Loading Options
 
 ```bash
-# Load all static tables + first 10 brick tables (~60 seconds)
+# Option 1: Core tables only (fast, 515K records)
+just load-cdm-store
+# → cdm_store.db (50 MB)
+
+# Option 2: Core + 10 brick tables (recommended, 2.4M records)
 just load-cdm-store-sample
+# → cdm_store_sample.db (25 MB)
 
-# Result: 2.4M records, 24 collections, 25 MB database
+# Option 3: Core + 20 brick tables (5M records)
+just load-cdm-store-bricks
+# → cdm_store_bricks.db (150 MB)
+
+# Option 4: All tables with sampling (82M records sampled)
+just load-cdm-store-full
+# → cdm_store_full.db (500 MB)
 ```
 
-### Basic Queries
+### Query Interface 1: Just Commands (Easiest)
 
+**Database Statistics:**
 ```bash
-# Show database statistics
 just cdm-store-stats
-
-# Find samples from a location
-just cdm-find-samples EU02
-
-# Search ontology terms
-just cdm-search-oterm "soil"
-
-# Trace provenance lineage
-just cdm-lineage Assembly Assembly0000001
+# Shows:
+# - Collection counts (e.g., sdt_sample: 4,118 records)
+# - Database size and index status
+# - Memory usage
 ```
 
-### Complex Multi-Table Queries
-
+**Entity Lookups:**
 ```bash
-# Demo: Location → Samples → Molecular Measurements (brick data)
+# Find samples from a specific location
+just cdm-find-samples Location0000001
+# Returns: All samples collected at that location with metadata
+
+# Search ontology terms (fuzzy search)
+just cdm-search-oterm "soil"
+# Returns: All ontology terms matching "soil" (ENVO terms, etc.)
+
+# Trace provenance lineage (forward and backward)
+just cdm-lineage Assembly Assembly0000001
+# Returns: Complete workflow chain from sample → assembly
+```
+
+**Complex Query Demonstrations:**
+```bash
+# Demo 1: Location → Samples → Measurements (joins static + dynamic)
 just cdm-demo-location-molecules
+# Shows: How to query across static entities and brick data
 
-# Demo: Sample → Reads → Assembly → Genome → Genes pipeline
+# Demo 2: End-to-end sequencing pipeline
 just cdm-demo-pipeline
+# Shows: Sample → Reads → Assembly → Genome → Genes
 
-# Demo: ASV → Taxonomy + Community Abundance (brick data)
+# Demo 3: ASV taxonomy and abundance
 just cdm-demo-asv-taxonomy
+# Shows: Amplicon data with community abundance from bricks
 
-# Run all demonstrations
+# Run all demos
 just cdm-demo-all
 ```
 
-**What gets loaded:**
-- **Static tables (sdt_*)**: 273K records (Location, Sample, Reads, Assembly, Genome, Gene, ASV, etc.)
-- **System tables (sys_*)**: 243K records (Ontology terms, Process records, Provenance)
-- **Dynamic tables (ddt_*)**: 1.9M records (10 brick tables with measurement arrays)
-- **Total**: 2.4M records across 24 collections with indexes
+### Query Interface 2: DuckDB CLI (Direct SQL)
+
+**Launch DuckDB CLI:**
+```bash
+duckdb cdm_store.db
+```
+
+**Example Queries:**
+
+**1. Count records in each table:**
+```sql
+-- Show all collections
+SHOW TABLES;
+
+-- Count samples
+SELECT COUNT(*) FROM sdt_sample;
+
+-- Count by material type
+SELECT material_sys_oterm_name, COUNT(*) as count
+FROM sdt_sample
+GROUP BY material_sys_oterm_name
+ORDER BY count DESC;
+```
+
+**2. Find samples with metadata:**
+```sql
+-- Samples from soil with depth information
+SELECT
+  sdt_sample_name,
+  sdt_location_name,
+  depth_meter,
+  material_sys_oterm_name,
+  date
+FROM sdt_sample
+WHERE material_sys_oterm_name LIKE '%soil%'
+  AND depth_meter IS NOT NULL
+ORDER BY depth_meter DESC
+LIMIT 10;
+```
+
+**3. Join samples and reads:**
+```sql
+-- Find reads from soil samples
+SELECT
+  r.sdt_reads_name,
+  r.read_count_count_unit as read_count,
+  r.sequencing_technology_sys_oterm_name as tech,
+  s.sdt_sample_name,
+  s.material_sys_oterm_name as material
+FROM sdt_reads r
+JOIN sys_process_output po ON po.sdt_reads_id = r.sdt_reads_id
+JOIN sys_process_input pi ON pi.sys_process_id = po.sys_process_id
+JOIN sdt_sample s ON s.sdt_sample_id = pi.sdt_sample_id
+WHERE s.material_sys_oterm_name LIKE '%soil%'
+LIMIT 10;
+```
+
+**4. Provenance queries:**
+```sql
+-- Find all processes that created assemblies
+SELECT
+  p.sys_process_id,
+  p.process_type_sys_oterm_name,
+  p.person_sys_oterm_name,
+  p.date_start,
+  COUNT(*) as assembly_count
+FROM sys_process p
+JOIN sys_process_output po ON po.sys_process_id = p.sys_process_id
+WHERE po.output_object_type = 'Assembly'
+GROUP BY p.sys_process_id, p.process_type_sys_oterm_name,
+         p.person_sys_oterm_name, p.date_start
+ORDER BY assembly_count DESC
+LIMIT 10;
+```
+
+**5. Search ontology terms:**
+```sql
+-- Find all measurement-related ontology terms
+SELECT sys_oterm_id, sys_oterm_name, sys_oterm_definition
+FROM sys_oterm
+WHERE sys_oterm_name LIKE '%concentration%'
+   OR sys_oterm_definition LIKE '%measurement%'
+ORDER BY sys_oterm_name;
+```
+
+**6. Query brick measurement data** (if loaded with --load-cdm-store-sample or higher):
+```sql
+-- Example: Query Brick0000001 measurements
+SELECT * FROM ddt_ndarray_brick0000001 LIMIT 10;
+
+-- Find bricks with specific dimensions
+SELECT
+  ddt_ndarray_id,
+  berdl_column_name,
+  dimension_oterm_name,
+  variable_oterm_name
+FROM sys_ddt_typedef
+WHERE dimension_oterm_name LIKE '%Environmental Sample%'
+ORDER BY ddt_ndarray_id;
+```
+
+### Query Interface 3: Python Scripts
+
+**Pre-built query scripts:**
+```bash
+# General query interface
+uv run python scripts/cdm_analysis/query_cdm_store.py \
+  --database cdm_store.db \
+  --query stats
+
+# Find samples by criteria
+uv run python scripts/cdm_analysis/query_cdm_store.py \
+  --database cdm_store.db \
+  --collection sdt_sample \
+  --query '{"material_sys_oterm_name": {"$regex": "soil"}}'
+
+# Complex demo queries (requires brick data)
+uv run python scripts/cdm_analysis/demo_complex_query.py
+```
+
+**Custom Python queries:**
+```python
+from linkml_store import Client
+
+# Connect to database
+client = Client()
+db = client.attach_database("cdm_store.db", alias="cdm")
+
+# Example 1: Query samples
+samples = db.get_collection("sdt_sample")
+soil_samples = samples.find({"material_sys_oterm_name": {"$regex": "soil"}})
+print(f"Found {len(list(soil_samples))} soil samples")
+
+# Example 2: Count records
+for collection_name in db.list_collections():
+    collection = db.get_collection(collection_name)
+    count = collection.count()
+    print(f"{collection_name}: {count:,} records")
+
+# Example 3: Complex query with joins (via DuckDB)
+import duckdb
+conn = duckdb.connect("cdm_store.db")
+result = conn.execute("""
+    SELECT s.sdt_sample_name, COUNT(r.sdt_reads_id) as read_count
+    FROM sdt_sample s
+    LEFT JOIN sys_process_input pi ON pi.sdt_sample_id = s.sdt_sample_id
+    LEFT JOIN sys_process_output po ON po.sys_process_id = pi.sys_process_id
+    LEFT JOIN sdt_reads r ON r.sdt_reads_id = po.sdt_reads_id
+    GROUP BY s.sdt_sample_name
+    HAVING read_count > 0
+    ORDER BY read_count DESC
+    LIMIT 10
+""").fetchdf()
+print(result)
+```
+
+### Query Performance Tips
+
+1. **Use indexes** - Automatically created for all ID fields during load
+2. **Filter early** - Add WHERE clauses before JOINs when possible
+3. **Limit results** - Use LIMIT for exploratory queries
+4. **Query static tables first** - Much smaller than brick tables
+5. **Use just commands** - Pre-optimized queries with provenance tracking
+
+### Troubleshooting
+
+**Database not found:**
+```bash
+# Verify database exists
+ls -lh cdm_store.db
+
+# Reload if needed
+just load-cdm-store
+```
+
+**Empty results:**
+```bash
+# Check if data loaded correctly
+just cdm-store-stats
+
+# Verify table contents
+duckdb cdm_store.db "SELECT COUNT(*) FROM sdt_sample"
+```
+
+**Slow queries:**
+```bash
+# Check if indexes exist
+duckdb cdm_store.db "PRAGMA show_tables"
+
+# Rebuild database with indexes
+just load-cdm-store  # Uses --create-indexes by default
+```
+
+### Next Steps
+
+- 📖 See **[CDM Parquet Store Guide](docs/CDM_PARQUET_STORE_GUIDE.md)** for comprehensive query examples
+- 🔍 Browse **[Interactive Data Dictionary](docs/cdm_data_dictionary.html)** to understand table schemas
+- 📊 Review **[Metadata Catalogs](data/cdm_metadata/README.md)** for query-ready metadata
 
 ---
 
@@ -181,21 +598,29 @@ just analyze       # Analyze schema structure and relationships
 
 ### Data Loading and Querying
 
+**Prerequisites:** Obtain CDM parquet data first (see Quick Start → Step 2)
+
 ```bash
-# Load databases
-just load-cdm-store                # Core tables only (fast)
-just load-cdm-store-sample         # Core + 10 brick tables (recommended)
-just load-cdm-store-bricks         # Core + 20 brick tables
-just load-cdm-store-full           # All tables (sampled)
+# Load databases (creates DuckDB files)
+just load-cdm-store                # Core tables only (~30s, 515K records)
+just load-cdm-store-sample         # Core + 10 bricks (~2m, 2.4M records) ⭐ Recommended
+just load-cdm-store-bricks         # Core + 20 bricks (~5m, 5M records)
+just load-cdm-store-full           # All tables sampled (~10m, 82M records)
 
-# Query databases
-just cdm-store-stats               # Database statistics
-just cdm-find-samples <location>   # Find samples by location
-just cdm-search-oterm <term>       # Search ontology terms
-just cdm-lineage <type> <id>       # Trace provenance
+# Query databases (use after loading)
+just cdm-store-stats               # Show database statistics
+just cdm-find-samples <location>   # Find samples by location ID
+just cdm-search-oterm <term>       # Search ontology terms (fuzzy)
+just cdm-lineage <type> <id>       # Trace provenance lineage
 
-# Complex query demos
+# Complex query demonstrations (requires --load-cdm-store-sample or higher)
+just cdm-demo-location-molecules   # Location → Samples → Measurements
+just cdm-demo-pipeline             # Sample → Reads → Assembly → Genome
+just cdm-demo-asv-taxonomy         # ASV taxonomy and abundance
 just cdm-demo-all                  # Run all query demonstrations
+
+# Direct SQL queries
+duckdb cdm_store.db                # Launch DuckDB CLI for SQL queries
 ```
 
 ### Metadata Tools
