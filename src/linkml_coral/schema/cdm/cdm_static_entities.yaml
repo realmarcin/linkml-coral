@@ -1293,10 +1293,12 @@ slots:
 
   # ENIGMA slots
   sdt_enigma_id:
-    description: Unique identifier for ENIGMA root entity
+    description: Unique identifier for ENIGMA root entity (singleton table)
     range: string
-    required: true
+    required: false
     identifier: true
-    pattern: '^ENIGMA1$'
+    comments:
+    - Singleton table with NULL value in current parquet data
+    - Pattern '^ENIGMA1$' removed to match actual data
     annotations:
       constraint_type: primary_key
