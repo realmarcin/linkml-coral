@@ -56,12 +56,16 @@ classes:
     - field_name
     - cdm_column_name
     - scalar_type
-    - pk
-    - upk
+    - is_pk
+    - is_upk
+    - is_required
     - fk
     - constraint
     - units_sys_oterm_id
+    - units_sys_oterm_name
     - type_sys_oterm_id
+    - type_sys_oterm_name
+    - comment
 
   SystemDDTTypedef:
     mixins:
@@ -80,8 +84,8 @@ classes:
     class_uri: kbase_cdm:SystemDDTTypedef
     slots:
     - ddt_ndarray_id
-    - cdm_column_name
-    - cdm_column_data_type
+    - berdl_column_name
+    - berdl_column_data_type
     - scalar_type
     - dimension_number
     - variable_number
@@ -91,6 +95,9 @@ classes:
     - variable_oterm_name
     - unit_sys_oterm_id
     - unit_sys_oterm_name
+    - foreign_key
+    - comment
+    - original_csv_string
 
   SystemOntologyTerm:
     mixins:
@@ -168,12 +175,24 @@ classes:
       Enables queries like:
       - "Find all processes that used this sample"
       - "What samples were used in sequencing processes?"
+
+      Note: Entity ID fields (sdt_*_id) exist in parquet but are largely unpopulated
+      (99%+ NULL). Use input_object_type/name for reliable querying.
     class_uri: kbase_cdm:SystemProcessInput
     slots:
     - sys_process_id
     - input_object_type
     - input_object_name
     - input_index
+    - sdt_assembly_id
+    - sdt_bin_id
+    - sdt_community_id
+    - sdt_genome_id
+    - sdt_location_id
+    - sdt_reads_id
+    - sdt_sample_id
+    - sdt_strain_id
+    - sdt_tnseq_library_id
 
   SystemProcessOutput:
     mixins:
@@ -187,12 +206,26 @@ classes:
       Enables queries like:
       - "What process created this assembly?"
       - "Find all assemblies from sequencing processes"
+
+      Note: Entity ID fields (sdt_*_id, ddt_ndarray_id) exist in parquet but are
+      largely unpopulated (99%+ NULL). Use output_object_type/name for reliable querying.
     class_uri: kbase_cdm:SystemProcessOutput
     slots:
     - sys_process_id
     - output_object_type
     - output_object_name
     - output_index
+    - ddt_ndarray_id
+    - sdt_assembly_id
+    - sdt_bin_id
+    - sdt_community_id
+    - sdt_dubseq_library_id
+    - sdt_genome_id
+    - sdt_image_id
+    - sdt_reads_id
+    - sdt_sample_id
+    - sdt_strain_id
+    - sdt_tnseq_library_id
 
 # ============================================================
 # SLOTS - System table-specific slots
@@ -220,15 +253,28 @@ slots:
     range: string
     required: false
 
-  pk:
+  is_pk:
     description: Primary key flag
     range: boolean
     required: false
 
-  upk:
+    annotations:
+      original_name: pk
+
+  is_upk:
     description: Unique key flag
     range: boolean
     required: false
+
+    annotations:
+      original_name: upk
+  is_required:
+    description: Required field flag
+    range: boolean
+    required: false
+
+    annotations:
+      original_name: required
 
   fk:
     description: Foreign key reference
@@ -250,6 +296,21 @@ slots:
     range: OntologyTermID
     required: false
 
+  units_sys_oterm_name:
+    description: Ontology term name for measurement units
+    range: string
+    required: false
+
+  type_sys_oterm_name:
+    description: Ontology term name for data type
+    range: string
+    required: false
+
+  comment:
+    description: Additional comments or notes
+    range: string
+    required: false
+
   # SystemDDTTypedef slots
   ddt_ndarray_id:
     description: Brick identifier (e.g., "Brick0000010")
@@ -258,11 +319,21 @@ slots:
 
     annotations:
       constraint_type: foreign_key
-  cdm_column_data_type:
+  berdl_column_name:
+    description: BERDL column name (brick entity relationship data layer)
+    range: string
+    required: false
+
+    annotations:
+      original_name: cdm_column_name
+  berdl_column_data_type:
     description: Column type (variable, dimension_variable, or dimension_index)
     range: string
     required: false
     pattern: '^(variable|dimension_variable|dimension_index)$'
+
+    annotations:
+      original_name: cdm_column_data_type
 
   dimension_number:
     description: Position in N-dimensional array (0-indexed)
@@ -309,6 +380,18 @@ slots:
       constraint_type: foreign_key
   unit_sys_oterm_name:
     description: Measurement unit ontology term name
+    range: string
+    required: false
+
+  foreign_key:
+    description: Foreign key reference for dimension or variable
+    range: string
+    required: false
+
+    annotations:
+      original_name: fk
+  original_csv_string:
+    description: Original CSV string representation
     range: string
     required: false
 
@@ -469,3 +552,83 @@ slots:
     range: integer
     required: false
     minimum_value: 0
+
+  # Entity ID slots for process input/output (denormalized for query optimization)
+  # Note: ddt_ndarray_id is already defined above in SystemDDTTypedef section
+
+  sdt_assembly_id:
+    description: Assembly entity identifier (for process input/output)
+    range: string
+    required: false
+    comments:
+    - Present in parquet data for direct entity ID access
+
+  sdt_bin_id:
+    description: Bin entity identifier (for process input/output)
+    range: string
+    required: false
+    comments:
+    - Present in parquet data for direct entity ID access
+
+  sdt_community_id:
+    description: Community entity identifier (for process input/output)
+    range: string
+    required: false
+    comments:
+    - Present in parquet data for direct entity ID access
+
+  sdt_dubseq_library_id:
+    description: DubSeq Library entity identifier (for process outputs)
+    range: string
+    required: false
+    comments:
+    - Present in parquet data for direct entity ID access
+
+  sdt_genome_id:
+    description: Genome entity identifier (for process input/output)
+    range: string
+    required: false
+    comments:
+    - Present in parquet data for direct entity ID access
+
+  sdt_image_id:
+    description: Image entity identifier (for process outputs)
+    range: string
+    required: false
+    comments:
+    - Present in parquet data for direct entity ID access
+
+  sdt_location_id:
+    description: Location entity identifier (for process inputs)
+    range: string
+    required: false
+    comments:
+    - Present in parquet data for direct entity ID access
+
+  sdt_reads_id:
+    description: Reads entity identifier (for process input/output)
+    range: string
+    required: false
+    comments:
+    - Present in parquet data for direct entity ID access
+
+  sdt_sample_id:
+    description: Sample entity identifier (for process input/output)
+    range: string
+    required: false
+    comments:
+    - Present in parquet data for direct entity ID access
+
+  sdt_strain_id:
+    description: Strain entity identifier (for process inputs)
+    range: string
+    required: false
+    comments:
+    - Present in parquet data for direct entity ID access
+
+  sdt_tnseq_library_id:
+    description: TnSeq Library entity identifier (for process input/output)
+    range: string
+    required: false
+    comments:
+    - Present in parquet data for direct entity ID access

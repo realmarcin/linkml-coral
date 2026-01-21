@@ -4,7 +4,7 @@
     "column_name": "community_type_sys_oterm_id",
     "validation_type": "pattern",
     "validation_pattern": "ME:0000234",
-    "description": "Type of community, e.g., isolate or enrichment",
+    "description": "Type of community, e.g., isolate or enrichment, ontology term CURIE",
     "microtype": "ME:0000234"
   },
   {
@@ -33,17 +33,17 @@
   },
   {
     "table_name": "sdt_location",
-    "column_name": "latitude",
+    "column_name": "latitude_degree",
     "validation_type": "pattern",
-    "validation_pattern": "[-90,90]",
+    "validation_pattern": "[\n            -90,\n            90\n          ]",
     "description": "Latitude of the location in decimal degrees",
     "microtype": "ME:0000211"
   },
   {
     "table_name": "sdt_location",
-    "column_name": "longitude",
+    "column_name": "longitude_degree",
     "validation_type": "pattern",
-    "validation_pattern": "[-180,180]",
+    "validation_pattern": "[\n            -180,\n            180\n          ]",
     "description": "Longitude of the location in decimal degrees",
     "microtype": "ME:0000212"
   },
@@ -52,7 +52,7 @@
     "column_name": "continent_sys_oterm_id",
     "validation_type": "pattern",
     "validation_pattern": "CONTINENT:0000001",
-    "description": "Continent where the location is situated",
+    "description": "Continent where the location is situated, ontology term CURIE",
     "microtype": "ME:0000213"
   },
   {
@@ -76,7 +76,7 @@
     "column_name": "country_sys_oterm_id",
     "validation_type": "pattern",
     "validation_pattern": "COUNTRY:0000001",
-    "description": "Country of the location",
+    "description": "Country of the location, ontology term CURIE",
     "microtype": "ME:0000214"
   },
   {
@@ -100,7 +100,7 @@
     "column_name": "biome_sys_oterm_id",
     "validation_type": "pattern",
     "validation_pattern": "ENVO:01000254",
-    "description": "Biome classification of the location",
+    "description": "Biome classification of the location, ontology term CURIE",
     "microtype": "ME:0000216"
   },
   {
@@ -124,7 +124,7 @@
     "column_name": "feature_sys_oterm_id",
     "validation_type": "pattern",
     "validation_pattern": "ENVO:00002297",
-    "description": "Environmental or geographic feature at the location",
+    "description": "Environmental or geographic feature at the location, ontology term CURIE",
     "microtype": "ME:0000217"
   },
   {
@@ -156,7 +156,7 @@
     "column_name": "read_type_sys_oterm_id",
     "validation_type": "pattern",
     "validation_pattern": "ME:0000112",
-    "description": "Category of reads (e.g., single-end, paired-end)",
+    "description": "Category of reads (e.g., single-end, paired-end), ontology term CURIE",
     "microtype": "ME:0000112"
   },
   {
@@ -180,7 +180,7 @@
     "column_name": "sequencing_technology_sys_oterm_id",
     "validation_type": "pattern",
     "validation_pattern": "ME:0000116",
-    "description": "Sequencing technology used (e.g., Illumina)",
+    "description": "Sequencing technology used (e.g., Illumina), ontology term CURIE",
     "microtype": "ME:0000116"
   },
   {
@@ -220,7 +220,7 @@
     "column_name": "material_sys_oterm_id",
     "validation_type": "pattern",
     "validation_pattern": "ENVO:00010483",
-    "description": "Material type of the sample",
+    "description": "Material type of the sample, ontology term CURIE",
     "microtype": "ME:0000230"
   },
   {
@@ -244,7 +244,7 @@
     "column_name": "env_package_sys_oterm_id",
     "validation_type": "pattern",
     "validation_pattern": "MIxS:0000002",
-    "description": "MIxS environmental package classification of the sample",
+    "description": "MIxS environmental package classification of the sample, ontology term CURIE",
     "microtype": "ME:0000229"
   },
   {
@@ -268,7 +268,7 @@
     "column_name": "process_sys_oterm_id",
     "validation_type": "pattern",
     "validation_pattern": "PROCESS:0000001",
-    "description": "Reference to the specific process type used to generate the outputs",
+    "description": "Reference to the specific process type used to generate the outputs, ontology term CURIE",
     "microtype": "ME:0000204"
   },
   {
@@ -292,7 +292,7 @@
     "column_name": "person_sys_oterm_id",
     "validation_type": "pattern",
     "validation_pattern": "ENIGMA:0000029",
-    "description": "Reference to the person or lab that performed the process",
+    "description": "Reference to the person or lab that performed the process, ontology term CURIE",
     "microtype": "ME:0000205"
   },
   {
@@ -316,7 +316,7 @@
     "column_name": "campaign_sys_oterm_id",
     "validation_type": "pattern",
     "validation_pattern": "ENIGMA:0000002",
-    "description": "Reference to the ENIGMA campaign under which the data were generated",
+    "description": "Reference to the ENIGMA campaign under which the data were generated, ontology term CURIE",
     "microtype": "ME:0000206"
   },
   {

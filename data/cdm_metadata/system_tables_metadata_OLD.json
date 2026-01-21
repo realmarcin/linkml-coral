@@ -1,12 +1,16 @@
 {
   "sys_ddt_typedef": {
     "table_name": "sys_ddt_typedef",
-    "total_rows": 606,
+    "total_rows": 101,
     "num_columns": 15,
     "columns": {
       "ddt_ndarray_id": {
         "type": "string",
         "nullable": true,
+        "description": "Key for dynamic data type (N-dimensional array)",
+        "field_type": "foreign_key",
+        "references": "ddt_ndarray.ddt_ndarray_id",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -16,9 +20,13 @@
         "fk": "",
         "orig_name": ""
       },
-      "berdl_column_name": {
+      "cdm_column_name": {
         "type": "string",
         "nullable": true,
+        "description": "CDM column name",
+        "field_type": "",
+        "references": "",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -28,9 +36,13 @@
         "fk": "",
         "orig_name": ""
       },
-      "berdl_column_data_type": {
+      "cdm_column_data_type": {
         "type": "string",
         "nullable": true,
+        "description": "CDM column data type, variable or dimension_variable",
+        "field_type": "",
+        "references": "",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -43,6 +55,10 @@
       "scalar_type": {
         "type": "string",
         "nullable": true,
+        "description": "Scalar type",
+        "field_type": "",
+        "references": "",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -52,9 +68,13 @@
         "fk": "",
         "orig_name": ""
       },
-      "foreign_key": {
+      "fk": {
         "type": "string",
         "nullable": true,
+        "description": "Foreign key reference",
+        "field_type": "",
+        "references": "",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -67,6 +87,10 @@
       "comment": {
         "type": "string",
         "nullable": true,
+        "description": "Column comment",
+        "field_type": "",
+        "references": "",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -79,6 +103,10 @@
       "unit_sys_oterm_id": {
         "type": "string",
         "nullable": true,
+        "description": "Unit, ontology term CURIE",
+        "field_type": "foreign_key",
+        "references": "sys_oterm.sys_oterm_id",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -91,6 +119,10 @@
       "unit_sys_oterm_name": {
         "type": "string",
         "nullable": true,
+        "description": "Unit",
+        "field_type": "",
+        "references": "",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -103,6 +135,10 @@
       "dimension_number": {
         "type": "integer",
         "nullable": true,
+        "description": "Dimension number, starting at 1, for dimension variables",
+        "field_type": "",
+        "references": "",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -115,6 +151,10 @@
       "dimension_oterm_id": {
         "type": "string",
         "nullable": true,
+        "description": "Dimension data type, ontology term CURIE",
+        "field_type": "foreign_key",
+        "references": "sys_oterm.sys_oterm_id",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -127,6 +167,10 @@
       "dimension_oterm_name": {
         "type": "string",
         "nullable": true,
+        "description": "Dimension data type",
+        "field_type": "",
+        "references": "",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -139,6 +183,10 @@
       "variable_number": {
         "type": "integer",
         "nullable": true,
+        "description": "Variable number within a dimension, numbered starting at 1",
+        "field_type": "",
+        "references": "",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -151,6 +199,10 @@
       "variable_oterm_id": {
         "type": "string",
         "nullable": true,
+        "description": "Dimension variable data type, ontology term CURIE",
+        "field_type": "foreign_key",
+        "references": "sys_oterm.sys_oterm_id",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -163,6 +215,10 @@
       "variable_oterm_name": {
         "type": "string",
         "nullable": true,
+        "description": "Dimension variable data type",
+        "field_type": "",
+        "references": "",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -175,6 +231,10 @@
       "original_csv_string": {
         "type": "string",
         "nullable": true,
+        "description": "Original representation of this variable in the CORAL data dump CSV",
+        "field_type": "",
+        "references": "",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -188,7 +248,7 @@
   },
   "sys_oterm": {
     "table_name": "sys_oterm",
-    "total_rows": 10600,
+    "total_rows": 10594,
     "num_columns": 8,
     "columns": {
       "sys_oterm_id": {
@@ -319,7 +379,7 @@
           "valueContainsNull": true
         },
         "nullable": true,
-        "description": "Semicolon-separated map of properties to values for terms that are CORAL microtypes, including scalar data_type, is_valid_data_variable, is_valid_dimension, is_valid_data_variable, is_valid_dimension_variable, is_valid_property, valid_units, and valid_units_parent",
+        "description": "Semicolon\u2011separated map of properties to values for terms that are CORAL microtypes, including scalar data_type, is_valid_data_variable, is_valid_dimension, is_valid_data_variable, is_valid_dimension_variable, is_valid_property, valid_units, and valid_units_parent",
         "field_type": "",
         "references": "",
         "unit_label": "",
@@ -336,7 +396,7 @@
   },
   "sys_process": {
     "table_name": "sys_process",
-    "total_rows": 84527,
+    "total_rows": 142958,
     "num_columns": 12,
     "columns": {
       "sys_process_id": {
@@ -349,8 +409,8 @@
         "microtype": "ME:0000277",
         "units": "",
         "constraint": null,
-        "required": false,
-        "pk": false,
+        "required": true,
+        "pk": true,
         "upk": false,
         "fk": "",
         "orig_name": "id"
@@ -358,15 +418,15 @@
       "process_sys_oterm_id": {
         "type": "string",
         "nullable": true,
-        "description": "Reference to the specific process type used to generate the outputs, ontology term CURIE",
+        "description": "Reference to the specific process type used to generate the outputs",
         "field_type": "foreign_key",
-        "references": "sys_oterm.sys_oterm_id",
+        "references": "sys_oterm.sys_oterm_name",
         "unit_label": "",
         "microtype": "ME:0000204",
         "units": "",
         "constraint": "PROCESS:0000001",
-        "required": false,
-        "pk": false,
+        "required": true,
+        "pk": null,
         "upk": false,
         "fk": "sys_oterm.id",
         "orig_name": "process"
@@ -381,8 +441,8 @@
         "microtype": "ME:0000204",
         "units": "",
         "constraint": "PROCESS:0000001",
-        "required": false,
-        "pk": false,
+        "required": true,
+        "pk": null,
         "upk": false,
         "fk": "",
         "orig_name": "process"
@@ -390,15 +450,15 @@
       "person_sys_oterm_id": {
         "type": "string",
         "nullable": true,
-        "description": "Reference to the person or lab that performed the process, ontology term CURIE",
+        "description": "Reference to the person or lab that performed the process",
         "field_type": "foreign_key",
-        "references": "sys_oterm.sys_oterm_id",
+        "references": "sys_oterm.sys_oterm_name",
         "unit_label": "",
         "microtype": "ME:0000205",
         "units": "",
         "constraint": "ENIGMA:0000029",
-        "required": false,
-        "pk": false,
+        "required": true,
+        "pk": null,
         "upk": false,
         "fk": "sys_oterm.id",
         "orig_name": "person"
@@ -413,8 +473,8 @@
         "microtype": "ME:0000205",
         "units": "",
         "constraint": "ENIGMA:0000029",
-        "required": false,
-        "pk": false,
+        "required": true,
+        "pk": null,
         "upk": false,
         "fk": "",
         "orig_name": "person"
@@ -422,15 +482,15 @@
       "campaign_sys_oterm_id": {
         "type": "string",
         "nullable": true,
-        "description": "Reference to the ENIGMA campaign under which the data were generated, ontology term CURIE",
+        "description": "Reference to the ENIGMA campaign under which the data were generated",
         "field_type": "foreign_key",
-        "references": "sys_oterm.sys_oterm_id",
+        "references": "sys_oterm.sys_oterm_name",
         "unit_label": "",
         "microtype": "ME:0000206",
         "units": "",
         "constraint": "ENIGMA:0000002",
-        "required": false,
-        "pk": false,
+        "required": true,
+        "pk": null,
         "upk": false,
         "fk": "sys_oterm.id",
         "orig_name": "campaign"
@@ -445,8 +505,8 @@
         "microtype": "ME:0000206",
         "units": "",
         "constraint": "ENIGMA:0000002",
-        "required": false,
-        "pk": false,
+        "required": true,
+        "pk": null,
         "upk": false,
         "fk": "",
         "orig_name": "campaign"
@@ -461,8 +521,8 @@
         "microtype": "ME:0000328",
         "units": "",
         "constraint": null,
-        "required": false,
-        "pk": false,
+        "required": null,
+        "pk": null,
         "upk": false,
         "fk": "Protocol.name",
         "orig_name": "protocol"
@@ -477,8 +537,8 @@
         "microtype": "ME:0000009",
         "units": "",
         "constraint": "\\d\\d\\d\\d(-\\d\\d(-\\d\\d)?)?",
-        "required": false,
-        "pk": false,
+        "required": null,
+        "pk": null,
         "upk": false,
         "fk": "",
         "orig_name": "date_start"
@@ -493,8 +553,8 @@
         "microtype": "ME:0000009",
         "units": "",
         "constraint": "\\d\\d\\d\\d(-\\d\\d(-\\d\\d)?)?",
-        "required": false,
-        "pk": false,
+        "required": null,
+        "pk": null,
         "upk": false,
         "fk": "",
         "orig_name": "date_end"
@@ -513,8 +573,8 @@
         "microtype": "ME:0000207",
         "units": "",
         "constraint": "[Entity|Brick]",
-        "required": false,
-        "pk": false,
+        "required": true,
+        "pk": null,
         "upk": false,
         "fk": "",
         "orig_name": "input_objects"
@@ -533,8 +593,8 @@
         "microtype": "ME:0000208",
         "units": "",
         "constraint": "[Entity|Brick]",
-        "required": false,
-        "pk": false,
+        "required": true,
+        "pk": null,
         "upk": false,
         "fk": "",
         "orig_name": "output_objects"
@@ -543,7 +603,7 @@
   },
   "sys_process_input": {
     "table_name": "sys_process_input",
-    "total_rows": 82864,
+    "total_rows": 90395,
     "num_columns": 10,
     "columns": {
       "sys_process_id": {
@@ -710,7 +770,7 @@
   },
   "sys_process_output": {
     "table_name": "sys_process_output",
-    "total_rows": 38594,
+    "total_rows": 38228,
     "num_columns": 12,
     "columns": {
       "sys_process_id": {
@@ -910,7 +970,7 @@
   "sys_typedef": {
     "table_name": "sys_typedef",
     "total_rows": 118,
-    "num_columns": 14,
+    "num_columns": 12,
     "columns": {
       "type_name": {
         "type": "string",
@@ -960,7 +1020,7 @@
         "fk": "",
         "orig_name": ""
       },
-      "is_required": {
+      "required": {
         "type": "boolean",
         "nullable": true,
         "microtype": "",
@@ -972,7 +1032,7 @@
         "fk": "",
         "orig_name": ""
       },
-      "is_pk": {
+      "pk": {
         "type": "boolean",
         "nullable": true,
         "microtype": "",
@@ -984,7 +1044,7 @@
         "fk": "",
         "orig_name": ""
       },
-      "is_upk": {
+      "upk": {
         "type": "boolean",
         "nullable": true,
         "microtype": "",
@@ -1044,41 +1104,9 @@
         "fk": "",
         "orig_name": ""
       },
-      "units_sys_oterm_name": {
-        "type": "string",
-        "nullable": true,
-        "description": "Term name",
-        "field_type": "",
-        "references": "",
-        "unit_label": "",
-        "microtype": "",
-        "units": "",
-        "constraint": "",
-        "required": false,
-        "pk": false,
-        "upk": false,
-        "fk": "",
-        "orig_name": ""
-      },
       "type_sys_oterm_id": {
         "type": "string",
         "nullable": true,
-        "microtype": "",
-        "units": "",
-        "constraint": "",
-        "required": false,
-        "pk": false,
-        "upk": false,
-        "fk": "",
-        "orig_name": ""
-      },
-      "type_sys_oterm_name": {
-        "type": "string",
-        "nullable": true,
-        "description": "Term name",
-        "field_type": "",
-        "references": "",
-        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",

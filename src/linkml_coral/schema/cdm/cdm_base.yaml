@@ -164,19 +164,21 @@ types:
 
   OntologyTermID:
     typeof: string
-    pattern: '^[A-Z_]+:\d+$'
-    description: CURIE format ontology term identifier (e.g., ME:0000129, ENVO:00002041)
+    pattern: '^[A-Za-z_]+:\d+$'
+    description: CURIE format ontology term identifier (e.g., ME:0000129, ENVO:00002041, MIxS:0000017)
     comments:
     - References sys_oterm table in CDM
     - Standard OBO format with prefix and numeric ID
+    - Allows mixed case prefixes (e.g., MIxS, NCBITaxon)
 
   EntityName:
     typeof: string
-    pattern: '^[A-Za-z0-9_\-. ]+$'
+    pattern: "^[A-Za-z0-9_\\-./;=(),\\[\\] '+:°]+$"
     description: Human-readable entity name
     comments:
     - Used for foreign key references in CDM (not ID)
-    - Allows alphanumeric, underscore, hyphen, dot, and space
+    - Allows alphanumeric, underscore, hyphen, dot, space, and special characters
+    - "Special characters include: / ; = ( ) , [ ] ' + : ° for complex identifiers and descriptions"
 
 # ============================================================
 # MIXINS - Reusable patterns for CDM entities

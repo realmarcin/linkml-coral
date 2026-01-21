@@ -12,10 +12,10 @@ The CDM contains 44 parquet tables:
 
 Usage:
     # Load all static and system tables
-    python load_cdm_parquet_to_store.py /path/to/jmc_coral.db
+    python load_cdm_parquet_to_store.py data/enigma_coral.db
 
     # Load with options
-    python load_cdm_parquet_to_store.py /path/to/jmc_coral.db \\
+    python load_cdm_parquet_to_store.py data/enigma_coral.db \\
         --output cdm_store.db \\
         --include-system \\
         --include-static \\
@@ -23,7 +23,7 @@ Usage:
         --verbose
 
     # Sample dynamic brick tables (82.6M rows)
-    python load_cdm_parquet_to_store.py /path/to/jmc_coral.db \\
+    python load_cdm_parquet_to_store.py data/enigma_coral.db \\
         --include-dynamic \\
         --max-brick-rows 10000
 """
@@ -257,8 +257,8 @@ def add_computed_fields(record: Dict[str, Any], class_name: str) -> Dict[str, An
     enhanced = record.copy()
 
     # Add read count categories for Reads
-    if class_name == 'Reads' and 'sdt_reads_read_count' in record:
-        read_count = record['sdt_reads_read_count']
+    if class_name == 'Reads' and 'sdt_reads_read_count_count_unit' in record:
+        read_count = record['sdt_reads_read_count_count_unit']
         if isinstance(read_count, (int, float)) and not pd.isna(read_count):
             if read_count >= 100000:
                 enhanced['read_count_category'] = 'very_high'
@@ -270,8 +270,8 @@ def add_computed_fields(record: Dict[str, Any], class_name: str) -> Dict[str, An
                 enhanced['read_count_category'] = 'low'
 
     # Add contig count categories for Assembly
-    if class_name == 'Assembly' and 'sdt_assembly_n_contigs' in record:
-        n_contigs = record['sdt_assembly_n_contigs']
+    if class_name == 'Assembly' and 'sdt_assembly_n_contigs_count_unit' in record:
+        n_contigs = record['sdt_assembly_n_contigs_count_unit']
         if isinstance(n_contigs, (int, float)) and not pd.isna(n_contigs):
             if n_contigs >= 1000:
                 enhanced['contig_count_category'] = 'high'
@@ -413,19 +413,21 @@ def load_all_cdm_parquet(
     include_static: bool = True,
     include_dynamic: bool = False,
     max_dynamic_rows: int = 10000,
+    num_bricks: Optional[int] = None,
     verbose: bool = False
 ) -> Dict[str, int]:
     """
     Load all CDM parquet tables into the database.
 
     Args:
-        cdm_db_path: Path to CDM database directory (jmc_coral.db)
+        cdm_db_path: Path to CDM database directory (enigma_coral.db)
         db: Database connection
         schema_view: SchemaView instance
         include_system: Load sys_* tables
         include_static: Load sdt_* tables
         include_dynamic: Load ddt_* tables (large, sampled by default)
         max_dynamic_rows: Max rows per dynamic table (default: 10K sample)
+        num_bricks: Number of brick tables to load (None = all if include_dynamic, or 5 default)
         verbose: Print detailed progress
 
     Returns:
@@ -502,8 +504,11 @@ def load_all_cdm_parquet(
         print(f"\n{'='*60}")
         print(f"📦 Loading Dynamic Data Tables (ddt_*)")
         print(f"{'='*60}")
-        print(f"⚠️  Note: Dynamic tables sampled at {max_dynamic_rows:,} rows each")
-        print(f"   (Total: 82.6M rows across 21 tables)")
+        if max_dynamic_rows is not None:
+            print(f"⚠️  Note: Dynamic tables sampled at {max_dynamic_rows:,} rows each")
+        else:
+            print(f"⚠️  Note: Loading complete brick data (no row sampling)")
+        print(f"   (Total: 82.6M rows across ~500 brick tables)")
 
         # Load ddt_ndarray (index table)
         ndarray_path = cdm_db_path / "ddt_ndarray"
@@ -522,9 +527,14 @@ def load_all_cdm_parquet(
                        if d.is_dir() and d.name.startswith("ddt_brick")]
 
         if brick_tables:
+            # Determine how many bricks to load
+            bricks_to_load = len(brick_tables) if num_bricks is None else min(num_bricks, len(brick_tables))
+
             print(f"\n  Found {len(brick_tables)} brick tables...")
-            for i, brick_path in enumerate(sorted(brick_tables)[:5], 1):  # Sample first 5
-                print(f"  [{i}/5] Sampling {brick_path.name}...")
+            print(f"  Loading {bricks_to_load} brick table(s)...")
+
+            for i, brick_path in enumerate(sorted(brick_tables)[:bricks_to_load], 1):
+                print(f"  [{i}/{bricks_to_load}] Loading {brick_path.name}...")
                 # Bricks have heterogeneous schemas - just load as generic records
                 count = load_parquet_collection(
                     brick_path, "DynamicDataArray", db, schema_view,
@@ -533,8 +543,8 @@ def load_all_cdm_parquet(
                 )
                 total_records += count
 
-            if len(brick_tables) > 5:
-                print(f"  ⚠️  Skipped {len(brick_tables) - 5} additional brick tables")
+            if len(brick_tables) > bricks_to_load:
+                print(f"  ⚠️  Skipped {len(brick_tables) - bricks_to_load} additional brick tables")
 
     elapsed = time.time() - start_time
     print(f"\n{'='*60}")
@@ -652,22 +662,22 @@ def main():
         epilog="""
 Examples:
   # Load all static and system tables (default)
-  python load_cdm_parquet_to_store.py /path/to/jmc_coral.db
+  python load_cdm_parquet_to_store.py data/enigma_coral.db
 
   # Load with options
-  python load_cdm_parquet_to_store.py /path/to/jmc_coral.db \\
+  python load_cdm_parquet_to_store.py data/enigma_coral.db \\
       --output cdm_store.db \\
       --create-indexes \\
       --show-info \\
       --verbose
 
   # Include dynamic brick tables (sampled at 10K rows each)
-  python load_cdm_parquet_to_store.py /path/to/jmc_coral.db \\
+  python load_cdm_parquet_to_store.py data/enigma_coral.db \\
       --include-dynamic \\
       --max-dynamic-rows 10000
 
   # Load only system tables
-  python load_cdm_parquet_to_store.py /path/to/jmc_coral.db \\
+  python load_cdm_parquet_to_store.py data/enigma_coral.db \\
       --no-static \\
       --include-system
         """
@@ -676,7 +686,7 @@ Examples:
     parser.add_argument(
         'cdm_database',
         type=Path,
-        help='Path to CDM database directory (jmc_coral.db)'
+        help='Path to CDM database directory (enigma_coral.db)'
     )
     parser.add_argument(
         '--output', '-o',
@@ -722,8 +732,14 @@ Examples:
     parser.add_argument(
         '--max-dynamic-rows',
         type=int,
-        default=10000,
-        help='Max rows per dynamic table if included (default: 10000)'
+        default=None,
+        help='Max rows per dynamic table if included (default: None = load all rows)'
+    )
+    parser.add_argument(
+        '--num-bricks',
+        type=int,
+        default=None,
+        help='Number of brick tables to load (default: all if --include-dynamic, else none)'
     )
     parser.add_argument(
         '--create-indexes',
@@ -761,12 +777,23 @@ Examples:
     print(f"📋 Schema: {schema_path.relative_to(REPO_ROOT)}")
     print(f"💾 Output: {args.output}")
     print(f"")
+    # Auto-enable dynamic if num_bricks is specified
+    if args.num_bricks is not None and args.num_bricks > 0:
+        args.include_dynamic = True
+
     print(f"Loading:")
     print(f"  • Static tables (sdt_*): {'Yes' if args.include_static else 'No'}")
     print(f"  • System tables (sys_*): {'Yes' if args.include_system else 'No'}")
     print(f"  • Dynamic tables (ddt_*): {'Yes' if args.include_dynamic else 'No'}")
     if args.include_dynamic:
-        print(f"    - Max rows per brick: {args.max_dynamic_rows:,}")
+        if args.max_dynamic_rows is not None:
+            print(f"    - Max rows per brick: {args.max_dynamic_rows:,}")
+        else:
+            print(f"    - Max rows per brick: all (no limit)")
+        if args.num_bricks is not None:
+            print(f"    - Number of bricks: {args.num_bricks}")
+        else:
+            print(f"    - Number of bricks: all")
 
     client, db, schema_view = create_store(args.output, schema_path)
 
@@ -779,6 +806,7 @@ Examples:
         include_static=args.include_static,
         include_dynamic=args.include_dynamic,
         max_dynamic_rows=args.max_dynamic_rows,
+        num_bricks=args.num_bricks,
         verbose=args.verbose
     )
 

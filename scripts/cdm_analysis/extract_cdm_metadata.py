@@ -219,8 +219,8 @@ def main():
         'cdm_database',
         type=Path,
         nargs='?',
-        default=Path('data/jmc_coral.db'),
-        help='Path to CDM database directory (default: data/jmc_coral.db)'
+        default=Path('data/enigma_coral.db'),
+        help='Path to CDM database directory (default: data/enigma_coral.db)'
     )
 
     parser.add_argument(

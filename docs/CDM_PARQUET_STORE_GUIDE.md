@@ -27,7 +27,7 @@ Load the core CDM tables (23 tables, 515K rows):
 just load-cdm-store
 
 # Or specify paths
-just load-cdm-store /path/to/jmc_coral.db output.db
+just load-cdm-store data/enigma_coral.db output.db
 ```
 
 This loads:
@@ -116,20 +116,20 @@ Use the Python script directly for fine-grained control:
 ```bash
 # Load only static tables
 uv run python scripts/cdm_analysis/load_cdm_parquet_to_store.py \
-    /path/to/jmc_coral.db \
+    data/enigma_coral.db \
     --output my_cdm.db \
     --include-static \
     --no-system
 
 # Load with custom dynamic brick sampling
 uv run python scripts/cdm_analysis/load_cdm_parquet_to_store.py \
-    /path/to/jmc_coral.db \
+    data/enigma_coral.db \
     --include-dynamic \
     --max-dynamic-rows 50000
 
 # Verbose output for debugging
 uv run python scripts/cdm_analysis/load_cdm_parquet_to_store.py \
-    /path/to/jmc_coral.db \
+    data/enigma_coral.db \
     --verbose
 ```
 
@@ -397,13 +397,13 @@ Common collection names:
 Verify CDM database path:
 
 ```bash
-ls -lh /Users/marcin/Documents/VIMSS/ENIGMA/KBase/ENIGMA_in_CDM/minio/jmc_coral.db/
+ls -lh data/enigma_coral.db/
 ```
 
 Check for Delta Lake format (directories with `_delta_log/`):
 
 ```bash
-ls -la /path/to/jmc_coral.db/sdt_sample/
+ls -la data/enigma_coral.db/sdt_sample/
 ```
 
 ### Memory Issues
@@ -413,7 +413,7 @@ For very large queries, use sampling or export:
 ```python
 # Sample large tables during load
 python scripts/cdm_analysis/load_cdm_parquet_to_store.py \
-    /path/to/jmc_coral.db \
+    data/enigma_coral.db \
     --max-dynamic-rows 5000
 
 # Or query in chunks

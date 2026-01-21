@@ -3,24 +3,24 @@
     "microtype": "ME:0000126",
     "usage_count": 10,
     "tables": [
-      "sdt_dubseq_library",
-      "sdt_genome",
-      "sdt_gene",
       "sdt_tnseq_library",
       "sdt_assembly",
+      "sdt_gene",
+      "sdt_dubseq_library",
+      "sdt_genome",
       "sdt_reads"
     ],
     "columns": [
-      "sdt_assembly.n_contigs",
-      "sdt_dubseq_library.n_fragments",
-      "sdt_gene.contig_number",
-      "sdt_genome.n_contigs",
-      "sdt_genome.n_features",
-      "sdt_reads.read_count",
-      "sdt_tnseq_library.n_mapped_reads",
-      "sdt_tnseq_library.n_barcodes",
-      "sdt_tnseq_library.n_usable_barcodes",
-      "sdt_tnseq_library.n_insertion_locations"
+      "sdt_assembly.n_contigs_count_unit",
+      "sdt_dubseq_library.n_fragments_count_unit",
+      "sdt_gene.contig_number_count_unit",
+      "sdt_genome.n_contigs_count_unit",
+      "sdt_genome.n_features_count_unit",
+      "sdt_reads.read_count_count_unit",
+      "sdt_tnseq_library.n_mapped_reads_count_unit",
+      "sdt_tnseq_library.n_barcodes_count_unit",
+      "sdt_tnseq_library.n_usable_barcodes_count_unit",
+      "sdt_tnseq_library.n_insertion_locations_count_unit"
     ],
     "example_description": "Number of contigs in the assembly"
   },
@@ -28,9 +28,9 @@
     "microtype": "ME:0000044",
     "usage_count": 5,
     "tables": [
-      "sdt_genome",
       "sdt_strain",
       "sdt_assembly",
+      "sdt_genome",
       "sdt_community"
     ],
     "columns": [
@@ -46,10 +46,10 @@
     "microtype": "ME:0000203",
     "usage_count": 5,
     "tables": [
-      "sdt_image",
-      "sdt_genome",
       "sdt_protocol",
+      "sdt_image",
       "sdt_assembly",
+      "sdt_genome",
       "sdt_reads"
     ],
     "columns": [
@@ -65,11 +65,11 @@
     "microtype": "ME:0000202",
     "usage_count": 5,
     "tables": [
-      "sdt_community",
-      "sdt_image",
-      "sdt_sample",
       "sdt_protocol",
-      "sdt_strain"
+      "sdt_image",
+      "sdt_strain",
+      "sdt_sample",
+      "sdt_community"
     ],
     "columns": [
       "sdt_community.sdt_community_description",
@@ -84,11 +84,11 @@
     "microtype": "ME:0000246",
     "usage_count": 5,
     "tables": [
-      "sdt_dubseq_library",
-      "sdt_genome",
-      "sdt_gene",
       "sdt_strain",
-      "sdt_tnseq_library"
+      "sdt_tnseq_library",
+      "sdt_gene",
+      "sdt_dubseq_library",
+      "sdt_genome"
     ],
     "columns": [
       "sdt_dubseq_library.sdt_genome_name",
@@ -103,8 +103,8 @@
     "microtype": "ME:0000009",
     "usage_count": 3,
     "tables": [
-      "sdt_sample",
-      "sys_process"
+      "sys_process",
+      "sdt_sample"
     ],
     "columns": [
       "sdt_sample.date",
@@ -117,8 +117,8 @@
     "microtype": "ME:0000280",
     "usage_count": 2,
     "tables": [
-      "sdt_bin",
-      "sdt_assembly"
+      "sdt_assembly",
+      "sdt_bin"
     ],
     "columns": [
       "sdt_assembly.sdt_assembly_name",
@@ -148,7 +148,7 @@
       "sdt_community.community_type_sys_oterm_id",
       "sdt_community.community_type_sys_oterm_name"
     ],
-    "example_description": "Type of community, e.g., isolate or enrichment"
+    "example_description": "Type of community, e.g., isolate or enrichment, ontology term CURIE"
   },
   {
     "microtype": "ME:0000102",
@@ -167,8 +167,8 @@
     "microtype": "ME:0000200",
     "usage_count": 2,
     "tables": [
-      "sdt_condition",
-      "sdt_community"
+      "sdt_community",
+      "sdt_condition"
     ],
     "columns": [
       "sdt_community.sdt_condition_name",
@@ -206,8 +206,8 @@
     "microtype": "ME:0000228",
     "usage_count": 2,
     "tables": [
-      "sdt_sample",
-      "sdt_location"
+      "sdt_location",
+      "sdt_sample"
     ],
     "columns": [
       "sdt_location.sdt_location_name",
@@ -225,7 +225,7 @@
       "sdt_location.continent_sys_oterm_id",
       "sdt_location.continent_sys_oterm_name"
     ],
-    "example_description": "Continent where the location is situated"
+    "example_description": "Continent where the location is situated, ontology term CURIE"
   },
   {
     "microtype": "ME:0000214",
@@ -237,7 +237,7 @@
       "sdt_location.country_sys_oterm_id",
       "sdt_location.country_sys_oterm_name"
     ],
-    "example_description": "Country of the location"
+    "example_description": "Country of the location, ontology term CURIE"
   },
   {
     "microtype": "ME:0000216",
@@ -249,7 +249,7 @@
       "sdt_location.biome_sys_oterm_id",
       "sdt_location.biome_sys_oterm_name"
     ],
-    "example_description": "Biome classification of the location"
+    "example_description": "Biome classification of the location, ontology term CURIE"
   },
   {
     "microtype": "ME:0000217",
@@ -261,14 +261,14 @@
       "sdt_location.feature_sys_oterm_id",
       "sdt_location.feature_sys_oterm_name"
     ],
-    "example_description": "Environmental or geographic feature at the location"
+    "example_description": "Environmental or geographic feature at the location, ontology term CURIE"
   },
   {
     "microtype": "ME:0000328",
     "usage_count": 2,
     "tables": [
-      "sdt_protocol",
-      "sys_process"
+      "sys_process",
+      "sdt_protocol"
     ],
     "columns": [
       "sdt_protocol.sdt_protocol_name",
@@ -286,7 +286,7 @@
       "sdt_reads.read_type_sys_oterm_id",
       "sdt_reads.read_type_sys_oterm_name"
     ],
-    "example_description": "Category of reads (e.g., single-end, paired-end)"
+    "example_description": "Category of reads (e.g., single-end, paired-end), ontology term CURIE"
   },
   {
     "microtype": "ME:0000116",
@@ -298,7 +298,7 @@
       "sdt_reads.sequencing_technology_sys_oterm_id",
       "sdt_reads.sequencing_technology_sys_oterm_name"
     ],
-    "example_description": "Sequencing technology used (e.g., Illumina)"
+    "example_description": "Sequencing technology used (e.g., Illumina), ontology term CURIE"
   },
   {
     "microtype": "ME:0000230",
@@ -310,7 +310,7 @@
       "sdt_sample.material_sys_oterm_id",
       "sdt_sample.material_sys_oterm_name"
     ],
-    "example_description": "Material type of the sample"
+    "example_description": "Material type of the sample, ontology term CURIE"
   },
   {
     "microtype": "ME:0000229",
@@ -322,7 +322,7 @@
       "sdt_sample.env_package_sys_oterm_id",
       "sdt_sample.env_package_sys_oterm_name"
     ],
-    "example_description": "MIxS environmental package classification of the sample"
+    "example_description": "MIxS environmental package classification of the sample, ontology term CURIE"
   },
   {
     "microtype": "ME:0000264",
@@ -331,8 +331,8 @@
       "sdt_tnseq_library"
     ],
     "columns": [
-      "sdt_tnseq_library.hit_rate_essential",
-      "sdt_tnseq_library.hit_rate_other"
+      "sdt_tnseq_library.hit_rate_essential_ratio_unit",
+      "sdt_tnseq_library.hit_rate_other_ratio_unit"
     ],
     "example_description": "Proportion of essential genes with at least one transposon insertion"
   },
@@ -346,7 +346,7 @@
       "sys_process.process_sys_oterm_id",
       "sys_process.process_sys_oterm_name"
     ],
-    "example_description": "Reference to the specific process type used to generate the outputs"
+    "example_description": "Reference to the specific process type used to generate the outputs, ontology term CURIE"
   },
   {
     "microtype": "ME:0000205",
@@ -358,7 +358,7 @@
       "sys_process.person_sys_oterm_id",
       "sys_process.person_sys_oterm_name"
     ],
-    "example_description": "Reference to the person or lab that performed the process"
+    "example_description": "Reference to the person or lab that performed the process, ontology term CURIE"
   },
   {
     "microtype": "ME:0000206",
@@ -370,7 +370,7 @@
       "sys_process.campaign_sys_oterm_id",
       "sys_process.campaign_sys_oterm_name"
     ],
-    "example_description": "Reference to the ENIGMA campaign under which the data were generated"
+    "example_description": "Reference to the ENIGMA campaign under which the data were generated, ontology term CURIE"
   },
   {
     "microtype": "ME:0000281",
@@ -511,7 +511,7 @@
       "sdt_gene"
     ],
     "columns": [
-      "sdt_gene.start"
+      "sdt_gene.start_base_pair"
     ],
     "example_description": "Genomic start coordinate on the contig, indexed starting at 1 as in KBase"
   },
@@ -522,7 +522,7 @@
       "sdt_gene"
     ],
     "columns": [
-      "sdt_gene.stop"
+      "sdt_gene.stop_base_pair"
     ],
     "example_description": "Genomic stop coordinate in base pairs"
   },
@@ -588,7 +588,7 @@
       "sdt_image"
     ],
     "columns": [
-      "sdt_image.size"
+      "sdt_image.size_byte"
     ],
     "example_description": "File size of the image measured in bytes"
   },
@@ -621,7 +621,7 @@
       "sdt_location"
     ],
     "columns": [
-      "sdt_location.latitude"
+      "sdt_location.latitude_degree"
     ],
     "example_description": "Latitude of the location in decimal degrees"
   },
@@ -632,7 +632,7 @@
       "sdt_location"
     ],
     "columns": [
-      "sdt_location.longitude"
+      "sdt_location.longitude_degree"
     ],
     "example_description": "Longitude of the location in decimal degrees"
   },
@@ -698,7 +698,7 @@
       "sdt_sample"
     ],
     "columns": [
-      "sdt_sample.depth"
+      "sdt_sample.depth_meter"
     ],
     "example_description": "For below-ground samples, the average distance below ground level in meters where the sample was taken"
   },
@@ -709,7 +709,7 @@
       "sdt_sample"
     ],
     "columns": [
-      "sdt_sample.elevation"
+      "sdt_sample.elevation_meter"
     ],
     "example_description": "For above-ground samples, the average distance above ground level in meters where the sample was taken"
   },

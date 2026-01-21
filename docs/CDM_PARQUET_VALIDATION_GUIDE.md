@@ -46,7 +46,7 @@ uv run python scripts/cdm_analysis/validate_parquet_linkml.py \
 just validate-all-cdm-parquet
 
 # Or specify custom path
-just validate-all-cdm-parquet /custom/path/to/jmc_coral.db
+just validate-all-cdm-parquet /customdata/enigma_coral.db
 ```
 
 ## Command-Line Options
@@ -247,7 +247,7 @@ validation_reports/cdm_parquet/validation_20251201_143022.log
 ================================================
 CDM Parquet Validation Report
 ================================================
-Database: /path/to/jmc_coral.db
+Database: data/enigma_coral.db
 Log file: validation_20251201_143022.log
 Started: Mon Dec 1 14:30:22 PST 2025
 

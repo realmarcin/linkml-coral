@@ -58,8 +58,8 @@ classes:
     slots:
     - sdt_location_id
     - sdt_location_name
-    - latitude
-    - longitude
+    - latitude_degree
+    - longitude_degree
     - continent_sys_oterm_id
     - continent_sys_oterm_name
     - country_sys_oterm_id
@@ -87,8 +87,9 @@ classes:
     - sdt_sample_id
     - sdt_sample_name
     - location_ref
-    - depth
-    - elevation
+    - sdt_location_name
+    - depth_meter
+    - elevation_meter
     - date
     - time
     - timezone
@@ -97,6 +98,7 @@ classes:
     - env_package_sys_oterm_id
     - env_package_sys_oterm_name
     - description
+    - sdt_sample_description
 
   Community:
     mixins:
@@ -137,7 +139,7 @@ classes:
     slots:
     - sdt_reads_id
     - sdt_reads_name
-    - read_count
+    - read_count_count_unit
     - base_count
     - read_type_sys_oterm_id
     - read_type_sys_oterm_name
@@ -162,9 +164,15 @@ classes:
     - sdt_assembly_id
     - sdt_assembly_name
     - strain_ref
-    - n_contigs
+    - sdt_strain_name
+    - n_contigs_count_unit
     - total_size
     - link
+    slot_usage:
+      sdt_strain_name:
+        required: false
+        comments:
+        - Denormalized field from strain reference, may be NULL
 
   Bin:
     mixins:
@@ -202,10 +210,16 @@ classes:
     - sdt_genome_id
     - sdt_genome_name
     - strain_ref
-    - n_contigs
-    - n_features
+    - sdt_strain_name
+    - n_contigs_count_unit
+    - n_features_count_unit
     - total_size
     - link
+    slot_usage:
+      sdt_strain_name:
+        required: false
+        comments:
+        - Denormalized field from strain reference, may be NULL
 
   Gene:
     mixins:
@@ -224,10 +238,10 @@ classes:
     - sdt_gene_id
     - sdt_gene_name
     - genome_ref
-    - contig_number
+    - contig_number_count_unit
     - strand
-    - start
-    - stop
+    - start_base_pair
+    - stop_base_pair
     - function
 
   Strain:
@@ -304,6 +318,11 @@ classes:
     - sdt_protocol_name
     - sdt_protocol_description
     - link
+    slot_usage:
+      link:
+        required: false
+        comments:
+        - Made optional to accommodate NULL values in parquet data
 
   Image:
     mixins:
@@ -321,9 +340,10 @@ classes:
     - sdt_image_id
     - sdt_image_name
     - mime_type
-    - size
+    - size_byte
     - dimensions
     - link
+    - sdt_image_description
 
   Condition:
     mixins:
@@ -355,7 +375,13 @@ classes:
     - sdt_dubseq_library_id
     - sdt_dubseq_library_name
     - genome_ref
-    - n_fragments
+    - sdt_genome_name
+    - n_fragments_count_unit
+    slot_usage:
+      sdt_genome_name:
+        required: false
+        comments:
+        - Denormalized field from genome reference, may be NULL
 
   TnSeqLibrary:
     mixins:
@@ -374,10 +400,19 @@ classes:
     - sdt_tnseq_library_id
     - sdt_tnseq_library_name
     - genome_ref
+    - sdt_genome_name
     - primers_model
-    - n_mapped_reads
-    - n_good_reads
-    - n_genes_hit
+    - n_mapped_reads_count_unit
+    - n_barcodes_count_unit
+    - n_insertion_locations_count_unit
+    - n_usable_barcodes_count_unit
+    - hit_rate_essential_ratio_unit
+    - hit_rate_other_ratio_unit
+    slot_usage:
+      sdt_genome_name:
+        required: false
+        comments:
+        - Denormalized field from genome reference, may be NULL
 
   ENIGMA:
     mixins:
@@ -417,7 +452,7 @@ slots:
       microtype: ME:0000228
       constraint_type: unique_key
       original_name: name
-  latitude:
+  latitude_degree:
     description: Latitude in decimal degrees
     range: Latitude
     required: true
@@ -426,7 +461,7 @@ slots:
       microtype: ME:0000211
       units: UO:0000185
       original_name: latitude
-  longitude:
+  longitude_degree:
     description: Longitude in decimal degrees
     range: Longitude
     required: true
@@ -540,7 +575,7 @@ slots:
     - CDM convention: FK references use entity name, not ID
     - References Location.sdt_location_name
 
-  depth:
+  depth_meter:
     description: Depth in meters
     range: Depth
     required: false
@@ -549,7 +584,7 @@ slots:
       microtype: ME:0000219
       units: UO:0000008
       original_name: depth
-  elevation:
+  elevation_meter:
     description: Elevation in meters
     range: Elevation
     required: false
@@ -622,6 +657,13 @@ slots:
     description: Free text description
     range: string
     required: false
+
+  sdt_sample_description:
+    description: Sample description (denormalized from Sample entity)
+    range: string
+    required: false
+    comments:
+    - Denormalized field present in parquet data for query optimization
 
   # Community slots
   sdt_community_id:
@@ -707,7 +749,7 @@ slots:
       microtype: ME:0000248
       constraint_type: unique_key
       original_name: name
-  read_count:
+  read_count_count_unit:
     description: Number of reads
     range: Count
     required: true
@@ -784,7 +826,7 @@ slots:
     - CDM convention: FK references use entity name, not ID
     - References Strain.sdt_strain_name
 
-  n_contigs:
+  n_contigs_count_unit:
     description: Number of contigs
     range: Count
     required: true
@@ -865,7 +907,7 @@ slots:
     - References Genome.sdt_genome_name
     - Used by: Gene, Strain, DubSeqLibrary, TnSeqLibrary
 
-  n_features:
+  n_features_count_unit:
     description: Number of annotated features
     range: Count
     required: true
@@ -895,7 +937,7 @@ slots:
       microtype: ME:0000224
       constraint_type: unique_key
       original_name: gene_id
-  contig_number:
+  contig_number_count_unit:
     description: Contig number where gene is located
     range: integer
     required: true
@@ -913,7 +955,7 @@ slots:
     annotations:
       microtype: ME:0000186
       original_name: strand
-  start:
+  start_base_pair:
     description: Start position on contig
     range: integer
     required: true
@@ -922,7 +964,7 @@ slots:
       microtype: ME:0000242
       units: UO:0000244
       original_name: start
-  stop:
+  stop_base_pair:
     description: Stop position on contig
     range: integer
     required: true
@@ -996,9 +1038,11 @@ slots:
       constraint_type: unique_key
       original_name: name
   ncbi_taxid:
-    description: NCBI Taxonomy ID
-    range: integer
+    description: NCBI Taxonomy ID (CURIE format, e.g., NCBITaxon:768507)
+    range: string
     required: false
+    comments:
+    - Changed from integer to string to accommodate CURIE format in parquet data
 
   # ASV slots
     annotations:
@@ -1087,7 +1131,7 @@ slots:
     annotations:
       microtype: ME:0000357
       original_name: MIME type
-  size:
+  size_byte:
     description: File size in bytes
     range: Size
     required: false
@@ -1106,6 +1150,13 @@ slots:
       microtype: ME:0000292
       units: UO:0000236
       original_name: dimensions
+  sdt_image_description:
+    description: Image description
+    range: string
+    required: false
+    comments:
+    - Present in parquet data for additional image metadata
+
   sdt_condition_id:
     description: Unique identifier for Condition
     range: string
@@ -1132,7 +1183,7 @@ slots:
     range: string
     required: true
     identifier: true
-    pattern: '^DubSeqLibrary\d{7}$'
+    pattern: '^DubSeq_Library\d{7}$'
 
     annotations:
       microtype: ME:0000276
@@ -1147,7 +1198,7 @@ slots:
       microtype: ME:0000262
       constraint_type: unique_key
       original_name: name
-  n_fragments:
+  n_fragments_count_unit:
     description: Number of fragments
     range: Count
     required: false
@@ -1162,7 +1213,7 @@ slots:
     range: string
     required: true
     identifier: true
-    pattern: '^TnSeqLibrary\d{7}$'
+    pattern: '^TnSeq_Library\d{7}$'
 
     annotations:
       microtype: ME:0000276
@@ -1185,7 +1236,7 @@ slots:
     annotations:
       microtype: ME:0000263
       original_name: primers_model
-  n_mapped_reads:
+  n_mapped_reads_count_unit:
     description: Number of mapped reads
     range: Count
     required: false
@@ -1194,15 +1245,51 @@ slots:
       microtype: ME:0000126
       units: UO:0000189
       original_name: n_mapped_reads
-  n_good_reads:
-    description: Number of good quality reads
+  n_barcodes_count_unit:
+    description: Number of barcodes
     range: Count
     required: false
 
-  n_genes_hit:
-    description: Number of genes with transposon insertions
+    annotations:
+      microtype: ME:0000126
+      units: UO:0000189
+      original_name: n_barcodes
+  n_insertion_locations_count_unit:
+    description: Number of insertion locations
     range: Count
     required: false
+
+    annotations:
+      microtype: ME:0000126
+      units: UO:0000189
+      original_name: n_insertion_locations
+  n_usable_barcodes_count_unit:
+    description: Number of usable barcodes
+    range: Count
+    required: false
+
+    annotations:
+      microtype: ME:0000126
+      units: UO:0000189
+      original_name: n_usable_barcodes
+  hit_rate_essential_ratio_unit:
+    description: Hit rate for essential genes
+    range: float
+    required: false
+
+    annotations:
+      microtype: ME:0000238
+      units: UO:0000191
+      original_name: hit_rate_essential
+  hit_rate_other_ratio_unit:
+    description: Hit rate for other genes
+    range: float
+    required: false
+
+    annotations:
+      microtype: ME:0000238
+      units: UO:0000191
+      original_name: hit_rate_other
 
   # ENIGMA slots
   sdt_enigma_id:

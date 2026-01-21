@@ -12,7 +12,9 @@ import sys
 from pathlib import Path
 from typing import Dict, List, Any
 import json
+import time
 
+import pandas as pd
 from linkml_store import Client
 from linkml_runtime.utils.schemaview import SchemaView
 
@@ -126,7 +128,7 @@ def add_computed_fields(record: Dict[str, Any], class_name: str) -> Dict[str, An
     # Add read count categories for Reads
     if class_name == 'Reads' and 'reads_read_count' in record:
         read_count = record['reads_read_count']
-        if isinstance(read_count, (int, float)):
+        if isinstance(read_count, (int, float)) and not pd.isna(read_count):
             if read_count >= 100000:
                 enhanced['read_count_category'] = 'very_high'
             elif read_count >= 50000:
@@ -139,7 +141,7 @@ def add_computed_fields(record: Dict[str, Any], class_name: str) -> Dict[str, An
     # Add contig count categories for Assembly
     if class_name == 'Assembly' and 'assembly_n_contigs' in record:
         n_contigs = record['assembly_n_contigs']
-        if isinstance(n_contigs, (int, float)):
+        if isinstance(n_contigs, (int, float)) and not pd.isna(n_contigs):
             if n_contigs >= 1000:
                 enhanced['contig_count_category'] = 'high'
             elif n_contigs >= 100:
@@ -173,12 +175,16 @@ def load_tsv_collection(
     print(f"\n📥 Loading {tsv_path.name} as {class_name}...")
 
     # Read and map TSV data
+    start_time = time.time()
     raw_data = read_tsv_file(tsv_path)
     if not raw_data:
         print(f"  ⚠️  No data found in {tsv_path.name}")
         return 0
 
+    read_time = time.time() - start_time
     print(f"  📊 Read {len(raw_data)} records")
+    if verbose:
+        print(f"  ⏱️  Read time: {read_time:.2f}s")
 
     # Map TSV fields to schema fields
     mapped_data, mapping_report = map_tsv_to_schema_fields(raw_data, class_name, schema_view)
@@ -204,6 +210,9 @@ def load_tsv_collection(
 
         enhanced_data.append(record)
 
+    if verbose and len(enhanced_data) > 0:
+        print(f"  🔍 Sample fields: {list(enhanced_data[0].keys())[:5]}...")
+
     # Create or get collection
     collection_name = class_name
     try:
@@ -217,8 +226,11 @@ def load_tsv_collection(
 
     # Insert data
     try:
+        insert_start = time.time()
         collection.insert(enhanced_data)
-        print(f"  ✅ Loaded {len(enhanced_data)} records into {collection_name}")
+        insert_time = time.time() - insert_start
+
+        print(f"  ✅ Loaded {len(enhanced_data)} records in {insert_time:.2f}s")
         return len(enhanced_data)
     except Exception as e:
         print(f"  ❌ Error loading data: {e}")
@@ -271,6 +283,7 @@ def load_all_enigma_data(
 
     results = {}
     total_records = 0
+    start_time = time.time()
 
     for tsv_file, class_name in file_mappings.items():
         tsv_path = tsv_dir / tsv_file
@@ -284,8 +297,11 @@ def load_all_enigma_data(
         results[class_name] = count
         total_records += count
 
+    elapsed = time.time() - start_time
     print(f"\n{'='*60}")
-    print(f"📊 Summary: Loaded {total_records} total records across {len(results)} collections")
+    print(f"📊 Summary: Loaded {total_records:,} total records across {len(results)} collections")
+    if total_records > 0 and elapsed > 0:
+        print(f"⏱️  Total time: {elapsed:.2f}s ({total_records/elapsed:.0f} records/sec)")
     return results
 
 
@@ -336,14 +352,49 @@ def show_database_info(db):
         collections = db.list_collections()
         print(f"\nCollections: {len(collections)}")
 
-        for coll_name in sorted(collections):
+        # Extract collection names from collection objects
+        collection_names = []
+        for c in collections:
+            if isinstance(c, str):
+                collection_names.append(c)
+            elif hasattr(c, 'alias'):
+                collection_names.append(c.alias)
+            elif hasattr(c, 'target_class_name'):
+                collection_names.append(c.target_class_name)
+
+        total_records = 0
+        for coll_name in sorted(collection_names):
             try:
                 collection = db.get_collection(coll_name)
-                # Try to get count
-                count = len(list(collection.find(limit=10000)))  # Approximate
-                print(f"  • {coll_name}: ~{count} records")
+                # Get count using find with high limit
+                result = collection.find(limit=1000000)
+
+                # Handle different result types
+                if hasattr(result, 'num_rows'):
+                    count = result.num_rows
+                elif hasattr(result, 'rows'):
+                    count = len(result.rows)
+                else:
+                    # Fallback: convert to list
+                    rows = list(result)
+                    count = len(rows)
+
+                total_records += count
+
+                # Show size indicator
+                if count >= 100000:
+                    size_marker = " (100K+)"
+                elif count >= 10000:
+                    size_marker = " (10K+)"
+                else:
+                    size_marker = ""
+
+                print(f"  • {coll_name}: {count:,}{size_marker}")
             except Exception as e:
-                print(f"  • {coll_name}: (error counting records)")
+                print(f"  • {coll_name}: (error counting)")
+
+        print(f"\nTotal records: ~{total_records:,}")
+
     except Exception as e:
         print(f"Could not list collections: {e}")
 

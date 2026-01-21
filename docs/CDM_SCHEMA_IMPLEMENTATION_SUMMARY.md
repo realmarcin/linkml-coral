@@ -572,7 +572,7 @@ output_index: 0
 
 **Key Resources:**
 - Original CORAL Schema: `src/linkml_coral/schema/linkml_coral.yaml`
-- KBase CDM Parquet DB: `/Users/marcin/Documents/VIMSS/ENIGMA/KBase/ENIGMA_in_CDM/minio/jmc_coral.db`
+- KBase CDM Parquet DB: `data/enigma_coral.db`
 - Analysis Scripts: `scripts/cdm_analysis/`
 - Documentation: `docs/cdm_analysis/`
 

@@ -494,7 +494,7 @@ python scripts/linkml_to_cdm.py src/linkml_coral/schema/linkml_coral.yaml --chec
 just load-cdm-store
 
 # Load with custom paths
-just load-cdm-store /path/to/jmc_coral.db output.db
+just load-cdm-store data/enigma_coral.db output.db
 
 # Load including dynamic brick tables (sampled at 10K rows each)
 just load-cdm-store-full

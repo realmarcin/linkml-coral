@@ -202,7 +202,7 @@ just cdm-demo-all                  # Run all query demonstrations
 
 ```bash
 # Extract metadata from parquet
-uv run python scripts/cdm_analysis/extract_cdm_metadata.py data/jmc_coral.db \
+uv run python scripts/cdm_analysis/extract_cdm_metadata.py data/enigma_coral.db \
   --category static \
   --format detailed
 
@@ -227,7 +227,7 @@ linkml-coral/
 │   │   ├── microtype_catalog.json # 69 semantic types
 │   │   ├── relationship_catalog.json # 108 FK relationships
 │   │   └── cdm_metadata_schema.sql # DuckDB DDL
-│   └── jmc_coral.db/              # CDM parquet files (44 tables)
+│   └── enigma_coral.db/              # CDM parquet files (44 tables)
 │
 ├── docs/
 │   ├── cdm_data_dictionary.html   # Interactive data dictionary ⭐

@@ -1,12 +1,16 @@
 {
   "ddt_brick0000010": {
     "table_name": "ddt_brick0000010",
-    "total_rows": 158652,
+    "total_rows": 52884,
     "num_columns": 9,
     "columns": {
       "sdt_sample_name": {
         "type": "string",
         "nullable": true,
+        "description": "Environmental Sample ID",
+        "field_type": "foreign_key",
+        "references": "sdt_sample.sdt_sample_name",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -19,6 +23,10 @@
       "molecule_from_list_sys_oterm_id": {
         "type": "string",
         "nullable": true,
+        "description": "Molecule from list, ontology term CURIE",
+        "field_type": "foreign_key",
+        "references": "sys_oterm.sys_oterm_id",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -31,6 +39,10 @@
       "molecule_from_list_sys_oterm_name": {
         "type": "string",
         "nullable": true,
+        "description": "Molecule from list",
+        "field_type": "",
+        "references": "",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -43,6 +55,10 @@
       "molecule_molecular_weight_dalton": {
         "type": "double",
         "nullable": true,
+        "description": "Molecular Weight",
+        "field_type": "",
+        "references": "",
+        "unit_label": "dalton",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -55,6 +71,10 @@
       "molecule_algorithm_parameter": {
         "type": "string",
         "nullable": true,
+        "description": "Algorithm Parameter",
+        "field_type": "",
+        "references": "",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -67,6 +87,10 @@
       "molecule_detection_limit_micromolar": {
         "type": "double",
         "nullable": true,
+        "description": "Detection Limit",
+        "field_type": "",
+        "references": "",
+        "unit_label": "micromolar",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -76,9 +100,13 @@
         "fk": "",
         "orig_name": ""
       },
-      "physiochemical_state": {
+      "state": {
         "type": "string",
         "nullable": true,
+        "description": "State",
+        "field_type": "",
+        "references": "",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -91,6 +119,10 @@
       "replicate_series_count_unit": {
         "type": "integer",
         "nullable": true,
+        "description": "Replicate Series",
+        "field_type": "",
+        "references": "",
+        "unit_label": "count unit",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -103,6 +135,10 @@
       "concentration_micromolar": {
         "type": "double",
         "nullable": true,
+        "description": "Concentration",
+        "field_type": "",
+        "references": "",
+        "unit_label": "micromolar",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -116,7 +152,7 @@
   },
   "ddt_brick0000072": {
     "table_name": "ddt_brick0000072",
-    "total_rows": 5670,
+    "total_rows": 1890,
     "num_columns": 9,
     "columns": {
       "state": {
@@ -267,12 +303,16 @@
   },
   "ddt_brick0000073": {
     "table_name": "ddt_brick0000073",
-    "total_rows": 10692,
+    "total_rows": 3564,
     "num_columns": 9,
     "columns": {
-      "physiochemical_state": {
+      "state": {
         "type": "string",
         "nullable": true,
+        "description": "State",
+        "field_type": "",
+        "references": "",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -285,6 +325,10 @@
       "statistic_sys_oterm_id": {
         "type": "string",
         "nullable": true,
+        "description": "Statistic, ontology term CURIE",
+        "field_type": "foreign_key",
+        "references": "sys_oterm.sys_oterm_id",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -297,6 +341,10 @@
       "statistic_sys_oterm_name": {
         "type": "string",
         "nullable": true,
+        "description": "Statistic",
+        "field_type": "",
+        "references": "",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -309,6 +357,10 @@
       "sdt_sample_name": {
         "type": "string",
         "nullable": true,
+        "description": "Environmental Sample ID",
+        "field_type": "foreign_key",
+        "references": "sdt_sample.sdt_sample_name",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -321,6 +373,10 @@
       "molecule_from_list_sys_oterm_id": {
         "type": "string",
         "nullable": true,
+        "description": "Molecule from list, ontology term CURIE",
+        "field_type": "foreign_key",
+        "references": "sys_oterm.sys_oterm_id",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -333,6 +389,10 @@
       "molecule_from_list_sys_oterm_name": {
         "type": "string",
         "nullable": true,
+        "description": "Molecule from list",
+        "field_type": "",
+        "references": "",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -345,6 +405,10 @@
       "molecule_molecular_weight_dalton": {
         "type": "double",
         "nullable": true,
+        "description": "Molecular Weight",
+        "field_type": "",
+        "references": "",
+        "unit_label": "dalton",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -357,6 +421,10 @@
       "molecule_presence_molecule_from_list_helium_0": {
         "type": "boolean",
         "nullable": true,
+        "description": "Presence, Molecule from list=helium(0)",
+        "field_type": "",
+        "references": "",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -369,6 +437,10 @@
       "concentration_milligram_per_kilogram": {
         "type": "double",
         "nullable": true,
+        "description": "Concentration",
+        "field_type": "",
+        "references": "",
+        "unit_label": "milligram per kilogram",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -382,12 +454,16 @@
   },
   "ddt_brick0000080": {
     "table_name": "ddt_brick0000080",
-    "total_rows": 294528,
+    "total_rows": 98176,
     "num_columns": 8,
     "columns": {
       "sdt_sample_name": {
         "type": "string",
         "nullable": true,
+        "description": "Environmental Sample ID",
+        "field_type": "foreign_key",
+        "references": "sdt_sample.sdt_sample_name",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -400,6 +476,10 @@
       "molecule_from_list_sys_oterm_id": {
         "type": "string",
         "nullable": true,
+        "description": "Molecule from list, ontology term CURIE",
+        "field_type": "foreign_key",
+        "references": "sys_oterm.sys_oterm_id",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -412,6 +492,10 @@
       "molecule_from_list_sys_oterm_name": {
         "type": "string",
         "nullable": true,
+        "description": "Molecule from list",
+        "field_type": "",
+        "references": "",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -424,6 +508,10 @@
       "molecule_molecular_weight_dalton": {
         "type": "double",
         "nullable": true,
+        "description": "Molecular Weight",
+        "field_type": "",
+        "references": "",
+        "unit_label": "dalton",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -436,6 +524,10 @@
       "molecule_presence_molecule_from_list_helium_0": {
         "type": "boolean",
         "nullable": true,
+        "description": "Presence, Molecule from list=helium(0)",
+        "field_type": "",
+        "references": "",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -448,6 +540,10 @@
       "concentration_statistic_average_parts_per_billion": {
         "type": "double",
         "nullable": true,
+        "description": "Concentration, Statistic=Average",
+        "field_type": "",
+        "references": "",
+        "unit_label": "parts per billion",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -460,6 +556,10 @@
       "concentration_statistic_standard_deviation_parts_per_billion": {
         "type": "double",
         "nullable": true,
+        "description": "Concentration, Statistic=Standard Deviation",
+        "field_type": "",
+        "references": "",
+        "unit_label": "parts per billion",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -472,6 +572,10 @@
       "detection_limit_parts_per_billion": {
         "type": "double",
         "nullable": true,
+        "description": "Detection Limit",
+        "field_type": "",
+        "references": "",
+        "unit_label": "parts per billion",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -485,12 +589,16 @@
   },
   "ddt_brick0000452": {
     "table_name": "ddt_brick0000452",
-    "total_rows": 341223,
+    "total_rows": 113741,
     "num_columns": 2,
     "columns": {
       "sdt_asv_name": {
         "type": "string",
         "nullable": true,
+        "description": "ASV ID",
+        "field_type": "foreign_key",
+        "references": "sdt_asv.sdt_asv_name",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -503,6 +611,10 @@
       "sequence_sequence_type_16s_sequence": {
         "type": "string",
         "nullable": true,
+        "description": "Sequence, Sequence Type=16S Sequence",
+        "field_type": "",
+        "references": "",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -516,12 +628,16 @@
   },
   "ddt_brick0000454": {
     "table_name": "ddt_brick0000454",
-    "total_rows": 1881723,
+    "total_rows": 627241,
     "num_columns": 4,
     "columns": {
       "sdt_asv_name": {
         "type": "string",
         "nullable": true,
+        "description": "ASV ID",
+        "field_type": "foreign_key",
+        "references": "sdt_asv.sdt_asv_name",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -534,6 +650,10 @@
       "taxonomic_level_sys_oterm_id": {
         "type": "string",
         "nullable": true,
+        "description": "Taxonomic Level, ontology term CURIE",
+        "field_type": "foreign_key",
+        "references": "sys_oterm.sys_oterm_id",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -546,6 +666,10 @@
       "taxonomic_level_sys_oterm_name": {
         "type": "string",
         "nullable": true,
+        "description": "Taxonomic Level",
+        "field_type": "",
+        "references": "",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -558,6 +682,10 @@
       "sdt_taxon_name": {
         "type": "string",
         "nullable": true,
+        "description": "Taxon ID",
+        "field_type": "foreign_key",
+        "references": "sdt_taxon.sdt_taxon_name",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -571,12 +699,16 @@
   },
   "ddt_brick0000457": {
     "table_name": "ddt_brick0000457",
-    "total_rows": 70374,
+    "total_rows": 23458,
     "num_columns": 2,
     "columns": {
       "sdt_asv_name": {
         "type": "string",
         "nullable": true,
+        "description": "ASV ID",
+        "field_type": "foreign_key",
+        "references": "sdt_asv.sdt_asv_name",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -589,6 +721,10 @@
       "sequence_sequence_type_16s_sequence": {
         "type": "string",
         "nullable": true,
+        "description": "Sequence, Sequence Type=16S Sequence",
+        "field_type": "",
+        "references": "",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -602,12 +738,16 @@
   },
   "ddt_brick0000458": {
     "table_name": "ddt_brick0000458",
-    "total_rows": 326526,
+    "total_rows": 108842,
     "num_columns": 4,
     "columns": {
       "sdt_asv_name": {
         "type": "string",
         "nullable": true,
+        "description": "ASV ID",
+        "field_type": "foreign_key",
+        "references": "sdt_asv.sdt_asv_name",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -620,6 +760,10 @@
       "taxonomic_level_sys_oterm_id": {
         "type": "string",
         "nullable": true,
+        "description": "Taxonomic Level, ontology term CURIE",
+        "field_type": "foreign_key",
+        "references": "sys_oterm.sys_oterm_id",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -632,6 +776,10 @@
       "taxonomic_level_sys_oterm_name": {
         "type": "string",
         "nullable": true,
+        "description": "Taxonomic Level",
+        "field_type": "",
+        "references": "",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -644,6 +792,10 @@
       "sdt_taxon_name": {
         "type": "string",
         "nullable": true,
+        "description": "Taxon ID",
+        "field_type": "foreign_key",
+        "references": "sdt_taxon.sdt_taxon_name",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -657,12 +809,16 @@
   },
   "ddt_brick0000459": {
     "table_name": "ddt_brick0000459",
-    "total_rows": 2603838,
+    "total_rows": 867946,
     "num_columns": 3,
     "columns": {
       "sdt_asv_name": {
         "type": "string",
         "nullable": true,
+        "description": "ASV ID",
+        "field_type": "foreign_key",
+        "references": "sdt_asv.sdt_asv_name",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -675,6 +831,10 @@
       "sdt_community_name": {
         "type": "string",
         "nullable": true,
+        "description": "Community ID",
+        "field_type": "foreign_key",
+        "references": "sdt_community.sdt_community_name",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -687,6 +847,10 @@
       "count_count_unit": {
         "type": "integer",
         "nullable": true,
+        "description": "Count",
+        "field_type": "",
+        "references": "",
+        "unit_label": "count unit",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -700,12 +864,16 @@
   },
   "ddt_brick0000460": {
     "table_name": "ddt_brick0000460",
-    "total_rows": 28296,
+    "total_rows": 9432,
     "num_columns": 2,
     "columns": {
       "sdt_asv_name": {
         "type": "string",
         "nullable": true,
+        "description": "ASV ID",
+        "field_type": "foreign_key",
+        "references": "sdt_asv.sdt_asv_name",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -718,6 +886,10 @@
       "sequence_sequence_type_16s_sequence": {
         "type": "string",
         "nullable": true,
+        "description": "Sequence, Sequence Type=16S Sequence",
+        "field_type": "",
+        "references": "",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -731,12 +903,16 @@
   },
   "ddt_brick0000461": {
     "table_name": "ddt_brick0000461",
-    "total_rows": 170088,
+    "total_rows": 56696,
     "num_columns": 5,
     "columns": {
       "sdt_asv_name": {
         "type": "string",
         "nullable": true,
+        "description": "ASV ID",
+        "field_type": "foreign_key",
+        "references": "sdt_asv.sdt_asv_name",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -749,6 +925,10 @@
       "taxonomic_level_sys_oterm_id": {
         "type": "string",
         "nullable": true,
+        "description": "Taxonomic Level, ontology term CURIE",
+        "field_type": "foreign_key",
+        "references": "sys_oterm.sys_oterm_id",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -761,6 +941,10 @@
       "taxonomic_level_sys_oterm_name": {
         "type": "string",
         "nullable": true,
+        "description": "Taxonomic Level",
+        "field_type": "",
+        "references": "",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -773,6 +957,10 @@
       "sdt_taxon_name": {
         "type": "string",
         "nullable": true,
+        "description": "Taxon ID",
+        "field_type": "foreign_key",
+        "references": "sdt_taxon.sdt_taxon_name",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -785,6 +973,10 @@
       "confidence_confidence_unit": {
         "type": "double",
         "nullable": true,
+        "description": "Confidence",
+        "field_type": "",
+        "references": "",
+        "unit_label": "confidence unit",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -798,12 +990,16 @@
   },
   "ddt_brick0000462": {
     "table_name": "ddt_brick0000462",
-    "total_rows": 396144,
+    "total_rows": 132048,
     "num_columns": 3,
     "columns": {
       "sdt_asv_name": {
         "type": "string",
         "nullable": true,
+        "description": "ASV ID",
+        "field_type": "foreign_key",
+        "references": "sdt_asv.sdt_asv_name",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -816,6 +1012,10 @@
       "sdt_community_name": {
         "type": "string",
         "nullable": true,
+        "description": "Community ID",
+        "field_type": "foreign_key",
+        "references": "sdt_community.sdt_community_name",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -828,6 +1028,10 @@
       "count_count_unit": {
         "type": "integer",
         "nullable": true,
+        "description": "Count",
+        "field_type": "",
+        "references": "",
+        "unit_label": "count unit",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -841,12 +1045,16 @@
   },
   "ddt_brick0000476": {
     "table_name": "ddt_brick0000476",
-    "total_rows": 320281120,
+    "total_rows": 80070280,
     "num_columns": 4,
     "columns": {
       "sdt_asv_name": {
         "type": "string",
         "nullable": true,
+        "description": "ASV ID",
+        "field_type": "foreign_key",
+        "references": "sdt_asv.sdt_asv_name",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -859,6 +1067,10 @@
       "sdt_community_name": {
         "type": "string",
         "nullable": true,
+        "description": "Community ID",
+        "field_type": "foreign_key",
+        "references": "sdt_community.sdt_community_name",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -871,6 +1083,10 @@
       "replicate_series_count_unit": {
         "type": "integer",
         "nullable": true,
+        "description": "Replicate Series",
+        "field_type": "",
+        "references": "",
+        "unit_label": "count unit",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -883,6 +1099,10 @@
       "count_count_unit": {
         "type": "integer",
         "nullable": true,
+        "description": "Count",
+        "field_type": "",
+        "references": "",
+        "unit_label": "count unit",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -896,12 +1116,16 @@
   },
   "ddt_brick0000477": {
     "table_name": "ddt_brick0000477",
-    "total_rows": 28194,
+    "total_rows": 9398,
     "num_columns": 2,
     "columns": {
       "sdt_asv_name": {
         "type": "string",
         "nullable": true,
+        "description": "ASV ID",
+        "field_type": "foreign_key",
+        "references": "sdt_asv.sdt_asv_name",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -914,6 +1138,10 @@
       "sequence_sequence_type_16s_sequence": {
         "type": "string",
         "nullable": true,
+        "description": "Sequence, Sequence Type=16S Sequence",
+        "field_type": "",
+        "references": "",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -927,12 +1155,16 @@
   },
   "ddt_brick0000478": {
     "table_name": "ddt_brick0000478",
-    "total_rows": 169491,
+    "total_rows": 56497,
     "num_columns": 5,
     "columns": {
       "sdt_asv_name": {
         "type": "string",
         "nullable": true,
+        "description": "ASV ID",
+        "field_type": "foreign_key",
+        "references": "sdt_asv.sdt_asv_name",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -945,6 +1177,10 @@
       "taxonomic_level_sys_oterm_id": {
         "type": "string",
         "nullable": true,
+        "description": "Taxonomic Level, ontology term CURIE",
+        "field_type": "foreign_key",
+        "references": "sys_oterm.sys_oterm_id",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -957,6 +1193,10 @@
       "taxonomic_level_sys_oterm_name": {
         "type": "string",
         "nullable": true,
+        "description": "Taxonomic Level",
+        "field_type": "",
+        "references": "",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -969,6 +1209,10 @@
       "sdt_taxon_name": {
         "type": "string",
         "nullable": true,
+        "description": "Taxon ID",
+        "field_type": "foreign_key",
+        "references": "sdt_taxon.sdt_taxon_name",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -981,6 +1225,10 @@
       "confidence_confidence_unit": {
         "type": "double",
         "nullable": true,
+        "description": "Confidence",
+        "field_type": "",
+        "references": "",
+        "unit_label": "confidence unit",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -994,12 +1242,16 @@
   },
   "ddt_brick0000479": {
     "table_name": "ddt_brick0000479",
-    "total_rows": 1127760,
+    "total_rows": 375920,
     "num_columns": 3,
     "columns": {
       "sdt_asv_name": {
         "type": "string",
         "nullable": true,
+        "description": "ASV ID",
+        "field_type": "foreign_key",
+        "references": "sdt_asv.sdt_asv_name",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -1012,6 +1264,10 @@
       "sdt_community_name": {
         "type": "string",
         "nullable": true,
+        "description": "Community ID",
+        "field_type": "foreign_key",
+        "references": "sdt_community.sdt_community_name",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -1024,6 +1280,10 @@
       "count_count_unit": {
         "type": "integer",
         "nullable": true,
+        "description": "Count",
+        "field_type": "",
+        "references": "",
+        "unit_label": "count unit",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -1037,12 +1297,16 @@
   },
   "ddt_brick0000495": {
     "table_name": "ddt_brick0000495",
-    "total_rows": 26712,
+    "total_rows": 8904,
     "num_columns": 5,
     "columns": {
       "sdt_strain_name": {
         "type": "string",
         "nullable": true,
+        "description": "Strain ID",
+        "field_type": "foreign_key",
+        "references": "sdt_strain.sdt_strain_name",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -1055,6 +1319,10 @@
       "strain_relative_evolutionary_divergence_dimensionless_unit": {
         "type": "double",
         "nullable": true,
+        "description": "Relative Evolutionary Divergence",
+        "field_type": "",
+        "references": "",
+        "unit_label": "dimensionless unit",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -1067,6 +1335,10 @@
       "taxonomic_level_sys_oterm_id": {
         "type": "string",
         "nullable": true,
+        "description": "Taxonomic Level, ontology term CURIE",
+        "field_type": "foreign_key",
+        "references": "sys_oterm.sys_oterm_id",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -1079,6 +1351,10 @@
       "taxonomic_level_sys_oterm_name": {
         "type": "string",
         "nullable": true,
+        "description": "Taxonomic Level",
+        "field_type": "",
+        "references": "",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -1091,6 +1367,10 @@
       "sdt_taxon_name": {
         "type": "string",
         "nullable": true,
+        "description": "Taxon ID",
+        "field_type": "foreign_key",
+        "references": "sdt_taxon.sdt_taxon_name",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -1104,12 +1384,16 @@
   },
   "ddt_brick0000501": {
     "table_name": "ddt_brick0000501",
-    "total_rows": 9321,
+    "total_rows": 3107,
     "num_columns": 10,
     "columns": {
       "sdt_strain_name": {
         "type": "string",
         "nullable": true,
+        "description": "Strain ID",
+        "field_type": "foreign_key",
+        "references": "sdt_strain.sdt_strain_name",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -1122,6 +1406,10 @@
       "sdt_condition_name": {
         "type": "string",
         "nullable": true,
+        "description": "Condition ID",
+        "field_type": "foreign_key",
+        "references": "sdt_condition.sdt_condition_name",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -1134,6 +1422,10 @@
       "description_comment_original_condition_description": {
         "type": "string",
         "nullable": true,
+        "description": "Description, Comment=Original Condition Description",
+        "field_type": "",
+        "references": "",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -1146,6 +1438,10 @@
       "sdt_sample_name": {
         "type": "string",
         "nullable": true,
+        "description": "Environmental Sample ID",
+        "field_type": "foreign_key",
+        "references": "sdt_sample.sdt_sample_name",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -1158,6 +1454,10 @@
       "date_comment_sampling_date": {
         "type": "string",
         "nullable": true,
+        "description": "Date, Comment=Sampling Date",
+        "field_type": "",
+        "references": "",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -1170,6 +1470,10 @@
       "sdt_location_name": {
         "type": "string",
         "nullable": true,
+        "description": "Environmental Sample Location ID",
+        "field_type": "foreign_key",
+        "references": "sdt_location.sdt_location_name",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -1182,6 +1486,10 @@
       "enigma_campaign_sys_oterm_id": {
         "type": "string",
         "nullable": true,
+        "description": "ENIGMA Campaign, ontology term CURIE",
+        "field_type": "foreign_key",
+        "references": "sys_oterm.sys_oterm_id",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -1194,6 +1502,10 @@
       "enigma_campaign_sys_oterm_name": {
         "type": "string",
         "nullable": true,
+        "description": "ENIGMA Campaign",
+        "field_type": "",
+        "references": "",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -1206,6 +1518,10 @@
       "enigma_labs_and_personnel_comment_contact_person_or_lab_sys_oterm_id": {
         "type": "string",
         "nullable": true,
+        "description": "ENIGMA Labs and Personnel, Comment=Contact Person or Lab, ontology term CURIE",
+        "field_type": "foreign_key",
+        "references": "sys_oterm.sys_oterm_id",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -1218,6 +1534,10 @@
       "enigma_labs_and_personnel_comment_contact_person_or_lab_sys_oterm_name": {
         "type": "string",
         "nullable": true,
+        "description": "ENIGMA Labs and Personnel, Comment=Contact Person or Lab",
+        "field_type": "",
+        "references": "",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -1231,7 +1551,7 @@
   },
   "ddt_brick0000507": {
     "table_name": "ddt_brick0000507",
-    "total_rows": 9027,
+    "total_rows": 3009,
     "num_columns": 6,
     "columns": {
       "sdt_strain_name": {
@@ -1334,12 +1654,16 @@
   },
   "ddt_brick0000508": {
     "table_name": "ddt_brick0000508",
-    "total_rows": 12702,
+    "total_rows": 4234,
     "num_columns": 6,
     "columns": {
       "sdt_sample_name": {
         "type": "string",
         "nullable": true,
+        "description": "Environmental Sample ID",
+        "field_type": "foreign_key",
+        "references": "sdt_sample.sdt_sample_name",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -1352,6 +1676,10 @@
       "sdt_strain_name": {
         "type": "string",
         "nullable": true,
+        "description": "Strain ID",
+        "field_type": "foreign_key",
+        "references": "sdt_strain.sdt_strain_name",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -1364,6 +1692,10 @@
       "sdt_genome_name": {
         "type": "string",
         "nullable": true,
+        "description": "Genome ID",
+        "field_type": "foreign_key",
+        "references": "sdt_genome.sdt_genome_name",
+        "unit_label": "",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -1376,6 +1708,10 @@
       "read_coverage_statistic_average_comment_cov80_average_coverage_after_trimming_highest_and_lowest_10_percent_count_unit": {
         "type": "double",
         "nullable": true,
+        "description": "Read Coverage, Statistic=Average, Comment=cov80 average coverage after trimming highest and lowest 10 percent",
+        "field_type": "",
+        "references": "",
+        "unit_label": "count unit",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -1388,6 +1724,10 @@
       "sequence_identity_statistic_average_comment_average_percent_identity_of_aligned_reads_percent": {
         "type": "double",
         "nullable": true,
+        "description": "Sequence Identity, Statistic=Average, Comment=average percent identity of aligned reads",
+        "field_type": "",
+        "references": "",
+        "unit_label": "percent",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -1400,6 +1740,10 @@
       "read_coverage_comment_percent_of_1kb_chunks_of_genome_covered_by_at_least_one_read_percent": {
         "type": "double",
         "nullable": true,
+        "description": "Read Coverage, Comment=percent of 1kb chunks of genome covered by at least one read",
+        "field_type": "",
+        "references": "",
+        "unit_label": "percent",
         "microtype": "",
         "units": "",
         "constraint": "",
@@ -1413,7 +1757,7 @@
   },
   "ddt_ndarray": {
     "table_name": "ddt_ndarray",
-    "total_rows": 120,
+    "total_rows": 20,
     "num_columns": 15,
     "columns": {
       "ddt_ndarray_id": {
