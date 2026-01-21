@@ -150,3 +150,27 @@ output/
 # Database files
 *.db
 *.db.wal
+
+# Output files
+*.out
+*.log
+load-*.out
+validate-*.out
+just_*.out
+validat.out
+
+# Temporary analysis files
+*_analysis.txt
+*_output.txt
+*_results.txt
+*_report.txt
+cdm_report.txt
+typedef_detailed_analysis.txt
+
+# Validation reports (keep latest only)
+validation_reports/*/*.json
+validation_summary*/
+
+# Analysis output
+analysis_output/*.json
+docs/cdm_analysis/*_report.json
