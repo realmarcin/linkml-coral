@@ -331,17 +331,17 @@ load-cdm-store-bricks-full db='data/enigma_coral.db' output='cdm_store_bricks_fu
     --verbose
   @echo "✅ Database ready: {{output}}"
 
-# Load CDM parquet with ALL dynamic brick tables (sampled at 10K rows)
+# Load CDM parquet with ALL dynamic brick tables (sampled, configurable)
 [group('CDM data management')]
-load-cdm-store-full db='data/enigma_coral.db' output='cdm_store_full.db':
+load-cdm-store-full db='data/enigma_coral.db' output='cdm_store_full.db' max_rows='10000':
   @echo "📦 Loading CDM parquet data (including ALL ~20 brick tables)..."
-  @echo "⚠️  Note: Each brick sampled at 10K rows (prevents huge database)"
+  @echo "⚠️  Note: Each brick sampled at {{max_rows}} rows (prevents huge database)"
   uv run python scripts/cdm_analysis/load_cdm_parquet_to_store.py {{db}} \
     --output {{output}} \
     --include-system \
     --include-static \
     --include-dynamic \
-    --max-dynamic-rows 10000 \
+    --max-dynamic-rows {{max_rows}} \
     --create-indexes \
     --show-info \
     --verbose
