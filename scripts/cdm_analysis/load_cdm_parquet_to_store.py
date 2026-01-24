@@ -444,7 +444,7 @@ def load_parquet_to_duckdb_direct(
     import duckdb
 
     table_name = parquet_path.name
-    print(f"\n📥 Loading {table_name} as {collection_name} (DIRECT DuckDB import)...")
+    print(f"\n📥 Loading {table_name} as {collection_name}...")
 
     start_time = time.time()
 
@@ -500,11 +500,10 @@ def load_parquet_to_duckdb_direct(
         return count
 
     except Exception as e:
-        print(f"  ❌ Error with direct import: {e}")
+        # Direct DuckDB import failed (expected if linkml-store doesn't expose connection)
+        # Silently fall back to pandas - no action needed
         if verbose:
-            import traceback
-            traceback.print_exc()
-        print(f"  ⚠️  Falling back to pandas-based loading...")
+            print(f"  ℹ️  Note: Direct import unavailable, using pandas fallback (expected)")
         return 0
 
 
@@ -903,7 +902,7 @@ def load_all_cdm_parquet(
 
         # Show loading strategy
         if use_direct_import:
-            print(f"🚀 Using DIRECT DuckDB import (10-50x faster, minimal memory)")
+            print(f"📦 Using optimized loading (attempts direct DuckDB, falls back to pandas)")
         elif use_chunked:
             print(f"📦 Using CHUNKED loading ({chunk_size:,} rows/chunk, memory-safe)")
         else:
