@@ -264,26 +264,63 @@ load-cdm-store db='data/enigma_coral.db' output='cdm_store.db':
     --verbose
   @echo "✅ Database ready: {{output}}"
 
-# Load CDM parquet with core tables + first 10 brick tables (sample)
+# Load CDM parquet with core tables + first 5 brick tables (QUICK SAMPLE)
 [group('CDM data management')]
-load-cdm-store-sample db='data/enigma_coral.db' output='cdm_store_sample.db':
-  @echo "📦 Loading CDM parquet data (core + first 10 brick tables)..."
-  @echo "⚠️  Note: Loading complete brick data (no row sampling)"
+load-cdm-store-sample db='data/enigma_coral.db' output='cdm_store_sample.db' num_bricks='5' max_rows='10000':
+  @echo "📦 Loading CDM parquet data (QUICK SAMPLE: first {{num_bricks}} bricks, {{max_rows}} rows each)..."
   uv run python scripts/cdm_analysis/load_cdm_parquet_to_store.py {{db}} \
     --output {{output}} \
     --include-system \
     --include-static \
-    --num-bricks 10 \
+    --num-bricks {{num_bricks}} \
+    --max-dynamic-rows {{max_rows}} \
     --create-indexes \
     --show-info \
     --verbose
   @echo "✅ Database ready: {{output}}"
 
-# Load CDM parquet with core tables + first 20 brick tables (complete)
+# Load CDM parquet with brick tables (SAFE: sampled at 100K rows, uses direct DuckDB import)
 [group('CDM data management')]
-load-cdm-store-bricks db='data/enigma_coral.db' output='cdm_store_bricks.db' num_bricks='20':
-  @echo "📦 Loading CDM parquet data (core + first {{num_bricks}} complete brick tables)..."
-  @echo "⚠️  Note: Loading complete brick data (no row sampling)"
+load-cdm-store-bricks db='data/enigma_coral.db' output='cdm_store_bricks.db' num_bricks='20' max_rows='100000':
+  @echo "📦 Loading CDM parquet data (core + first {{num_bricks}} brick tables)..."
+  @echo "⚠️  SAFE MODE: Sampling {{max_rows}} rows per brick table"
+  @echo "   Using fast direct DuckDB import (10-50x faster than pandas)"
+  @echo "   (For full load, use: just load-cdm-store-bricks-full)"
+  uv run python scripts/cdm_analysis/load_cdm_parquet_to_store.py {{db}} \
+    --output {{output}} \
+    --include-system \
+    --include-static \
+    --num-bricks {{num_bricks}} \
+    --max-dynamic-rows {{max_rows}} \
+    --create-indexes \
+    --show-info \
+    --verbose
+  @echo "✅ Database ready: {{output}}"
+
+# Load CDM parquet with ALL brick tables (FULL: no sampling - requires 128+ GB RAM)
+[group('CDM data management')]
+load-cdm-store-bricks-full db='data/enigma_coral.db' output='cdm_store_bricks_full.db' num_bricks='20':
+  @echo "⚠️  ============================================"
+  @echo "⚠️  WARNING: Full brick load requires ~100+ GB RAM"
+  @echo "⚠️  ============================================"
+  @echo ""
+  @echo "This will load ALL rows from {{num_bricks}} brick tables, including:"
+  @echo "  • ddt_brick0000476: 320 million rows (383 MB → ~7 GB in memory)"
+  @echo "  • Other bricks: ~500K rows total"
+  @echo ""
+  @echo "Requirements:"
+  @echo "  • RAM: 128 GB minimum (256 GB recommended)"
+  @echo "  • Time: 15-30 minutes (with direct DuckDB import)"
+  @echo "  • Disk: 50+ GB free space"
+  @echo ""
+  @echo "Uses optimizations:"
+  @echo "  • Direct DuckDB import (10-50x faster)"
+  @echo "  • Automatic chunking for memory safety"
+  @echo ""
+  @echo "Press Ctrl+C to cancel, or wait 10 seconds to continue..."
+  @sleep 10
+  @echo ""
+  @echo "Starting full load with direct DuckDB import..."
   uv run python scripts/cdm_analysis/load_cdm_parquet_to_store.py {{db}} \
     --output {{output}} \
     --include-system \
@@ -297,7 +334,7 @@ load-cdm-store-bricks db='data/enigma_coral.db' output='cdm_store_bricks.db' num
 # Load CDM parquet with ALL dynamic brick tables (sampled at 10K rows)
 [group('CDM data management')]
 load-cdm-store-full db='data/enigma_coral.db' output='cdm_store_full.db':
-  @echo "📦 Loading CDM parquet data (including ALL ~500 brick tables)..."
+  @echo "📦 Loading CDM parquet data (including ALL ~20 brick tables)..."
   @echo "⚠️  Note: Each brick sampled at 10K rows (prevents huge database)"
   uv run python scripts/cdm_analysis/load_cdm_parquet_to_store.py {{db}} \
     --output {{output}} \
