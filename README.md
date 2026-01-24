@@ -15,6 +15,7 @@ This project converts CORAL typedef JSON definitions into semantic LinkML schema
 - **Complex Query Framework**: Multi-table joins across static, system, and dynamic (brick) data
 - **Automated Validation**: 46 validation rules with regex patterns and FK constraints
 - **Provenance Tracking**: Complete lineage from samples through sequencing to analysis
+- **⚡ High-Performance Loading**: Direct DuckDB import (10-50x faster than pandas, ~130K records/sec)
 
 ---
 
@@ -41,6 +42,19 @@ duckdb cdm_store_sample.db     # Direct SQL access
 
 ---
 
+## ⚡ Performance Improvements
+
+**Direct DuckDB Import** (January 2026):
+- **10-50x faster** loading of parquet files
+- **Minimal memory usage** via streaming imports
+- **~130,000 records/sec** for brick tables
+- Automatically enabled for all loading commands
+- Graceful fallback to pandas if needed
+
+See [DIRECT_DUCKDB_IMPORT_FIX.md](DIRECT_DUCKDB_IMPORT_FIX.md) for technical details.
+
+---
+
 ## 🚀 Quick Start
 
 ### Prerequisites
@@ -49,6 +63,24 @@ duckdb cdm_store_sample.db     # Direct SQL access
 - **uv** package manager - [Install uv](https://docs.astral.sh/uv/getting-started/installation/)
 - **DuckDB** (optional, for direct SQL queries) - Installed automatically with uv sync
 - **just** command runner (optional but recommended) - [Install just](https://github.com/casey/just#installation)
+
+### Hardware Requirements
+
+Different loading operations have varying hardware requirements:
+
+| Operation | RAM Required | Time Estimate | Output Size | Use Case |
+|-----------|-------------|---------------|-------------|----------|
+| **Core only** | 4 GB | ~30 seconds | 50 MB | Quick exploration |
+| **Core + Sample** | 8 GB | ~2 minutes | 25 MB | Recommended start ⭐ |
+| **Core + 20 bricks** | 16 GB | ~5 minutes | 150 MB | Development/testing |
+| **Full (sampled)** | 32 GB | ~10 minutes | 500 MB | Analysis with samples |
+| **Full (unsampled)** | 128 GB+ | 15-30 minutes | 2-5 GB | Complete dataset |
+
+**Performance Notes:**
+- **Direct DuckDB import**: 10-50x faster than pandas (enabled by default)
+- **Loading speed**: ~130,000 records/sec for brick tables, ~40,000 records/sec for static tables
+- **Memory usage**: Chunked loading prevents OOM errors on 64GB machines
+- **Recommended**: 64 GB RAM for comfortable work with sampled brick data
 
 ### Step 1: Clone and Setup
 
@@ -91,41 +123,92 @@ ls data/enigma_coral.db/
 
 ### Step 3: Load Data into DuckDB
 
-**Quick Start - Core Tables Only (Fast, ~30 seconds):**
+Choose a loading option based on your hardware and use case:
+
+#### Option 1: Core Tables Only (Fast) ⚡
 ```bash
 just load-cdm-store
-# Creates: cdm_store.db (23 collections, 515K records, ~50 MB)
 ```
+- **Output**: `cdm_store.db` (50 MB)
+- **Records**: 515K across 23 collections
+- **RAM**: 4 GB minimum
+- **Time**: ~30 seconds
+- **Use case**: Quick exploration, basic queries
 
-**Recommended - Core + Sample Bricks (~2 minutes):**
+#### Option 2: Core + Sample Bricks (Recommended) ⭐
 ```bash
 just load-cdm-store-sample
-# Creates: cdm_store_sample.db (24 collections, 2.4M records, ~25 MB)
-# Includes: All static/system tables + 10 brick measurement tables
 ```
+- **Output**: `cdm_store_sample.db` (25 MB)
+- **Records**: 2.4M across 24 collections (10 brick tables)
+- **RAM**: 8 GB minimum
+- **Time**: ~2 minutes
+- **Use case**: Development, testing with measurement data
 
-**Advanced Options:**
+#### Option 3: Core + 20 Brick Tables
 ```bash
-# Load core + 20 brick tables (~5 minutes)
-just load-cdm-store-bricks
+just load-cdm-store-bricks [db] [output] [num_bricks] [max_rows]
 
-# Load ALL tables with sampling (~10 minutes)
-just load-cdm-store-full
-
-# Custom load with specific options
-uv run python scripts/cdm_analysis/load_cdm_parquet_to_store.py \
-  data/enigma_coral.db \
-  --output my_database.db \
-  --create-indexes \
-  --brick-limit 10 \
-  --brick-sample-size 10000
+# Examples:
+just load-cdm-store-bricks                                    # Load 20 bricks, 100K rows each
+just load-cdm-store-bricks data/enigma_coral.db out.db 10 50000  # Load 10 bricks, 50K rows each
 ```
+- **Output**: `cdm_store_bricks.db` (150 MB with 100K rows/brick)
+- **Records**: ~5M across 23 collections
+- **RAM**: 16 GB minimum (32 GB recommended)
+- **Time**: ~5 minutes
+- **Parameters**:
+  - `db`: Input parquet database path (default: `data/enigma_coral.db`)
+  - `output`: Output DuckDB file (default: `cdm_store_bricks.db`)
+  - `num_bricks`: Number of brick tables to load (default: `20`)
+  - `max_rows`: Max rows per brick (default: `100000`, sampled for safety)
+
+#### Option 4: Full Load with Sampling
+```bash
+just load-cdm-store-full [db] [output] [max_rows]
+
+# Examples:
+just load-cdm-store-full                                      # Load all, 10K rows per brick
+just load-cdm-store-full data/enigma_coral.db out.db 50000   # Load all, 50K rows per brick
+```
+- **Output**: `cdm_store_full.db` (500 MB with 10K rows/brick)
+- **Records**: ~82M sampled from full dataset
+- **RAM**: 32 GB minimum (64 GB recommended)
+- **Time**: ~10 minutes
+- **Parameters**:
+  - `db`: Input parquet database path
+  - `output`: Output DuckDB file
+  - `max_rows`: Sample size per brick (default: `10000`)
+
+#### Option 5: Full Bricks (Unsampled) ⚠️
+```bash
+just load-cdm-store-bricks-full [db] [output] [num_bricks] [max_rows]
+
+# Examples:
+just load-cdm-store-bricks-full                                    # Full load (requires 128+ GB RAM!)
+just load-cdm-store-bricks-full data/enigma_coral.db out.db 20 100000  # Sampled (safer)
+```
+- **Output**: `cdm_store_bricks_full.db` (2-5 GB unsampled)
+- **Records**: Up to 320M+ rows if unsampled
+- **RAM**: 128 GB minimum (256 GB recommended) if `max_rows=0`
+- **Time**: 15-30 minutes for full load
+- **Warning**: Full unsampled load (`max_rows=0`) requires high-memory machine
+- **Parameters**:
+  - `db`: Input parquet database path
+  - `output`: Output DuckDB file
+  - `num_bricks`: Number of brick tables (default: `20`)
+  - `max_rows`: Sample size per brick (default: `0` = unlimited, **use with caution!**)
 
 **What gets loaded:**
-- **Static entities (sdt_*)**: Location, Sample, Reads, Assembly, Genome, Gene, ASV, etc.
-- **System tables (sys_*)**: Ontology terms, Type definitions, Process provenance
-- **Dynamic bricks (ddt_*)**: N-dimensional measurement arrays (optional)
+- **Static entities (sdt_*)**: Location, Sample, Reads, Assembly, Genome, Gene, ASV, etc. (273K records)
+- **System tables (sys_*)**: Ontology terms, Type definitions, Process provenance (243K records)
+- **Dynamic bricks (ddt_*)**: N-dimensional measurement arrays (2.1M-320M records, optional)
 - **Indexes**: Automatic indexing on ID fields for fast queries
+
+**Performance Features:**
+- ⚡ **Direct DuckDB import**: 10-50x faster than pandas (enabled by default)
+- 💾 **Memory-safe chunking**: Automatic for large files
+- 🎯 **Configurable sampling**: Control memory usage with `max_rows` parameter
 
 ### Step 4: Run Queries
 
@@ -254,23 +337,15 @@ This section shows how to query the loaded DuckDB database using different inter
 
 ### Database Loading Options
 
-```bash
-# Option 1: Core tables only (fast, 515K records)
-just load-cdm-store
-# → cdm_store.db (50 MB)
+| Command | Records | Output Size | RAM | Time | Description |
+|---------|---------|-------------|-----|------|-------------|
+| `just load-cdm-store` | 515K | 50 MB | 4 GB | ~30s | Core tables only ⚡ |
+| `just load-cdm-store-sample` | 2.4M | 25 MB | 8 GB | ~2m | Core + 10 bricks ⭐ |
+| `just load-cdm-store-bricks` | ~5M | 150 MB | 16 GB | ~5m | Core + 20 bricks (100K/ea) |
+| `just load-cdm-store-full` | ~82M | 500 MB | 32 GB | ~10m | All tables (10K samples) |
+| `just load-cdm-store-bricks-full` | 320M+ | 2-5 GB | 128 GB | ~20m | Full unsampled ⚠️ |
 
-# Option 2: Core + 10 brick tables (recommended, 2.4M records)
-just load-cdm-store-sample
-# → cdm_store_sample.db (25 MB)
-
-# Option 3: Core + 20 brick tables (5M records)
-just load-cdm-store-bricks
-# → cdm_store_bricks.db (150 MB)
-
-# Option 4: All tables with sampling (82M records sampled)
-just load-cdm-store-full
-# → cdm_store_full.db (500 MB)
-```
+**Performance:** Direct DuckDB import provides 10-50x speedup over pandas (enabled by default)
 
 ### Query Interface 1: Just Commands (Easiest)
 
@@ -602,10 +677,11 @@ just analyze       # Analyze schema structure and relationships
 
 ```bash
 # Load databases (creates DuckDB files)
-just load-cdm-store                # Core tables only (~30s, 515K records)
-just load-cdm-store-sample         # Core + 10 bricks (~2m, 2.4M records) ⭐ Recommended
-just load-cdm-store-bricks         # Core + 20 bricks (~5m, 5M records)
-just load-cdm-store-full           # All tables sampled (~10m, 82M records)
+just load-cdm-store                # Core only (~30s, 4GB RAM, 515K records)
+just load-cdm-store-sample         # Core + 10 bricks (~2m, 8GB RAM, 2.4M) ⭐ Recommended
+just load-cdm-store-bricks         # Core + 20 bricks (~5m, 16GB RAM, 5M)
+just load-cdm-store-full           # All sampled (~10m, 32GB RAM, 82M)
+just load-cdm-store-bricks-full    # Full unsampled (~20m, 128GB RAM, 320M+) ⚠️
 
 # Query databases (use after loading)
 just cdm-store-stats               # Show database statistics
@@ -622,6 +698,8 @@ just cdm-demo-all                  # Run all query demonstrations
 # Direct SQL queries
 duckdb cdm_store.db                # Launch DuckDB CLI for SQL queries
 ```
+
+**Performance Note:** All loading commands use direct DuckDB import for 10-50x speedup
 
 ### Metadata Tools
 
