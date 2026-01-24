@@ -37,6 +37,7 @@ default_prefix: kbase_cdm
 imports:
   - linkml:types
   - ./cdm_base
+  - ./cdm_system_tables
 
 # ============================================================
 # DYNAMIC DATA CLASSES (ddt_*)
@@ -155,6 +156,11 @@ classes:
 
 slots:
   # DynamicDataArray slots
+  description:
+    description: Human-readable description of the brick or measurement
+    range: string
+    required: false
+
   brick_table_name:
     description: Name of brick table (e.g., "ddt_brick0000010")
     range: string

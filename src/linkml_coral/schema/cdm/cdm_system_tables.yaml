@@ -33,6 +33,7 @@ default_prefix: kbase_cdm
 imports:
 - linkml:types
 - ./cdm_base
+- ./cdm_static_entities
 
 # ============================================================
 # SYSTEM TABLE CLASSES (sys_*)
@@ -81,11 +82,17 @@ classes:
 
       Each brick can have different dimensionality and variable sets,
       enabling flexible storage of heterogeneous measurement data.
+
+      Note: Legacy field names (brick_id, cdm_column_name, cdm_column_data_type, fk)
+      are included for backwards compatibility with existing parquet data.
     class_uri: kbase_cdm:SystemDDTTypedef
     slots:
     - ddt_ndarray_id
+    - brick_id
     - berdl_column_name
+    - cdm_column_name
     - berdl_column_data_type
+    - cdm_column_data_type
     - scalar_type
     - dimension_number
     - variable_number
@@ -96,8 +103,15 @@ classes:
     - unit_sys_oterm_id
     - unit_sys_oterm_name
     - foreign_key
+    - fk
     - comment
     - original_csv_string
+    slot_usage:
+      cdm_column_name:
+        required: false
+        comments:
+        - Made optional as many rows have NULL values in parquet data
+        - Legacy field from original schema, use berdl_column_name for new code
 
   SystemOntologyTerm:
     mixins:
@@ -226,6 +240,12 @@ classes:
     - sdt_sample_id
     - sdt_strain_id
     - sdt_tnseq_library_id
+    slot_usage:
+      ddt_ndarray_id:
+        required: false
+        comments:
+        - Made optional as 99%+ of values are NULL in parquet data
+        - Only populated when output is a dynamic data array (brick)
 
 # ============================================================
 # SLOTS - System table-specific slots
@@ -390,6 +410,28 @@ slots:
 
     annotations:
       original_name: fk
+
+  # Legacy field names for SystemDDTTypedef (backwards compatibility with parquet data)
+  brick_id:
+    description: Legacy field name for ddt_ndarray_id (brick identifier)
+    range: string
+    required: false
+    comments:
+    - Used in SystemDDTTypedef parquet data
+    - Alias of ddt_ndarray_id
+    annotations:
+      original_name: ddt_ndarray_id
+
+  cdm_column_data_type:
+    description: Legacy field name for berdl_column_data_type (in SystemDDTTypedef)
+    range: string
+    required: false
+    comments:
+    - Used in SystemDDTTypedef parquet data
+    - Renamed to berdl_column_data_type in schema
+    - Distinct from berdl_column_data_type slot
+    annotations:
+      original_name: berdl_column_data_type
   original_csv_string:
     description: Original CSV string representation
     range: string
