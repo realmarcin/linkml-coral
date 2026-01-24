@@ -297,38 +297,54 @@ load-cdm-store-bricks db='data/enigma_coral.db' output='cdm_store_bricks.db' num
     --verbose
   @echo "✅ Database ready: {{output}}"
 
-# Load CDM parquet with ALL brick tables (FULL: no sampling - requires 128+ GB RAM)
+# Load CDM parquet with ALL brick tables (FULL: optional sampling, default no limit)
 [group('CDM data management')]
-load-cdm-store-bricks-full db='data/enigma_coral.db' output='cdm_store_bricks_full.db' num_bricks='20':
+load-cdm-store-bricks-full db='data/enigma_coral.db' output='cdm_store_bricks_full.db' num_bricks='20' max_rows='0':
   @echo "⚠️  ============================================"
-  @echo "⚠️  WARNING: Full brick load requires ~100+ GB RAM"
+  @echo "⚠️  WARNING: Full brick load may require 128+ GB RAM"
   @echo "⚠️  ============================================"
   @echo ""
-  @echo "This will load ALL rows from {{num_bricks}} brick tables, including:"
-  @echo "  • ddt_brick0000476: 320 million rows (383 MB → ~7 GB in memory)"
-  @echo "  • Other bricks: ~500K rows total"
-  @echo ""
-  @echo "Requirements:"
-  @echo "  • RAM: 128 GB minimum (256 GB recommended)"
-  @echo "  • Time: 15-30 minutes (with direct DuckDB import)"
-  @echo "  • Disk: 50+ GB free space"
+  @echo "Loading {{num_bricks}} brick tables..."
+  @if [ "{{max_rows}}" = "0" ]; then \
+    echo "  • Mode: FULL LOAD (all 320M+ rows)"; \
+    echo "  • ddt_brick0000476: 320 million rows (383 MB → ~7 GB in memory)"; \
+    echo "  • RAM Required: 128 GB minimum (256 GB recommended)"; \
+    echo "  • Time: 15-30 minutes"; \
+  else \
+    echo "  • Mode: SAMPLED ({{max_rows}} rows per brick)"; \
+    echo "  • This is safer for 64GB machines"; \
+  fi
   @echo ""
   @echo "Uses optimizations:"
   @echo "  • Direct DuckDB import (10-50x faster)"
   @echo "  • Automatic chunking for memory safety"
   @echo ""
-  @echo "Press Ctrl+C to cancel, or wait 10 seconds to continue..."
-  @sleep 10
+  @if [ "{{max_rows}}" = "0" ]; then \
+    echo "Press Ctrl+C to cancel, or wait 10 seconds to continue..."; \
+    sleep 10; \
+  fi
   @echo ""
-  @echo "Starting full load with direct DuckDB import..."
-  uv run python scripts/cdm_analysis/load_cdm_parquet_to_store.py {{db}} \
-    --output {{output}} \
-    --include-system \
-    --include-static \
-    --num-bricks {{num_bricks}} \
-    --create-indexes \
-    --show-info \
-    --verbose
+  @echo "Starting brick load..."
+  @if [ "{{max_rows}}" = "0" ]; then \
+    uv run python scripts/cdm_analysis/load_cdm_parquet_to_store.py {{db}} \
+      --output {{output}} \
+      --include-system \
+      --include-static \
+      --num-bricks {{num_bricks}} \
+      --create-indexes \
+      --show-info \
+      --verbose; \
+  else \
+    uv run python scripts/cdm_analysis/load_cdm_parquet_to_store.py {{db}} \
+      --output {{output}} \
+      --include-system \
+      --include-static \
+      --num-bricks {{num_bricks}} \
+      --max-dynamic-rows {{max_rows}} \
+      --create-indexes \
+      --show-info \
+      --verbose; \
+  fi
   @echo "✅ Database ready: {{output}}"
 
 # Load CDM parquet with ALL dynamic brick tables (sampled, configurable)
