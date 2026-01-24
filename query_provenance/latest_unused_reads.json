@@ -1,7 +1,7 @@
 {
   "execution": {
-    "execution_id": "4b5bebb97a960f2f",
-    "start_time": "2025-10-14T16:38:46.516973",
+    "execution_id": "95b502e66f2a210b",
+    "start_time": "2025-12-09T23:57:55.735993",
     "query_type": "unused_reads",
     "description": "Find unused reads with >= 50000 raw reads (isolate genome reads only)",
     "parameters": {
@@ -10,8 +10,8 @@
       "ids_only": false,
       "exclude_16s": true
     },
-    "end_time": "2025-10-14T16:39:26.386260",
-    "duration_seconds": 39.869287,
+    "end_time": "2025-12-09T23:58:32.613505",
+    "duration_seconds": 36.877512,
     "status": "success"
   },
   "user": {
@@ -22,15 +22,15 @@
   },
   "database": {
     "path": "enigma_data.db",
-    "size_bytes": 13643776,
-    "size_mb": 13.01,
-    "last_modified": "2025-10-14T12:29:25.287121",
-    "checksum": "057c70e695ae94c3cd783a14acdf07d8262e589eea0c70a1b806b32756308e40"
+    "size_bytes": 16527360,
+    "size_mb": 15.76,
+    "last_modified": "2025-12-09T20:09:41.604188",
+    "checksum": "bb86e2f9b1c2795f6cab2eb9c8028938771ffda4855f17690afff324c3d87051"
   },
   "environment": {
     "python_executable": "/Users/marcin/Documents/KBase/CDM/ENIGMA/linkml-coral/.venv/bin/python3",
     "python_path": [
-      "/Users/marcin/Documents/KBase/CDM/ENIGMA/linkml-coral",
+      "/Users/marcin/Documents/KBase/CDM/ENIGMA/linkml-coral/scripts",
       "/opt/homebrew/Cellar/python@3.13/3.13.8/Frameworks/Python.framework/Versions/3.13/lib/python313.zip",
       "/opt/homebrew/Cellar/python@3.13/3.13.8/Frameworks/Python.framework/Versions/3.13/lib/python3.13"
     ],
