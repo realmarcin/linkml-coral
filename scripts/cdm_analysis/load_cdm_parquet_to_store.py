@@ -450,18 +450,24 @@ def load_parquet_to_duckdb_direct(
 
     try:
         # Get DuckDB connection from linkml-store
-        # Try multiple methods to get the underlying DuckDB connection
-        if hasattr(db, '_connection'):
-            conn = db._connection
-        elif hasattr(db, 'connection'):
-            conn = db.connection
-        elif hasattr(db, 'get_connection'):
-            conn = db.get_connection()
+        # Path: db.engine (SQLAlchemy) → raw_connection() (ConnectionFairy)
+        #       → driver_connection (ConnectionWrapper) → _ConnectionWrapper__c (DuckDB)
+        if hasattr(db, 'engine'):
+            # Access through SQLAlchemy Engine (used by linkml-store)
+            raw_conn = db.engine.raw_connection()
+            wrapper = raw_conn.driver_connection
+            # Access the actual DuckDB connection (name-mangled private attribute)
+            conn = wrapper._ConnectionWrapper__c
+            if verbose:
+                print(f"  ✓ Accessed DuckDB connection via SQLAlchemy engine")
         else:
-            # Fallback: create temp connection and attach database
-            db_path = getattr(db, 'database_path', None)
-            if db_path:
-                conn = duckdb.connect(db_path)
+            # Fallback: Try direct attributes (for other database types)
+            if hasattr(db, '_connection'):
+                conn = db._connection
+            elif hasattr(db, 'connection'):
+                conn = db.connection
+            elif hasattr(db, 'get_connection'):
+                conn = db.get_connection()
             else:
                 raise AttributeError("Cannot access DuckDB connection from linkml-store")
 
@@ -472,16 +478,17 @@ def load_parquet_to_duckdb_direct(
             parquet_pattern = str(parquet_path)
 
         # Build SQL query
+        # Use union_by_name=true to handle Delta Lake files with different schemas
         if max_rows:
             query = f"""
                 CREATE OR REPLACE TABLE {collection_name} AS
-                SELECT * FROM read_parquet('{parquet_pattern}')
+                SELECT * FROM read_parquet('{parquet_pattern}', union_by_name=true)
                 LIMIT {max_rows}
             """
         else:
             query = f"""
                 CREATE OR REPLACE TABLE {collection_name} AS
-                SELECT * FROM read_parquet('{parquet_pattern}')
+                SELECT * FROM read_parquet('{parquet_pattern}', union_by_name=true)
             """
 
         if verbose:
@@ -499,11 +506,16 @@ def load_parquet_to_duckdb_direct(
 
         return count
 
-    except Exception as e:
-        # Direct DuckDB import failed (expected if linkml-store doesn't expose connection)
-        # Silently fall back to pandas - no action needed
+    except AttributeError as e:
+        # Could not access DuckDB connection - fall back to pandas
         if verbose:
-            print(f"  ℹ️  Note: Direct import unavailable, using pandas fallback (expected)")
+            print(f"  ℹ️  Note: Could not access DuckDB connection ({e}), falling back to pandas")
+        return 0
+    except Exception as e:
+        # Other error during direct import - fall back to pandas
+        if verbose:
+            print(f"  ⚠️  Direct import failed: {e}")
+            print(f"  ℹ️  Falling back to pandas loading...")
         return 0
 
 
