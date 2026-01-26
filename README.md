@@ -74,13 +74,14 @@ Different loading operations have varying hardware requirements:
 | **Core + Sample** | 8 GB | ~2 minutes | 25 MB | Recommended start ⭐ |
 | **Core + 20 bricks** | 16 GB | ~5 minutes | 150 MB | Development/testing |
 | **Full (sampled)** | 32 GB | ~10 minutes | 500 MB | Analysis with samples |
-| **Full (unsampled)** | 128 GB+ | 15-30 minutes | 2-5 GB | Complete dataset |
+| **Full (unsampled, 64GB optimized)** | 64 GB | 30-60 minutes | 15-20 GB | Complete dataset ⭐ NEW! |
+| **Full (unsampled, fast)** | 128 GB+ | 15-30 minutes | 15-20 GB | Complete dataset (faster) |
 
 **Performance Notes:**
 - **Direct DuckDB import**: 10-50x faster than pandas (enabled by default)
 - **Loading speed**: ~130,000 records/sec for brick tables, ~40,000 records/sec for static tables
-- **Memory usage**: Chunked loading prevents OOM errors on 64GB machines
-- **Recommended**: 64 GB RAM for comfortable work with sampled brick data
+- **Memory usage**: Chunked loading prevents OOM errors on 64GB machines ⭐ **NEW: Full support for 64GB RAM!**
+- **Recommended**: 64 GB RAM now sufficient for complete unsampled dataset (no data loss)
 
 ### Step 1: Clone and Setup
 
@@ -681,7 +682,8 @@ just load-cdm-store                # Core only (~30s, 4GB RAM, 515K records)
 just load-cdm-store-sample         # Core + 10 bricks (~2m, 8GB RAM, 2.4M) ⭐ Recommended
 just load-cdm-store-bricks         # Core + 20 bricks (~5m, 16GB RAM, 5M)
 just load-cdm-store-full           # All sampled (~10m, 32GB RAM, 82M)
-just load-cdm-store-bricks-full    # Full unsampled (~20m, 128GB RAM, 320M+) ⚠️
+just load-cdm-store-bricks-64gb    # Full unsampled (~45m, 64GB RAM, 320M+) ⭐ NEW! 64GB optimized
+just load-cdm-store-bricks-full    # Full unsampled (~20m, 128GB RAM, 320M+)
 
 # Query databases (use after loading)
 just cdm-store-stats               # Show database statistics

@@ -496,9 +496,17 @@ just load-cdm-store
 # Load with custom paths
 just load-cdm-store data/enigma_coral.db output.db
 
+# Load ALL brick tables - OPTIMIZED FOR 64GB RAM (RECOMMENDED)
+just load-cdm-store-bricks-64gb
+
 # Load including dynamic brick tables (sampled at 10K rows each)
 just load-cdm-store-full
 ```
+
+**Memory Requirements:**
+- **64GB RAM**: Use `load-cdm-store-bricks-64gb` (automatic chunking, no sampling)
+- **128GB+ RAM**: Can use `load-cdm-store-bricks-full` (faster, less chunking)
+- **32GB RAM**: Use sampling with `load-cdm-store-full` or sample fewer bricks
 
 **Query the CDM store database:**
 

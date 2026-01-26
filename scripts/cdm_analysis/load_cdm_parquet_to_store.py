@@ -423,7 +423,8 @@ def load_parquet_to_duckdb_direct(
     collection_name: str,
     db,
     max_rows: Optional[int] = None,
-    verbose: bool = False
+    verbose: bool = False,
+    force_chunked_threshold: int = 100_000_000  # 100M rows
 ) -> int:
     """
     Load parquet directly into DuckDB without pandas (FAST, low memory).
@@ -431,12 +432,16 @@ def load_parquet_to_duckdb_direct(
     This bypasses pandas entirely and uses DuckDB's native parquet reader,
     which is 10-50x faster and uses minimal memory.
 
+    For very large files (>100M rows), automatically uses INSERT INTO with
+    chunked SELECT to avoid OOM errors.
+
     Args:
         parquet_path: Path to parquet file/directory
         collection_name: Collection name in database
         db: Database connection
         max_rows: Maximum rows to load (None = all)
         verbose: Print detailed progress
+        force_chunked_threshold: Row count above which to use chunked INSERT
 
     Returns:
         Number of records loaded
@@ -449,6 +454,19 @@ def load_parquet_to_duckdb_direct(
     start_time = time.time()
 
     try:
+        # Get total row count first to decide loading strategy
+        try:
+            total_rows = get_parquet_row_count(parquet_path)
+            load_rows = min(max_rows, total_rows) if max_rows else total_rows
+            print(f"  📊 Total rows: {total_rows:,}")
+            if max_rows and max_rows < total_rows:
+                print(f"     Loading: {load_rows:,} rows")
+        except Exception as e:
+            if verbose:
+                print(f"  ⚠️  Could not get row count: {e}")
+            total_rows = None
+            load_rows = max_rows if max_rows else None
+
         # Get DuckDB connection from linkml-store
         # Path: db.engine (SQLAlchemy) → raw_connection() (ConnectionFairy)
         #       → driver_connection (ConnectionWrapper) → _ConnectionWrapper__c (DuckDB)
@@ -477,29 +495,81 @@ def load_parquet_to_duckdb_direct(
         else:
             parquet_pattern = str(parquet_path)
 
-        # Build SQL query
-        # Use union_by_name=true to handle Delta Lake files with different schemas
-        if max_rows:
-            query = f"""
+        # Decide loading strategy based on size
+        use_chunked_insert = (
+            load_rows is not None and
+            load_rows > force_chunked_threshold
+        )
+
+        if use_chunked_insert:
+            # LARGE FILE: Use chunked INSERT INTO for memory safety
+            print(f"  🔄 Using chunked DuckDB loading (row count: {load_rows:,} > {force_chunked_threshold:,})")
+
+            # Create table schema from first batch
+            schema_query = f"""
                 CREATE OR REPLACE TABLE {collection_name} AS
                 SELECT * FROM read_parquet('{parquet_pattern}', union_by_name=true)
-                LIMIT {max_rows}
+                LIMIT 0
             """
+            conn.execute(schema_query)
+            if verbose:
+                print(f"  ✓ Created table schema")
+
+            # Insert in chunks using OFFSET/LIMIT
+            chunk_size = 10_000_000  # 10M rows per chunk
+            num_chunks = (load_rows + chunk_size - 1) // chunk_size
+            print(f"  📦 Processing {num_chunks} chunks ({chunk_size:,} rows/chunk)")
+
+            total_loaded = 0
+            for chunk_idx in range(num_chunks):
+                chunk_start = time.time()
+                offset = chunk_idx * chunk_size
+                limit = min(chunk_size, load_rows - offset)
+
+                insert_query = f"""
+                    INSERT INTO {collection_name}
+                    SELECT * FROM read_parquet('{parquet_pattern}', union_by_name=true)
+                    LIMIT {limit} OFFSET {offset}
+                """
+
+                conn.execute(insert_query)
+                total_loaded += limit
+
+                chunk_time = time.time() - chunk_start
+                progress_pct = ((chunk_idx + 1) / num_chunks) * 100
+                print(f"  [{chunk_idx+1}/{num_chunks}] {progress_pct:5.1f}% - "
+                      f"Loaded {limit:,} rows in {chunk_time:.1f}s "
+                      f"(total: {total_loaded:,})", end='\r')
+
+                # Force garbage collection after each chunk
+                gc.collect()
+
+            print()  # New line after progress
+            count = total_loaded
+
         else:
-            query = f"""
-                CREATE OR REPLACE TABLE {collection_name} AS
-                SELECT * FROM read_parquet('{parquet_pattern}', union_by_name=true)
-            """
+            # SMALL/MEDIUM FILE: Use fast CREATE TABLE AS SELECT
+            if max_rows:
+                query = f"""
+                    CREATE OR REPLACE TABLE {collection_name} AS
+                    SELECT * FROM read_parquet('{parquet_pattern}', union_by_name=true)
+                    LIMIT {max_rows}
+                """
+            else:
+                query = f"""
+                    CREATE OR REPLACE TABLE {collection_name} AS
+                    SELECT * FROM read_parquet('{parquet_pattern}', union_by_name=true)
+                """
 
-        if verbose:
-            print(f"  🔍 Query: {query}")
+            if verbose:
+                print(f"  🔍 Query: {query}")
 
-        # Execute (streaming, minimal memory overhead)
-        conn.execute(query)
+            # Execute (streaming, minimal memory overhead for small/medium files)
+            conn.execute(query)
 
-        # Get count
-        count_result = conn.execute(f"SELECT COUNT(*) FROM {collection_name}").fetchone()
-        count = count_result[0] if count_result else 0
+            # Get count
+            count_result = conn.execute(f"SELECT COUNT(*) FROM {collection_name}").fetchone()
+            count = count_result[0] if count_result else 0
 
         elapsed = time.time() - start_time
         print(f"  ✅ Loaded {count:,} records in {elapsed:.1f}s ({count/elapsed:.0f} records/sec)")
@@ -509,13 +579,13 @@ def load_parquet_to_duckdb_direct(
     except AttributeError as e:
         # Could not access DuckDB connection - fall back to pandas
         if verbose:
-            print(f"  ℹ️  Note: Could not access DuckDB connection ({e}), falling back to pandas")
+            print(f"  ℹ️  Note: Could not access DuckDB connection ({e}), falling back to chunked pandas")
         return 0
     except Exception as e:
         # Other error during direct import - fall back to pandas
         if verbose:
             print(f"  ⚠️  Direct import failed: {e}")
-            print(f"  ℹ️  Falling back to pandas loading...")
+            print(f"  ℹ️  Falling back to chunked pandas loading...")
         return 0
 
 
@@ -560,6 +630,13 @@ def load_parquet_collection_chunked(
             print(f"  📊 Total rows: {total_rows:,} (loading: {load_rows:,})")
         else:
             print(f"  📊 Total rows: {total_rows:,}")
+
+        # Adjust chunk size for very large files (>100M rows)
+        if load_rows > 100_000_000:
+            # Use smaller chunks for extremely large files
+            adjusted_chunk_size = min(chunk_size, 50_000)
+            print(f"  ⚡ Large file detected: reducing chunk size to {adjusted_chunk_size:,} rows")
+            chunk_size = adjusted_chunk_size
 
         # Estimate chunks
         num_chunks = (load_rows + chunk_size - 1) // chunk_size

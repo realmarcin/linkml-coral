@@ -297,6 +297,36 @@ load-cdm-store-bricks db='data/enigma_coral.db' output='cdm_store_bricks.db' num
     --verbose
   @echo "✅ Database ready: {{output}}"
 
+# Load CDM parquet with ALL brick tables - optimized for 64GB RAM (RECOMMENDED)
+[group('CDM data management')]
+load-cdm-store-bricks-64gb db='data/enigma_coral.db' output='cdm_store_bricks_full.db' num_bricks='20':
+  @echo "📦 Loading {{num_bricks}} brick tables (64GB RAM optimized)"
+  @echo ""
+  @echo "Optimizations for 64GB RAM:"
+  @echo "  • Chunked DuckDB loading for files >100M rows"
+  @echo "  • 10M row chunks for DuckDB INSERT"
+  @echo "  • 50K row chunks for pandas fallback"
+  @echo "  • Aggressive garbage collection"
+  @echo "  • Full data loading (no sampling)"
+  @echo ""
+  @echo "Expected:"
+  @echo "  • Time: 30-60 minutes for 20 bricks"
+  @echo "  • Peak RAM: ~40-50 GB"
+  @echo "  • Database size: ~15-20 GB"
+  @echo ""
+  uv run python scripts/cdm_analysis/load_cdm_parquet_to_store.py {{db}} \
+    --output {{output}} \
+    --include-system \
+    --include-static \
+    --num-bricks {{num_bricks}} \
+    --use-direct-import \
+    --use-chunked \
+    --chunk-size 50000 \
+    --create-indexes \
+    --show-info \
+    --verbose
+  @echo "✅ Database ready: {{output}}"
+
 # Load CDM parquet with ALL brick tables (FULL: optional sampling, default no limit)
 [group('CDM data management')]
 load-cdm-store-bricks-full db='data/enigma_coral.db' output='cdm_store_bricks_full.db' num_bricks='20' max_rows='0':
@@ -308,8 +338,8 @@ load-cdm-store-bricks-full db='data/enigma_coral.db' output='cdm_store_bricks_fu
   @if [ "{{max_rows}}" = "0" ]; then \
     echo "  • Mode: FULL LOAD (all 320M+ rows)"; \
     echo "  • ddt_brick0000476: 320 million rows (383 MB → ~7 GB in memory)"; \
-    echo "  • RAM Required: 128 GB minimum (256 GB recommended)"; \
-    echo "  • Time: 15-30 minutes"; \
+    echo "  • RAM Required: 64 GB minimum (128 GB recommended for old code)"; \
+    echo "  • Time: 30-60 minutes (with new chunked loading)"; \
   else \
     echo "  • Mode: SAMPLED ({{max_rows}} rows per brick)"; \
     echo "  • This is safer for 64GB machines"; \
@@ -317,7 +347,7 @@ load-cdm-store-bricks-full db='data/enigma_coral.db' output='cdm_store_bricks_fu
   @echo ""
   @echo "Uses optimizations:"
   @echo "  • Direct DuckDB import (10-50x faster)"
-  @echo "  • Automatic chunking for memory safety"
+  @echo "  • Automatic chunking for files >100M rows (NEW!)"
   @echo ""
   @if [ "{{max_rows}}" = "0" ]; then \
     echo "Press Ctrl+C to cancel, or wait 10 seconds to continue..."; \
