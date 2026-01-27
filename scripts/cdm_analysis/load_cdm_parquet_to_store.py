@@ -392,8 +392,8 @@ def add_computed_fields(record: Dict[str, Any], class_name: str) -> Dict[str, An
     enhanced = record.copy()
 
     # Add read count categories for Reads
-    if class_name == 'Reads' and 'sdt_reads_read_count_count_unit' in record:
-        read_count = record['sdt_reads_read_count_count_unit']
+    if class_name == 'Reads' and 'sdt_reads_read_count' in record:
+        read_count = record['sdt_reads_read_count']
         if isinstance(read_count, (int, float)) and not pd.isna(read_count):
             if read_count >= 100000:
                 enhanced['read_count_category'] = 'very_high'
@@ -405,8 +405,8 @@ def add_computed_fields(record: Dict[str, Any], class_name: str) -> Dict[str, An
                 enhanced['read_count_category'] = 'low'
 
     # Add contig count categories for Assembly
-    if class_name == 'Assembly' and 'sdt_assembly_n_contigs_count_unit' in record:
-        n_contigs = record['sdt_assembly_n_contigs_count_unit']
+    if class_name == 'Assembly' and 'sdt_assembly_n_contigs' in record:
+        n_contigs = record['sdt_assembly_n_contigs']
         if isinstance(n_contigs, (int, float)) and not pd.isna(n_contigs):
             if n_contigs >= 1000:
                 enhanced['contig_count_category'] = 'high'
