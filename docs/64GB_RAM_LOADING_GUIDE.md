@@ -62,7 +62,10 @@ just load-cdm-store-bricks-64gb
 
 # Query the loaded data
 just cdm-store-stats
-just query-unused-reads 50000
+
+# Tables now use CDM naming (matching BERDL)
+duckdb cdm_store_bricks.db
+D show tables;  # sdt_location, sys_process, ddt_brick0000476, etc.
 ```
 
 ### For 128GB+ RAM Systems
@@ -190,6 +193,15 @@ Very large bricks (>200 MB compressed) may need smaller chunks.
 - [load_cdm_parquet_to_store.py](../scripts/cdm_analysis/load_cdm_parquet_to_store.py) - Implementation
 - [project.justfile](../project.justfile) - Loading commands
 
+## Table Naming
+
+**Tables now use CDM naming conventions (matching BERDL):**
+- Static tables: `sdt_location`, `sdt_sample`, `sdt_reads`, etc.
+- System tables: `sys_process`, `sys_oterm`, `sys_typedef`, etc.
+- Brick tables: `ddt_brick0000476`, `ddt_brick0000477`, etc.
+
+This matches the parquet file names and BERDL database structure.
+
 ## Summary
 
-The new chunked loading strategy makes it possible to load **all 320M+ rows** across 20 brick tables on standard 64GB RAM machines, with no sampling or data loss. The key insight: **break large files into manageable chunks** instead of loading everything at once.
+The new chunked loading strategy makes it possible to load **all 320M+ rows** across 20 brick tables on standard 64GB RAM machines, with no sampling or data loss. The key insight: **break large files into manageable chunks** instead of loading everything at once. Tables now use CDM naming conventions matching BERDL parquet files.

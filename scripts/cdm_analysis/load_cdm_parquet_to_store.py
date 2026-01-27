@@ -420,6 +420,7 @@ def add_computed_fields(record: Dict[str, Any], class_name: str) -> Dict[str, An
 
 def load_parquet_to_duckdb_direct(
     parquet_path: Path,
+    table_name: str,
     collection_name: str,
     db,
     max_rows: Optional[int] = None,
@@ -437,7 +438,8 @@ def load_parquet_to_duckdb_direct(
 
     Args:
         parquet_path: Path to parquet file/directory
-        collection_name: Collection name in database
+        table_name: CDM table name (e.g., "sdt_location", "ddt_brick0000476")
+        collection_name: LinkML class name for schema validation
         db: Database connection
         max_rows: Maximum rows to load (None = all)
         verbose: Print detailed progress
@@ -448,8 +450,8 @@ def load_parquet_to_duckdb_direct(
     """
     import duckdb
 
-    table_name = parquet_path.name
-    print(f"\n📥 Loading {table_name} as {collection_name}...")
+    parquet_name = parquet_path.name
+    print(f"\n📥 Loading {parquet_name} as {table_name}...")
 
     start_time = time.time()
 
@@ -507,7 +509,7 @@ def load_parquet_to_duckdb_direct(
 
             # Create table schema from first batch
             schema_query = f"""
-                CREATE OR REPLACE TABLE {collection_name} AS
+                CREATE OR REPLACE TABLE {table_name} AS
                 SELECT * FROM read_parquet('{parquet_pattern}', union_by_name=true)
                 LIMIT 0
             """
@@ -527,7 +529,7 @@ def load_parquet_to_duckdb_direct(
                 limit = min(chunk_size, load_rows - offset)
 
                 insert_query = f"""
-                    INSERT INTO {collection_name}
+                    INSERT INTO {table_name}
                     SELECT * FROM read_parquet('{parquet_pattern}', union_by_name=true)
                     LIMIT {limit} OFFSET {offset}
                 """
@@ -551,13 +553,13 @@ def load_parquet_to_duckdb_direct(
             # SMALL/MEDIUM FILE: Use fast CREATE TABLE AS SELECT
             if max_rows:
                 query = f"""
-                    CREATE OR REPLACE TABLE {collection_name} AS
+                    CREATE OR REPLACE TABLE {table_name} AS
                     SELECT * FROM read_parquet('{parquet_pattern}', union_by_name=true)
                     LIMIT {max_rows}
                 """
             else:
                 query = f"""
-                    CREATE OR REPLACE TABLE {collection_name} AS
+                    CREATE OR REPLACE TABLE {table_name} AS
                     SELECT * FROM read_parquet('{parquet_pattern}', union_by_name=true)
                 """
 
@@ -568,7 +570,7 @@ def load_parquet_to_duckdb_direct(
             conn.execute(query)
 
             # Get count
-            count_result = conn.execute(f"SELECT COUNT(*) FROM {collection_name}").fetchone()
+            count_result = conn.execute(f"SELECT COUNT(*) FROM {table_name}").fetchone()
             count = count_result[0] if count_result else 0
 
         elapsed = time.time() - start_time
@@ -591,6 +593,7 @@ def load_parquet_to_duckdb_direct(
 
 def load_parquet_collection_chunked(
     parquet_path: Path,
+    table_name: str,
     class_name: str,
     db,
     schema_view: SchemaView,
@@ -605,7 +608,8 @@ def load_parquet_collection_chunked(
 
     Args:
         parquet_path: Path to parquet file/directory
-        class_name: LinkML class name for this data
+        table_name: CDM table name (e.g., "sdt_location", "ddt_brick0000476")
+        class_name: LinkML class name for schema validation
         db: Database connection
         schema_view: SchemaView instance
         max_rows: Maximum rows to load (None = all)
@@ -615,8 +619,8 @@ def load_parquet_collection_chunked(
     Returns:
         Number of records loaded
     """
-    table_name = parquet_path.name
-    print(f"\n📥 Loading {table_name} as {class_name} (CHUNKED MODE)...")
+    parquet_name = parquet_path.name
+    print(f"\n📥 Loading {parquet_name} as {table_name} (CHUNKED MODE)...")
 
     # Check memory availability
     check_memory_warning(parquet_path, verbose=verbose)
@@ -763,6 +767,7 @@ def load_parquet_collection_chunked(
 
 def load_parquet_collection(
     parquet_path: Path,
+    table_name: str,
     class_name: str,
     db,
     schema_view: SchemaView,
@@ -774,7 +779,8 @@ def load_parquet_collection(
 
     Args:
         parquet_path: Path to parquet file/directory
-        class_name: LinkML class name for this data
+        table_name: CDM table name (e.g., "sdt_location", "ddt_brick0000476")
+        class_name: LinkML class name for schema validation
         db: Database connection
         schema_view: SchemaView instance
         max_rows: Maximum rows to load (None = all)
@@ -783,8 +789,8 @@ def load_parquet_collection(
     Returns:
         Number of records loaded
     """
-    table_name = parquet_path.name
-    print(f"\n📥 Loading {table_name} as {class_name}...")
+    parquet_name = parquet_path.name
+    print(f"\n📥 Loading {parquet_name} as {table_name}...")
 
     # Get row count
     try:
@@ -856,16 +862,15 @@ def load_parquet_collection(
     if verbose and len(enhanced_data) > 0:
         print(f"  🔍 Sample fields: {list(enhanced_data[0].keys())[:5]}...")
 
-    # Create or get collection
-    collection_name = class_name
+    # Create or get collection (use CDM table name)
     try:
-        collection = db.get_collection(collection_name)
+        collection = db.get_collection(table_name)
         if verbose:
-            print(f"  📦 Using existing collection: {collection_name}")
+            print(f"  📦 Using existing collection: {table_name}")
     except:
-        collection = db.create_collection(collection_name)
+        collection = db.create_collection(table_name)
         if verbose:
-            print(f"  ✨ Created new collection: {collection_name}")
+            print(f"  ✨ Created new collection: {table_name}")
 
     # Insert data
     try:
@@ -945,20 +950,20 @@ def load_all_cdm_parquet(
         print(f"📦 Loading Static Entity Tables (sdt_*)")
         print(f"{'='*60}")
 
-        for table_name in static_tables:
-            table_path = cdm_db_path / table_name
+        for cdm_table_name in static_tables:
+            table_path = cdm_db_path / cdm_table_name
             if not table_path.exists():
                 if verbose:
-                    print(f"  ⊘ Skipping {table_name} (not found)")
+                    print(f"  ⊘ Skipping {cdm_table_name} (not found)")
                 continue
 
-            class_name = TABLE_TO_CLASS[table_name]
+            class_name = TABLE_TO_CLASS[cdm_table_name]
             count = load_parquet_collection(
-                table_path, class_name, db, schema_view,
+                table_path, cdm_table_name, class_name, db, schema_view,
                 max_rows=None,  # Full load for static tables
                 verbose=verbose
             )
-            results[class_name] = count
+            results[cdm_table_name] = count
             total_records += count
 
     # Load system tables
@@ -967,20 +972,20 @@ def load_all_cdm_parquet(
         print(f"📦 Loading System Tables (sys_*)")
         print(f"{'='*60}")
 
-        for table_name in system_tables:
-            table_path = cdm_db_path / table_name
+        for cdm_table_name in system_tables:
+            table_path = cdm_db_path / cdm_table_name
             if not table_path.exists():
                 if verbose:
-                    print(f"  ⊘ Skipping {table_name} (not found)")
+                    print(f"  ⊘ Skipping {cdm_table_name} (not found)")
                 continue
 
-            class_name = TABLE_TO_CLASS[table_name]
+            class_name = TABLE_TO_CLASS[cdm_table_name]
             count = load_parquet_collection(
-                table_path, class_name, db, schema_view,
+                table_path, cdm_table_name, class_name, db, schema_view,
                 max_rows=None,  # Full load for system tables
                 verbose=verbose
             )
-            results[class_name] = count
+            results[cdm_table_name] = count
             total_records += count
 
     # Load dynamic tables (optional, use fast direct import or chunked)
@@ -1008,11 +1013,11 @@ def load_all_cdm_parquet(
         if ndarray_path.exists():
             class_name = TABLE_TO_CLASS["ddt_ndarray"]
             count = load_parquet_collection(
-                ndarray_path, class_name, db, schema_view,
+                ndarray_path, "ddt_ndarray", class_name, db, schema_view,
                 max_rows=None,  # Small table, load fully
                 verbose=verbose
             )
-            results[class_name] = count
+            results["ddt_ndarray"] = count
             total_records += count
 
         # Load brick tables
@@ -1044,24 +1049,25 @@ def load_all_cdm_parquet(
 
             # Load small bricks first (faster with standard loading)
             for i, (brick_path, size_mb) in enumerate(small_bricks, 1):
-                print(f"\n  [Small {i}/{len(small_bricks)}] {brick_path.name} ({size_mb:.1f} MB)")
+                brick_name = brick_path.name  # e.g., "ddt_brick0000476"
+                print(f"\n  [Small {i}/{len(small_bricks)}] {brick_name} ({size_mb:.1f} MB)")
 
                 if use_direct_import:
                     # Try direct import first
                     count = load_parquet_to_duckdb_direct(
-                        brick_path, "DynamicDataArray", db,
+                        brick_path, brick_name, "DynamicDataArray", db,
                         max_rows=max_dynamic_rows,
                         verbose=verbose
                     )
                     if count == 0:  # Fallback to standard if direct fails
                         count = load_parquet_collection(
-                            brick_path, "DynamicDataArray", db, schema_view,
+                            brick_path, brick_name, "DynamicDataArray", db, schema_view,
                             max_rows=max_dynamic_rows,
                             verbose=verbose
                         )
                 else:
                     count = load_parquet_collection(
-                        brick_path, "DynamicDataArray", db, schema_view,
+                        brick_path, brick_name, "DynamicDataArray", db, schema_view,
                         max_rows=max_dynamic_rows,
                         verbose=verbose
                     )
@@ -1070,18 +1076,19 @@ def load_all_cdm_parquet(
 
             # Load large bricks (use chunking or direct import for memory safety)
             for i, (brick_path, size_mb) in enumerate(large_bricks, 1):
-                print(f"\n  [Large {i}/{len(large_bricks)}] {brick_path.name} ({size_mb:.1f} MB)")
+                brick_name = brick_path.name  # e.g., "ddt_brick0000476"
+                print(f"\n  [Large {i}/{len(large_bricks)}] {brick_name} ({size_mb:.1f} MB)")
 
                 if use_direct_import:
                     # Direct import is best for large bricks (fastest + lowest memory)
                     count = load_parquet_to_duckdb_direct(
-                        brick_path, "DynamicDataArray", db,
+                        brick_path, brick_name, "DynamicDataArray", db,
                         max_rows=max_dynamic_rows,
                         verbose=verbose
                     )
                     if count == 0:  # Fallback to chunked if direct fails
                         count = load_parquet_collection_chunked(
-                            brick_path, "DynamicDataArray", db, schema_view,
+                            brick_path, brick_name, "DynamicDataArray", db, schema_view,
                             max_rows=max_dynamic_rows,
                             chunk_size=chunk_size,
                             verbose=verbose
@@ -1089,7 +1096,7 @@ def load_all_cdm_parquet(
                 elif use_chunked:
                     # Use chunked loading (memory-safe)
                     count = load_parquet_collection_chunked(
-                        brick_path, "DynamicDataArray", db, schema_view,
+                        brick_path, brick_name, "DynamicDataArray", db, schema_view,
                         max_rows=max_dynamic_rows,
                         chunk_size=chunk_size,
                         verbose=verbose
@@ -1097,7 +1104,7 @@ def load_all_cdm_parquet(
                 else:
                     # Standard loading (may OOM on very large bricks)
                     count = load_parquet_collection(
-                        brick_path, "DynamicDataArray", db, schema_view,
+                        brick_path, brick_name, "DynamicDataArray", db, schema_view,
                         max_rows=max_dynamic_rows,
                         verbose=verbose
                     )
