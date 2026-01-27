@@ -651,15 +651,28 @@ def load_parquet_collection_chunked(
         total_rows = None
         num_chunks = None
 
-    # Create or get collection (use CDM table name)
+    # Drop existing table and create fresh (consistent with direct DuckDB import behavior)
     try:
-        collection = db.get_collection(table_name)
-        if verbose:
-            print(f"  📦 Using existing collection: {table_name}")
+        # Try to drop existing collection first
+        existing_coll = db.get_collection(table_name)
+        # Drop by executing SQL (linkml-store may not have drop_collection method)
+        try:
+            if hasattr(db, 'engine'):
+                raw_conn = db.engine.raw_connection()
+                wrapper = raw_conn.driver_connection
+                conn = wrapper._ConnectionWrapper__c
+                conn.execute(f"DROP TABLE IF EXISTS {table_name}")
+                if verbose:
+                    print(f"  🗑️  Dropped existing table: {table_name}")
+        except:
+            pass  # If drop fails, create_collection will handle it
     except:
-        collection = db.create_collection(table_name)
-        if verbose:
-            print(f"  ✨ Created new collection: {table_name}")
+        pass  # Table doesn't exist, that's fine
+
+    # Create fresh collection
+    collection = db.create_collection(table_name)
+    if verbose:
+        print(f"  ✨ Created fresh collection: {table_name}")
 
     # Load data in chunks
     start_time = time.time()
@@ -861,15 +874,28 @@ def load_parquet_collection(
     if verbose and len(enhanced_data) > 0:
         print(f"  🔍 Sample fields: {list(enhanced_data[0].keys())[:5]}...")
 
-    # Create or get collection (use CDM table name)
+    # Drop existing table and create fresh (consistent with direct DuckDB import behavior)
     try:
-        collection = db.get_collection(table_name)
-        if verbose:
-            print(f"  📦 Using existing collection: {table_name}")
+        # Try to drop existing collection first
+        existing_coll = db.get_collection(table_name)
+        # Drop by executing SQL (linkml-store may not have drop_collection method)
+        try:
+            if hasattr(db, 'engine'):
+                raw_conn = db.engine.raw_connection()
+                wrapper = raw_conn.driver_connection
+                conn = wrapper._ConnectionWrapper__c
+                conn.execute(f"DROP TABLE IF EXISTS {table_name}")
+                if verbose:
+                    print(f"  🗑️  Dropped existing table: {table_name}")
+        except:
+            pass  # If drop fails, create_collection will handle it
     except:
-        collection = db.create_collection(table_name)
-        if verbose:
-            print(f"  ✨ Created new collection: {table_name}")
+        pass  # Table doesn't exist, that's fine
+
+    # Create fresh collection
+    collection = db.create_collection(table_name)
+    if verbose:
+        print(f"  ✨ Created fresh collection: {table_name}")
 
     # Insert data
     try:
