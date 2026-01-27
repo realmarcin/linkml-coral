@@ -651,16 +651,15 @@ def load_parquet_collection_chunked(
         total_rows = None
         num_chunks = None
 
-    # Create or get collection
-    collection_name = class_name
+    # Create or get collection (use CDM table name)
     try:
-        collection = db.get_collection(collection_name)
+        collection = db.get_collection(table_name)
         if verbose:
-            print(f"  📦 Using existing collection: {collection_name}")
+            print(f"  📦 Using existing collection: {table_name}")
     except:
-        collection = db.create_collection(collection_name)
+        collection = db.create_collection(table_name)
         if verbose:
-            print(f"  ✨ Created new collection: {collection_name}")
+            print(f"  ✨ Created new collection: {table_name}")
 
     # Load data in chunks
     start_time = time.time()
@@ -1126,29 +1125,29 @@ def create_indexes(db, verbose: bool = False):
     print(f"\n🔍 Creating indexes for query optimization...")
 
     index_specs = [
-        # Static entity primary keys
-        ('Location', 'sdt_location_id'),
-        ('Sample', 'sdt_sample_id'),
-        ('Reads', 'sdt_reads_id'),
-        ('Assembly', 'sdt_assembly_id'),
-        ('Genome', 'sdt_genome_id'),
+        # Static entity primary keys (use CDM table names)
+        ('sdt_location', 'sdt_location_id'),
+        ('sdt_sample', 'sdt_sample_id'),
+        ('sdt_reads', 'sdt_reads_id'),
+        ('sdt_assembly', 'sdt_assembly_id'),
+        ('sdt_genome', 'sdt_genome_id'),
 
         # Static entity foreign keys
-        ('Sample', 'location_ref'),
-        ('Assembly', 'strain_ref'),
-        ('Genome', 'strain_ref'),
+        ('sdt_sample', 'location_ref'),
+        ('sdt_assembly', 'strain_ref'),
+        ('sdt_genome', 'strain_ref'),
 
         # System table keys
-        ('SystemOntologyTerm', 'sys_oterm_id'),
-        ('SystemProcess', 'sys_process_id'),
+        ('sys_oterm', 'sys_oterm_id'),
+        ('sys_process', 'sys_process_id'),
 
         # Computed fields
-        ('Reads', 'read_count_category'),
-        ('Assembly', 'contig_count_category'),
+        ('sdt_reads', 'read_count_category'),
+        ('sdt_assembly', 'contig_count_category'),
 
         # Provenance fields
-        ('SystemProcess', 'input_entity_types'),
-        ('SystemProcess', 'output_entity_types'),
+        ('sys_process', 'input_entity_types'),
+        ('sys_process', 'output_entity_types'),
     ]
 
     indexed_count = 0

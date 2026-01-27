@@ -377,6 +377,23 @@ load-cdm-store-bricks-full db='data/enigma_coral.db' output='cdm_store_bricks_fu
   fi
   @echo "✅ Database ready: {{output}}"
 
+# Drop duplicate tables from CDM store database (preview only)
+[group('CDM data management')]
+cdm-drop-duplicates-dry-run db='cdm_store.db':
+  @echo "🔍 Previewing duplicate tables in {{db}}..."
+  uv run python scripts/cdm_analysis/drop_duplicate_tables.py {{db}} --dry-run --verbose
+
+# Drop duplicate tables from CDM store database (DESTRUCTIVE!)
+[group('CDM data management')]
+cdm-drop-duplicates db='cdm_store.db':
+  @echo "⚠️  WARNING: This will DROP duplicate tables from {{db}}"
+  @echo "   Duplicate tables: Location, Sample, SystemProcess, etc. (old LinkML names)"
+  @echo "   Keeping: sdt_*, sys_*, ddt_* (CDM naming conventions)"
+  @echo ""
+  @echo "Press Ctrl+C to cancel, or wait 5 seconds to continue..."
+  @sleep 5
+  uv run python scripts/cdm_analysis/drop_duplicate_tables.py {{db}} --verbose
+
 # Load CDM parquet with ALL dynamic brick tables (sampled, configurable)
 [group('CDM data management')]
 load-cdm-store-full db='data/enigma_coral.db' output='cdm_store_full.db' max_rows='10000':
