@@ -549,6 +549,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#table-naming" class="md-nav__link">
+    <span class="md-ellipsis">
+      Table Naming
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#summary" class="md-nav__link">
     <span class="md-ellipsis">
       Summary
@@ -621,7 +630,10 @@ just load-cdm-store-bricks-64gb
 
 # Query the loaded data
 just cdm-store-stats
-just query-unused-reads 50000
+
+# Tables now use CDM naming (matching BERDL)
+duckdb cdm_store_bricks.db
+D show tables;  # sdt_location, sys_process, ddt_brick0000476, etc.
 </code></pre>
 <h3 id="for-128gb-ram-systems">For 128GB+ RAM Systems</h3>
 <pre><code class="language-bash"># Can use faster full load (less chunking)
@@ -729,8 +741,14 @@ watch -n 5 'free -h &amp;&amp; echo &amp;&amp; ps aux | grep python | grep load_
 <li><a href="../scripts/cdm_analysis/load_cdm_parquet_to_store.py">load_cdm_parquet_to_store.py</a> - Implementation</li>
 <li><a href="../project.justfile">project.justfile</a> - Loading commands</li>
 </ul>
+<h2 id="table-naming">Table Naming</h2>
+<p><strong>Tables now use CDM naming conventions (matching BERDL):</strong>
+- Static tables: <code>sdt_location</code>, <code>sdt_sample</code>, <code>sdt_reads</code>, etc.
+- System tables: <code>sys_process</code>, <code>sys_oterm</code>, <code>sys_typedef</code>, etc.
+- Brick tables: <code>ddt_brick0000476</code>, <code>ddt_brick0000477</code>, etc.</p>
+<p>This matches the parquet file names and BERDL database structure.</p>
 <h2 id="summary">Summary</h2>
-<p>The new chunked loading strategy makes it possible to load <strong>all 320M+ rows</strong> across 20 brick tables on standard 64GB RAM machines, with no sampling or data loss. The key insight: <strong>break large files into manageable chunks</strong> instead of loading everything at once.</p>
+<p>The new chunked loading strategy makes it possible to load <strong>all 320M+ rows</strong> across 20 brick tables on standard 64GB RAM machines, with no sampling or data loss. The key insight: <strong>break large files into manageable chunks</strong> instead of loading everything at once. Tables now use CDM naming conventions matching BERDL parquet files.</p>
 
 
 
