@@ -12,8 +12,8 @@ on:
 
 jobs:
   claude-review:
-    # Disabled until CLAUDE_CODE_OAUTH_TOKEN is configured in repository secrets
-    # To enable: Add CLAUDE_CODE_OAUTH_TOKEN to repository secrets and remove this if condition
+    # Disabled until ANTHROPIC_API_KEY is configured in repository secrets
+    # To enable: Add ANTHROPIC_API_KEY to repository secrets and change 'if: false' to 'if: true'
     if: false
 
     runs-on: ubuntu-latest
@@ -33,7 +33,8 @@ jobs:
         id: claude-review
         uses: anthropics/claude-code-action@beta
         with:
-          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          # Use ANTHROPIC_API_KEY instead of OAuth token (simpler setup)
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
 
           # Optional: Specify model (defaults to Claude Sonnet 4, uncomment for Claude Opus 4.1)
           # model: "claude-opus-4-1-20250805"
