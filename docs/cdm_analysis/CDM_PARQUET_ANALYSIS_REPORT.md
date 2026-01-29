@@ -1,6 +1,6 @@
 # KBase CDM Parquet Database Analysis Report
 
-**Database Location:** `/Users/marcin/Documents/VIMSS/ENIGMA/KBase/ENIGMA_in_CDM/minio/jmc_coral.db`
+**Database Location:** `data/enigma_coral.db`
 
 **Analysis Date:** 2025-12-01
 

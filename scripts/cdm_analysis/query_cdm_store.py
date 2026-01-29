@@ -15,8 +15,8 @@ Usage:
     # Search ontology terms
     python query_cdm_store.py --db cdm_store.db search-oterm "soil"
 
-    # Trace provenance for an entity
-    python query_cdm_store.py --db cdm_store.db lineage Assembly Assembly0000001
+    # Trace provenance for an entity (uses CDM table names)
+    python query_cdm_store.py --db cdm_store.db lineage sdt_assembly Assembly0000001
 """
 
 import argparse
@@ -98,14 +98,19 @@ class CDMStoreQuery:
         return stats
 
     def find_by_id(self, collection_name: str, entity_id: str) -> Optional[Dict]:
-        """Find entity by ID."""
+        """
+        Find entity by ID.
+
+        Args:
+            collection_name: CDM table name (e.g., "sdt_sample", "sys_process")
+            entity_id: Entity ID to find
+        """
         collection = self.get_collection(collection_name)
 
         # Try different ID field patterns
         id_fields = [
-            f"sdt_{collection_name.lower()}_id",
-            f"sys_{collection_name.lower()}_id",
-            f"{collection_name.lower()}_id",
+            f"{collection_name}_id",  # e.g., sdt_sample_id
+            f"{collection_name.replace('sdt_', '').replace('sys_', '')}_id",  # e.g., sample_id
             "id"
         ]
 
@@ -122,7 +127,7 @@ class CDMStoreQuery:
     def find_samples_by_location(self, location_name: str, limit: int = 100) -> List[Dict]:
         """Find all samples from a specific location."""
         try:
-            collection = self.get_collection("Sample")
+            collection = self.get_collection("sdt_sample")
             result = collection.find({"sdt_location_name": location_name}, limit=limit)
 
             # Extract rows from result
@@ -136,7 +141,7 @@ class CDMStoreQuery:
     def search_ontology_terms(self, search_term: str, limit: int = 50) -> List[Dict]:
         """Search ontology terms by name or ID pattern."""
         try:
-            collection = self.get_collection("SystemOntologyTerm")
+            collection = self.get_collection("sys_oterm")
             # Simple search - linkml-store may support more advanced filtering
             result = collection.find(limit=10000)
 
@@ -161,7 +166,7 @@ class CDMStoreQuery:
     def get_processes_for_entity(self, entity_type: str, entity_id: str) -> Dict[str, List[Dict]]:
         """Get all processes involving an entity (as input or output)."""
         try:
-            process_coll = self.get_collection("SystemProcess")
+            process_coll = self.get_collection("sys_process")
             result = process_coll.find(limit=100000)
 
             # Extract rows
@@ -379,7 +384,7 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-  # Show database statistics
+  # Show database statistics (tables now use CDM naming)
   python query_cdm_store.py --db cdm_store.db stats
 
   # Find samples from a location
@@ -388,8 +393,8 @@ Examples:
   # Search ontology terms
   python query_cdm_store.py --db cdm_store.db search-oterm "soil"
 
-  # Trace lineage for an assembly
-  python query_cdm_store.py --db cdm_store.db lineage Assembly Assembly0000001
+  # Trace lineage for an assembly (use CDM table name: sdt_assembly)
+  python query_cdm_store.py --db cdm_store.db lineage sdt_assembly Assembly0000001
 
   # Export results to JSON
   python query_cdm_store.py --db cdm_store.db stats --export stats.json
@@ -422,8 +427,8 @@ Examples:
 
     # Lineage command
     lineage_parser = subparsers.add_parser('lineage', help='Trace provenance lineage')
-    lineage_parser.add_argument('entity_type', help='Entity type (e.g., Assembly, Reads)')
-    lineage_parser.add_argument('entity_id', help='Entity ID')
+    lineage_parser.add_argument('entity_type', help='CDM table name (e.g., sdt_assembly, sdt_reads)')
+    lineage_parser.add_argument('entity_id', help='Entity ID (e.g., Assembly0000001)')
     lineage_parser.add_argument('--export', help='Export lineage to JSON file')
 
     args = parser.parse_args()

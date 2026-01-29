@@ -63,7 +63,7 @@ class TestCDMParquetLoading:
 
             # Load protocol table
             count = load_parquet_collection(
-                protocol_table, "Protocol", db, schema_view, verbose=True
+                protocol_table, "sdt_protocol", "Protocol", db, schema_view, verbose=True
             )
 
             assert count > 0
@@ -97,7 +97,7 @@ class TestCDMParquetLoading:
 
             # Load reads table (sample first 100 rows)
             count = load_parquet_collection(
-                reads_table, "Reads", db, schema_view, max_rows=100, verbose=True
+                reads_table, "sdt_reads", "Reads", db, schema_view, max_rows=100, verbose=True
             )
 
             assert count > 0
@@ -133,6 +133,7 @@ class TestCDMParquetLoading:
             # Load ontology terms (sample first 1000)
             count = load_parquet_collection(
                 oterm_table,
+                "sys_oterm",
                 "SystemOntologyTerm",
                 db,
                 schema_view,
@@ -195,19 +196,20 @@ class TestCDMStoreQuery:
             protocol_table = CDM_DB_PATH / "sdt_protocol"
             if protocol_table.exists():
                 load_parquet_collection(
-                    protocol_table, "Protocol", db, schema_view, verbose=False
+                    protocol_table, "sdt_protocol", "Protocol", db, schema_view, verbose=False
                 )
 
             location_table = CDM_DB_PATH / "sdt_location"
             if location_table.exists():
                 load_parquet_collection(
-                    location_table, "Location", db, schema_view, verbose=False
+                    location_table, "sdt_location", "Location", db, schema_view, verbose=False
                 )
 
             sample_table = CDM_DB_PATH / "sdt_sample"
             if sample_table.exists():
                 load_parquet_collection(
                     sample_table,
+                    "sdt_sample",
                     "Sample",
                     db,
                     schema_view,
@@ -219,6 +221,7 @@ class TestCDMStoreQuery:
             if oterm_table.exists():
                 load_parquet_collection(
                     oterm_table,
+                    "sys_oterm",
                     "SystemOntologyTerm",
                     db,
                     schema_view,
@@ -344,7 +347,7 @@ class TestEndToEnd:
 
             # Load data
             count = load_parquet_collection(
-                test_table_dir, "Sample", db, schema_view, verbose=True
+                test_table_dir, "sdt_sample", "Sample", db, schema_view, verbose=True
             )
 
             assert count == 3
@@ -354,7 +357,7 @@ class TestEndToEnd:
             assert len(collections) > 0
 
             # Verify we can retrieve the data directly
-            collection = db.get_collection("Sample")
+            collection = db.get_collection("sdt_sample")
             result = collection.find(limit=10)
 
             # Check that we got results
@@ -387,13 +390,13 @@ class TestEndToEnd:
             client, db, schema_view = create_store(str(db_path), CDM_SCHEMA)
 
             count = load_parquet_collection(
-                test_table_dir, "Sample", db, schema_view
+                test_table_dir, "sdt_sample", "Sample", db, schema_view
             )
 
             assert count == 2
 
             # Query and verify NaN converted to None
-            collection = db.get_collection("Sample")
+            collection = db.get_collection("sdt_sample")
             result = collection.find()
 
             # Extract rows from result
@@ -428,7 +431,7 @@ class TestErrorHandling:
 
             # Should handle gracefully (return 0 records)
             count = load_parquet_collection(
-                nonexistent_table, "Sample", db, schema_view, verbose=False
+                nonexistent_table, "sdt_sample", "Sample", db, schema_view, verbose=False
             )
 
             assert count == 0

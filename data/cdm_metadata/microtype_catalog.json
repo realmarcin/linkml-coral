@@ -1,0 +1,837 @@
+[
+  {
+    "microtype": "ME:0000126",
+    "usage_count": 10,
+    "tables": [
+      "sdt_tnseq_library",
+      "sdt_assembly",
+      "sdt_gene",
+      "sdt_dubseq_library",
+      "sdt_genome",
+      "sdt_reads"
+    ],
+    "columns": [
+      "sdt_assembly.n_contigs_count_unit",
+      "sdt_dubseq_library.n_fragments_count_unit",
+      "sdt_gene.contig_number_count_unit",
+      "sdt_genome.n_contigs_count_unit",
+      "sdt_genome.n_features_count_unit",
+      "sdt_reads.read_count_count_unit",
+      "sdt_tnseq_library.n_mapped_reads_count_unit",
+      "sdt_tnseq_library.n_barcodes_count_unit",
+      "sdt_tnseq_library.n_usable_barcodes_count_unit",
+      "sdt_tnseq_library.n_insertion_locations_count_unit"
+    ],
+    "example_description": "Number of contigs in the assembly"
+  },
+  {
+    "microtype": "ME:0000044",
+    "usage_count": 5,
+    "tables": [
+      "sdt_strain",
+      "sdt_assembly",
+      "sdt_genome",
+      "sdt_community"
+    ],
+    "columns": [
+      "sdt_assembly.sdt_strain_name",
+      "sdt_community.defined_sdt_strain_names",
+      "sdt_genome.sdt_strain_name",
+      "sdt_strain.sdt_strain_name",
+      "sdt_strain.derived_from_sdt_strain_name"
+    ],
+    "example_description": "Strain name from which the assembly was derived (foreign key to Strain.name)."
+  },
+  {
+    "microtype": "ME:0000203",
+    "usage_count": 5,
+    "tables": [
+      "sdt_protocol",
+      "sdt_image",
+      "sdt_assembly",
+      "sdt_genome",
+      "sdt_reads"
+    ],
+    "columns": [
+      "sdt_assembly.link",
+      "sdt_genome.link",
+      "sdt_image.link",
+      "sdt_protocol.link",
+      "sdt_reads.link"
+    ],
+    "example_description": "Reference to the actual assembly data"
+  },
+  {
+    "microtype": "ME:0000202",
+    "usage_count": 5,
+    "tables": [
+      "sdt_protocol",
+      "sdt_image",
+      "sdt_strain",
+      "sdt_sample",
+      "sdt_community"
+    ],
+    "columns": [
+      "sdt_community.sdt_community_description",
+      "sdt_image.sdt_image_description",
+      "sdt_protocol.sdt_protocol_description",
+      "sdt_sample.sdt_sample_description",
+      "sdt_strain.sdt_strain_description"
+    ],
+    "example_description": "Free-text field providing additional details or notes about the community"
+  },
+  {
+    "microtype": "ME:0000246",
+    "usage_count": 5,
+    "tables": [
+      "sdt_strain",
+      "sdt_tnseq_library",
+      "sdt_gene",
+      "sdt_dubseq_library",
+      "sdt_genome"
+    ],
+    "columns": [
+      "sdt_dubseq_library.sdt_genome_name",
+      "sdt_gene.sdt_genome_name",
+      "sdt_genome.sdt_genome_name",
+      "sdt_strain.sdt_genome_name",
+      "sdt_tnseq_library.sdt_genome_name"
+    ],
+    "example_description": "Foreign key to the associated genome (Genome.name) from which the library was derived"
+  },
+  {
+    "microtype": "ME:0000009",
+    "usage_count": 3,
+    "tables": [
+      "sys_process",
+      "sdt_sample"
+    ],
+    "columns": [
+      "sdt_sample.date",
+      "sys_process.date_start",
+      "sys_process.date_end"
+    ],
+    "example_description": "YYYY[-MM[-DD]]"
+  },
+  {
+    "microtype": "ME:0000280",
+    "usage_count": 2,
+    "tables": [
+      "sdt_assembly",
+      "sdt_bin"
+    ],
+    "columns": [
+      "sdt_assembly.sdt_assembly_name",
+      "sdt_bin.sdt_assembly_name"
+    ],
+    "example_description": "Unique name for the assembly"
+  },
+  {
+    "microtype": "ME:0000233",
+    "usage_count": 2,
+    "tables": [
+      "sdt_community"
+    ],
+    "columns": [
+      "sdt_community.sdt_community_name",
+      "sdt_community.parent_sdt_community_name"
+    ],
+    "example_description": "Unique name of the community"
+  },
+  {
+    "microtype": "ME:0000234",
+    "usage_count": 2,
+    "tables": [
+      "sdt_community"
+    ],
+    "columns": [
+      "sdt_community.community_type_sys_oterm_id",
+      "sdt_community.community_type_sys_oterm_name"
+    ],
+    "example_description": "Type of community, e.g., isolate or enrichment, ontology term CURIE"
+  },
+  {
+    "microtype": "ME:0000102",
+    "usage_count": 2,
+    "tables": [
+      "sdt_sample",
+      "sdt_community"
+    ],
+    "columns": [
+      "sdt_community.sdt_sample_name",
+      "sdt_sample.sdt_sample_name"
+    ],
+    "example_description": "Reference to the Sample from which the community was obtained."
+  },
+  {
+    "microtype": "ME:0000200",
+    "usage_count": 2,
+    "tables": [
+      "sdt_community",
+      "sdt_condition"
+    ],
+    "columns": [
+      "sdt_community.sdt_condition_name",
+      "sdt_condition.sdt_condition_name"
+    ],
+    "example_description": "Reference to the experimental or environmental condition associated with the community"
+  },
+  {
+    "microtype": "ME:0000276",
+    "usage_count": 2,
+    "tables": [
+      "sdt_tnseq_library",
+      "sdt_dubseq_library"
+    ],
+    "columns": [
+      "sdt_dubseq_library.sdt_dubseq_library_id",
+      "sdt_tnseq_library.sdt_tnseq_library_id"
+    ],
+    "example_description": "Unique DubSeq library identifier (Primary key)"
+  },
+  {
+    "microtype": "ME:0000262",
+    "usage_count": 2,
+    "tables": [
+      "sdt_tnseq_library",
+      "sdt_dubseq_library"
+    ],
+    "columns": [
+      "sdt_dubseq_library.sdt_dubseq_library_name",
+      "sdt_tnseq_library.sdt_tnseq_library_name"
+    ],
+    "example_description": "Unique, human-readable name of the DubSeq library"
+  },
+  {
+    "microtype": "ME:0000228",
+    "usage_count": 2,
+    "tables": [
+      "sdt_location",
+      "sdt_sample"
+    ],
+    "columns": [
+      "sdt_location.sdt_location_name",
+      "sdt_sample.sdt_location_name"
+    ],
+    "example_description": "Unique name of the location"
+  },
+  {
+    "microtype": "ME:0000213",
+    "usage_count": 2,
+    "tables": [
+      "sdt_location"
+    ],
+    "columns": [
+      "sdt_location.continent_sys_oterm_id",
+      "sdt_location.continent_sys_oterm_name"
+    ],
+    "example_description": "Continent where the location is situated, ontology term CURIE"
+  },
+  {
+    "microtype": "ME:0000214",
+    "usage_count": 2,
+    "tables": [
+      "sdt_location"
+    ],
+    "columns": [
+      "sdt_location.country_sys_oterm_id",
+      "sdt_location.country_sys_oterm_name"
+    ],
+    "example_description": "Country of the location, ontology term CURIE"
+  },
+  {
+    "microtype": "ME:0000216",
+    "usage_count": 2,
+    "tables": [
+      "sdt_location"
+    ],
+    "columns": [
+      "sdt_location.biome_sys_oterm_id",
+      "sdt_location.biome_sys_oterm_name"
+    ],
+    "example_description": "Biome classification of the location, ontology term CURIE"
+  },
+  {
+    "microtype": "ME:0000217",
+    "usage_count": 2,
+    "tables": [
+      "sdt_location"
+    ],
+    "columns": [
+      "sdt_location.feature_sys_oterm_id",
+      "sdt_location.feature_sys_oterm_name"
+    ],
+    "example_description": "Environmental or geographic feature at the location, ontology term CURIE"
+  },
+  {
+    "microtype": "ME:0000328",
+    "usage_count": 2,
+    "tables": [
+      "sys_process",
+      "sdt_protocol"
+    ],
+    "columns": [
+      "sdt_protocol.sdt_protocol_name",
+      "sys_process.sdt_protocol_name"
+    ],
+    "example_description": "Unique, human-readable name of the protocol"
+  },
+  {
+    "microtype": "ME:0000112",
+    "usage_count": 2,
+    "tables": [
+      "sdt_reads"
+    ],
+    "columns": [
+      "sdt_reads.read_type_sys_oterm_id",
+      "sdt_reads.read_type_sys_oterm_name"
+    ],
+    "example_description": "Category of reads (e.g., single-end, paired-end), ontology term CURIE"
+  },
+  {
+    "microtype": "ME:0000116",
+    "usage_count": 2,
+    "tables": [
+      "sdt_reads"
+    ],
+    "columns": [
+      "sdt_reads.sequencing_technology_sys_oterm_id",
+      "sdt_reads.sequencing_technology_sys_oterm_name"
+    ],
+    "example_description": "Sequencing technology used (e.g., Illumina), ontology term CURIE"
+  },
+  {
+    "microtype": "ME:0000230",
+    "usage_count": 2,
+    "tables": [
+      "sdt_sample"
+    ],
+    "columns": [
+      "sdt_sample.material_sys_oterm_id",
+      "sdt_sample.material_sys_oterm_name"
+    ],
+    "example_description": "Material type of the sample, ontology term CURIE"
+  },
+  {
+    "microtype": "ME:0000229",
+    "usage_count": 2,
+    "tables": [
+      "sdt_sample"
+    ],
+    "columns": [
+      "sdt_sample.env_package_sys_oterm_id",
+      "sdt_sample.env_package_sys_oterm_name"
+    ],
+    "example_description": "MIxS environmental package classification of the sample, ontology term CURIE"
+  },
+  {
+    "microtype": "ME:0000264",
+    "usage_count": 2,
+    "tables": [
+      "sdt_tnseq_library"
+    ],
+    "columns": [
+      "sdt_tnseq_library.hit_rate_essential_ratio_unit",
+      "sdt_tnseq_library.hit_rate_other_ratio_unit"
+    ],
+    "example_description": "Proportion of essential genes with at least one transposon insertion"
+  },
+  {
+    "microtype": "ME:0000204",
+    "usage_count": 2,
+    "tables": [
+      "sys_process"
+    ],
+    "columns": [
+      "sys_process.process_sys_oterm_id",
+      "sys_process.process_sys_oterm_name"
+    ],
+    "example_description": "Reference to the specific process type used to generate the outputs, ontology term CURIE"
+  },
+  {
+    "microtype": "ME:0000205",
+    "usage_count": 2,
+    "tables": [
+      "sys_process"
+    ],
+    "columns": [
+      "sys_process.person_sys_oterm_id",
+      "sys_process.person_sys_oterm_name"
+    ],
+    "example_description": "Reference to the person or lab that performed the process, ontology term CURIE"
+  },
+  {
+    "microtype": "ME:0000206",
+    "usage_count": 2,
+    "tables": [
+      "sys_process"
+    ],
+    "columns": [
+      "sys_process.campaign_sys_oterm_id",
+      "sys_process.campaign_sys_oterm_name"
+    ],
+    "example_description": "Reference to the ENIGMA campaign under which the data were generated, ontology term CURIE"
+  },
+  {
+    "microtype": "ME:0000281",
+    "usage_count": 1,
+    "tables": [
+      "sdt_assembly"
+    ],
+    "columns": [
+      "sdt_assembly.sdt_assembly_id"
+    ],
+    "example_description": "Unique text identifier for the assembly (Primary key)"
+  },
+  {
+    "microtype": "ME:0000269",
+    "usage_count": 1,
+    "tables": [
+      "sdt_asv"
+    ],
+    "columns": [
+      "sdt_asv.sdt_asv_id"
+    ],
+    "example_description": "Unique identifier for each ASV/OTU (Primary key)"
+  },
+  {
+    "microtype": "ME:0000222",
+    "usage_count": 1,
+    "tables": [
+      "sdt_asv"
+    ],
+    "columns": [
+      "sdt_asv.sdt_asv_name"
+    ],
+    "example_description": "Unique name assigned to the ASV/OTU, usually md5sum"
+  },
+  {
+    "microtype": "ME:0000331",
+    "usage_count": 1,
+    "tables": [
+      "sdt_bin"
+    ],
+    "columns": [
+      "sdt_bin.sdt_bin_id"
+    ],
+    "example_description": "Unique identifier for the bin (Primary key)"
+  },
+  {
+    "microtype": "ME:0000330",
+    "usage_count": 1,
+    "tables": [
+      "sdt_bin"
+    ],
+    "columns": [
+      "sdt_bin.sdt_bin_name"
+    ],
+    "example_description": "Human-readable, unique name for the bin"
+  },
+  {
+    "microtype": "ME:0000240",
+    "usage_count": 1,
+    "tables": [
+      "sdt_bin"
+    ],
+    "columns": [
+      "sdt_bin.contigs"
+    ],
+    "example_description": "Array of contig identifiers included in the bin"
+  },
+  {
+    "microtype": "ME:0000272",
+    "usage_count": 1,
+    "tables": [
+      "sdt_community"
+    ],
+    "columns": [
+      "sdt_community.sdt_community_id"
+    ],
+    "example_description": "Unique internal identifier for the community (Primary key)"
+  },
+  {
+    "microtype": "ME:0000270",
+    "usage_count": 1,
+    "tables": [
+      "sdt_condition"
+    ],
+    "columns": [
+      "sdt_condition.sdt_condition_id"
+    ],
+    "example_description": "Unique identifier for the condition (Primary key)"
+  },
+  {
+    "microtype": "ME:0000275",
+    "usage_count": 1,
+    "tables": [
+      "sdt_gene"
+    ],
+    "columns": [
+      "sdt_gene.sdt_gene_id"
+    ],
+    "example_description": "Unique internal identifier for the gene (Primary key)"
+  },
+  {
+    "microtype": "ME:0000224",
+    "usage_count": 1,
+    "tables": [
+      "sdt_gene"
+    ],
+    "columns": [
+      "sdt_gene.sdt_gene_name"
+    ],
+    "example_description": "Unique external identifier for the gene"
+  },
+  {
+    "microtype": "ME:0000060",
+    "usage_count": 1,
+    "tables": [
+      "sdt_gene"
+    ],
+    "columns": [
+      "sdt_gene.aliases"
+    ],
+    "example_description": "List of alternative names or identifiers for the gene"
+  },
+  {
+    "microtype": "ME:0000186",
+    "usage_count": 1,
+    "tables": [
+      "sdt_gene"
+    ],
+    "columns": [
+      "sdt_gene.strand"
+    ],
+    "example_description": "DNA strand of the gene (+ for forward, - for reverse)"
+  },
+  {
+    "microtype": "ME:0000242",
+    "usage_count": 1,
+    "tables": [
+      "sdt_gene"
+    ],
+    "columns": [
+      "sdt_gene.start_base_pair"
+    ],
+    "example_description": "Genomic start coordinate on the contig, indexed starting at 1 as in KBase"
+  },
+  {
+    "microtype": "ME:0000243",
+    "usage_count": 1,
+    "tables": [
+      "sdt_gene"
+    ],
+    "columns": [
+      "sdt_gene.stop_base_pair"
+    ],
+    "example_description": "Genomic stop coordinate in base pairs"
+  },
+  {
+    "microtype": "ME:0000250",
+    "usage_count": 1,
+    "tables": [
+      "sdt_gene"
+    ],
+    "columns": [
+      "sdt_gene.function"
+    ],
+    "example_description": "Annotated biological function of the gene"
+  },
+  {
+    "microtype": "ME:0000274",
+    "usage_count": 1,
+    "tables": [
+      "sdt_genome"
+    ],
+    "columns": [
+      "sdt_genome.sdt_genome_id"
+    ],
+    "example_description": "Unique identifier for the genome (Primary key)"
+  },
+  {
+    "microtype": "ME:0000356",
+    "usage_count": 1,
+    "tables": [
+      "sdt_image"
+    ],
+    "columns": [
+      "sdt_image.sdt_image_id"
+    ],
+    "example_description": "Unique identifier for each image (Primary key)"
+  },
+  {
+    "microtype": "ME:0000355",
+    "usage_count": 1,
+    "tables": [
+      "sdt_image"
+    ],
+    "columns": [
+      "sdt_image.sdt_image_name"
+    ],
+    "example_description": "Unique name (e.g., filename) for the image."
+  },
+  {
+    "microtype": "ME:0000357",
+    "usage_count": 1,
+    "tables": [
+      "sdt_image"
+    ],
+    "columns": [
+      "sdt_image.mime_type"
+    ],
+    "example_description": "MIME type specifying the image file format (e.g., image/jpeg)"
+  },
+  {
+    "microtype": "ME:0000128",
+    "usage_count": 1,
+    "tables": [
+      "sdt_image"
+    ],
+    "columns": [
+      "sdt_image.size_byte"
+    ],
+    "example_description": "File size of the image measured in bytes"
+  },
+  {
+    "microtype": "ME:0000292",
+    "usage_count": 1,
+    "tables": [
+      "sdt_image"
+    ],
+    "columns": [
+      "sdt_image.dimensions"
+    ],
+    "example_description": "Image dimensions (e.g., width \u00d7 height) expressed in pixels"
+  },
+  {
+    "microtype": "ME:0000266",
+    "usage_count": 1,
+    "tables": [
+      "sdt_location"
+    ],
+    "columns": [
+      "sdt_location.sdt_location_id"
+    ],
+    "example_description": "Unique identifier for the location (Primary key)"
+  },
+  {
+    "microtype": "ME:0000211",
+    "usage_count": 1,
+    "tables": [
+      "sdt_location"
+    ],
+    "columns": [
+      "sdt_location.latitude_degree"
+    ],
+    "example_description": "Latitude of the location in decimal degrees"
+  },
+  {
+    "microtype": "ME:0000212",
+    "usage_count": 1,
+    "tables": [
+      "sdt_location"
+    ],
+    "columns": [
+      "sdt_location.longitude_degree"
+    ],
+    "example_description": "Longitude of the location in decimal degrees"
+  },
+  {
+    "microtype": "ME:0000215",
+    "usage_count": 1,
+    "tables": [
+      "sdt_location"
+    ],
+    "columns": [
+      "sdt_location.region"
+    ],
+    "example_description": "Specific local region name(s)"
+  },
+  {
+    "microtype": "ME:0000332",
+    "usage_count": 1,
+    "tables": [
+      "sdt_protocol"
+    ],
+    "columns": [
+      "sdt_protocol.sdt_protocol_id"
+    ],
+    "example_description": "Unique identifier for the protocol (Primary key)"
+  },
+  {
+    "microtype": "ME:0000273",
+    "usage_count": 1,
+    "tables": [
+      "sdt_reads"
+    ],
+    "columns": [
+      "sdt_reads.sdt_reads_id"
+    ],
+    "example_description": "Unique identifier for each reads dataset (Primary key)"
+  },
+  {
+    "microtype": "ME:0000248",
+    "usage_count": 1,
+    "tables": [
+      "sdt_reads"
+    ],
+    "columns": [
+      "sdt_reads.sdt_reads_name"
+    ],
+    "example_description": "Unique name for the reads"
+  },
+  {
+    "microtype": "ME:0000267",
+    "usage_count": 1,
+    "tables": [
+      "sdt_sample"
+    ],
+    "columns": [
+      "sdt_sample.sdt_sample_id"
+    ],
+    "example_description": "Unique identifier for the sample (Primary key)"
+  },
+  {
+    "microtype": "ME:0000219",
+    "usage_count": 1,
+    "tables": [
+      "sdt_sample"
+    ],
+    "columns": [
+      "sdt_sample.depth_meter"
+    ],
+    "example_description": "For below-ground samples, the average distance below ground level in meters where the sample was taken"
+  },
+  {
+    "microtype": "ME:0000220",
+    "usage_count": 1,
+    "tables": [
+      "sdt_sample"
+    ],
+    "columns": [
+      "sdt_sample.elevation_meter"
+    ],
+    "example_description": "For above-ground samples, the average distance above ground level in meters where the sample was taken"
+  },
+  {
+    "microtype": "ME:0000010",
+    "usage_count": 1,
+    "tables": [
+      "sdt_sample"
+    ],
+    "columns": [
+      "sdt_sample.time"
+    ],
+    "example_description": "HH[:MM[:SS]] [AM|PM]"
+  },
+  {
+    "microtype": "ME:0000201",
+    "usage_count": 1,
+    "tables": [
+      "sdt_sample"
+    ],
+    "columns": [
+      "sdt_sample.timezone"
+    ],
+    "example_description": "ISO8601 compliant format, ie. UTC-7"
+  },
+  {
+    "microtype": "ME:0000271",
+    "usage_count": 1,
+    "tables": [
+      "sdt_strain"
+    ],
+    "columns": [
+      "sdt_strain.sdt_strain_id"
+    ],
+    "example_description": "Unique identifier for each strain (Primary key)"
+  },
+  {
+    "microtype": "ME:0000091",
+    "usage_count": 1,
+    "tables": [
+      "sdt_strain"
+    ],
+    "columns": [
+      "sdt_strain.sdt_gene_names_changed"
+    ],
+    "example_description": "List of gene identifiers that have been altered in this strain, if created by genetic modification, if known"
+  },
+  {
+    "microtype": "ME:0000268",
+    "usage_count": 1,
+    "tables": [
+      "sdt_taxon"
+    ],
+    "columns": [
+      "sdt_taxon.sdt_taxon_id"
+    ],
+    "example_description": "Unique identifier for a taxon record (Primary key)"
+  },
+  {
+    "microtype": "ME:0000047",
+    "usage_count": 1,
+    "tables": [
+      "sdt_taxon"
+    ],
+    "columns": [
+      "sdt_taxon.sdt_taxon_name"
+    ],
+    "example_description": "Unique taxon name, typically the scientific name"
+  },
+  {
+    "microtype": "ME:0000223",
+    "usage_count": 1,
+    "tables": [
+      "sdt_taxon"
+    ],
+    "columns": [
+      "sdt_taxon.ncbi_taxid"
+    ],
+    "example_description": "NCBI taxonomy identifier for the taxon, if available"
+  },
+  {
+    "microtype": "ME:0000263",
+    "usage_count": 1,
+    "tables": [
+      "sdt_tnseq_library"
+    ],
+    "columns": [
+      "sdt_tnseq_library.primers_model"
+    ],
+    "example_description": "Type of primers used to generate the library"
+  },
+  {
+    "microtype": "ME:0000277",
+    "usage_count": 1,
+    "tables": [
+      "sys_process"
+    ],
+    "columns": [
+      "sys_process.sys_process_id"
+    ],
+    "example_description": "Unique identifier for each process record (Primary key)"
+  },
+  {
+    "microtype": "ME:0000207",
+    "usage_count": 1,
+    "tables": [
+      "sys_process"
+    ],
+    "columns": [
+      "sys_process.input_objects"
+    ],
+    "example_description": "List of references to data that were input to this process"
+  },
+  {
+    "microtype": "ME:0000208",
+    "usage_count": 1,
+    "tables": [
+      "sys_process"
+    ],
+    "columns": [
+      "sys_process.output_objects"
+    ],
+    "example_description": "List of references to data that were produced by this process"
+  }
+]

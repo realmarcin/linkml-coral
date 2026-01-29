@@ -12,10 +12,10 @@ The CDM contains 44 parquet tables:
 
 Usage:
     # Load all static and system tables
-    python load_cdm_parquet_to_store.py /path/to/jmc_coral.db
+    python load_cdm_parquet_to_store.py data/enigma_coral.db
 
     # Load with options
-    python load_cdm_parquet_to_store.py /path/to/jmc_coral.db \\
+    python load_cdm_parquet_to_store.py data/enigma_coral.db \\
         --output cdm_store.db \\
         --include-system \\
         --include-static \\
@@ -23,7 +23,7 @@ Usage:
         --verbose
 
     # Sample dynamic brick tables (82.6M rows)
-    python load_cdm_parquet_to_store.py /path/to/jmc_coral.db \\
+    python load_cdm_parquet_to_store.py data/enigma_coral.db \\
         --include-dynamic \\
         --max-brick-rows 10000
 """
@@ -31,8 +31,9 @@ Usage:
 import argparse
 import sys
 from pathlib import Path
-from typing import Dict, List, Any, Optional
+from typing import Dict, List, Any, Optional, Iterator
 import time
+import gc
 
 try:
     import pandas as pd
@@ -45,6 +46,18 @@ try:
 except ImportError:
     print("Error: pyarrow not installed. Run: uv pip install pyarrow")
     sys.exit(1)
+
+try:
+    import psutil
+except ImportError:
+    print("Warning: psutil not installed. Memory monitoring disabled. Run: uv pip install psutil")
+    psutil = None
+
+try:
+    from tqdm import tqdm
+except ImportError:
+    print("Warning: tqdm not installed. Progress bars disabled. Run: uv pip install tqdm")
+    tqdm = None
 
 from linkml_store import Client
 from linkml_runtime.utils.schemaview import SchemaView
@@ -88,6 +101,76 @@ TABLE_TO_CLASS = {
     # Dynamic data tables (ddt_*)
     "ddt_ndarray": "DynamicDataArray",
 }
+
+
+def get_memory_info() -> Dict[str, float]:
+    """Get current system memory information in GB."""
+    if psutil is None:
+        return {'total_gb': 0, 'available_gb': 0, 'used_gb': 0, 'percent': 0}
+
+    mem = psutil.virtual_memory()
+    return {
+        'total_gb': mem.total / (1024**3),
+        'available_gb': mem.available / (1024**3),
+        'used_gb': mem.used / (1024**3),
+        'percent': mem.percent
+    }
+
+
+def estimate_memory_requirement(parquet_path: Path) -> float:
+    """
+    Estimate memory required to load parquet file in GB.
+
+    Args:
+        parquet_path: Path to parquet file or directory
+
+    Returns:
+        Estimated memory in GB
+    """
+    if parquet_path.is_dir():
+        total_size = sum(f.stat().st_size for f in parquet_path.glob("*.parquet")
+                        if not f.parent.name.startswith('_'))
+    else:
+        total_size = parquet_path.stat().st_size
+
+    # Estimate: compressed_size × 8 (decompression) × 2 (processing overhead)
+    estimated_gb = (total_size / (1024**3)) * 16
+    return estimated_gb
+
+
+def check_memory_warning(parquet_path: Path, verbose: bool = False) -> bool:
+    """
+    Check if sufficient memory is available and warn if low.
+
+    Args:
+        parquet_path: Path to parquet file/directory
+        verbose: Print detailed memory info
+
+    Returns:
+        True if sufficient memory, False otherwise
+    """
+    if psutil is None:
+        return True  # Can't check, assume OK
+
+    mem_info = get_memory_info()
+    required_gb = estimate_memory_requirement(parquet_path)
+
+    # Show warning if file requires more than 50% of available memory
+    if verbose or required_gb > mem_info['available_gb'] * 0.5:
+        print(f"\n  💾 Memory Check:")
+        print(f"     System Total: {mem_info['total_gb']:.1f} GB")
+        print(f"     Available: {mem_info['available_gb']:.1f} GB")
+        print(f"     Estimated Required: {required_gb:.1f} GB")
+
+    if required_gb > mem_info['available_gb']:
+        print(f"\n  ⚠️  ⚠️  ⚠️  MEMORY WARNING ⚠️  ⚠️  ⚠️")
+        print(f"  This file may cause out-of-memory errors!")
+        print(f"  Required: ~{required_gb:.1f} GB")
+        print(f"  Available: {mem_info['available_gb']:.1f} GB")
+        print(f"\n  Will use CHUNKED loading (memory-safe)")
+        return False
+
+    return True
 
 
 def load_schema(schema_path: Path) -> SchemaView:
@@ -187,6 +270,58 @@ def read_parquet_data(
     return df
 
 
+def read_parquet_chunked(
+    parquet_path: Path,
+    chunk_size: int = 100_000,
+    max_rows: Optional[int] = None,
+    verbose: bool = False
+) -> Iterator[pd.DataFrame]:
+    """
+    Read parquet file in chunks to avoid loading entire file into memory.
+
+    Args:
+        parquet_path: Path to parquet file or directory (Delta Lake)
+        chunk_size: Number of rows per chunk (default: 100K)
+        max_rows: Maximum total rows to read (None = all)
+        verbose: Print chunk progress
+
+    Yields:
+        DataFrame chunks
+    """
+    if parquet_path.is_dir():
+        # Delta Lake format - read all parquet files in directory
+        parquet_files = sorted([f for f in parquet_path.glob("*.parquet")
+                               if not f.parent.name.startswith('_')])
+        if not parquet_files:
+            raise ValueError(f"No parquet files found in {parquet_path}")
+    else:
+        # Single parquet file
+        parquet_files = [parquet_path]
+
+    total_yielded = 0
+    for file_idx, pf in enumerate(parquet_files, 1):
+        if verbose and len(parquet_files) > 1:
+            print(f"    Reading file {file_idx}/{len(parquet_files)}: {pf.name}")
+
+        parquet_file = pq.ParquetFile(pf)
+
+        # Iterate over row groups in batches
+        for batch in parquet_file.iter_batches(batch_size=chunk_size):
+            df_chunk = batch.to_pandas()
+
+            # Apply max_rows limit
+            if max_rows is not None:
+                rows_remaining = max_rows - total_yielded
+                if rows_remaining <= 0:
+                    return
+                if len(df_chunk) > rows_remaining:
+                    yield df_chunk.iloc[:rows_remaining]
+                    return
+
+            total_yielded += len(df_chunk)
+            yield df_chunk
+
+
 def parse_array_field(value: Any) -> List[str]:
     """Parse string array fields like \"['Reads:Reads0000001']\" to Python lists."""
     if not value:
@@ -283,8 +418,368 @@ def add_computed_fields(record: Dict[str, Any], class_name: str) -> Dict[str, An
     return enhanced
 
 
+def load_parquet_to_duckdb_direct(
+    parquet_path: Path,
+    table_name: str,
+    collection_name: str,
+    db,
+    max_rows: Optional[int] = None,
+    verbose: bool = False,
+    force_chunked_threshold: int = 100_000_000  # 100M rows
+) -> int:
+    """
+    Load parquet directly into DuckDB without pandas (FAST, low memory).
+
+    This bypasses pandas entirely and uses DuckDB's native parquet reader,
+    which is 10-50x faster and uses minimal memory.
+
+    For very large files (>100M rows), automatically uses INSERT INTO with
+    chunked SELECT to avoid OOM errors.
+
+    Args:
+        parquet_path: Path to parquet file/directory
+        table_name: CDM table name (e.g., "sdt_location", "ddt_brick0000476")
+        collection_name: LinkML class name for schema validation
+        db: Database connection
+        max_rows: Maximum rows to load (None = all)
+        verbose: Print detailed progress
+        force_chunked_threshold: Row count above which to use chunked INSERT
+
+    Returns:
+        Number of records loaded
+    """
+    import duckdb
+
+    parquet_name = parquet_path.name
+    print(f"\n📥 Loading {parquet_name} as {table_name}...")
+
+    start_time = time.time()
+
+    try:
+        # Get total row count first to decide loading strategy
+        try:
+            total_rows = get_parquet_row_count(parquet_path)
+            load_rows = min(max_rows, total_rows) if max_rows else total_rows
+            print(f"  📊 Total rows: {total_rows:,}")
+            if max_rows and max_rows < total_rows:
+                print(f"     Loading: {load_rows:,} rows")
+        except Exception as e:
+            if verbose:
+                print(f"  ⚠️  Could not get row count: {e}")
+            total_rows = None
+            load_rows = max_rows if max_rows else None
+
+        # Get DuckDB connection from linkml-store
+        # Path: db.engine (SQLAlchemy) → raw_connection() (ConnectionFairy)
+        #       → driver_connection (ConnectionWrapper) → _ConnectionWrapper__c (DuckDB)
+        if hasattr(db, 'engine'):
+            # Access through SQLAlchemy Engine (used by linkml-store)
+            raw_conn = db.engine.raw_connection()
+            wrapper = raw_conn.driver_connection
+            # Access the actual DuckDB connection (name-mangled private attribute)
+            conn = wrapper._ConnectionWrapper__c
+            if verbose:
+                print(f"  ✓ Accessed DuckDB connection via SQLAlchemy engine")
+        else:
+            # Fallback: Try direct attributes (for other database types)
+            if hasattr(db, '_connection'):
+                conn = db._connection
+            elif hasattr(db, 'connection'):
+                conn = db.connection
+            elif hasattr(db, 'get_connection'):
+                conn = db.get_connection()
+            else:
+                raise AttributeError("Cannot access DuckDB connection from linkml-store")
+
+        # Build parquet path pattern
+        if parquet_path.is_dir():
+            parquet_pattern = f"{parquet_path}/*.parquet"
+        else:
+            parquet_pattern = str(parquet_path)
+
+        # Decide loading strategy based on size
+        use_chunked_insert = (
+            load_rows is not None and
+            load_rows > force_chunked_threshold
+        )
+
+        if use_chunked_insert:
+            # LARGE FILE: Use chunked INSERT INTO for memory safety
+            print(f"  🔄 Using chunked DuckDB loading (row count: {load_rows:,} > {force_chunked_threshold:,})")
+
+            # Create table schema from first batch
+            schema_query = f"""
+                CREATE OR REPLACE TABLE {table_name} AS
+                SELECT * FROM read_parquet('{parquet_pattern}', union_by_name=true)
+                LIMIT 0
+            """
+            conn.execute(schema_query)
+            if verbose:
+                print(f"  ✓ Created table schema")
+
+            # Insert in chunks using OFFSET/LIMIT
+            chunk_size = 10_000_000  # 10M rows per chunk
+            num_chunks = (load_rows + chunk_size - 1) // chunk_size
+            print(f"  📦 Processing {num_chunks} chunks ({chunk_size:,} rows/chunk)")
+
+            total_loaded = 0
+            for chunk_idx in range(num_chunks):
+                chunk_start = time.time()
+                offset = chunk_idx * chunk_size
+                limit = min(chunk_size, load_rows - offset)
+
+                insert_query = f"""
+                    INSERT INTO {table_name}
+                    SELECT * FROM read_parquet('{parquet_pattern}', union_by_name=true)
+                    LIMIT {limit} OFFSET {offset}
+                """
+
+                conn.execute(insert_query)
+                total_loaded += limit
+
+                chunk_time = time.time() - chunk_start
+                progress_pct = ((chunk_idx + 1) / num_chunks) * 100
+                print(f"  [{chunk_idx+1}/{num_chunks}] {progress_pct:5.1f}% - "
+                      f"Loaded {limit:,} rows in {chunk_time:.1f}s "
+                      f"(total: {total_loaded:,})", end='\r')
+
+                # Force garbage collection after each chunk
+                gc.collect()
+
+            print()  # New line after progress
+            count = total_loaded
+
+        else:
+            # SMALL/MEDIUM FILE: Use fast CREATE TABLE AS SELECT
+            if max_rows:
+                query = f"""
+                    CREATE OR REPLACE TABLE {table_name} AS
+                    SELECT * FROM read_parquet('{parquet_pattern}', union_by_name=true)
+                    LIMIT {max_rows}
+                """
+            else:
+                query = f"""
+                    CREATE OR REPLACE TABLE {table_name} AS
+                    SELECT * FROM read_parquet('{parquet_pattern}', union_by_name=true)
+                """
+
+            if verbose:
+                print(f"  🔍 Query: {query}")
+
+            # Execute (streaming, minimal memory overhead for small/medium files)
+            conn.execute(query)
+
+            # Get count
+            count_result = conn.execute(f"SELECT COUNT(*) FROM {table_name}").fetchone()
+            count = count_result[0] if count_result else 0
+
+        elapsed = time.time() - start_time
+        print(f"  ✅ Loaded {count:,} records in {elapsed:.1f}s ({count/elapsed:.0f} records/sec)")
+
+        return count
+
+    except AttributeError as e:
+        # Could not access DuckDB connection - fall back to pandas
+        if verbose:
+            print(f"  ℹ️  Note: Could not access DuckDB connection ({e}), falling back to chunked pandas")
+        return 0
+    except Exception as e:
+        # Other error during direct import - fall back to pandas
+        if verbose:
+            print(f"  ⚠️  Direct import failed: {e}")
+            print(f"  ℹ️  Falling back to chunked pandas loading...")
+        return 0
+
+
+def load_parquet_collection_chunked(
+    parquet_path: Path,
+    table_name: str,
+    class_name: str,
+    db,
+    schema_view: SchemaView,
+    max_rows: Optional[int] = None,
+    chunk_size: int = 100_000,
+    verbose: bool = False
+) -> int:
+    """
+    Load a parquet table into linkml-store using chunked reading.
+
+    This method loads data in chunks to avoid memory issues with large files.
+
+    Args:
+        parquet_path: Path to parquet file/directory
+        table_name: CDM table name (e.g., "sdt_location", "ddt_brick0000476")
+        class_name: LinkML class name for schema validation
+        db: Database connection
+        schema_view: SchemaView instance
+        max_rows: Maximum rows to load (None = all)
+        chunk_size: Rows per chunk (default: 100K)
+        verbose: Print detailed progress
+
+    Returns:
+        Number of records loaded
+    """
+    parquet_name = parquet_path.name
+    print(f"\n📥 Loading {parquet_name} as {table_name} (CHUNKED MODE)...")
+
+    # Check memory availability
+    check_memory_warning(parquet_path, verbose=verbose)
+
+    # Get total row count
+    try:
+        total_rows = get_parquet_row_count(parquet_path)
+        load_rows = min(max_rows, total_rows) if max_rows else total_rows
+
+        if max_rows and max_rows < total_rows:
+            print(f"  📊 Total rows: {total_rows:,} (loading: {load_rows:,})")
+        else:
+            print(f"  📊 Total rows: {total_rows:,}")
+
+        # Adjust chunk size for very large files (>100M rows)
+        if load_rows > 100_000_000:
+            # Use smaller chunks for extremely large files
+            adjusted_chunk_size = min(chunk_size, 50_000)
+            print(f"  ⚡ Large file detected: reducing chunk size to {adjusted_chunk_size:,} rows")
+            chunk_size = adjusted_chunk_size
+
+        # Estimate chunks
+        num_chunks = (load_rows + chunk_size - 1) // chunk_size
+        print(f"  📦 Processing {num_chunks:,} chunks ({chunk_size:,} rows/chunk)")
+
+    except Exception as e:
+        print(f"  ⚠️  Could not get row count: {e}")
+        total_rows = None
+        num_chunks = None
+
+    # Drop existing table and create fresh (consistent with direct DuckDB import behavior)
+    try:
+        # Try to drop existing collection first
+        existing_coll = db.get_collection(table_name)
+        # Drop by executing SQL (linkml-store may not have drop_collection method)
+        try:
+            if hasattr(db, 'engine'):
+                raw_conn = db.engine.raw_connection()
+                wrapper = raw_conn.driver_connection
+                conn = wrapper._ConnectionWrapper__c
+                conn.execute(f"DROP TABLE IF EXISTS {table_name}")
+                if verbose:
+                    print(f"  🗑️  Dropped existing table: {table_name}")
+        except:
+            pass  # If drop fails, create_collection will handle it
+    except:
+        pass  # Table doesn't exist, that's fine
+
+    # Create fresh collection
+    collection = db.create_collection(table_name)
+    if verbose:
+        print(f"  ✨ Created fresh collection: {table_name}")
+
+    # Load data in chunks
+    start_time = time.time()
+    total_loaded = 0
+    chunk_num = 0
+
+    # Create progress bar if tqdm available
+    if tqdm and total_rows:
+        pbar = tqdm(
+            total=load_rows,
+            desc=f"Loading {table_name}",
+            unit="rows",
+            unit_scale=True,
+            bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}, {rate_fmt}]"
+        )
+    else:
+        pbar = None
+
+    try:
+        chunk_generator = read_parquet_chunked(
+            parquet_path,
+            chunk_size=chunk_size,
+            max_rows=max_rows,
+            verbose=verbose
+        )
+
+        for df_chunk in chunk_generator:
+            chunk_num += 1
+            chunk_start = time.time()
+
+            # Convert to records and enhance
+            records = df_chunk.to_dict('records')
+
+            # Handle NaN values
+            import numpy as np
+            for record in records:
+                for key, value in list(record.items()):
+                    if isinstance(value, np.ndarray):
+                        record[key] = value.tolist()
+                    elif isinstance(value, list):
+                        pass  # Keep as list
+                    elif pd.api.types.is_scalar(value):
+                        try:
+                            if pd.isna(value):
+                                record[key] = None
+                        except (ValueError, TypeError):
+                            pass
+
+            # Enhance records
+            enhanced_data = []
+            for record in records:
+                if class_name == 'SystemProcess':
+                    record = extract_provenance_info(record)
+                record = add_computed_fields(record, class_name)
+                enhanced_data.append(record)
+
+            # Insert chunk
+            collection.insert(enhanced_data)
+            total_loaded += len(enhanced_data)
+
+            chunk_time = time.time() - chunk_start
+
+            # Update progress
+            if pbar:
+                pbar.update(len(enhanced_data))
+            elif num_chunks and not verbose:
+                # Show simple progress if no bar
+                progress_pct = (chunk_num / num_chunks) * 100
+                print(f"  [{chunk_num}/{num_chunks}] {progress_pct:5.1f}% - {total_loaded:,} rows", end='\r')
+            elif verbose:
+                # Detailed progress in verbose mode
+                if num_chunks:
+                    progress_pct = (chunk_num / num_chunks) * 100
+                    print(f"  [{chunk_num}/{num_chunks}] {progress_pct:5.1f}% - "
+                          f"Loaded {len(enhanced_data):,} rows in {chunk_time:.1f}s "
+                          f"(total: {total_loaded:,})")
+                else:
+                    print(f"  [Chunk {chunk_num}] Loaded {len(enhanced_data):,} rows "
+                          f"in {chunk_time:.1f}s (total: {total_loaded:,})")
+
+            # Force garbage collection after each chunk
+            gc.collect()
+
+        if pbar:
+            pbar.close()
+        elif not verbose:
+            print()  # New line after progress
+
+        elapsed = time.time() - start_time
+        print(f"  ✅ Loaded {total_loaded:,} records in {elapsed:.1f}s "
+              f"({total_loaded/elapsed:.0f} records/sec)")
+
+        return total_loaded
+
+    except Exception as e:
+        if pbar:
+            pbar.close()
+        print(f"  ❌ Error loading data: {e}")
+        if verbose:
+            import traceback
+            traceback.print_exc()
+        return total_loaded  # Return partial count
+
+
 def load_parquet_collection(
     parquet_path: Path,
+    table_name: str,
     class_name: str,
     db,
     schema_view: SchemaView,
@@ -296,7 +791,8 @@ def load_parquet_collection(
 
     Args:
         parquet_path: Path to parquet file/directory
-        class_name: LinkML class name for this data
+        table_name: CDM table name (e.g., "sdt_location", "ddt_brick0000476")
+        class_name: LinkML class name for schema validation
         db: Database connection
         schema_view: SchemaView instance
         max_rows: Maximum rows to load (None = all)
@@ -305,8 +801,8 @@ def load_parquet_collection(
     Returns:
         Number of records loaded
     """
-    table_name = parquet_path.name
-    print(f"\n📥 Loading {table_name} as {class_name}...")
+    parquet_name = parquet_path.name
+    print(f"\n📥 Loading {parquet_name} as {table_name}...")
 
     # Get row count
     try:
@@ -378,16 +874,28 @@ def load_parquet_collection(
     if verbose and len(enhanced_data) > 0:
         print(f"  🔍 Sample fields: {list(enhanced_data[0].keys())[:5]}...")
 
-    # Create or get collection
-    collection_name = class_name
+    # Drop existing table and create fresh (consistent with direct DuckDB import behavior)
     try:
-        collection = db.get_collection(collection_name)
-        if verbose:
-            print(f"  📦 Using existing collection: {collection_name}")
+        # Try to drop existing collection first
+        existing_coll = db.get_collection(table_name)
+        # Drop by executing SQL (linkml-store may not have drop_collection method)
+        try:
+            if hasattr(db, 'engine'):
+                raw_conn = db.engine.raw_connection()
+                wrapper = raw_conn.driver_connection
+                conn = wrapper._ConnectionWrapper__c
+                conn.execute(f"DROP TABLE IF EXISTS {table_name}")
+                if verbose:
+                    print(f"  🗑️  Dropped existing table: {table_name}")
+        except:
+            pass  # If drop fails, create_collection will handle it
     except:
-        collection = db.create_collection(collection_name)
-        if verbose:
-            print(f"  ✨ Created new collection: {collection_name}")
+        pass  # Table doesn't exist, that's fine
+
+    # Create fresh collection
+    collection = db.create_collection(table_name)
+    if verbose:
+        print(f"  ✨ Created fresh collection: {table_name}")
 
     # Insert data
     try:
@@ -412,20 +920,28 @@ def load_all_cdm_parquet(
     include_system: bool = True,
     include_static: bool = True,
     include_dynamic: bool = False,
-    max_dynamic_rows: int = 10000,
+    max_dynamic_rows: Optional[int] = None,
+    num_bricks: Optional[int] = None,
+    use_direct_import: bool = True,
+    use_chunked: bool = True,
+    chunk_size: int = 100_000,
     verbose: bool = False
 ) -> Dict[str, int]:
     """
     Load all CDM parquet tables into the database.
 
     Args:
-        cdm_db_path: Path to CDM database directory (jmc_coral.db)
+        cdm_db_path: Path to CDM database directory (enigma_coral.db)
         db: Database connection
         schema_view: SchemaView instance
         include_system: Load sys_* tables
         include_static: Load sdt_* tables
         include_dynamic: Load ddt_* tables (large, sampled by default)
-        max_dynamic_rows: Max rows per dynamic table (default: 10K sample)
+        max_dynamic_rows: Max rows per dynamic table (None = load all with chunking)
+        num_bricks: Number of brick tables to load (None = all if include_dynamic, or 5 default)
+        use_direct_import: Use direct DuckDB import (fastest, recommended)
+        use_chunked: Use chunked loading for large files (memory-safe)
+        chunk_size: Rows per chunk when using chunked mode (default: 100K)
         verbose: Print detailed progress
 
     Returns:
@@ -459,20 +975,20 @@ def load_all_cdm_parquet(
         print(f"📦 Loading Static Entity Tables (sdt_*)")
         print(f"{'='*60}")
 
-        for table_name in static_tables:
-            table_path = cdm_db_path / table_name
+        for cdm_table_name in static_tables:
+            table_path = cdm_db_path / cdm_table_name
             if not table_path.exists():
                 if verbose:
-                    print(f"  ⊘ Skipping {table_name} (not found)")
+                    print(f"  ⊘ Skipping {cdm_table_name} (not found)")
                 continue
 
-            class_name = TABLE_TO_CLASS[table_name]
+            class_name = TABLE_TO_CLASS[cdm_table_name]
             count = load_parquet_collection(
-                table_path, class_name, db, schema_view,
+                table_path, cdm_table_name, class_name, db, schema_view,
                 max_rows=None,  # Full load for static tables
                 verbose=verbose
             )
-            results[class_name] = count
+            results[cdm_table_name] = count
             total_records += count
 
     # Load system tables
@@ -481,60 +997,147 @@ def load_all_cdm_parquet(
         print(f"📦 Loading System Tables (sys_*)")
         print(f"{'='*60}")
 
-        for table_name in system_tables:
-            table_path = cdm_db_path / table_name
+        for cdm_table_name in system_tables:
+            table_path = cdm_db_path / cdm_table_name
             if not table_path.exists():
                 if verbose:
-                    print(f"  ⊘ Skipping {table_name} (not found)")
+                    print(f"  ⊘ Skipping {cdm_table_name} (not found)")
                 continue
 
-            class_name = TABLE_TO_CLASS[table_name]
+            class_name = TABLE_TO_CLASS[cdm_table_name]
             count = load_parquet_collection(
-                table_path, class_name, db, schema_view,
+                table_path, cdm_table_name, class_name, db, schema_view,
                 max_rows=None,  # Full load for system tables
                 verbose=verbose
             )
-            results[class_name] = count
+            results[cdm_table_name] = count
             total_records += count
 
-    # Load dynamic tables (optional, sampled)
+    # Load dynamic tables (optional, use fast direct import or chunked)
     if include_dynamic:
         print(f"\n{'='*60}")
         print(f"📦 Loading Dynamic Data Tables (ddt_*)")
         print(f"{'='*60}")
-        print(f"⚠️  Note: Dynamic tables sampled at {max_dynamic_rows:,} rows each")
-        print(f"   (Total: 82.6M rows across 21 tables)")
 
-        # Load ddt_ndarray (index table)
+        # Show loading strategy
+        if use_direct_import:
+            print(f"📦 Using optimized loading (attempts direct DuckDB, falls back to pandas)")
+        elif use_chunked:
+            print(f"📦 Using CHUNKED loading ({chunk_size:,} rows/chunk, memory-safe)")
+        else:
+            print(f"⚠️  Using standard pandas loading (may cause OOM on large bricks)")
+
+        if max_dynamic_rows is not None:
+            print(f"⚠️  Note: Dynamic tables sampled at {max_dynamic_rows:,} rows each")
+        else:
+            print(f"⚠️  Note: Loading complete brick data")
+        print(f"   (Total: 82.6M rows across ~20 brick tables)")
+
+        # Load ddt_ndarray (index table - small, use standard loading)
         ndarray_path = cdm_db_path / "ddt_ndarray"
         if ndarray_path.exists():
             class_name = TABLE_TO_CLASS["ddt_ndarray"]
             count = load_parquet_collection(
-                ndarray_path, class_name, db, schema_view,
+                ndarray_path, "ddt_ndarray", class_name, db, schema_view,
                 max_rows=None,  # Small table, load fully
                 verbose=verbose
             )
-            results[class_name] = count
+            results["ddt_ndarray"] = count
             total_records += count
 
-        # Sample brick tables
-        brick_tables = [d for d in cdm_db_path.iterdir()
-                       if d.is_dir() and d.name.startswith("ddt_brick")]
+        # Load brick tables
+        brick_tables = sorted([d for d in cdm_db_path.iterdir()
+                              if d.is_dir() and d.name.startswith("ddt_brick")])
 
         if brick_tables:
+            # Determine how many bricks to load
+            bricks_to_load = len(brick_tables) if num_bricks is None else min(num_bricks, len(brick_tables))
+
             print(f"\n  Found {len(brick_tables)} brick tables...")
-            for i, brick_path in enumerate(sorted(brick_tables)[:5], 1):  # Sample first 5
-                print(f"  [{i}/5] Sampling {brick_path.name}...")
-                # Bricks have heterogeneous schemas - just load as generic records
-                count = load_parquet_collection(
-                    brick_path, "DynamicDataArray", db, schema_view,
-                    max_rows=max_dynamic_rows,
-                    verbose=verbose
-                )
+            print(f"  Loading {bricks_to_load} brick table(s)...")
+
+            # Categorize bricks by size for optimal loading strategy
+            large_brick_threshold_mb = 50  # Bricks >50 MB compressed
+            large_bricks = []
+            small_bricks = []
+
+            for brick_path in brick_tables[:bricks_to_load]:
+                brick_size_mb = sum(f.stat().st_size for f in brick_path.glob("*.parquet")
+                                   if not f.parent.name.startswith('_')) / (1024**2)
+                if brick_size_mb > large_brick_threshold_mb:
+                    large_bricks.append((brick_path, brick_size_mb))
+                else:
+                    small_bricks.append((brick_path, brick_size_mb))
+
+            print(f"  • Small bricks (<50 MB): {len(small_bricks)}")
+            print(f"  • Large bricks (≥50 MB): {len(large_bricks)}")
+
+            # Load small bricks first (faster with standard loading)
+            for i, (brick_path, size_mb) in enumerate(small_bricks, 1):
+                brick_name = brick_path.name  # e.g., "ddt_brick0000476"
+                print(f"\n  [Small {i}/{len(small_bricks)}] {brick_name} ({size_mb:.1f} MB)")
+
+                if use_direct_import:
+                    # Try direct import first
+                    count = load_parquet_to_duckdb_direct(
+                        brick_path, brick_name, "DynamicDataArray", db,
+                        max_rows=max_dynamic_rows,
+                        verbose=verbose
+                    )
+                    if count == 0:  # Fallback to standard if direct fails
+                        count = load_parquet_collection(
+                            brick_path, brick_name, "DynamicDataArray", db, schema_view,
+                            max_rows=max_dynamic_rows,
+                            verbose=verbose
+                        )
+                else:
+                    count = load_parquet_collection(
+                        brick_path, brick_name, "DynamicDataArray", db, schema_view,
+                        max_rows=max_dynamic_rows,
+                        verbose=verbose
+                    )
+
                 total_records += count
 
-            if len(brick_tables) > 5:
-                print(f"  ⚠️  Skipped {len(brick_tables) - 5} additional brick tables")
+            # Load large bricks (use chunking or direct import for memory safety)
+            for i, (brick_path, size_mb) in enumerate(large_bricks, 1):
+                brick_name = brick_path.name  # e.g., "ddt_brick0000476"
+                print(f"\n  [Large {i}/{len(large_bricks)}] {brick_name} ({size_mb:.1f} MB)")
+
+                if use_direct_import:
+                    # Direct import is best for large bricks (fastest + lowest memory)
+                    count = load_parquet_to_duckdb_direct(
+                        brick_path, brick_name, "DynamicDataArray", db,
+                        max_rows=max_dynamic_rows,
+                        verbose=verbose
+                    )
+                    if count == 0:  # Fallback to chunked if direct fails
+                        count = load_parquet_collection_chunked(
+                            brick_path, brick_name, "DynamicDataArray", db, schema_view,
+                            max_rows=max_dynamic_rows,
+                            chunk_size=chunk_size,
+                            verbose=verbose
+                        )
+                elif use_chunked:
+                    # Use chunked loading (memory-safe)
+                    count = load_parquet_collection_chunked(
+                        brick_path, brick_name, "DynamicDataArray", db, schema_view,
+                        max_rows=max_dynamic_rows,
+                        chunk_size=chunk_size,
+                        verbose=verbose
+                    )
+                else:
+                    # Standard loading (may OOM on very large bricks)
+                    count = load_parquet_collection(
+                        brick_path, brick_name, "DynamicDataArray", db, schema_view,
+                        max_rows=max_dynamic_rows,
+                        verbose=verbose
+                    )
+
+                total_records += count
+
+            if len(brick_tables) > bricks_to_load:
+                print(f"\n  ⚠️  Skipped {len(brick_tables) - bricks_to_load} additional brick tables")
 
     elapsed = time.time() - start_time
     print(f"\n{'='*60}")
@@ -548,29 +1151,29 @@ def create_indexes(db, verbose: bool = False):
     print(f"\n🔍 Creating indexes for query optimization...")
 
     index_specs = [
-        # Static entity primary keys
-        ('Location', 'sdt_location_id'),
-        ('Sample', 'sdt_sample_id'),
-        ('Reads', 'sdt_reads_id'),
-        ('Assembly', 'sdt_assembly_id'),
-        ('Genome', 'sdt_genome_id'),
+        # Static entity primary keys (use CDM table names)
+        ('sdt_location', 'sdt_location_id'),
+        ('sdt_sample', 'sdt_sample_id'),
+        ('sdt_reads', 'sdt_reads_id'),
+        ('sdt_assembly', 'sdt_assembly_id'),
+        ('sdt_genome', 'sdt_genome_id'),
 
         # Static entity foreign keys
-        ('Sample', 'location_ref'),
-        ('Assembly', 'strain_ref'),
-        ('Genome', 'strain_ref'),
+        ('sdt_sample', 'location_ref'),
+        ('sdt_assembly', 'strain_ref'),
+        ('sdt_genome', 'strain_ref'),
 
         # System table keys
-        ('SystemOntologyTerm', 'sys_oterm_id'),
-        ('SystemProcess', 'sys_process_id'),
+        ('sys_oterm', 'sys_oterm_id'),
+        ('sys_process', 'sys_process_id'),
 
         # Computed fields
-        ('Reads', 'read_count_category'),
-        ('Assembly', 'contig_count_category'),
+        ('sdt_reads', 'read_count_category'),
+        ('sdt_assembly', 'contig_count_category'),
 
         # Provenance fields
-        ('SystemProcess', 'input_entity_types'),
-        ('SystemProcess', 'output_entity_types'),
+        ('sys_process', 'input_entity_types'),
+        ('sys_process', 'output_entity_types'),
     ]
 
     indexed_count = 0
@@ -652,22 +1255,22 @@ def main():
         epilog="""
 Examples:
   # Load all static and system tables (default)
-  python load_cdm_parquet_to_store.py /path/to/jmc_coral.db
+  python load_cdm_parquet_to_store.py data/enigma_coral.db
 
   # Load with options
-  python load_cdm_parquet_to_store.py /path/to/jmc_coral.db \\
+  python load_cdm_parquet_to_store.py data/enigma_coral.db \\
       --output cdm_store.db \\
       --create-indexes \\
       --show-info \\
       --verbose
 
   # Include dynamic brick tables (sampled at 10K rows each)
-  python load_cdm_parquet_to_store.py /path/to/jmc_coral.db \\
+  python load_cdm_parquet_to_store.py data/enigma_coral.db \\
       --include-dynamic \\
       --max-dynamic-rows 10000
 
   # Load only system tables
-  python load_cdm_parquet_to_store.py /path/to/jmc_coral.db \\
+  python load_cdm_parquet_to_store.py data/enigma_coral.db \\
       --no-static \\
       --include-system
         """
@@ -676,7 +1279,7 @@ Examples:
     parser.add_argument(
         'cdm_database',
         type=Path,
-        help='Path to CDM database directory (jmc_coral.db)'
+        help='Path to CDM database directory (enigma_coral.db)'
     )
     parser.add_argument(
         '--output', '-o',
@@ -722,8 +1325,46 @@ Examples:
     parser.add_argument(
         '--max-dynamic-rows',
         type=int,
-        default=10000,
-        help='Max rows per dynamic table if included (default: 10000)'
+        default=None,
+        help='Max rows per dynamic table if included (default: None = load all rows)'
+    )
+    parser.add_argument(
+        '--num-bricks',
+        type=int,
+        default=None,
+        help='Number of brick tables to load (default: all if --include-dynamic, else none)'
+    )
+    parser.add_argument(
+        '--use-direct-import',
+        dest='use_direct_import',
+        action='store_true',
+        default=True,
+        help='Use direct DuckDB import (10-50x faster, recommended - default: yes)'
+    )
+    parser.add_argument(
+        '--no-direct-import',
+        dest='use_direct_import',
+        action='store_false',
+        help='Disable direct DuckDB import (use pandas-based loading)'
+    )
+    parser.add_argument(
+        '--use-chunked',
+        dest='use_chunked',
+        action='store_true',
+        default=True,
+        help='Use chunked loading for large files (memory-safe - default: yes)'
+    )
+    parser.add_argument(
+        '--no-chunked',
+        dest='use_chunked',
+        action='store_false',
+        help='Disable chunked loading (may cause OOM on large bricks)'
+    )
+    parser.add_argument(
+        '--chunk-size',
+        type=int,
+        default=100_000,
+        help='Rows per chunk when using chunked mode (default: 100000)'
     )
     parser.add_argument(
         '--create-indexes',
@@ -761,14 +1402,33 @@ Examples:
     print(f"📋 Schema: {schema_path.relative_to(REPO_ROOT)}")
     print(f"💾 Output: {args.output}")
     print(f"")
+    # Auto-enable dynamic if num_bricks is specified
+    if args.num_bricks is not None and args.num_bricks > 0:
+        args.include_dynamic = True
+
     print(f"Loading:")
     print(f"  • Static tables (sdt_*): {'Yes' if args.include_static else 'No'}")
     print(f"  • System tables (sys_*): {'Yes' if args.include_system else 'No'}")
     print(f"  • Dynamic tables (ddt_*): {'Yes' if args.include_dynamic else 'No'}")
     if args.include_dynamic:
-        print(f"    - Max rows per brick: {args.max_dynamic_rows:,}")
+        if args.max_dynamic_rows is not None:
+            print(f"    - Max rows per brick: {args.max_dynamic_rows:,}")
+        else:
+            print(f"    - Max rows per brick: all (no limit)")
+        if args.num_bricks is not None:
+            print(f"    - Number of bricks: {args.num_bricks}")
+        else:
+            print(f"    - Number of bricks: all")
 
     client, db, schema_view = create_store(args.output, schema_path)
+
+    # Show loading strategy
+    if args.include_dynamic:
+        print(f"\nLoading Strategy:")
+        print(f"  • Direct DuckDB import: {'Yes' if args.use_direct_import else 'No'}")
+        print(f"  • Chunked loading: {'Yes' if args.use_chunked else 'No'}")
+        if args.use_chunked:
+            print(f"  • Chunk size: {args.chunk_size:,} rows")
 
     # Load data
     results = load_all_cdm_parquet(
@@ -779,6 +1439,10 @@ Examples:
         include_static=args.include_static,
         include_dynamic=args.include_dynamic,
         max_dynamic_rows=args.max_dynamic_rows,
+        num_bricks=args.num_bricks,
+        use_direct_import=args.use_direct_import,
+        use_chunked=args.use_chunked,
+        chunk_size=args.chunk_size,
         verbose=args.verbose
     )
 

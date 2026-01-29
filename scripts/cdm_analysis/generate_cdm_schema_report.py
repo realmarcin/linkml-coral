@@ -8,7 +8,7 @@ from pathlib import Path
 import json
 from typing import Dict, List, Any
 
-DB_PATH = Path("/Users/marcin/Documents/VIMSS/ENIGMA/KBase/ENIGMA_in_CDM/minio/jmc_coral.db")
+DB_PATH = Path("data/enigma_coral.db")
 
 def find_parquet_file(table_dir: Path) -> Path:
     """Find the actual parquet file in a Delta Lake table directory."""

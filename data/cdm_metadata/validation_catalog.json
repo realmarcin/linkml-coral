@@ -1,0 +1,370 @@
+[
+  {
+    "table_name": "sdt_community",
+    "column_name": "community_type_sys_oterm_id",
+    "validation_type": "pattern",
+    "validation_pattern": "ME:0000234",
+    "description": "Type of community, e.g., isolate or enrichment, ontology term CURIE",
+    "microtype": "ME:0000234"
+  },
+  {
+    "table_name": "sdt_community",
+    "column_name": "community_type_sys_oterm_id",
+    "validation_type": "foreign_key",
+    "validation_pattern": "sys_oterm.id",
+    "description": "Foreign key to sys_oterm.id",
+    "microtype": "ME:0000234"
+  },
+  {
+    "table_name": "sdt_community",
+    "column_name": "community_type_sys_oterm_name",
+    "validation_type": "pattern",
+    "validation_pattern": "ME:0000234",
+    "description": "Type of community, e.g., isolate or enrichment",
+    "microtype": "ME:0000234"
+  },
+  {
+    "table_name": "sdt_gene",
+    "column_name": "strand",
+    "validation_type": "pattern",
+    "validation_pattern": "[+-]",
+    "description": "DNA strand of the gene (+ for forward, - for reverse)",
+    "microtype": "ME:0000186"
+  },
+  {
+    "table_name": "sdt_location",
+    "column_name": "latitude_degree",
+    "validation_type": "pattern",
+    "validation_pattern": "[\n            -90,\n            90\n          ]",
+    "description": "Latitude of the location in decimal degrees",
+    "microtype": "ME:0000211"
+  },
+  {
+    "table_name": "sdt_location",
+    "column_name": "longitude_degree",
+    "validation_type": "pattern",
+    "validation_pattern": "[\n            -180,\n            180\n          ]",
+    "description": "Longitude of the location in decimal degrees",
+    "microtype": "ME:0000212"
+  },
+  {
+    "table_name": "sdt_location",
+    "column_name": "continent_sys_oterm_id",
+    "validation_type": "pattern",
+    "validation_pattern": "CONTINENT:0000001",
+    "description": "Continent where the location is situated, ontology term CURIE",
+    "microtype": "ME:0000213"
+  },
+  {
+    "table_name": "sdt_location",
+    "column_name": "continent_sys_oterm_id",
+    "validation_type": "foreign_key",
+    "validation_pattern": "sys_oterm.id",
+    "description": "Foreign key to sys_oterm.id",
+    "microtype": "ME:0000213"
+  },
+  {
+    "table_name": "sdt_location",
+    "column_name": "continent_sys_oterm_name",
+    "validation_type": "pattern",
+    "validation_pattern": "CONTINENT:0000001",
+    "description": "Continent where the location is situated",
+    "microtype": "ME:0000213"
+  },
+  {
+    "table_name": "sdt_location",
+    "column_name": "country_sys_oterm_id",
+    "validation_type": "pattern",
+    "validation_pattern": "COUNTRY:0000001",
+    "description": "Country of the location, ontology term CURIE",
+    "microtype": "ME:0000214"
+  },
+  {
+    "table_name": "sdt_location",
+    "column_name": "country_sys_oterm_id",
+    "validation_type": "foreign_key",
+    "validation_pattern": "sys_oterm.id",
+    "description": "Foreign key to sys_oterm.id",
+    "microtype": "ME:0000214"
+  },
+  {
+    "table_name": "sdt_location",
+    "column_name": "country_sys_oterm_name",
+    "validation_type": "pattern",
+    "validation_pattern": "COUNTRY:0000001",
+    "description": "Country of the location",
+    "microtype": "ME:0000214"
+  },
+  {
+    "table_name": "sdt_location",
+    "column_name": "biome_sys_oterm_id",
+    "validation_type": "pattern",
+    "validation_pattern": "ENVO:01000254",
+    "description": "Biome classification of the location, ontology term CURIE",
+    "microtype": "ME:0000216"
+  },
+  {
+    "table_name": "sdt_location",
+    "column_name": "biome_sys_oterm_id",
+    "validation_type": "foreign_key",
+    "validation_pattern": "sys_oterm.id",
+    "description": "Foreign key to sys_oterm.id",
+    "microtype": "ME:0000216"
+  },
+  {
+    "table_name": "sdt_location",
+    "column_name": "biome_sys_oterm_name",
+    "validation_type": "pattern",
+    "validation_pattern": "ENVO:01000254",
+    "description": "Biome classification of the location",
+    "microtype": "ME:0000216"
+  },
+  {
+    "table_name": "sdt_location",
+    "column_name": "feature_sys_oterm_id",
+    "validation_type": "pattern",
+    "validation_pattern": "ENVO:00002297",
+    "description": "Environmental or geographic feature at the location, ontology term CURIE",
+    "microtype": "ME:0000217"
+  },
+  {
+    "table_name": "sdt_location",
+    "column_name": "feature_sys_oterm_id",
+    "validation_type": "foreign_key",
+    "validation_pattern": "sys_oterm.id",
+    "description": "Foreign key to sys_oterm.id",
+    "microtype": "ME:0000217"
+  },
+  {
+    "table_name": "sdt_location",
+    "column_name": "feature_sys_oterm_name",
+    "validation_type": "pattern",
+    "validation_pattern": "ENVO:00002297",
+    "description": "Environmental or geographic feature at the location",
+    "microtype": "ME:0000217"
+  },
+  {
+    "table_name": "sdt_protocol",
+    "column_name": "link",
+    "validation_type": "pattern",
+    "validation_pattern": "http.*",
+    "description": "URL linking to additional documentation of the protocol, such as protocols.io",
+    "microtype": "ME:0000203"
+  },
+  {
+    "table_name": "sdt_reads",
+    "column_name": "read_type_sys_oterm_id",
+    "validation_type": "pattern",
+    "validation_pattern": "ME:0000112",
+    "description": "Category of reads (e.g., single-end, paired-end), ontology term CURIE",
+    "microtype": "ME:0000112"
+  },
+  {
+    "table_name": "sdt_reads",
+    "column_name": "read_type_sys_oterm_id",
+    "validation_type": "foreign_key",
+    "validation_pattern": "sys_oterm.id",
+    "description": "Foreign key to sys_oterm.id",
+    "microtype": "ME:0000112"
+  },
+  {
+    "table_name": "sdt_reads",
+    "column_name": "read_type_sys_oterm_name",
+    "validation_type": "pattern",
+    "validation_pattern": "ME:0000112",
+    "description": "Category of reads (e.g., single-end, paired-end)",
+    "microtype": "ME:0000112"
+  },
+  {
+    "table_name": "sdt_reads",
+    "column_name": "sequencing_technology_sys_oterm_id",
+    "validation_type": "pattern",
+    "validation_pattern": "ME:0000116",
+    "description": "Sequencing technology used (e.g., Illumina), ontology term CURIE",
+    "microtype": "ME:0000116"
+  },
+  {
+    "table_name": "sdt_reads",
+    "column_name": "sequencing_technology_sys_oterm_id",
+    "validation_type": "foreign_key",
+    "validation_pattern": "sys_oterm.id",
+    "description": "Foreign key to sys_oterm.id",
+    "microtype": "ME:0000116"
+  },
+  {
+    "table_name": "sdt_reads",
+    "column_name": "sequencing_technology_sys_oterm_name",
+    "validation_type": "pattern",
+    "validation_pattern": "ME:0000116",
+    "description": "Sequencing technology used (e.g., Illumina)",
+    "microtype": "ME:0000116"
+  },
+  {
+    "table_name": "sdt_sample",
+    "column_name": "date",
+    "validation_type": "pattern",
+    "validation_pattern": "\\d\\d\\d\\d(-\\d\\d(-\\d\\d)?)?",
+    "description": "YYYY[-MM[-DD]]",
+    "microtype": "ME:0000009"
+  },
+  {
+    "table_name": "sdt_sample",
+    "column_name": "time",
+    "validation_type": "pattern",
+    "validation_pattern": "\\d(\\d)?(:\\d\\d(:\\d\\d)?)?\\s*([apAP][mM])?",
+    "description": "HH[:MM[:SS]] [AM|PM]",
+    "microtype": "ME:0000010"
+  },
+  {
+    "table_name": "sdt_sample",
+    "column_name": "material_sys_oterm_id",
+    "validation_type": "pattern",
+    "validation_pattern": "ENVO:00010483",
+    "description": "Material type of the sample, ontology term CURIE",
+    "microtype": "ME:0000230"
+  },
+  {
+    "table_name": "sdt_sample",
+    "column_name": "material_sys_oterm_id",
+    "validation_type": "foreign_key",
+    "validation_pattern": "sys_oterm.id",
+    "description": "Foreign key to sys_oterm.id",
+    "microtype": "ME:0000230"
+  },
+  {
+    "table_name": "sdt_sample",
+    "column_name": "material_sys_oterm_name",
+    "validation_type": "pattern",
+    "validation_pattern": "ENVO:00010483",
+    "description": "Material type of the sample",
+    "microtype": "ME:0000230"
+  },
+  {
+    "table_name": "sdt_sample",
+    "column_name": "env_package_sys_oterm_id",
+    "validation_type": "pattern",
+    "validation_pattern": "MIxS:0000002",
+    "description": "MIxS environmental package classification of the sample, ontology term CURIE",
+    "microtype": "ME:0000229"
+  },
+  {
+    "table_name": "sdt_sample",
+    "column_name": "env_package_sys_oterm_id",
+    "validation_type": "foreign_key",
+    "validation_pattern": "sys_oterm.id",
+    "description": "Foreign key to sys_oterm.id",
+    "microtype": "ME:0000229"
+  },
+  {
+    "table_name": "sdt_sample",
+    "column_name": "env_package_sys_oterm_name",
+    "validation_type": "pattern",
+    "validation_pattern": "MIxS:0000002",
+    "description": "MIxS environmental package classification of the sample",
+    "microtype": "ME:0000229"
+  },
+  {
+    "table_name": "sys_process",
+    "column_name": "process_sys_oterm_id",
+    "validation_type": "pattern",
+    "validation_pattern": "PROCESS:0000001",
+    "description": "Reference to the specific process type used to generate the outputs, ontology term CURIE",
+    "microtype": "ME:0000204"
+  },
+  {
+    "table_name": "sys_process",
+    "column_name": "process_sys_oterm_id",
+    "validation_type": "foreign_key",
+    "validation_pattern": "sys_oterm.id",
+    "description": "Foreign key to sys_oterm.id",
+    "microtype": "ME:0000204"
+  },
+  {
+    "table_name": "sys_process",
+    "column_name": "process_sys_oterm_name",
+    "validation_type": "pattern",
+    "validation_pattern": "PROCESS:0000001",
+    "description": "Reference to the specific process type used to generate the outputs",
+    "microtype": "ME:0000204"
+  },
+  {
+    "table_name": "sys_process",
+    "column_name": "person_sys_oterm_id",
+    "validation_type": "pattern",
+    "validation_pattern": "ENIGMA:0000029",
+    "description": "Reference to the person or lab that performed the process, ontology term CURIE",
+    "microtype": "ME:0000205"
+  },
+  {
+    "table_name": "sys_process",
+    "column_name": "person_sys_oterm_id",
+    "validation_type": "foreign_key",
+    "validation_pattern": "sys_oterm.id",
+    "description": "Foreign key to sys_oterm.id",
+    "microtype": "ME:0000205"
+  },
+  {
+    "table_name": "sys_process",
+    "column_name": "person_sys_oterm_name",
+    "validation_type": "pattern",
+    "validation_pattern": "ENIGMA:0000029",
+    "description": "Reference to the person or lab that performed the process",
+    "microtype": "ME:0000205"
+  },
+  {
+    "table_name": "sys_process",
+    "column_name": "campaign_sys_oterm_id",
+    "validation_type": "pattern",
+    "validation_pattern": "ENIGMA:0000002",
+    "description": "Reference to the ENIGMA campaign under which the data were generated, ontology term CURIE",
+    "microtype": "ME:0000206"
+  },
+  {
+    "table_name": "sys_process",
+    "column_name": "campaign_sys_oterm_id",
+    "validation_type": "foreign_key",
+    "validation_pattern": "sys_oterm.id",
+    "description": "Foreign key to sys_oterm.id",
+    "microtype": "ME:0000206"
+  },
+  {
+    "table_name": "sys_process",
+    "column_name": "campaign_sys_oterm_name",
+    "validation_type": "pattern",
+    "validation_pattern": "ENIGMA:0000002",
+    "description": "Reference to the ENIGMA campaign under which the data were generated",
+    "microtype": "ME:0000206"
+  },
+  {
+    "table_name": "sys_process",
+    "column_name": "date_start",
+    "validation_type": "pattern",
+    "validation_pattern": "\\d\\d\\d\\d(-\\d\\d(-\\d\\d)?)?",
+    "description": "YYYY[-MM[-DD]]",
+    "microtype": "ME:0000009"
+  },
+  {
+    "table_name": "sys_process",
+    "column_name": "date_end",
+    "validation_type": "pattern",
+    "validation_pattern": "\\d\\d\\d\\d(-\\d\\d(-\\d\\d)?)?",
+    "description": "YYYY[-MM[-DD]]",
+    "microtype": "ME:0000009"
+  },
+  {
+    "table_name": "sys_process",
+    "column_name": "input_objects",
+    "validation_type": "pattern",
+    "validation_pattern": "[Entity|Brick]",
+    "description": "List of references to data that were input to this process",
+    "microtype": "ME:0000207"
+  },
+  {
+    "table_name": "sys_process",
+    "column_name": "output_objects",
+    "validation_type": "pattern",
+    "validation_pattern": "[Entity|Brick]",
+    "description": "List of references to data that were produced by this process",
+    "microtype": "ME:0000208"
+  }
+]
