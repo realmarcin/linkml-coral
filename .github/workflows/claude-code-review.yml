@@ -12,10 +12,9 @@ on:
 
 jobs:
   claude-review:
-    # Disabled until CLAUDE_CODE_OAUTH_TOKEN is configured in repository secrets
-    # To enable: Add CLAUDE_CODE_OAUTH_TOKEN to repository secrets and change 'if: false' to 'if: true'
+    # Enabled with CLAUDE_CODE_OAUTH_TOKEN from repository secrets
     # The OAuth token provides free API access with Claude Max subscription
-    if: false
+    if: true
 
     runs-on: ubuntu-latest
     permissions:
