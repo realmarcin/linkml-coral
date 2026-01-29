@@ -12,9 +12,9 @@ on:
 
 jobs:
   claude-review:
-    # Enabled with CLAUDE_CODE_OAUTH_TOKEN from repository secrets
-    # The OAuth token provides free API access with Claude Max subscription
-    if: true
+    # Temporarily disabled - will auto-enable after PR merge to main
+    # Workflow files must exist on default branch before running on PRs (GitHub security)
+    if: false
 
     runs-on: ubuntu-latest
     permissions:
