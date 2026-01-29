@@ -1072,7 +1072,7 @@ python load_cdm_parquet_to_store.py data/enigma_coral.db \
 <h3 id="loading-strategy-new">Loading Strategy (New)</h3>
 <pre><code class="language-python"># Categorize bricks by size
 for brick in bricks:
-    if brick.size &gt; 50MB:
+    if brick.size &gt; 50_000_000:  # 50 MB
         # Use direct DuckDB or chunked
         load_parquet_collection_chunked(brick, chunk_size=100_000)
     else:

@@ -633,7 +633,7 @@ just cdm-store-stats
 
 # Tables now use CDM naming (matching BERDL)
 duckdb cdm_store_bricks.db
-D show tables;  # sdt_location, sys_process, ddt_brick0000476, etc.
+SHOW TABLES;  # sdt_location, sys_process, ddt_brick0000476, etc.
 </code></pre>
 <h3 id="for-128gb-ram-systems">For 128GB+ RAM Systems</h3>
 <pre><code class="language-bash"># Can use faster full load (less chunking)
