@@ -478,14 +478,14 @@ LIMIT 10;
 -- Find all processes that created assemblies
 SELECT
   p.sys_process_id,
-  p.process_type_sys_oterm_name,
+  p.process_sys_oterm_name,
   p.person_sys_oterm_name,
   p.date_start,
   COUNT(*) as assembly_count
 FROM sys_process p
 JOIN sys_process_output po ON po.sys_process_id = p.sys_process_id
 WHERE po.output_object_type = 'Assembly'
-GROUP BY p.sys_process_id, p.process_type_sys_oterm_name,
+GROUP BY p.sys_process_id, p.process_sys_oterm_name,
          p.person_sys_oterm_name, p.date_start
 ORDER BY assembly_count DESC
 LIMIT 10;
@@ -503,8 +503,8 @@ ORDER BY sys_oterm_name;
 
 **6. Query brick measurement data** (if loaded with --load-cdm-store-sample or higher):
 ```sql
--- Example: Query Brick0000001 measurements
-SELECT * FROM ddt_ndarray_brick0000001 LIMIT 10;
+-- Example: Query brick measurements
+SELECT * FROM ddt_brick0000010 LIMIT 10;
 
 -- Find bricks with specific dimensions
 SELECT
