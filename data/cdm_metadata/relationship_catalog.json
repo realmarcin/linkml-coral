@@ -546,6 +546,6 @@
     "target_column": "ddt_ndarray_id",
     "relationship_type": "many_to_one",
     "is_required": false,
-    "description": "Dataset that supercedes this one, if the dataset was withdrawn and replaced, or null if the dataset is currently valid"
+    "description": "Dataset that supersedes this one, if the dataset was withdrawn and replaced, or null if the dataset is currently valid"
   }
 ]

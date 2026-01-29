@@ -255,7 +255,7 @@ def read_parquet_chunked(parquet_path, chunk_size=100_000):
 ```python
 # Categorize bricks by size
 for brick in bricks:
-    if brick.size > 50MB:
+    if brick.size > 50_000_000:  # 50 MB
         # Use direct DuckDB or chunked
         load_parquet_collection_chunked(brick, chunk_size=100_000)
     else:

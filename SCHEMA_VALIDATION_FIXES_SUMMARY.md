@@ -198,7 +198,7 @@ SystemDDTTypedef:
 
 ---
 
-### 8. Module Import Fixes
+### 9. Module Import Fixes
 
 **cdm_dynamic_data.yaml** - Line 39:
 - Added import: `./cdm_system_tables`
