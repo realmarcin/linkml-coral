@@ -1,0 +1,3811 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://realmarcin.github.io/linkml-coral/CDM_DATA_DICTIONARY/">
+      
+      
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.19">
+    
+    
+      
+        <title>ENIGMA CDM Data Dictionary - linkml-coral</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.7e37652d.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../css/ansi-colours.css">
+    
+      <link rel="stylesheet" href="../css/jupyter-cells.css">
+    
+      <link rel="stylesheet" href="../css/pandas-dataframe.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#enigma-cdm-data-dictionary" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="linkml-coral" class="md-header__button md-logo" aria-label="linkml-coral" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            linkml-coral
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              ENIGMA CDM Data Dictionary
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/realmarcin/linkml-coral" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="linkml-coral" class="md-nav__button md-logo" aria-label="linkml-coral" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    linkml-coral
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/realmarcin/linkml-coral" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../elements/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Schema
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cdm_store_quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    CDM Store Quick Start
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    About
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#table-of-contents" class="md-nav__link">
+    <span class="md-ellipsis">
+      Table of Contents
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#static-tables" class="md-nav__link">
+    <span class="md-ellipsis">
+      Static Tables
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Static Tables">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sdt_assembly" class="md-nav__link">
+    <span class="md-ellipsis">
+      sdt_assembly
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sdt_asv" class="md-nav__link">
+    <span class="md-ellipsis">
+      sdt_asv
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sdt_bin" class="md-nav__link">
+    <span class="md-ellipsis">
+      sdt_bin
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sdt_community" class="md-nav__link">
+    <span class="md-ellipsis">
+      sdt_community
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sdt_condition" class="md-nav__link">
+    <span class="md-ellipsis">
+      sdt_condition
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sdt_dubseq_library" class="md-nav__link">
+    <span class="md-ellipsis">
+      sdt_dubseq_library
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sdt_enigma" class="md-nav__link">
+    <span class="md-ellipsis">
+      sdt_enigma
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sdt_gene" class="md-nav__link">
+    <span class="md-ellipsis">
+      sdt_gene
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sdt_genome" class="md-nav__link">
+    <span class="md-ellipsis">
+      sdt_genome
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sdt_image" class="md-nav__link">
+    <span class="md-ellipsis">
+      sdt_image
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sdt_location" class="md-nav__link">
+    <span class="md-ellipsis">
+      sdt_location
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sdt_protocol" class="md-nav__link">
+    <span class="md-ellipsis">
+      sdt_protocol
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sdt_reads" class="md-nav__link">
+    <span class="md-ellipsis">
+      sdt_reads
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sdt_sample" class="md-nav__link">
+    <span class="md-ellipsis">
+      sdt_sample
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sdt_strain" class="md-nav__link">
+    <span class="md-ellipsis">
+      sdt_strain
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sdt_taxon" class="md-nav__link">
+    <span class="md-ellipsis">
+      sdt_taxon
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sdt_tnseq_library" class="md-nav__link">
+    <span class="md-ellipsis">
+      sdt_tnseq_library
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#system-tables" class="md-nav__link">
+    <span class="md-ellipsis">
+      System Tables
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="System Tables">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sys_ddt_typedef" class="md-nav__link">
+    <span class="md-ellipsis">
+      sys_ddt_typedef
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sys_oterm" class="md-nav__link">
+    <span class="md-ellipsis">
+      sys_oterm
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sys_process" class="md-nav__link">
+    <span class="md-ellipsis">
+      sys_process
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sys_process_input" class="md-nav__link">
+    <span class="md-ellipsis">
+      sys_process_input
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sys_process_output" class="md-nav__link">
+    <span class="md-ellipsis">
+      sys_process_output
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sys_typedef" class="md-nav__link">
+    <span class="md-ellipsis">
+      sys_typedef
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dynamic-tables" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dynamic Tables
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Dynamic Tables">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ddt_brick0000010" class="md-nav__link">
+    <span class="md-ellipsis">
+      ddt_brick0000010
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ddt_brick0000072" class="md-nav__link">
+    <span class="md-ellipsis">
+      ddt_brick0000072
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ddt_brick0000073" class="md-nav__link">
+    <span class="md-ellipsis">
+      ddt_brick0000073
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ddt_brick0000080" class="md-nav__link">
+    <span class="md-ellipsis">
+      ddt_brick0000080
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ddt_brick0000452" class="md-nav__link">
+    <span class="md-ellipsis">
+      ddt_brick0000452
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ddt_brick0000454" class="md-nav__link">
+    <span class="md-ellipsis">
+      ddt_brick0000454
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ddt_brick0000457" class="md-nav__link">
+    <span class="md-ellipsis">
+      ddt_brick0000457
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ddt_brick0000458" class="md-nav__link">
+    <span class="md-ellipsis">
+      ddt_brick0000458
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ddt_brick0000459" class="md-nav__link">
+    <span class="md-ellipsis">
+      ddt_brick0000459
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ddt_brick0000460" class="md-nav__link">
+    <span class="md-ellipsis">
+      ddt_brick0000460
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ddt_brick0000461" class="md-nav__link">
+    <span class="md-ellipsis">
+      ddt_brick0000461
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ddt_brick0000462" class="md-nav__link">
+    <span class="md-ellipsis">
+      ddt_brick0000462
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ddt_brick0000476" class="md-nav__link">
+    <span class="md-ellipsis">
+      ddt_brick0000476
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ddt_brick0000477" class="md-nav__link">
+    <span class="md-ellipsis">
+      ddt_brick0000477
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ddt_brick0000478" class="md-nav__link">
+    <span class="md-ellipsis">
+      ddt_brick0000478
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ddt_brick0000479" class="md-nav__link">
+    <span class="md-ellipsis">
+      ddt_brick0000479
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ddt_brick0000495" class="md-nav__link">
+    <span class="md-ellipsis">
+      ddt_brick0000495
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ddt_brick0000501" class="md-nav__link">
+    <span class="md-ellipsis">
+      ddt_brick0000501
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ddt_brick0000507" class="md-nav__link">
+    <span class="md-ellipsis">
+      ddt_brick0000507
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ddt_brick0000508" class="md-nav__link">
+    <span class="md-ellipsis">
+      ddt_brick0000508
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ddt_ndarray" class="md-nav__link">
+    <span class="md-ellipsis">
+      ddt_ndarray
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#microtype-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      Microtype Reference
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#relationship-catalog" class="md-nav__link">
+    <span class="md-ellipsis">
+      Relationship Catalog
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="enigma-cdm-data-dictionary">ENIGMA CDM Data Dictionary</h1>
+<p><strong>Generated:</strong> 2026-01-20 22:59:36</p>
+<hr />
+<h2 id="table-of-contents">Table of Contents</h2>
+<ul>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#static-tables">Static Tables (sdt_*)</a></li>
+<li><a href="#system-tables">System Tables (sys_*)</a></li>
+<li><a href="#dynamic-tables">Dynamic Tables (ddt_*)</a></li>
+<li><a href="#microtype-reference">Microtype Reference</a></li>
+<li><a href="#relationship-catalog">Relationship Catalog</a></li>
+</ul>
+<hr />
+<h2 id="overview">Overview</h2>
+<ul>
+<li><strong>Total Tables:</strong> 44</li>
+<li><strong>Total Columns:</strong> 293</li>
+<li><strong>Total Rows:</strong> 328,442,906</li>
+<li><strong>Microtypes Used:</strong> 69</li>
+<li><strong>FK Relationships:</strong> 61</li>
+</ul>
+<hr />
+<h2 id="static-tables">Static Tables</h2>
+<p>Static entity tables (sdt_*) store core domain entities.</p>
+<h3 id="sdt_assembly">sdt_assembly</h3>
+<p><strong>Rows:</strong> 3,427 | <strong>Columns:</strong> 5</p>
+<p><em>static table with 5 columns</em></p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+<th>Constraints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>link</td>
+<td>string</td>
+<td>Reference to the actual assembly data</td>
+<td></td>
+</tr>
+<tr>
+<td>n_contigs_count_unit</td>
+<td>integer</td>
+<td>Number of contigs in the assembly</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_assembly_id</td>
+<td>string</td>
+<td>Unique text identifier for the assembly (Primary key)</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_assembly_name</td>
+<td>string</td>
+<td>Unique name for the assembly</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_strain_name</td>
+<td>string</td>
+<td>Strain name from which the assembly was derived (foreign key to Strain.name).</td>
+<td>FK→Strain.name</td>
+</tr>
+</tbody>
+</table>
+<h3 id="sdt_asv">sdt_asv</h3>
+<p><strong>Rows:</strong> 213,044 | <strong>Columns:</strong> 2</p>
+<p><em>static table with 2 columns</em></p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+<th>Constraints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>sdt_asv_id</td>
+<td>string</td>
+<td>Unique identifier for each ASV/OTU (Primary key)</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_asv_name</td>
+<td>string</td>
+<td>Unique name assigned to the ASV/OTU, usually md5sum</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="sdt_bin">sdt_bin</h3>
+<p><strong>Rows:</strong> 623 | <strong>Columns:</strong> 4</p>
+<p><em>static table with 4 columns</em></p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+<th>Constraints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>contigs</td>
+<td>{'type': 'array', 'elementType': 'string', 'containsNull': True}</td>
+<td>Array of contig identifiers included in the bin</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_assembly_name</td>
+<td>string</td>
+<td>Identifier of the metagenomic assembly that the bin belongs to (foreign key to Assembly.name)</td>
+<td>FK→Assembly</td>
+</tr>
+<tr>
+<td>sdt_bin_id</td>
+<td>string</td>
+<td>Unique identifier for the bin (Primary key)</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_bin_name</td>
+<td>string</td>
+<td>Human-readable, unique name for the bin</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="sdt_community">sdt_community</h3>
+<p><strong>Rows:</strong> 2,209 | <strong>Columns:</strong> 9</p>
+<p><em>static table with 9 columns</em></p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+<th>Constraints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>community_type_sys_oterm_id</td>
+<td>string</td>
+<td>Type of community, e.g., isolate or enrichment, ontology term CURIE</td>
+<td>FK→sys_oterm.id</td>
+</tr>
+<tr>
+<td>community_type_sys_oterm_name</td>
+<td>string</td>
+<td>Type of community, e.g., isolate or enrichment</td>
+<td></td>
+</tr>
+<tr>
+<td>defined_sdt_strain_names</td>
+<td>{'type': 'array', 'elementType': 'string', 'containsNull': True}</td>
+<td>List of strains that comprise the community, if the community is defined</td>
+<td>FK→[Strain.name]</td>
+</tr>
+<tr>
+<td>parent_sdt_community_name</td>
+<td>string</td>
+<td>Reference to the name of a parent community, establishing hierarchical relationships</td>
+<td>FK→Community.name</td>
+</tr>
+<tr>
+<td>sdt_community_description</td>
+<td>string</td>
+<td>Free-text field providing additional details or notes about the community</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_community_id</td>
+<td>string</td>
+<td>Unique internal identifier for the community (Primary key)</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_community_name</td>
+<td>string</td>
+<td>Unique name of the community</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_condition_name</td>
+<td>string</td>
+<td>Reference to the experimental or environmental condition associated with the community</td>
+<td>FK→Condition.name</td>
+</tr>
+<tr>
+<td>sdt_sample_name</td>
+<td>string</td>
+<td>Reference to the Sample from which the community was obtained.</td>
+<td>FK→Sample.name</td>
+</tr>
+</tbody>
+</table>
+<h3 id="sdt_condition">sdt_condition</h3>
+<p><strong>Rows:</strong> 1,046 | <strong>Columns:</strong> 2</p>
+<p><em>static table with 2 columns</em></p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+<th>Constraints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>sdt_condition_id</td>
+<td>string</td>
+<td>Unique identifier for the condition (Primary key)</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_condition_name</td>
+<td>string</td>
+<td>Unique text name describing the condition</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="sdt_dubseq_library">sdt_dubseq_library</h3>
+<p><strong>Rows:</strong> 3 | <strong>Columns:</strong> 4</p>
+<p><em>static table with 4 columns</em></p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+<th>Constraints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>n_fragments_count_unit</td>
+<td>integer</td>
+<td>Number of unique DNA fragments in the library</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_dubseq_library_id</td>
+<td>string</td>
+<td>Unique DubSeq library identifier (Primary key)</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_dubseq_library_name</td>
+<td>string</td>
+<td>Unique, human-readable name of the DubSeq library</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_genome_name</td>
+<td>string</td>
+<td>Foreign key to the associated genome (Genome.name) from which the library was derived</td>
+<td>FK→Genome</td>
+</tr>
+</tbody>
+</table>
+<h3 id="sdt_enigma">sdt_enigma</h3>
+<p><strong>Rows:</strong> 1 | <strong>Columns:</strong> 1</p>
+<p><em>static table with 1 columns</em></p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+<th>Constraints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>sdt_enigma_id</td>
+<td>string</td>
+<td>Primary key for table <code>sdt_enigma</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="sdt_gene">sdt_gene</h3>
+<p><strong>Rows:</strong> 15,015 | <strong>Columns:</strong> 9</p>
+<p><em>static table with 9 columns</em></p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+<th>Constraints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>aliases</td>
+<td>{'type': 'array', 'elementType': 'string', 'containsNull': True}</td>
+<td>List of alternative names or identifiers for the gene</td>
+<td></td>
+</tr>
+<tr>
+<td>contig_number_count_unit</td>
+<td>integer</td>
+<td>Contigs are indexed starting at 1, as in KBase</td>
+<td></td>
+</tr>
+<tr>
+<td>function</td>
+<td>string</td>
+<td>Annotated biological function of the gene</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_gene_id</td>
+<td>string</td>
+<td>Unique internal identifier for the gene (Primary key)</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_gene_name</td>
+<td>string</td>
+<td>Unique external identifier for the gene</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_genome_name</td>
+<td>string</td>
+<td>Name of the genome to which the gene belongs (foreign key)</td>
+<td>FK→Genome</td>
+</tr>
+<tr>
+<td>start_base_pair</td>
+<td>integer</td>
+<td>Genomic start coordinate on the contig, indexed starting at 1 as in KBase</td>
+<td></td>
+</tr>
+<tr>
+<td>stop_base_pair</td>
+<td>integer</td>
+<td>Genomic stop coordinate in base pairs</td>
+<td></td>
+</tr>
+<tr>
+<td>strand</td>
+<td>string</td>
+<td>DNA strand of the gene (+ for forward, - for reverse)</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="sdt_genome">sdt_genome</h3>
+<p><strong>Rows:</strong> 6,705 | <strong>Columns:</strong> 6</p>
+<p><em>static table with 6 columns</em></p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+<th>Constraints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>link</td>
+<td>string</td>
+<td>Link to where the genome itself is actually stored</td>
+<td></td>
+</tr>
+<tr>
+<td>n_contigs_count_unit</td>
+<td>integer</td>
+<td>Number of contigs in the genome assembly</td>
+<td></td>
+</tr>
+<tr>
+<td>n_features_count_unit</td>
+<td>integer</td>
+<td>Number of annotated features (e.g., genes) in the genome</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_genome_id</td>
+<td>string</td>
+<td>Unique identifier for the genome (Primary key)</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_genome_name</td>
+<td>string</td>
+<td>Unique name of the genome</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_strain_name</td>
+<td>string</td>
+<td>Name of the microbial strain associated with the genome (foreign key)</td>
+<td>FK→Strain.name</td>
+</tr>
+</tbody>
+</table>
+<h3 id="sdt_image">sdt_image</h3>
+<p><strong>Rows:</strong> 218 | <strong>Columns:</strong> 7</p>
+<p><em>static table with 7 columns</em></p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+<th>Constraints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>dimensions</td>
+<td>string</td>
+<td>Image dimensions (e.g., width × height) expressed in pixels</td>
+<td></td>
+</tr>
+<tr>
+<td>link</td>
+<td>string</td>
+<td>URL or file path linking to the stored image</td>
+<td></td>
+</tr>
+<tr>
+<td>mime_type</td>
+<td>string</td>
+<td>MIME type specifying the image file format (e.g., image/jpeg)</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_image_description</td>
+<td>string</td>
+<td>Textual description of the image</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_image_id</td>
+<td>string</td>
+<td>Unique identifier for each image (Primary key)</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_image_name</td>
+<td>string</td>
+<td>Unique name (e.g., filename) for the image.</td>
+<td></td>
+</tr>
+<tr>
+<td>size_byte</td>
+<td>integer</td>
+<td>File size of the image measured in bytes</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="sdt_location">sdt_location</h3>
+<p><strong>Rows:</strong> 596 | <strong>Columns:</strong> 13</p>
+<p><em>static table with 13 columns</em></p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+<th>Constraints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>biome_sys_oterm_id</td>
+<td>string</td>
+<td>Biome classification of the location, ontology term CURIE</td>
+<td>FK→sys_oterm.id</td>
+</tr>
+<tr>
+<td>biome_sys_oterm_name</td>
+<td>string</td>
+<td>Biome classification of the location</td>
+<td></td>
+</tr>
+<tr>
+<td>continent_sys_oterm_id</td>
+<td>string</td>
+<td>Continent where the location is situated, ontology term CURIE</td>
+<td>FK→sys_oterm.id</td>
+</tr>
+<tr>
+<td>continent_sys_oterm_name</td>
+<td>string</td>
+<td>Continent where the location is situated</td>
+<td></td>
+</tr>
+<tr>
+<td>country_sys_oterm_id</td>
+<td>string</td>
+<td>Country of the location, ontology term CURIE</td>
+<td>FK→sys_oterm.id</td>
+</tr>
+<tr>
+<td>country_sys_oterm_name</td>
+<td>string</td>
+<td>Country of the location</td>
+<td></td>
+</tr>
+<tr>
+<td>feature_sys_oterm_id</td>
+<td>string</td>
+<td>Environmental or geographic feature at the location, ontology term CURIE</td>
+<td>FK→sys_oterm.id</td>
+</tr>
+<tr>
+<td>feature_sys_oterm_name</td>
+<td>string</td>
+<td>Environmental or geographic feature at the location</td>
+<td></td>
+</tr>
+<tr>
+<td>latitude_degree</td>
+<td>double</td>
+<td>Latitude of the location in decimal degrees</td>
+<td></td>
+</tr>
+<tr>
+<td>longitude_degree</td>
+<td>double</td>
+<td>Longitude of the location in decimal degrees</td>
+<td></td>
+</tr>
+<tr>
+<td>region</td>
+<td>string</td>
+<td>Specific local region name(s)</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_location_id</td>
+<td>string</td>
+<td>Unique identifier for the location (Primary key)</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_location_name</td>
+<td>string</td>
+<td>Unique name of the location</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="sdt_protocol">sdt_protocol</h3>
+<p><strong>Rows:</strong> 51 | <strong>Columns:</strong> 4</p>
+<p><em>static table with 4 columns</em></p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+<th>Constraints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>link</td>
+<td>string</td>
+<td>URL linking to additional documentation of the protocol, such as protocols.io</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_protocol_description</td>
+<td>string</td>
+<td>Detailed description of the protocol</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_protocol_id</td>
+<td>string</td>
+<td>Unique identifier for the protocol (Primary key)</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_protocol_name</td>
+<td>string</td>
+<td>Unique, human-readable name of the protocol</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="sdt_reads">sdt_reads</h3>
+<p><strong>Rows:</strong> 19,592 | <strong>Columns:</strong> 8</p>
+<p><em>static table with 8 columns</em></p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+<th>Constraints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>link</td>
+<td>string</td>
+<td>Link to the reads file (e.g., fastq)</td>
+<td></td>
+</tr>
+<tr>
+<td>read_count_count_unit</td>
+<td>integer</td>
+<td>Number of reads</td>
+<td></td>
+</tr>
+<tr>
+<td>read_type_sys_oterm_id</td>
+<td>string</td>
+<td>Category of reads (e.g., single-end, paired-end), ontology term CURIE</td>
+<td>FK→sys_oterm.id</td>
+</tr>
+<tr>
+<td>read_type_sys_oterm_name</td>
+<td>string</td>
+<td>Category of reads (e.g., single-end, paired-end)</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_reads_id</td>
+<td>string</td>
+<td>Unique identifier for each reads dataset (Primary key)</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_reads_name</td>
+<td>string</td>
+<td>Unique name for the reads</td>
+<td></td>
+</tr>
+<tr>
+<td>sequencing_technology_sys_oterm_id</td>
+<td>string</td>
+<td>Sequencing technology used (e.g., Illumina), ontology term CURIE</td>
+<td>FK→sys_oterm.id</td>
+</tr>
+<tr>
+<td>sequencing_technology_sys_oterm_name</td>
+<td>string</td>
+<td>Sequencing technology used (e.g., Illumina)</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="sdt_sample">sdt_sample</h3>
+<p><strong>Rows:</strong> 4,346 | <strong>Columns:</strong> 13</p>
+<p><em>static table with 13 columns</em></p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+<th>Constraints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>date</td>
+<td>string</td>
+<td>YYYY[-MM[-DD]]</td>
+<td></td>
+</tr>
+<tr>
+<td>depth_meter</td>
+<td>double</td>
+<td>For below-ground samples, the average distance below ground level in meters where the sample was tak</td>
+<td></td>
+</tr>
+<tr>
+<td>elevation_meter</td>
+<td>double</td>
+<td>For above-ground samples, the average distance above ground level in meters where the sample was tak</td>
+<td></td>
+</tr>
+<tr>
+<td>env_package_sys_oterm_id</td>
+<td>string</td>
+<td>MIxS environmental package classification of the sample, ontology term CURIE</td>
+<td>FK→sys_oterm.id</td>
+</tr>
+<tr>
+<td>env_package_sys_oterm_name</td>
+<td>string</td>
+<td>MIxS environmental package classification of the sample</td>
+<td></td>
+</tr>
+<tr>
+<td>material_sys_oterm_id</td>
+<td>string</td>
+<td>Material type of the sample, ontology term CURIE</td>
+<td>FK→sys_oterm.id</td>
+</tr>
+<tr>
+<td>material_sys_oterm_name</td>
+<td>string</td>
+<td>Material type of the sample</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_location_name</td>
+<td>string</td>
+<td>Location where the sample was collected (Foreign key)</td>
+<td>FK→Location.name</td>
+</tr>
+<tr>
+<td>sdt_sample_description</td>
+<td>string</td>
+<td>Free-form description or notes about the sample</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_sample_id</td>
+<td>string</td>
+<td>Unique identifier for the sample (Primary key)</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_sample_name</td>
+<td>string</td>
+<td>Unique name of the sample</td>
+<td></td>
+</tr>
+<tr>
+<td>time</td>
+<td>string</td>
+<td>HH[:MM[:SS]] [AM</td>
+<td>PM]</td>
+</tr>
+<tr>
+<td>timezone</td>
+<td>string</td>
+<td>ISO8601 compliant format, ie. UTC-7</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="sdt_strain">sdt_strain</h3>
+<p><strong>Rows:</strong> 3,154 | <strong>Columns:</strong> 6</p>
+<p><em>static table with 6 columns</em></p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+<th>Constraints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>derived_from_sdt_strain_name</td>
+<td>string</td>
+<td>Name of the parent strain from which this strain was derived, if created by genetic modification or</td>
+<td>FK→Strain.name</td>
+</tr>
+<tr>
+<td>sdt_gene_names_changed</td>
+<td>{'type': 'array', 'elementType': 'string', 'containsNull': True}</td>
+<td>List of gene identifiers that have been altered in this strain, if created by genetic modification,</td>
+<td>FK→[Gene.gene_id]</td>
+</tr>
+<tr>
+<td>sdt_genome_name</td>
+<td>string</td>
+<td>Genome object for sequenced, wild type strains</td>
+<td>FK→Genome.name</td>
+</tr>
+<tr>
+<td>sdt_strain_description</td>
+<td>string</td>
+<td>Free-text description of the strain</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_strain_id</td>
+<td>string</td>
+<td>Unique identifier for each strain (Primary key)</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_strain_name</td>
+<td>string</td>
+<td>Unique name of the strain</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="sdt_taxon">sdt_taxon</h3>
+<p><strong>Rows:</strong> 3,365 | <strong>Columns:</strong> 3</p>
+<p><em>static table with 3 columns</em></p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+<th>Constraints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ncbi_taxid</td>
+<td>string</td>
+<td>NCBI taxonomy identifier for the taxon, if available</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_taxon_id</td>
+<td>string</td>
+<td>Unique identifier for a taxon record (Primary key)</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_taxon_name</td>
+<td>string</td>
+<td>Unique taxon name, typically the scientific name</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="sdt_tnseq_library">sdt_tnseq_library</h3>
+<p><strong>Rows:</strong> 1 | <strong>Columns:</strong> 10</p>
+<p><em>static table with 10 columns</em></p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+<th>Constraints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>hit_rate_essential_ratio_unit</td>
+<td>double</td>
+<td>Proportion of essential genes with at least one transposon insertion</td>
+<td></td>
+</tr>
+<tr>
+<td>hit_rate_other_ratio_unit</td>
+<td>double</td>
+<td>Proportion of non-essential (other) genes with at least one transposon insertion</td>
+<td></td>
+</tr>
+<tr>
+<td>n_barcodes_count_unit</td>
+<td>integer</td>
+<td>Total number of distinct barcode sequences detected in the library</td>
+<td></td>
+</tr>
+<tr>
+<td>n_insertion_locations_count_unit</td>
+<td>integer</td>
+<td>Number of distinct transposon insertion sites identified in the library</td>
+<td></td>
+</tr>
+<tr>
+<td>n_mapped_reads_count_unit</td>
+<td>integer</td>
+<td>Number of reads that mapped to the reference genome</td>
+<td></td>
+</tr>
+<tr>
+<td>n_usable_barcodes_count_unit</td>
+<td>integer</td>
+<td>Number of barcodes deemed usable after quality filtering</td>
+<td></td>
+</tr>
+<tr>
+<td>primers_model</td>
+<td>string</td>
+<td>Type of primers used to generate the library</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_genome_name</td>
+<td>string</td>
+<td>Foreign key to the associated genome (Genome.name) from which the library was derived</td>
+<td>FK→Genome</td>
+</tr>
+<tr>
+<td>sdt_tnseq_library_id</td>
+<td>string</td>
+<td>Unique TnSeq library identifier (Primary key)</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_tnseq_library_name</td>
+<td>string</td>
+<td>Unique, human-readable name of the TnSeq library</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="system-tables">System Tables</h2>
+<p>System tables (sys_*) store metadata and provenance information.</p>
+<h3 id="sys_ddt_typedef">sys_ddt_typedef</h3>
+<p><strong>Rows:</strong> 606 | <strong>Columns:</strong> 15</p>
+<p><em>system table with 15 columns</em></p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+<th>Constraints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>berdl_column_data_type</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>berdl_column_name</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>comment</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>ddt_ndarray_id</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>dimension_number</td>
+<td>integer</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>dimension_oterm_id</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>dimension_oterm_name</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>foreign_key</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>original_csv_string</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>scalar_type</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>unit_sys_oterm_id</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>unit_sys_oterm_name</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>variable_number</td>
+<td>integer</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>variable_oterm_id</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>variable_oterm_name</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="sys_oterm">sys_oterm</h3>
+<p><strong>Rows:</strong> 10,600 | <strong>Columns:</strong> 8</p>
+<p><em>system table with 8 columns</em></p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+<th>Constraints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>parent_sys_oterm_id</td>
+<td>string</td>
+<td>Parent term identifier</td>
+<td></td>
+</tr>
+<tr>
+<td>sys_oterm_definition</td>
+<td>string</td>
+<td>Term definition</td>
+<td></td>
+</tr>
+<tr>
+<td>sys_oterm_id</td>
+<td>string</td>
+<td>Term identifier, aka CURIE (Primary key)</td>
+<td></td>
+</tr>
+<tr>
+<td>sys_oterm_links</td>
+<td>{'type': 'array', 'elementType': 'string', 'containsNull': True}</td>
+<td>Indicates that values are links to other tables (Ref) or ontological terms (ORef)</td>
+<td></td>
+</tr>
+<tr>
+<td>sys_oterm_name</td>
+<td>string</td>
+<td>Term name</td>
+<td></td>
+</tr>
+<tr>
+<td>sys_oterm_ontology</td>
+<td>string</td>
+<td>Ontology that each term is from</td>
+<td></td>
+</tr>
+<tr>
+<td>sys_oterm_properties</td>
+<td>{'type': 'map', 'keyType': 'string', 'valueType': 'string', 'valueContainsNull': True}</td>
+<td>Semicolon-separated map of properties to values for terms that are CORAL microtypes, including scala</td>
+<td></td>
+</tr>
+<tr>
+<td>sys_oterm_synonyms</td>
+<td>{'type': 'array', 'elementType': 'string', 'containsNull': True}</td>
+<td>List of synonyms for a term</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="sys_process">sys_process</h3>
+<p><strong>Rows:</strong> 84,527 | <strong>Columns:</strong> 12</p>
+<p><em>system table with 12 columns</em></p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+<th>Constraints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>campaign_sys_oterm_id</td>
+<td>string</td>
+<td>Reference to the ENIGMA campaign under which the data were generated, ontology term CURIE</td>
+<td>FK→sys_oterm.id</td>
+</tr>
+<tr>
+<td>campaign_sys_oterm_name</td>
+<td>string</td>
+<td>Reference to the ENIGMA campaign under which the data were generated</td>
+<td></td>
+</tr>
+<tr>
+<td>date_end</td>
+<td>string</td>
+<td>YYYY[-MM[-DD]]</td>
+<td></td>
+</tr>
+<tr>
+<td>date_start</td>
+<td>string</td>
+<td>YYYY[-MM[-DD]]</td>
+<td></td>
+</tr>
+<tr>
+<td>input_objects</td>
+<td>{'type': 'array', 'elementType': 'string', 'containsNull': True}</td>
+<td>List of references to data that were input to this process</td>
+<td></td>
+</tr>
+<tr>
+<td>output_objects</td>
+<td>{'type': 'array', 'elementType': 'string', 'containsNull': True}</td>
+<td>List of references to data that were produced by this process</td>
+<td></td>
+</tr>
+<tr>
+<td>person_sys_oterm_id</td>
+<td>string</td>
+<td>Reference to the person or lab that performed the process, ontology term CURIE</td>
+<td>FK→sys_oterm.id</td>
+</tr>
+<tr>
+<td>person_sys_oterm_name</td>
+<td>string</td>
+<td>Reference to the person or lab that performed the process</td>
+<td></td>
+</tr>
+<tr>
+<td>process_sys_oterm_id</td>
+<td>string</td>
+<td>Reference to the specific process type used to generate the outputs, ontology term CURIE</td>
+<td>FK→sys_oterm.id</td>
+</tr>
+<tr>
+<td>process_sys_oterm_name</td>
+<td>string</td>
+<td>Reference to the specific process type used to generate the outputs</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_protocol_name</td>
+<td>string</td>
+<td>Protocol used in this process (foreign key to Protocol.name)</td>
+<td>FK→Protocol.name</td>
+</tr>
+<tr>
+<td>sys_process_id</td>
+<td>string</td>
+<td>Unique identifier for each process record (Primary key)</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="sys_process_input">sys_process_input</h3>
+<p><strong>Rows:</strong> 82,864 | <strong>Columns:</strong> 10</p>
+<p><em>system table with 10 columns</em></p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+<th>Constraints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>sdt_assembly_id</td>
+<td>string</td>
+<td>Input object from sdt_assembly</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_bin_id</td>
+<td>string</td>
+<td>Input object from sdt_bin</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_community_id</td>
+<td>string</td>
+<td>Input object from sdt_community</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_genome_id</td>
+<td>string</td>
+<td>Input object from sdt_genome</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_location_id</td>
+<td>string</td>
+<td>Input object from sdt_location</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_reads_id</td>
+<td>string</td>
+<td>Input object from sdt_reads</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_sample_id</td>
+<td>string</td>
+<td>Input object from sdt_sample</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_strain_id</td>
+<td>string</td>
+<td>Input object from sdt_strain</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_tnseq_library_id</td>
+<td>string</td>
+<td>Input object from sdt_tnseq_library</td>
+<td></td>
+</tr>
+<tr>
+<td>sys_process_id</td>
+<td>string</td>
+<td>Foreign key to sys_process</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="sys_process_output">sys_process_output</h3>
+<p><strong>Rows:</strong> 38,594 | <strong>Columns:</strong> 12</p>
+<p><em>system table with 12 columns</em></p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+<th>Constraints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ddt_ndarray_id</td>
+<td>string</td>
+<td>Output object from ddt_ndarray</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_assembly_id</td>
+<td>string</td>
+<td>Output object from sdt_assembly</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_bin_id</td>
+<td>string</td>
+<td>Output object from sdt_bin</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_community_id</td>
+<td>string</td>
+<td>Output object from sdt_community</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_dubseq_library_id</td>
+<td>string</td>
+<td>Output object from sdt_dubseq_library</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_genome_id</td>
+<td>string</td>
+<td>Output object from sdt_genome</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_image_id</td>
+<td>string</td>
+<td>Output object from sdt_image</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_reads_id</td>
+<td>string</td>
+<td>Output object from sdt_reads</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_sample_id</td>
+<td>string</td>
+<td>Output object from sdt_sample</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_strain_id</td>
+<td>string</td>
+<td>Output object from sdt_strain</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_tnseq_library_id</td>
+<td>string</td>
+<td>Output object from sdt_tnseq_library</td>
+<td></td>
+</tr>
+<tr>
+<td>sys_process_id</td>
+<td>string</td>
+<td>Foreign key to sys_process</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="sys_typedef">sys_typedef</h3>
+<p><strong>Rows:</strong> 118 | <strong>Columns:</strong> 14</p>
+<p><em>system table with 14 columns</em></p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+<th>Constraints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>cdm_column_name</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>comment</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>constraint</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>field_name</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>fk</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>is_pk</td>
+<td>boolean</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>is_required</td>
+<td>boolean</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>is_upk</td>
+<td>boolean</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>scalar_type</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>type_name</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>type_sys_oterm_id</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>type_sys_oterm_name</td>
+<td>string</td>
+<td>Term name</td>
+<td></td>
+</tr>
+<tr>
+<td>units_sys_oterm_id</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>units_sys_oterm_name</td>
+<td>string</td>
+<td>Term name</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="dynamic-tables">Dynamic Tables</h2>
+<p>Dynamic data tables (ddt_*) store measurement arrays in brick format.</p>
+<h3 id="ddt_brick0000010">ddt_brick0000010</h3>
+<p><strong>Rows:</strong> 158,652 | <strong>Columns:</strong> 9</p>
+<p><em>dynamic table with 9 columns</em></p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+<th>Constraints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>concentration_micromolar</td>
+<td>double</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>molecule_algorithm_parameter</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>molecule_detection_limit_micromolar</td>
+<td>double</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>molecule_from_list_sys_oterm_id</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>molecule_from_list_sys_oterm_name</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>molecule_molecular_weight_dalton</td>
+<td>double</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>physiochemical_state</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>replicate_series_count_unit</td>
+<td>integer</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_sample_name</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="ddt_brick0000072">ddt_brick0000072</h3>
+<p><strong>Rows:</strong> 5,670 | <strong>Columns:</strong> 9</p>
+<p><em>dynamic table with 9 columns</em></p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+<th>Constraints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>concentration_milligram_per_kilogram</td>
+<td>double</td>
+<td>Concentration</td>
+<td></td>
+</tr>
+<tr>
+<td>molecule_from_list_sys_oterm_id</td>
+<td>string</td>
+<td>Molecule from list, ontology term CURIE</td>
+<td></td>
+</tr>
+<tr>
+<td>molecule_from_list_sys_oterm_name</td>
+<td>string</td>
+<td>Molecule from list</td>
+<td></td>
+</tr>
+<tr>
+<td>molecule_molecular_weight_dalton</td>
+<td>double</td>
+<td>Molecular Weight</td>
+<td></td>
+</tr>
+<tr>
+<td>molecule_presence_molecule_from_list_helium_0</td>
+<td>boolean</td>
+<td>Presence, Molecule from list=helium(0)</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_sample_name</td>
+<td>string</td>
+<td>Environmental Sample ID</td>
+<td></td>
+</tr>
+<tr>
+<td>state</td>
+<td>string</td>
+<td>State</td>
+<td></td>
+</tr>
+<tr>
+<td>statistic_sys_oterm_id</td>
+<td>string</td>
+<td>Statistic, ontology term CURIE</td>
+<td></td>
+</tr>
+<tr>
+<td>statistic_sys_oterm_name</td>
+<td>string</td>
+<td>Statistic</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="ddt_brick0000073">ddt_brick0000073</h3>
+<p><strong>Rows:</strong> 10,692 | <strong>Columns:</strong> 9</p>
+<p><em>dynamic table with 9 columns</em></p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+<th>Constraints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>concentration_milligram_per_kilogram</td>
+<td>double</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>molecule_from_list_sys_oterm_id</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>molecule_from_list_sys_oterm_name</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>molecule_molecular_weight_dalton</td>
+<td>double</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>molecule_presence_molecule_from_list_helium_0</td>
+<td>boolean</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>physiochemical_state</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_sample_name</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>statistic_sys_oterm_id</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>statistic_sys_oterm_name</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="ddt_brick0000080">ddt_brick0000080</h3>
+<p><strong>Rows:</strong> 294,528 | <strong>Columns:</strong> 8</p>
+<p><em>dynamic table with 8 columns</em></p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+<th>Constraints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>concentration_statistic_average_parts_per_billion</td>
+<td>double</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>concentration_statistic_standard_deviation_parts_per_billion</td>
+<td>double</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>detection_limit_parts_per_billion</td>
+<td>double</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>molecule_from_list_sys_oterm_id</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>molecule_from_list_sys_oterm_name</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>molecule_molecular_weight_dalton</td>
+<td>double</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>molecule_presence_molecule_from_list_helium_0</td>
+<td>boolean</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_sample_name</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="ddt_brick0000452">ddt_brick0000452</h3>
+<p><strong>Rows:</strong> 341,223 | <strong>Columns:</strong> 2</p>
+<p><em>dynamic table with 2 columns</em></p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+<th>Constraints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>sdt_asv_name</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>sequence_sequence_type_16s_sequence</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="ddt_brick0000454">ddt_brick0000454</h3>
+<p><strong>Rows:</strong> 1,881,723 | <strong>Columns:</strong> 4</p>
+<p><em>dynamic table with 4 columns</em></p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+<th>Constraints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>sdt_asv_name</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_taxon_name</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>taxonomic_level_sys_oterm_id</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>taxonomic_level_sys_oterm_name</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="ddt_brick0000457">ddt_brick0000457</h3>
+<p><strong>Rows:</strong> 70,374 | <strong>Columns:</strong> 2</p>
+<p><em>dynamic table with 2 columns</em></p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+<th>Constraints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>sdt_asv_name</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>sequence_sequence_type_16s_sequence</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="ddt_brick0000458">ddt_brick0000458</h3>
+<p><strong>Rows:</strong> 326,526 | <strong>Columns:</strong> 4</p>
+<p><em>dynamic table with 4 columns</em></p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+<th>Constraints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>sdt_asv_name</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_taxon_name</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>taxonomic_level_sys_oterm_id</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>taxonomic_level_sys_oterm_name</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="ddt_brick0000459">ddt_brick0000459</h3>
+<p><strong>Rows:</strong> 2,603,838 | <strong>Columns:</strong> 3</p>
+<p><em>dynamic table with 3 columns</em></p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+<th>Constraints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>count_count_unit</td>
+<td>integer</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_asv_name</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_community_name</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="ddt_brick0000460">ddt_brick0000460</h3>
+<p><strong>Rows:</strong> 28,296 | <strong>Columns:</strong> 2</p>
+<p><em>dynamic table with 2 columns</em></p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+<th>Constraints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>sdt_asv_name</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>sequence_sequence_type_16s_sequence</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="ddt_brick0000461">ddt_brick0000461</h3>
+<p><strong>Rows:</strong> 170,088 | <strong>Columns:</strong> 5</p>
+<p><em>dynamic table with 5 columns</em></p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+<th>Constraints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>confidence_confidence_unit</td>
+<td>double</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_asv_name</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_taxon_name</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>taxonomic_level_sys_oterm_id</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>taxonomic_level_sys_oterm_name</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="ddt_brick0000462">ddt_brick0000462</h3>
+<p><strong>Rows:</strong> 396,144 | <strong>Columns:</strong> 3</p>
+<p><em>dynamic table with 3 columns</em></p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+<th>Constraints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>count_count_unit</td>
+<td>integer</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_asv_name</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_community_name</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="ddt_brick0000476">ddt_brick0000476</h3>
+<p><strong>Rows:</strong> 320,281,120 | <strong>Columns:</strong> 4</p>
+<p><em>dynamic table with 4 columns</em></p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+<th>Constraints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>count_count_unit</td>
+<td>integer</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>replicate_series_count_unit</td>
+<td>integer</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_asv_name</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_community_name</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="ddt_brick0000477">ddt_brick0000477</h3>
+<p><strong>Rows:</strong> 28,194 | <strong>Columns:</strong> 2</p>
+<p><em>dynamic table with 2 columns</em></p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+<th>Constraints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>sdt_asv_name</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>sequence_sequence_type_16s_sequence</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="ddt_brick0000478">ddt_brick0000478</h3>
+<p><strong>Rows:</strong> 169,491 | <strong>Columns:</strong> 5</p>
+<p><em>dynamic table with 5 columns</em></p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+<th>Constraints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>confidence_confidence_unit</td>
+<td>double</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_asv_name</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_taxon_name</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>taxonomic_level_sys_oterm_id</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>taxonomic_level_sys_oterm_name</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="ddt_brick0000479">ddt_brick0000479</h3>
+<p><strong>Rows:</strong> 1,127,760 | <strong>Columns:</strong> 3</p>
+<p><em>dynamic table with 3 columns</em></p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+<th>Constraints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>count_count_unit</td>
+<td>integer</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_asv_name</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_community_name</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="ddt_brick0000495">ddt_brick0000495</h3>
+<p><strong>Rows:</strong> 26,712 | <strong>Columns:</strong> 5</p>
+<p><em>dynamic table with 5 columns</em></p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+<th>Constraints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>sdt_strain_name</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_taxon_name</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>strain_relative_evolutionary_divergence_dimensionless_unit</td>
+<td>double</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>taxonomic_level_sys_oterm_id</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>taxonomic_level_sys_oterm_name</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="ddt_brick0000501">ddt_brick0000501</h3>
+<p><strong>Rows:</strong> 9,321 | <strong>Columns:</strong> 10</p>
+<p><em>dynamic table with 10 columns</em></p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+<th>Constraints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>date_comment_sampling_date</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>description_comment_original_condition_description</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>enigma_campaign_sys_oterm_id</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>enigma_campaign_sys_oterm_name</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>enigma_labs_and_personnel_comment_contact_person_or_lab_sys_oterm_id</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>enigma_labs_and_personnel_comment_contact_person_or_lab_sys_oterm_name</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_condition_name</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_location_name</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_sample_name</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_strain_name</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="ddt_brick0000507">ddt_brick0000507</h3>
+<p><strong>Rows:</strong> 9,027 | <strong>Columns:</strong> 6</p>
+<p><em>dynamic table with 6 columns</em></p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+<th>Constraints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>sdt_strain_name</td>
+<td>string</td>
+<td>Strain ID</td>
+<td></td>
+</tr>
+<tr>
+<td>sequence</td>
+<td>string</td>
+<td>Sequence</td>
+<td></td>
+</tr>
+<tr>
+<td>sequence_type_sys_oterm_id</td>
+<td>string</td>
+<td>Sequence Type, ontology term CURIE</td>
+<td></td>
+</tr>
+<tr>
+<td>sequence_type_sys_oterm_name</td>
+<td>string</td>
+<td>Sequence Type</td>
+<td></td>
+</tr>
+<tr>
+<td>strand_sys_oterm_id</td>
+<td>string</td>
+<td>Strand, ontology term CURIE</td>
+<td></td>
+</tr>
+<tr>
+<td>strand_sys_oterm_name</td>
+<td>string</td>
+<td>Strand</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="ddt_brick0000508">ddt_brick0000508</h3>
+<p><strong>Rows:</strong> 12,702 | <strong>Columns:</strong> 6</p>
+<p><em>dynamic table with 6 columns</em></p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+<th>Constraints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>read_coverage_comment_percent_of_1kb_chunks_of_genome_covered_by_at_least_one_read_percent</td>
+<td>double</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>read_coverage_statistic_average_comment_cov80_average_coverage_after_trimming_highest_and_lowest_10_percent_count_unit</td>
+<td>double</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_genome_name</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_sample_name</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_strain_name</td>
+<td>string</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>sequence_identity_statistic_average_comment_average_percent_identity_of_aligned_reads_percent</td>
+<td>double</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="ddt_ndarray">ddt_ndarray</h3>
+<p><strong>Rows:</strong> 120 | <strong>Columns:</strong> 15</p>
+<p><em>dynamic table with 15 columns</em></p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+<th>Constraints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ddt_ndarray_description</td>
+<td>string</td>
+<td>Description of the data brick (N-dimensional array)</td>
+<td></td>
+</tr>
+<tr>
+<td>ddt_ndarray_dimension_types_sys_oterm_id</td>
+<td>{'type': 'array', 'elementType': 'string', 'containsNull': True}</td>
+<td>Array of dimension data types, ontology term CURIEs</td>
+<td></td>
+</tr>
+<tr>
+<td>ddt_ndarray_dimension_types_sys_oterm_name</td>
+<td>{'type': 'array', 'elementType': 'string', 'containsNull': True}</td>
+<td>Array of dimension data types</td>
+<td></td>
+</tr>
+<tr>
+<td>ddt_ndarray_dimension_variable_types_sys_oterm_id</td>
+<td>{'type': 'array', 'elementType': 'string', 'containsNull': True}</td>
+<td>Array of dimension variable types, ontology term CURIEs</td>
+<td></td>
+</tr>
+<tr>
+<td>ddt_ndarray_dimension_variable_types_sys_oterm_name</td>
+<td>{'type': 'array', 'elementType': 'string', 'containsNull': True}</td>
+<td>Array of dimension variable types</td>
+<td></td>
+</tr>
+<tr>
+<td>ddt_ndarray_id</td>
+<td>string</td>
+<td>Primary key for dynamic data type (N-dimensional array)</td>
+<td></td>
+</tr>
+<tr>
+<td>ddt_ndarray_metadata</td>
+<td>string</td>
+<td>Metadata for the data brick (N-dimensional array)</td>
+<td></td>
+</tr>
+<tr>
+<td>ddt_ndarray_name</td>
+<td>string</td>
+<td>Name of the data brick (N-dimensional array)</td>
+<td></td>
+</tr>
+<tr>
+<td>ddt_ndarray_shape</td>
+<td>string</td>
+<td>Shape of the N-dimensional array, array with one integer per dimension</td>
+<td></td>
+</tr>
+<tr>
+<td>ddt_ndarray_type_sys_oterm_id</td>
+<td>string</td>
+<td>Data type for this data brick, ontology term CURIE</td>
+<td></td>
+</tr>
+<tr>
+<td>ddt_ndarray_type_sys_oterm_name</td>
+<td>string</td>
+<td>Data type for this data brick</td>
+<td></td>
+</tr>
+<tr>
+<td>ddt_ndarray_variable_types_sys_oterm_id</td>
+<td>{'type': 'array', 'elementType': 'string', 'containsNull': True}</td>
+<td>Array of variable types, ontology term CURIEs</td>
+<td></td>
+</tr>
+<tr>
+<td>ddt_ndarray_variable_types_sys_oterm_name</td>
+<td>{'type': 'array', 'elementType': 'string', 'containsNull': True}</td>
+<td>Array of variable types</td>
+<td></td>
+</tr>
+<tr>
+<td>superceded_by_ddt_ndarray_id</td>
+<td>string</td>
+<td>Dataset that supercedes this one, if the dataset was withdrawn and replaced, or null if the dataset</td>
+<td></td>
+</tr>
+<tr>
+<td>withdrawn_date</td>
+<td>string</td>
+<td>Date when this dataset was withdrawn, or null if the dataset is currently valid</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="microtype-reference">Microtype Reference</h2>
+<p>Semantic type annotations used across the CDM schema.</p>
+<table>
+<thead>
+<tr>
+<th>Microtype</th>
+<th>Usage Count</th>
+<th>Example Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ME:0000126</td>
+<td>10</td>
+<td>Number of contigs in the assembly</td>
+</tr>
+<tr>
+<td>ME:0000044</td>
+<td>5</td>
+<td>Strain name from which the assembly was derived (foreign key to Strain.name).</td>
+</tr>
+<tr>
+<td>ME:0000203</td>
+<td>5</td>
+<td>Reference to the actual assembly data</td>
+</tr>
+<tr>
+<td>ME:0000202</td>
+<td>5</td>
+<td>Free-text field providing additional details or notes about the community</td>
+</tr>
+<tr>
+<td>ME:0000246</td>
+<td>5</td>
+<td>Foreign key to the associated genome (Genome.name) from which the library was de</td>
+</tr>
+<tr>
+<td>ME:0000009</td>
+<td>3</td>
+<td>YYYY[-MM[-DD]]</td>
+</tr>
+<tr>
+<td>ME:0000280</td>
+<td>2</td>
+<td>Unique name for the assembly</td>
+</tr>
+<tr>
+<td>ME:0000233</td>
+<td>2</td>
+<td>Unique name of the community</td>
+</tr>
+<tr>
+<td>ME:0000234</td>
+<td>2</td>
+<td>Type of community, e.g., isolate or enrichment, ontology term CURIE</td>
+</tr>
+<tr>
+<td>ME:0000102</td>
+<td>2</td>
+<td>Reference to the Sample from which the community was obtained.</td>
+</tr>
+<tr>
+<td>ME:0000200</td>
+<td>2</td>
+<td>Reference to the experimental or environmental condition associated with the com</td>
+</tr>
+<tr>
+<td>ME:0000276</td>
+<td>2</td>
+<td>Unique DubSeq library identifier (Primary key)</td>
+</tr>
+<tr>
+<td>ME:0000262</td>
+<td>2</td>
+<td>Unique, human-readable name of the DubSeq library</td>
+</tr>
+<tr>
+<td>ME:0000228</td>
+<td>2</td>
+<td>Unique name of the location</td>
+</tr>
+<tr>
+<td>ME:0000213</td>
+<td>2</td>
+<td>Continent where the location is situated, ontology term CURIE</td>
+</tr>
+<tr>
+<td>ME:0000214</td>
+<td>2</td>
+<td>Country of the location, ontology term CURIE</td>
+</tr>
+<tr>
+<td>ME:0000216</td>
+<td>2</td>
+<td>Biome classification of the location, ontology term CURIE</td>
+</tr>
+<tr>
+<td>ME:0000217</td>
+<td>2</td>
+<td>Environmental or geographic feature at the location, ontology term CURIE</td>
+</tr>
+<tr>
+<td>ME:0000328</td>
+<td>2</td>
+<td>Unique, human-readable name of the protocol</td>
+</tr>
+<tr>
+<td>ME:0000112</td>
+<td>2</td>
+<td>Category of reads (e.g., single-end, paired-end), ontology term CURIE</td>
+</tr>
+</tbody>
+</table>
+<p><em>Showing top 20 of 69 microtypes</em></p>
+<h2 id="relationship-catalog">Relationship Catalog</h2>
+<p>Foreign key relationships between tables.</p>
+<table>
+<thead>
+<tr>
+<th>Source Table</th>
+<th>Source Column</th>
+<th>Target Table</th>
+<th>Target Column</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ddt_brick0000072</td>
+<td>statistic_sys_oterm_id</td>
+<td>sys_oterm</td>
+<td>sys_oterm_id</td>
+<td></td>
+</tr>
+<tr>
+<td>ddt_brick0000072</td>
+<td>sdt_sample_name</td>
+<td>sdt_sample</td>
+<td>sdt_sample_name</td>
+<td></td>
+</tr>
+<tr>
+<td>ddt_brick0000072</td>
+<td>molecule_from_list_sys_oterm_id</td>
+<td>sys_oterm</td>
+<td>sys_oterm_id</td>
+<td></td>
+</tr>
+<tr>
+<td>ddt_brick0000507</td>
+<td>sdt_strain_name</td>
+<td>sdt_strain</td>
+<td>sdt_strain_name</td>
+<td></td>
+</tr>
+<tr>
+<td>ddt_brick0000507</td>
+<td>sequence_type_sys_oterm_id</td>
+<td>sys_oterm</td>
+<td>sys_oterm_id</td>
+<td></td>
+</tr>
+<tr>
+<td>ddt_brick0000507</td>
+<td>strand_sys_oterm_id</td>
+<td>sys_oterm</td>
+<td>sys_oterm_id</td>
+<td></td>
+</tr>
+<tr>
+<td>ddt_ndarray</td>
+<td>ddt_ndarray_type_sys_oterm_id</td>
+<td>sys_oterm</td>
+<td>sys_oterm_id</td>
+<td></td>
+</tr>
+<tr>
+<td>ddt_ndarray</td>
+<td>ddt_ndarray_dimension_types_sys_oterm_id</td>
+<td>[sys_oterm</td>
+<td>sys_oterm_id]</td>
+<td></td>
+</tr>
+<tr>
+<td>ddt_ndarray</td>
+<td>ddt_ndarray_dimension_variable_types_sys_oterm_id</td>
+<td>[sys_oterm</td>
+<td>sys_oterm_id]</td>
+<td></td>
+</tr>
+<tr>
+<td>ddt_ndarray</td>
+<td>ddt_ndarray_variable_types_sys_oterm_id</td>
+<td>[sys_oterm</td>
+<td>sys_oterm_id]</td>
+<td></td>
+</tr>
+<tr>
+<td>ddt_ndarray</td>
+<td>superceded_by_ddt_ndarray_id</td>
+<td>ddt_ndarray</td>
+<td>ddt_ndarray_id</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_assembly</td>
+<td>sdt_strain_name</td>
+<td>Strain</td>
+<td>name</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_bin</td>
+<td>sdt_assembly_name</td>
+<td>Assembly</td>
+<td>(any)</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_community</td>
+<td>community_type_sys_oterm_id</td>
+<td>sys_oterm</td>
+<td>id</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_community</td>
+<td>sdt_sample_name</td>
+<td>Sample</td>
+<td>name</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_community</td>
+<td>parent_sdt_community_name</td>
+<td>Community</td>
+<td>name</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_community</td>
+<td>sdt_condition_name</td>
+<td>Condition</td>
+<td>name</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_community</td>
+<td>defined_sdt_strain_names</td>
+<td>[Strain</td>
+<td>name]</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_dubseq_library</td>
+<td>sdt_genome_name</td>
+<td>Genome</td>
+<td>(any)</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_gene</td>
+<td>sdt_genome_name</td>
+<td>Genome</td>
+<td>(any)</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_genome</td>
+<td>sdt_strain_name</td>
+<td>Strain</td>
+<td>name</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_location</td>
+<td>continent_sys_oterm_id</td>
+<td>sys_oterm</td>
+<td>id</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_location</td>
+<td>country_sys_oterm_id</td>
+<td>sys_oterm</td>
+<td>id</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_location</td>
+<td>biome_sys_oterm_id</td>
+<td>sys_oterm</td>
+<td>id</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_location</td>
+<td>feature_sys_oterm_id</td>
+<td>sys_oterm</td>
+<td>id</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_reads</td>
+<td>read_type_sys_oterm_id</td>
+<td>sys_oterm</td>
+<td>id</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_reads</td>
+<td>sequencing_technology_sys_oterm_id</td>
+<td>sys_oterm</td>
+<td>id</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_sample</td>
+<td>sdt_location_name</td>
+<td>Location</td>
+<td>name</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_sample</td>
+<td>material_sys_oterm_id</td>
+<td>sys_oterm</td>
+<td>id</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_sample</td>
+<td>env_package_sys_oterm_id</td>
+<td>sys_oterm</td>
+<td>id</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_strain</td>
+<td>sdt_genome_name</td>
+<td>Genome</td>
+<td>name</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_strain</td>
+<td>derived_from_sdt_strain_name</td>
+<td>Strain</td>
+<td>name</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_strain</td>
+<td>sdt_gene_names_changed</td>
+<td>[Gene</td>
+<td>gene_id]</td>
+<td></td>
+</tr>
+<tr>
+<td>sdt_tnseq_library</td>
+<td>sdt_genome_name</td>
+<td>Genome</td>
+<td>(any)</td>
+<td></td>
+</tr>
+<tr>
+<td>sys_oterm</td>
+<td>parent_sys_oterm_id</td>
+<td>sys_oterm</td>
+<td>sys_oterm_id</td>
+<td></td>
+</tr>
+<tr>
+<td>sys_process</td>
+<td>process_sys_oterm_id</td>
+<td>sys_oterm</td>
+<td>id</td>
+<td></td>
+</tr>
+<tr>
+<td>sys_process</td>
+<td>person_sys_oterm_id</td>
+<td>sys_oterm</td>
+<td>id</td>
+<td></td>
+</tr>
+<tr>
+<td>sys_process</td>
+<td>campaign_sys_oterm_id</td>
+<td>sys_oterm</td>
+<td>id</td>
+<td></td>
+</tr>
+<tr>
+<td>sys_process</td>
+<td>sdt_protocol_name</td>
+<td>Protocol</td>
+<td>name</td>
+<td></td>
+</tr>
+<tr>
+<td>sys_process_input</td>
+<td>sys_process_id</td>
+<td>sys_process</td>
+<td>sys_process_id</td>
+<td></td>
+</tr>
+<tr>
+<td>sys_process_input</td>
+<td>sdt_assembly_id</td>
+<td>sdt_assembly</td>
+<td>sdt_assembly_id</td>
+<td></td>
+</tr>
+<tr>
+<td>sys_process_input</td>
+<td>sdt_bin_id</td>
+<td>sdt_bin</td>
+<td>sdt_bin_id</td>
+<td></td>
+</tr>
+<tr>
+<td>sys_process_input</td>
+<td>sdt_community_id</td>
+<td>sdt_community</td>
+<td>sdt_community_id</td>
+<td></td>
+</tr>
+<tr>
+<td>sys_process_input</td>
+<td>sdt_genome_id</td>
+<td>sdt_genome</td>
+<td>sdt_genome_id</td>
+<td></td>
+</tr>
+<tr>
+<td>sys_process_input</td>
+<td>sdt_location_id</td>
+<td>sdt_location</td>
+<td>sdt_location_id</td>
+<td></td>
+</tr>
+<tr>
+<td>sys_process_input</td>
+<td>sdt_reads_id</td>
+<td>sdt_reads</td>
+<td>sdt_reads_id</td>
+<td></td>
+</tr>
+<tr>
+<td>sys_process_input</td>
+<td>sdt_sample_id</td>
+<td>sdt_sample</td>
+<td>sdt_sample_id</td>
+<td></td>
+</tr>
+<tr>
+<td>sys_process_input</td>
+<td>sdt_strain_id</td>
+<td>sdt_strain</td>
+<td>sdt_strain_id</td>
+<td></td>
+</tr>
+<tr>
+<td>sys_process_input</td>
+<td>sdt_tnseq_library_id</td>
+<td>sdt_tnseq_library</td>
+<td>sdt_tnseq_library_id</td>
+<td></td>
+</tr>
+<tr>
+<td>sys_process_output</td>
+<td>sys_process_id</td>
+<td>sys_process</td>
+<td>sys_process_id</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>Showing 50 of 61 relationships</em></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": ["content.tabs.link"], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.92b07e13.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -875,7 +875,7 @@
 just load-cdm-store
 
 # Or specify paths
-just load-cdm-store /path/to/jmc_coral.db output.db
+just load-cdm-store data/enigma_coral.db output.db
 </code></pre>
 <p>This loads:
 - <strong>Static entity tables (sdt_*)</strong>: Location, Sample, Reads, Assembly, Genome, Gene, etc. (17 tables, 273K rows)
@@ -935,20 +935,20 @@ just load-cdm-store /path/to/jmc_coral.db output.db
 <p>Use the Python script directly for fine-grained control:</p>
 <pre><code class="language-bash"># Load only static tables
 uv run python scripts/cdm_analysis/load_cdm_parquet_to_store.py \
-    /path/to/jmc_coral.db \
+    data/enigma_coral.db \
     --output my_cdm.db \
     --include-static \
     --no-system
 
 # Load with custom dynamic brick sampling
 uv run python scripts/cdm_analysis/load_cdm_parquet_to_store.py \
-    /path/to/jmc_coral.db \
+    data/enigma_coral.db \
     --include-dynamic \
     --max-dynamic-rows 50000
 
 # Verbose output for debugging
 uv run python scripts/cdm_analysis/load_cdm_parquet_to_store.py \
-    /path/to/jmc_coral.db \
+    data/enigma_coral.db \
     --verbose
 </code></pre>
 <h2 id="cdm-table-structure">CDM Table Structure</h2>
@@ -1345,16 +1345,16 @@ just load-cdm-store
 - System tables: <code>SystemOntologyTerm</code>, <code>SystemProcess</code>, <code>SystemTypedef</code></p>
 <h3 id="error-reading-parquet">"Error reading parquet"</h3>
 <p>Verify CDM database path:</p>
-<pre><code class="language-bash">ls -lh /Users/marcin/Documents/VIMSS/ENIGMA/KBase/ENIGMA_in_CDM/minio/jmc_coral.db/
+<pre><code class="language-bash">ls -lh data/enigma_coral.db/
 </code></pre>
 <p>Check for Delta Lake format (directories with <code>_delta_log/</code>):</p>
-<pre><code class="language-bash">ls -la /path/to/jmc_coral.db/sdt_sample/
+<pre><code class="language-bash">ls -la data/enigma_coral.db/sdt_sample/
 </code></pre>
 <h3 id="memory-issues">Memory Issues</h3>
 <p>For very large queries, use sampling or export:</p>
 <pre><code class="language-python"># Sample large tables during load
 python scripts/cdm_analysis/load_cdm_parquet_to_store.py \
-    /path/to/jmc_coral.db \
+    data/enigma_coral.db \
     --max-dynamic-rows 5000
 
 # Or query in chunks

@@ -1244,7 +1244,7 @@ just load-cdm-store-full
 <h3 id="custom-loading-with-python">Custom Loading with Python</h3>
 <pre><code class="language-bash"># Use Python directly with custom options
 uv run python scripts/cdm_analysis/load_cdm_parquet_to_store.py \
-    /path/to/jmc_coral.db \
+    data/enigma_coral.db \
     --output my_cdm.db \
     --include-static \
     --include-system \
@@ -1271,14 +1271,14 @@ uv run python scripts/cdm_analysis/load_cdm_parquet_to_store.py \
 <h3 id="load-only-specific-tables">Load Only Specific Tables</h3>
 <pre><code class="language-bash"># Load only static tables
 uv run python scripts/cdm_analysis/load_cdm_parquet_to_store.py \
-    /path/to/jmc_coral.db \
+    data/enigma_coral.db \
     --output static_only.db \
     --include-static \
     --no-system
 
 # Load only system tables
 uv run python scripts/cdm_analysis/load_cdm_parquet_to_store.py \
-    /path/to/jmc_coral.db \
+    data/enigma_coral.db \
     --output system_only.db \
     --no-static \
     --include-system
@@ -1355,7 +1355,7 @@ just cdm-store-stats
 <h3 id="memory-issues">Memory issues</h3>
 <pre><code class="language-bash"># Use sampling for large tables
 uv run python scripts/cdm_analysis/load_cdm_parquet_to_store.py \
-    /path/to/jmc_coral.db \
+    data/enigma_coral.db \
     --max-dynamic-rows 5000
 </code></pre>
 <h2 id="related-documentation">Related Documentation</h2>

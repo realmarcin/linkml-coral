@@ -1,0 +1,1367 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://realmarcin.github.io/linkml-coral/CDM_ENIGMA_MIGRATION_SUMMARY/">
+      
+      
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.19">
+    
+    
+      
+        <title>CDM Schema Migration Summary - enigma_coral.db - linkml-coral</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.7e37652d.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../css/ansi-colours.css">
+    
+      <link rel="stylesheet" href="../css/jupyter-cells.css">
+    
+      <link rel="stylesheet" href="../css/pandas-dataframe.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#cdm-schema-migration-summary-enigma_coraldb" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="linkml-coral" class="md-header__button md-logo" aria-label="linkml-coral" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            linkml-coral
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              CDM Schema Migration Summary - enigma_coral.db
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/realmarcin/linkml-coral" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="linkml-coral" class="md-nav__button md-logo" aria-label="linkml-coral" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    linkml-coral
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/realmarcin/linkml-coral" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../elements/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Schema
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cdm_store_quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    CDM Store Quick Start
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    About
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Changes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Key Changes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-database-path-migration" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Database Path Migration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-field-renames-with-unit-suffixes" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Field Renames with Unit Suffixes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Field Renames with Unit Suffixes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#static-entity-tables-19-field-renames-across-9-tables" class="md-nav__link">
+    <span class="md-ellipsis">
+      Static Entity Tables (19 field renames across 9 tables)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Static Entity Tables (19 field renames across 9 tables)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sdt_location-2-fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      sdt_location (2 fields)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sdt_sample-2-fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      sdt_sample (2 fields)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sdt_reads-1-field" class="md-nav__link">
+    <span class="md-ellipsis">
+      sdt_reads (1 field)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sdt_assembly-1-field" class="md-nav__link">
+    <span class="md-ellipsis">
+      sdt_assembly (1 field)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sdt_genome-2-fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      sdt_genome (2 fields)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sdt_gene-3-fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      sdt_gene (3 fields)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sdt_image-1-field" class="md-nav__link">
+    <span class="md-ellipsis">
+      sdt_image (1 field)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sdt_dubseq_library-1-field" class="md-nav__link">
+    <span class="md-ellipsis">
+      sdt_dubseq_library (1 field)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sdt_tnseq_library-6-field-updates" class="md-nav__link">
+    <span class="md-ellipsis">
+      sdt_tnseq_library (6 field updates)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#system-tables-8-renames-5-new-fields-across-2-tables" class="md-nav__link">
+    <span class="md-ellipsis">
+      System Tables (8 renames + 5 new fields across 2 tables)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="System Tables (8 renames + 5 new fields across 2 tables)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sys_typedef-5-renames-4-new-fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      sys_typedef (5 renames + 4 new fields)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sys_ddt_typedef-3-renames-1-new-field" class="md-nav__link">
+    <span class="md-ellipsis">
+      sys_ddt_typedef (3 renames + 1 new field)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-data-statistics" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Data Statistics
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#files-modified" class="md-nav__link">
+    <span class="md-ellipsis">
+      Files Modified
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Files Modified">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#schema-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      Schema Files
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#loader-scripts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Loader Scripts
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Documentation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metadata-catalogs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Metadata Catalogs
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#migration-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      Migration Process
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Migration Process">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#phase-1-metadata-extraction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 1: Metadata Extraction ✅
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-2-metadata-catalog-generation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 2: Metadata Catalog Generation ✅
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-3-schema-updates" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 3: Schema Updates ✅
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-4-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 4: Validation ✅
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-5-loader-script-updates" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 5: Loader Script Updates ✅
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-6-path-migration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 6: Path Migration ✅
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-7-project-regeneration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 7: Project Regeneration ✅
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-8-integration-testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 8: Integration Testing ✅
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-9-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 9: Documentation ✅
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#breaking-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Breaking Changes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Breaking Changes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-query-updates-required" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Query Updates Required
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-database-reload-required" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Database Reload Required
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-loader-script-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Loader Script Changes
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#upgrade-guide" class="md-nav__link">
+    <span class="md-ellipsis">
+      Upgrade Guide
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Upgrade Guide">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#for-data-users" class="md-nav__link">
+    <span class="md-ellipsis">
+      For Data Users
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#for-schema-developers" class="md-nav__link">
+    <span class="md-ellipsis">
+      For Schema Developers
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#benefits-of-this-migration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Benefits of This Migration
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rollback-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rollback Strategy
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#support" class="md-nav__link">
+    <span class="md-ellipsis">
+      Support
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="cdm-schema-migration-summary-enigma_coraldb">CDM Schema Migration Summary - enigma_coral.db</h1>
+<p><strong>Date</strong>: 2026-01-20
+<strong>Migration</strong>: jmc_coral.db → enigma_coral.db
+<strong>Schema Version</strong>: 1.0.0 (updated)</p>
+<h2 id="overview">Overview</h2>
+<p>This document summarizes the migration from the jmc_coral.db parquet structure to the updated enigma_coral.db structure, which includes explicit unit suffixes on measurement fields and naming improvements for better clarity.</p>
+<h2 id="key-changes">Key Changes</h2>
+<h3 id="1-database-path-migration">1. Database Path Migration</h3>
+<ul>
+<li><strong>Old</strong>: <code>/Users/marcin/Documents/VIMSS/ENIGMA/KBase/ENIGMA_in_CDM/minio/jmc_coral.db</code></li>
+<li><strong>New</strong>: <code>data/enigma_coral.db</code> (relative path)</li>
+</ul>
+<h3 id="2-field-renames-with-unit-suffixes">2. Field Renames with Unit Suffixes</h3>
+<h4 id="static-entity-tables-19-field-renames-across-9-tables">Static Entity Tables (19 field renames across 9 tables)</h4>
+<h5 id="sdt_location-2-fields">sdt_location (2 fields)</h5>
+<table>
+<thead>
+<tr>
+<th>Old Field Name</th>
+<th>New Field Name</th>
+<th>Unit</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>latitude</code></td>
+<td><code>latitude_degree</code></td>
+<td>UO:0000185 (degree)</td>
+<td>Latitude in decimal degrees</td>
+</tr>
+<tr>
+<td><code>longitude</code></td>
+<td><code>longitude_degree</code></td>
+<td>UO:0000185 (degree)</td>
+<td>Longitude in decimal degrees</td>
+</tr>
+</tbody>
+</table>
+<h5 id="sdt_sample-2-fields">sdt_sample (2 fields)</h5>
+<table>
+<thead>
+<tr>
+<th>Old Field Name</th>
+<th>New Field Name</th>
+<th>Unit</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>depth</code></td>
+<td><code>depth_meter</code></td>
+<td>UO:0000008 (meter)</td>
+<td>Depth in meters</td>
+</tr>
+<tr>
+<td><code>elevation</code></td>
+<td><code>elevation_meter</code></td>
+<td>UO:0000008 (meter)</td>
+<td>Elevation in meters</td>
+</tr>
+</tbody>
+</table>
+<h5 id="sdt_reads-1-field">sdt_reads (1 field)</h5>
+<table>
+<thead>
+<tr>
+<th>Old Field Name</th>
+<th>New Field Name</th>
+<th>Unit</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>read_count</code></td>
+<td><code>read_count_count_unit</code></td>
+<td>UO:0000189 (count)</td>
+<td>Number of reads</td>
+</tr>
+</tbody>
+</table>
+<h5 id="sdt_assembly-1-field">sdt_assembly (1 field)</h5>
+<table>
+<thead>
+<tr>
+<th>Old Field Name</th>
+<th>New Field Name</th>
+<th>Unit</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>n_contigs</code></td>
+<td><code>n_contigs_count_unit</code></td>
+<td>UO:0000189 (count)</td>
+<td>Number of contigs</td>
+</tr>
+</tbody>
+</table>
+<h5 id="sdt_genome-2-fields">sdt_genome (2 fields)</h5>
+<table>
+<thead>
+<tr>
+<th>Old Field Name</th>
+<th>New Field Name</th>
+<th>Unit</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>n_contigs</code></td>
+<td><code>n_contigs_count_unit</code></td>
+<td>UO:0000189 (count)</td>
+<td>Number of contigs</td>
+</tr>
+<tr>
+<td><code>n_features</code></td>
+<td><code>n_features_count_unit</code></td>
+<td>UO:0000189 (count)</td>
+<td>Number of annotated features</td>
+</tr>
+</tbody>
+</table>
+<h5 id="sdt_gene-3-fields">sdt_gene (3 fields)</h5>
+<table>
+<thead>
+<tr>
+<th>Old Field Name</th>
+<th>New Field Name</th>
+<th>Unit</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>contig_number</code></td>
+<td><code>contig_number_count_unit</code></td>
+<td>UO:0000189 (count)</td>
+<td>Contig number</td>
+</tr>
+<tr>
+<td><code>start</code></td>
+<td><code>start_base_pair</code></td>
+<td>UO:0000244 (base pair)</td>
+<td>Start position on contig</td>
+</tr>
+<tr>
+<td><code>stop</code></td>
+<td><code>stop_base_pair</code></td>
+<td>UO:0000244 (base pair)</td>
+<td>Stop position on contig</td>
+</tr>
+</tbody>
+</table>
+<h5 id="sdt_image-1-field">sdt_image (1 field)</h5>
+<table>
+<thead>
+<tr>
+<th>Old Field Name</th>
+<th>New Field Name</th>
+<th>Unit</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>size</code></td>
+<td><code>size_byte</code></td>
+<td>UO:0000233 (byte)</td>
+<td>File size in bytes</td>
+</tr>
+</tbody>
+</table>
+<h5 id="sdt_dubseq_library-1-field">sdt_dubseq_library (1 field)</h5>
+<table>
+<thead>
+<tr>
+<th>Old Field Name</th>
+<th>New Field Name</th>
+<th>Unit</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>n_fragments</code></td>
+<td><code>n_fragments_count_unit</code></td>
+<td>UO:0000189 (count)</td>
+<td>Number of fragments</td>
+</tr>
+</tbody>
+</table>
+<h5 id="sdt_tnseq_library-6-field-updates">sdt_tnseq_library (6 field updates)</h5>
+<p><strong>Note</strong>: TnSeqLibrary fields already had correct naming with unit suffixes in enigma_coral.db</p>
+<table>
+<thead>
+<tr>
+<th>Field Name</th>
+<th>Unit</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>n_mapped_reads_count_unit</code></td>
+<td>UO:0000189 (count)</td>
+<td>Number of mapped reads</td>
+</tr>
+<tr>
+<td><code>n_barcodes_count_unit</code></td>
+<td>UO:0000189 (count)</td>
+<td>Number of barcodes</td>
+</tr>
+<tr>
+<td><code>n_insertion_locations_count_unit</code></td>
+<td>UO:0000189 (count)</td>
+<td>Number of insertion locations</td>
+</tr>
+<tr>
+<td><code>n_usable_barcodes_count_unit</code></td>
+<td>UO:0000189 (count)</td>
+<td>Number of usable barcodes</td>
+</tr>
+<tr>
+<td><code>hit_rate_essential_ratio_unit</code></td>
+<td>UO:0000191 (ratio)</td>
+<td>Hit rate for essential genes</td>
+</tr>
+<tr>
+<td><code>hit_rate_other_ratio_unit</code></td>
+<td>UO:0000191 (ratio)</td>
+<td>Hit rate for other genes</td>
+</tr>
+</tbody>
+</table>
+<h4 id="system-tables-8-renames-5-new-fields-across-2-tables">System Tables (8 renames + 5 new fields across 2 tables)</h4>
+<h5 id="sys_typedef-5-renames-4-new-fields">sys_typedef (5 renames + 4 new fields)</h5>
+<table>
+<thead>
+<tr>
+<th>Old Field Name</th>
+<th>New Field Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pk</code></td>
+<td><code>is_pk</code></td>
+<td>Primary key flag (boolean)</td>
+</tr>
+<tr>
+<td><code>upk</code></td>
+<td><code>is_upk</code></td>
+<td>Unique key flag (boolean)</td>
+</tr>
+<tr>
+<td><em>(new)</em></td>
+<td><code>is_required</code></td>
+<td>Required field flag (boolean)</td>
+</tr>
+<tr>
+<td><em>(new)</em></td>
+<td><code>units_sys_oterm_name</code></td>
+<td>Ontology term name for units</td>
+</tr>
+<tr>
+<td><em>(new)</em></td>
+<td><code>type_sys_oterm_name</code></td>
+<td>Ontology term name for data type</td>
+</tr>
+<tr>
+<td><em>(new)</em></td>
+<td><code>comment</code></td>
+<td>Additional comments</td>
+</tr>
+</tbody>
+</table>
+<h5 id="sys_ddt_typedef-3-renames-1-new-field">sys_ddt_typedef (3 renames + 1 new field)</h5>
+<table>
+<thead>
+<tr>
+<th>Old Field Name</th>
+<th>New Field Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>cdm_column_name</code></td>
+<td><code>berdl_column_name</code></td>
+<td>BERDL (Brick Entity Relationship Data Layer) column name</td>
+</tr>
+<tr>
+<td><code>cdm_column_data_type</code></td>
+<td><code>berdl_column_data_type</code></td>
+<td>BERDL column data type</td>
+</tr>
+<tr>
+<td><code>fk</code></td>
+<td><code>foreign_key</code></td>
+<td>Foreign key reference</td>
+</tr>
+<tr>
+<td><em>(new)</em></td>
+<td><code>original_csv_string</code></td>
+<td>Original CSV string representation</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Note</strong>: The "CDM" → "BERDL" rename reflects a new naming convention for brick data schema.</p>
+<h3 id="3-data-statistics">3. Data Statistics</h3>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Tables</th>
+<th>Columns</th>
+<th>Total Rows</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Static (sdt_*)</strong></td>
+<td>17</td>
+<td>106</td>
+<td>273K</td>
+</tr>
+<tr>
+<td><strong>System (sys_*)</strong></td>
+<td>6</td>
+<td>69</td>
+<td>243K</td>
+</tr>
+<tr>
+<td><strong>Dynamic (ddt_*)</strong></td>
+<td>21</td>
+<td>116</td>
+<td>2.1M</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td>44</td>
+<td>291</td>
+<td>2.6M</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Row Count Changes</strong> (enigma_coral.db vs jmc_coral.db):
+- sdt_location: 594 → 596 (+2)
+- sdt_sample: 4,346 → 4,330 (-16)
+- sdt_reads: 19,592 → 19,307 (-285)
+- sys_process: 84,527 → 142,958 (+58K) ⚠️ significant increase</p>
+<h2 id="files-modified">Files Modified</h2>
+<h3 id="schema-files">Schema Files</h3>
+<ol>
+<li><code>src/linkml_coral/schema/cdm/cdm_static_entities.yaml</code> - 19 field renames across 9 classes</li>
+<li><code>src/linkml_coral/schema/cdm/cdm_system_tables.yaml</code> - 8 renames + 5 new fields</li>
+</ol>
+<h3 id="loader-scripts">Loader Scripts</h3>
+<ol>
+<li><code>scripts/cdm_analysis/load_cdm_parquet_to_store.py</code> - Updated computed field references (lines 260, 273)</li>
+</ol>
+<h3 id="documentation">Documentation</h3>
+<ol>
+<li><code>README.md</code> - Updated database paths and examples</li>
+<li><code>CLAUDE.md</code> - Updated database paths</li>
+<li><code>project.justfile</code> - Updated all just command defaults (8 references)</li>
+<li><code>docs/CDM_DATA_DICTIONARY.md</code> - Regenerated with new field names</li>
+<li><code>docs/cdm_data_dictionary.html</code> - Interactive dictionary updated</li>
+<li>All <code>docs/*.md</code> files - Database path references updated</li>
+</ol>
+<h3 id="metadata-catalogs">Metadata Catalogs</h3>
+<ol>
+<li><code>data/cdm_metadata/static_tables_metadata.json</code> - Re-extracted from enigma_coral.db</li>
+<li><code>data/cdm_metadata/system_tables_metadata.json</code> - Re-extracted from enigma_coral.db</li>
+<li><code>data/cdm_metadata/dynamic_tables_metadata.json</code> - Re-extracted from enigma_coral.db</li>
+<li><code>data/cdm_metadata/column_catalog.json</code> - Regenerated (291 → 293 columns)</li>
+<li><code>data/cdm_metadata/table_catalog.json</code> - Regenerated (44 tables)</li>
+<li>Other catalogs: validation_catalog.json, microtype_catalog.json, relationship_catalog.json</li>
+</ol>
+<h2 id="migration-process">Migration Process</h2>
+<h3 id="phase-1-metadata-extraction">Phase 1: Metadata Extraction ✅</h3>
+<ul>
+<li>Extracted metadata from all 44 tables in enigma_coral.db</li>
+<li>Validated all 30+ field renames exist in source data</li>
+<li>Confirmed data integrity</li>
+</ul>
+<h3 id="phase-2-metadata-catalog-generation">Phase 2: Metadata Catalog Generation ✅</h3>
+<ul>
+<li>Generated unified metadata catalogs</li>
+<li>293 columns (up from 291)</li>
+<li>44 tables fully documented</li>
+</ul>
+<h3 id="phase-3-schema-updates">Phase 3: Schema Updates ✅</h3>
+<ul>
+<li>Updated cdm_static_entities.yaml (19 field renames)</li>
+<li>Updated cdm_system_tables.yaml (8 renames + 5 new fields)</li>
+<li>Added <code>original_name</code> annotations to preserve old names</li>
+</ul>
+<h3 id="phase-4-validation">Phase 4: Validation ✅</h3>
+<ul>
+<li>linkml-lint: No errors</li>
+<li>Schema sync tool: Confirmed no additional changes needed</li>
+</ul>
+<h3 id="phase-5-loader-script-updates">Phase 5: Loader Script Updates ✅</h3>
+<ul>
+<li>Updated field references for computed fields</li>
+<li>Tested read_count_count_unit and n_contigs_count_unit</li>
+</ul>
+<h3 id="phase-6-path-migration">Phase 6: Path Migration ✅</h3>
+<ul>
+<li>Updated all jmc_coral.db → enigma_coral.db references</li>
+<li>Changed to relative paths (data/enigma_coral.db)</li>
+</ul>
+<h3 id="phase-7-project-regeneration">Phase 7: Project Regeneration ✅</h3>
+<ul>
+<li>Regenerated Python dataclasses</li>
+<li>Regenerated data dictionary (HTML + Markdown)</li>
+<li>Updated all generated documentation</li>
+</ul>
+<h3 id="phase-8-integration-testing">Phase 8: Integration Testing ✅</h3>
+<ul>
+<li>Successfully loaded 490K records from enigma_coral.db</li>
+<li>Verified all field renames in parquet data</li>
+<li>Confirmed computed fields work correctly</li>
+</ul>
+<h3 id="phase-9-documentation">Phase 9: Documentation ✅</h3>
+<ul>
+<li>Created this migration summary</li>
+<li>All documentation updated</li>
+</ul>
+<h2 id="breaking-changes">Breaking Changes</h2>
+<p>⚠️ <strong>Users must update their code and queries</strong>:</p>
+<h3 id="1-query-updates-required">1. Query Updates Required</h3>
+<p><strong>Old Query</strong>:</p>
+<pre><code class="language-python">samples = collection.find({&quot;depth&quot;: {&quot;$gt&quot;: 10}})
+reads = collection.find({&quot;read_count&quot;: {&quot;$gte&quot;: 50000}})
+locations = collection.find({&quot;latitude&quot;: {&quot;$gte&quot;: 37.0}})
+</code></pre>
+<p><strong>New Query</strong>:</p>
+<pre><code class="language-python">samples = collection.find({&quot;depth_meter&quot;: {&quot;$gt&quot;: 10}})
+reads = collection.find({&quot;read_count_count_unit&quot;: {&quot;$gte&quot;: 50000}})
+locations = collection.find({&quot;latitude_degree&quot;: {&quot;$gte&quot;: 37.0}})
+</code></pre>
+<h3 id="2-database-reload-required">2. Database Reload Required</h3>
+<p>Users must:
+1. Re-extract data from enigma_coral.db (not jmc_coral.db)
+2. Update all field names in custom queries
+3. Rebuild linkml-store databases with new schema</p>
+<h3 id="3-loader-script-changes">3. Loader Script Changes</h3>
+<p><strong>Old</strong>:</p>
+<pre><code class="language-bash">just load-cdm-store /path/to/jmc_coral.db output.db
+</code></pre>
+<p><strong>New</strong>:</p>
+<pre><code class="language-bash">just load-cdm-store data/enigma_coral.db output.db
+</code></pre>
+<h2 id="upgrade-guide">Upgrade Guide</h2>
+<h3 id="for-data-users">For Data Users</h3>
+<ol>
+<li>
+<p><strong>Update database path</strong>:
+   <code>bash
+   # Use enigma_coral.db instead of jmc_coral.db
+   export CDM_DB=data/enigma_coral.db</code></p>
+</li>
+<li>
+<p><strong>Update field names in queries</strong>: See field mapping table above</p>
+</li>
+<li>
+<p><strong>Reload databases</strong>:
+   <code>bash
+   just load-cdm-store</code></p>
+</li>
+</ol>
+<h3 id="for-schema-developers">For Schema Developers</h3>
+<ol>
+<li>
+<p><strong>Pull latest schema changes</strong>:
+   <code>bash
+   git pull origin linkml-coral-cdm</code></p>
+</li>
+<li>
+<p><strong>Regenerate project files</strong>:
+   <code>bash
+   just gen-project
+   just site</code></p>
+</li>
+<li>
+<p><strong>Update any custom code</strong> with new field names</p>
+</li>
+</ol>
+<h2 id="benefits-of-this-migration">Benefits of This Migration</h2>
+<ol>
+<li><strong>Explicit Units</strong>: Field names now clearly indicate measurement units (_degree, _meter, _count_unit, _byte)</li>
+<li><strong>Better Clarity</strong>: BERDL naming better describes brick data layer architecture</li>
+<li><strong>Improved Metadata</strong>: Added fields for better documentation (units_sys_oterm_name, type_sys_oterm_name, comment)</li>
+<li><strong>Consistent Naming</strong>: All measurement fields follow standard unit suffix pattern</li>
+<li><strong>Enhanced Validation</strong>: More fields with explicit boolean flags (is_pk, is_upk, is_required)</li>
+</ol>
+<h2 id="rollback-strategy">Rollback Strategy</h2>
+<p>If needed, rollback to previous state:</p>
+<pre><code class="language-bash"># Restore old schema files
+git checkout HEAD~1 -- src/linkml_coral/schema/cdm/
+
+# Regenerate project
+just gen-project
+
+# Use old database
+just load-cdm-store /old/path/to/jmc_coral.db
+</code></pre>
+<h2 id="support">Support</h2>
+<p>For questions or issues:
+- GitHub Issues: https://github.com/realmarcin/linkml-coral/issues
+- Check CLAUDE.md for updated examples
+- Review CDM_DATA_DICTIONARY.md for field reference</p>
+<hr />
+<p><strong>Migration Status</strong>: ✅ <strong>Complete</strong>
+<strong>Schema Version</strong>: 1.0.0 (enigma_coral.db compatible)
+<strong>Date</strong>: 2026-01-20</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": ["content.tabs.link"], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.92b07e13.min.js"></script>
+      
+    
+  </body>
+</html>
