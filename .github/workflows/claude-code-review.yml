@@ -12,10 +12,6 @@ on:
 
 jobs:
   claude-review:
-    # Temporarily disabled - will auto-enable after PR merge to main
-    # Workflow files must exist on default branch before running on PRs (GitHub security)
-    if: false
-
     runs-on: ubuntu-latest
     permissions:
       contents: read
