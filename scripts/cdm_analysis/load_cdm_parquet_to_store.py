@@ -228,6 +228,43 @@ def add_static_computed_fields_duckdb(conn, table_name: str) -> None:
         )
 
 
+def coerce_float_columns_to_double_from_parquet(
+    conn,
+    table_name: str,
+    parquet_pattern: str,
+    verbose: bool = False
+) -> None:
+    """Upcast FLOAT/REAL columns to DOUBLE when parquet reports DOUBLE."""
+    def _quote_ident(name: str) -> str:
+        return f'"{name.replace("\"", "\"\"")}"'
+
+    try:
+        parquet_rows = conn.execute(
+            f"DESCRIBE SELECT * FROM read_parquet('{parquet_pattern}', union_by_name=true)"
+        ).fetchall()
+        table_rows = conn.execute(f"DESCRIBE {table_name}").fetchall()
+    except Exception as e:
+        if verbose:
+            print(f"  ⚠️  Could not compare schemas for {table_name}: {e}")
+        return
+
+    parquet_types = {row[0]: str(row[1]).upper() for row in parquet_rows}
+    table_types = {row[0]: str(row[1]).upper() for row in table_rows}
+
+    for col_name, parquet_type in parquet_types.items():
+        table_type = table_types.get(col_name)
+        if parquet_type == "DOUBLE" and table_type in {"FLOAT", "REAL"}:
+            try:
+                conn.execute(
+                    f"ALTER TABLE {table_name} ALTER COLUMN {_quote_ident(col_name)} SET DATA TYPE DOUBLE"
+                )
+                if verbose:
+                    print(f"  ✓ Upcast {table_name}.{col_name}: {table_type} → DOUBLE")
+            except Exception as e:
+                if verbose:
+                    print(f"  ⚠️  Could not upcast {table_name}.{col_name}: {e}")
+
+
 def create_store(db_path: str = None, schema_path: Path = None) -> tuple:
     """
     Create or connect to a linkml-store database.
@@ -1063,12 +1100,30 @@ def load_all_cdm_parquet(
                     except Exception as e:
                         if verbose:
                             print(f"  ⚠️  Could not add computed fields for {cdm_table_name}: {e}")
+                try:
+                    conn = get_duckdb_connection(db)
+                    parquet_pattern = f"{table_path}/*.parquet"
+                    coerce_float_columns_to_double_from_parquet(
+                        conn, cdm_table_name, parquet_pattern, verbose=verbose
+                    )
+                except Exception as e:
+                    if verbose:
+                        print(f"  ⚠️  Could not coerce types for {cdm_table_name}: {e}")
             else:
                 count = load_parquet_collection(
                     table_path, cdm_table_name, class_name, db, schema_view,
                     max_rows=None,  # Full load for static tables
                     verbose=verbose
                 )
+                try:
+                    conn = get_duckdb_connection(db)
+                    parquet_pattern = f"{table_path}/*.parquet"
+                    coerce_float_columns_to_double_from_parquet(
+                        conn, cdm_table_name, parquet_pattern, verbose=verbose
+                    )
+                except Exception as e:
+                    if verbose:
+                        print(f"  ⚠️  Could not coerce types for {cdm_table_name}: {e}")
             results[cdm_table_name] = count
             total_records += count
 
@@ -1086,11 +1141,33 @@ def load_all_cdm_parquet(
                 continue
 
             class_name = TABLE_TO_CLASS[cdm_table_name]
-            count = load_parquet_collection(
-                table_path, cdm_table_name, class_name, db, schema_view,
-                max_rows=None,  # Full load for system tables
-                verbose=verbose
-            )
+            if use_direct_import:
+                count = load_parquet_to_duckdb_direct(
+                    table_path, cdm_table_name, class_name, db,
+                    max_rows=None,
+                    verbose=verbose
+                )
+                if count == 0:
+                    count = load_parquet_collection(
+                        table_path, cdm_table_name, class_name, db, schema_view,
+                        max_rows=None,  # Full load for system tables
+                        verbose=verbose
+                    )
+            else:
+                count = load_parquet_collection(
+                    table_path, cdm_table_name, class_name, db, schema_view,
+                    max_rows=None,  # Full load for system tables
+                    verbose=verbose
+                )
+            try:
+                conn = get_duckdb_connection(db)
+                parquet_pattern = f"{table_path}/*.parquet"
+                coerce_float_columns_to_double_from_parquet(
+                    conn, cdm_table_name, parquet_pattern, verbose=verbose
+                )
+            except Exception as e:
+                if verbose:
+                    print(f"  ⚠️  Could not coerce types for {cdm_table_name}: {e}")
             results[cdm_table_name] = count
             total_records += count
 
