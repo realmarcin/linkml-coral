@@ -297,6 +297,7 @@ def create_store(db_path: str = None, schema_path: Path = None) -> tuple:
     if db_path:
         print(f"📦 Connecting to database: {db_path}")
         db = client.attach_database(f"duckdb:///{db_path}", alias="cdm")
+        db._duckdb_path = db_path
     else:
         print(f"📦 Creating in-memory database")
         db = client.attach_database("duckdb", alias="cdm")
@@ -573,6 +574,17 @@ def load_parquet_to_duckdb_direct(
         # Path: db.engine (SQLAlchemy) → raw_connection() (ConnectionFairy)
         #       → driver_connection (ConnectionWrapper) → _ConnectionWrapper__c (DuckDB)
         conn = get_duckdb_connection(db)
+        should_close_conn = False
+        try:
+            conn.execute("SELECT 1")
+        except Exception as e:
+            if "closed" in str(e).lower() and hasattr(db, "_duckdb_path"):
+                conn = duckdb.connect(db._duckdb_path)
+                should_close_conn = True
+                if verbose:
+                    print("  ℹ️  Reopened DuckDB connection for direct import")
+            else:
+                raise
         if verbose and hasattr(db, 'engine'):
             print(f"  ✓ Accessed DuckDB connection via SQLAlchemy engine")
 
@@ -689,12 +701,16 @@ def load_parquet_to_duckdb_direct(
         elapsed = time.time() - start_time
         print(f"  ✅ Loaded {count:,} records in {elapsed:.1f}s ({count/elapsed:.0f} records/sec)")
 
+        if should_close_conn:
+            conn.close()
         return count
 
     except AttributeError as e:
         # Could not access DuckDB connection - fall back to pandas
         if verbose:
             print(f"  ℹ️  Note: Could not access DuckDB connection ({e}), falling back to chunked pandas")
+        if 'should_close_conn' in locals() and should_close_conn:
+            conn.close()
         return 0
     except Exception as e:
         # Other error during direct import - fall back to pandas
