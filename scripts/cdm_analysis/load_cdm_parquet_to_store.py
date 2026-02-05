@@ -180,6 +180,54 @@ def load_schema(schema_path: Path) -> SchemaView:
     return SchemaView(str(schema_path))
 
 
+def get_duckdb_connection(database):
+    """Return the underlying DuckDB connection from a linkml-store database."""
+    if hasattr(database, 'engine'):
+        raw_conn = database.engine.raw_connection()
+        wrapper = raw_conn.driver_connection
+        return wrapper._ConnectionWrapper__c
+    if hasattr(database, '_connection'):
+        return database._connection
+    if hasattr(database, 'connection'):
+        return database.connection
+    if hasattr(database, 'get_connection'):
+        return database.get_connection()
+    raise AttributeError("Cannot access DuckDB connection from linkml-store")
+
+
+def add_static_computed_fields_duckdb(conn, table_name: str) -> None:
+    """Add computed fields for static tables when loaded via direct DuckDB import."""
+    if table_name == "sdt_reads":
+        conn.execute(
+            "ALTER TABLE sdt_reads ADD COLUMN IF NOT EXISTS read_count_category VARCHAR"
+        )
+        conn.execute(
+            """
+            UPDATE sdt_reads
+            SET read_count_category = CASE
+                WHEN sdt_reads_read_count >= 100000 THEN 'very_high'
+                WHEN sdt_reads_read_count >= 50000 THEN 'high'
+                WHEN sdt_reads_read_count >= 10000 THEN 'medium'
+                ELSE 'low'
+            END
+            """
+        )
+    elif table_name == "sdt_assembly":
+        conn.execute(
+            "ALTER TABLE sdt_assembly ADD COLUMN IF NOT EXISTS contig_count_category VARCHAR"
+        )
+        conn.execute(
+            """
+            UPDATE sdt_assembly
+            SET contig_count_category = CASE
+                WHEN sdt_assembly_n_contigs >= 1000 THEN 'high'
+                WHEN sdt_assembly_n_contigs >= 100 THEN 'medium'
+                ELSE 'low'
+            END
+            """
+        )
+
+
 def create_store(db_path: str = None, schema_path: Path = None) -> tuple:
     """
     Create or connect to a linkml-store database.
@@ -472,24 +520,9 @@ def load_parquet_to_duckdb_direct(
         # Get DuckDB connection from linkml-store
         # Path: db.engine (SQLAlchemy) → raw_connection() (ConnectionFairy)
         #       → driver_connection (ConnectionWrapper) → _ConnectionWrapper__c (DuckDB)
-        if hasattr(db, 'engine'):
-            # Access through SQLAlchemy Engine (used by linkml-store)
-            raw_conn = db.engine.raw_connection()
-            wrapper = raw_conn.driver_connection
-            # Access the actual DuckDB connection (name-mangled private attribute)
-            conn = wrapper._ConnectionWrapper__c
-            if verbose:
-                print(f"  ✓ Accessed DuckDB connection via SQLAlchemy engine")
-        else:
-            # Fallback: Try direct attributes (for other database types)
-            if hasattr(db, '_connection'):
-                conn = db._connection
-            elif hasattr(db, 'connection'):
-                conn = db.connection
-            elif hasattr(db, 'get_connection'):
-                conn = db.get_connection()
-            else:
-                raise AttributeError("Cannot access DuckDB connection from linkml-store")
+        conn = get_duckdb_connection(db)
+        if verbose and hasattr(db, 'engine'):
+            print(f"  ✓ Accessed DuckDB connection via SQLAlchemy engine")
 
         # Build parquet path pattern
         if parquet_path.is_dir():
@@ -1011,11 +1044,31 @@ def load_all_cdm_parquet(
                 continue
 
             class_name = TABLE_TO_CLASS[cdm_table_name]
-            count = load_parquet_collection(
-                table_path, cdm_table_name, class_name, db, schema_view,
-                max_rows=None,  # Full load for static tables
-                verbose=verbose
-            )
+            if use_direct_import:
+                count = load_parquet_to_duckdb_direct(
+                    table_path, cdm_table_name, class_name, db,
+                    max_rows=None,
+                    verbose=verbose
+                )
+                if count == 0:
+                    count = load_parquet_collection(
+                        table_path, cdm_table_name, class_name, db, schema_view,
+                        max_rows=None,  # Full load for static tables
+                        verbose=verbose
+                    )
+                else:
+                    try:
+                        conn = get_duckdb_connection(db)
+                        add_static_computed_fields_duckdb(conn, cdm_table_name)
+                    except Exception as e:
+                        if verbose:
+                            print(f"  ⚠️  Could not add computed fields for {cdm_table_name}: {e}")
+            else:
+                count = load_parquet_collection(
+                    table_path, cdm_table_name, class_name, db, schema_view,
+                    max_rows=None,  # Full load for static tables
+                    verbose=verbose
+                )
             results[cdm_table_name] = count
             total_records += count
 

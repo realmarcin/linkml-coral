@@ -2128,7 +2128,7 @@ types:
         tag: microtype_data_type
         value: string
   Latitude:
-    typeof: float
+    typeof: double
     minimum_value: -90
     maximum_value: 90
     description: Geographic latitude in decimal degrees
@@ -2138,12 +2138,12 @@ types:
         value: ME:0000211
       microtype_data_type:
         tag: microtype_data_type
-        value: float
+        value: double
       units_term:
         tag: units_term
         value: UO:0000185
   Longitude:
-    typeof: float
+    typeof: double
     minimum_value: -180
     maximum_value: 180
     description: Geographic longitude in decimal degrees
@@ -2153,7 +2153,7 @@ types:
         value: ME:0000212
       microtype_data_type:
         tag: microtype_data_type
-        value: float
+        value: double
       units_term:
         tag: units_term
         value: UO:0000185
@@ -2172,7 +2172,7 @@ types:
         tag: units_term
         value: UO:0000189
   Size:
-    typeof: float
+    typeof: double
     minimum_value: 0
     description: Size measurement (non-negative)
     annotations:
@@ -2181,9 +2181,9 @@ types:
         value: ME:0000128
       microtype_data_type:
         tag: microtype_data_type
-        value: float
+        value: double
   Depth:
-    typeof: float
+    typeof: double
     description: Depth measurement
     annotations:
       microtype:
@@ -2191,12 +2191,12 @@ types:
         value: ME:0000219
       microtype_data_type:
         tag: microtype_data_type
-        value: float
+        value: double
       units_term:
         tag: units_term
         value: UO:0000008
   Elevation:
-    typeof: float
+    typeof: double
     description: Elevation measurement
     annotations:
       microtype:
@@ -2204,12 +2204,12 @@ types:
         value: ME:0000220
       microtype_data_type:
         tag: microtype_data_type
-        value: float
+        value: double
       units_term:
         tag: units_term
         value: UO:0000008
   Rate:
-    typeof: float
+    typeof: double
     minimum_value: 0
     maximum_value: 1
     description: Rate as a fraction between 0 and 1
@@ -2219,7 +2219,7 @@ types:
         value: ME:0000264
       microtype_data_type:
         tag: microtype_data_type
-        value: float
+        value: double
 enums:
   ExperimentalContextEnum:
     description: Context describing experimental design.
