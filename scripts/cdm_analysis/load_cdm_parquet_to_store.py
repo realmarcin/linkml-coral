@@ -497,6 +497,34 @@ def load_parquet_to_duckdb_direct(
         else:
             parquet_pattern = str(parquet_path)
 
+        def _quote_ident(name: str) -> str:
+            return f'"{name.replace("\"", "\"\"")}"'
+
+        def _build_select_list_with_double_casts() -> str:
+            """
+            Build SELECT list that upcasts FLOAT/REAL columns to DOUBLE to avoid precision loss.
+            Returns "*" if we cannot determine schema.
+            """
+            try:
+                describe_rows = conn.execute(
+                    f"DESCRIBE SELECT * FROM read_parquet('{parquet_pattern}', union_by_name=true)"
+                ).fetchall()
+                # DESCRIBE returns: column_name, column_type, null, key, default, extra
+                select_cols = []
+                for row in describe_rows:
+                    col_name = row[0]
+                    col_type = str(row[1]).upper()
+                    quoted = _quote_ident(col_name)
+                    if col_type in {"FLOAT", "REAL"}:
+                        select_cols.append(f"CAST({quoted} AS DOUBLE) AS {quoted}")
+                    else:
+                        select_cols.append(f"{quoted}")
+                return ", ".join(select_cols) if select_cols else "*"
+            except Exception:
+                return "*"
+
+        select_list = _build_select_list_with_double_casts()
+
         # Decide loading strategy based on size
         use_chunked_insert = (
             load_rows is not None and
@@ -510,7 +538,7 @@ def load_parquet_to_duckdb_direct(
             # Create table schema from first batch
             schema_query = f"""
                 CREATE OR REPLACE TABLE {table_name} AS
-                SELECT * FROM read_parquet('{parquet_pattern}', union_by_name=true)
+                SELECT {select_list} FROM read_parquet('{parquet_pattern}', union_by_name=true)
                 LIMIT 0
             """
             conn.execute(schema_query)
@@ -530,7 +558,7 @@ def load_parquet_to_duckdb_direct(
 
                 insert_query = f"""
                     INSERT INTO {table_name}
-                    SELECT * FROM read_parquet('{parquet_pattern}', union_by_name=true)
+                    SELECT {select_list} FROM read_parquet('{parquet_pattern}', union_by_name=true)
                     LIMIT {limit} OFFSET {offset}
                 """
 
@@ -554,13 +582,13 @@ def load_parquet_to_duckdb_direct(
             if max_rows:
                 query = f"""
                     CREATE OR REPLACE TABLE {table_name} AS
-                    SELECT * FROM read_parquet('{parquet_pattern}', union_by_name=true)
+                    SELECT {select_list} FROM read_parquet('{parquet_pattern}', union_by_name=true)
                     LIMIT {max_rows}
                 """
             else:
                 query = f"""
                     CREATE OR REPLACE TABLE {table_name} AS
-                    SELECT * FROM read_parquet('{parquet_pattern}', union_by_name=true)
+                    SELECT {select_list} FROM read_parquet('{parquet_pattern}', union_by_name=true)
                 """
 
             if verbose:
