@@ -4,6 +4,31 @@ This directory contains Claude Code skills that extend Claude's capabilities for
 
 ## Available Skills
 
+### ⭐ cdm-query (Unified Interface - **RECOMMENDED**)
+
+Intelligent query interface that automatically chooses the best approach for your question.
+
+**Usage**: `/cdm-query`
+
+**Best for:**
+- **Everything** - automatically optimizes for your query
+- No need to choose between fast vs schema-aware
+- Handles simple and complex queries equally well
+- Schema exploration included
+
+**How it works:**
+- Analyzes your question automatically
+- Simple queries → uses fast path (~2s)
+- Complex queries → uses schema-aware path (~4s)
+- Schema questions → provides documentation
+
+**Example**: "Find samples with their location information"
+- Auto-detects this needs a JOIN
+- Uses schema-aware approach
+- Returns proper results
+
+---
+
 ### 1. nl-sql-query (Fast, Simple Queries)
 
 Query the CDM DuckDB database using natural language questions instead of writing SQL.
@@ -40,15 +65,20 @@ Query using full LinkML schema awareness for intelligent, relationship-aware que
 
 ## Choosing the Right Skill
 
-| Feature | nl-sql-query | schema-query |
-|---------|--------------|--------------|
-| Speed | ⚡ Fast | 🐢 Slightly slower |
-| Database schema | ✓ | ✓ |
-| LinkML schema | ✗ | ✓ |
-| Relationships | Basic | Rich |
-| Query suggestions | ✗ | ✓ |
-| Schema exploration | ✗ | ✓ |
-| Best for | Simple queries | Complex queries |
+| Feature | cdm-query (unified) | nl-sql-query | schema-query |
+|---------|---------------------|--------------|--------------|
+| **Recommended** | ⭐ **YES** | For manual control | For manual control |
+| Auto-optimization | ✓ | ✗ | ✗ |
+| Speed | Fast when simple | ⚡ Fast | 🐢 Slightly slower |
+| Database schema | ✓ | ✓ | ✓ |
+| LinkML schema | ✓ (when needed) | ✗ | ✓ |
+| Relationships | ✓ Auto | Basic | Rich |
+| Query suggestions | ✓ | ✗ | ✓ |
+| Schema exploration | ✓ | ✗ | ✓ |
+| User choice needed | ✗ No | ✓ Yes | ✓ Yes |
+| Best for | **Everything** | Manual fast path | Manual schema path |
+
+**💡 Recommendation**: Start with `/cdm-query` - it automatically gives you the best of both worlds!
 
 ## Installation
 

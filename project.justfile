@@ -488,6 +488,54 @@ cdm-schema-suggest db='cdm_store.db':
   @echo "💡 Generating query suggestions from schema..."
   uv run python scripts/cdm_analysis/schema_aware_query.py --db {{db}} --suggest-queries
 
+# Unified query interface (auto-detects complexity)
+[group('CDM data management')]
+cdm-query query db='cdm_store.db':
+  @echo "🎯 Unified query: {{query}}"
+  uv run python scripts/cdm_analysis/cdm_unified_query.py --db {{db}} "{{query}}"
+
+# Unified query with JSON output
+[group('CDM data management')]
+cdm-query-json query db='cdm_store.db':
+  @echo "🎯 Unified query (JSON): {{query}}"
+  uv run python scripts/cdm_analysis/cdm_unified_query.py --db {{db}} "{{query}}" --json
+
+# Unified query with verbose output
+[group('CDM data management')]
+cdm-query-verbose query db='cdm_store.db':
+  @echo "🎯 Unified query (verbose): {{query}}"
+  uv run python scripts/cdm_analysis/cdm_unified_query.py --db {{db}} "{{query}}" --verbose
+
+# Unified query forcing fast strategy
+[group('CDM data management')]
+cdm-query-fast query db='cdm_store.db':
+  @echo "⚡ Unified query (fast): {{query}}"
+  uv run python scripts/cdm_analysis/cdm_unified_query.py --db {{db}} "{{query}}" --fast
+
+# Unified query forcing schema-aware strategy
+[group('CDM data management')]
+cdm-query-schema-aware query db='cdm_store.db':
+  @echo "🧠 Unified query (schema-aware): {{query}}"
+  uv run python scripts/cdm_analysis/cdm_unified_query.py --db {{db}} "{{query}}" --schema-aware
+
+# Unified schema info
+[group('CDM data management')]
+cdm-query-info db='cdm_store.db':
+  @echo "📋 Schema information..."
+  uv run python scripts/cdm_analysis/cdm_unified_query.py --db {{db}} --info
+
+# Unified schema exploration
+[group('CDM data management')]
+cdm-query-explore class db='cdm_store.db':
+  @echo "🔍 Exploring class: {{class}}"
+  uv run python scripts/cdm_analysis/cdm_unified_query.py --db {{db}} --explore {{class}}
+
+# Unified query suggestions
+[group('CDM data management')]
+cdm-query-suggest db='cdm_store.db':
+  @echo "💡 Query suggestions..."
+  uv run python scripts/cdm_analysis/cdm_unified_query.py --db {{db}} --suggest
+
 # Demo: Complex query - Location → Samples → Molecular Measurements (brick data)
 [group('CDM data management')]
 cdm-demo-location-molecules db='cdm_store_sample.db' limit='3':
