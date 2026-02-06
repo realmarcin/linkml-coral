@@ -527,6 +527,84 @@ just cdm-lineage Assembly Assembly0000001
 uv run python scripts/cdm_analysis/query_cdm_store.py --help
 ```
 
+**Natural Language SQL Queries (AI-Powered):**
+
+Query the database using plain English questions. Claude API translates your questions to SQL and executes them.
+
+**Using the Skill (Recommended):**
+```bash
+# Invoke the skill directly
+/nl-sql-query
+
+# Or just ask Claude
+"Query the database: How many samples are there?"
+"Use natural language to find samples with depth > 100"
+```
+
+**Using Just Commands:**
+```bash
+# Basic natural language queries
+just cdm-nl-query "How many samples are there?"
+just cdm-nl-query "Show me the top 10 locations by sample count"
+just cdm-nl-query "Find samples with depth greater than 100"
+
+# JSON output for programmatic use
+just cdm-nl-query-json "Count assemblies by type"
+
+# Verbose output to see generated SQL
+just cdm-nl-query-verbose "List all reads with read_count over 50000"
+
+# Direct Python usage
+uv run python scripts/cdm_analysis/nl_sql_query.py --db cdm_store.db "your question here"
+```
+
+**Requirements:**
+- Set `ANTHROPIC_API_KEY` environment variable with your API key
+- Or pass `--api-key YOUR_KEY` to the script
+
+**Example Queries:**
+- "How many samples are in the database?"
+- "Show me reads with more than 100,000 read count"
+- "Find assemblies with their corresponding samples"
+- "What are the most common sample materials?"
+- "List locations with the most samples"
+
+**Claude Code Skills:**
+- `/nl-sql-query` - Fast natural language queries (basic SQL translation)
+- `/schema-query` - Schema-aware queries using LinkML data model (recommended for complex queries)
+
+See `skills/README.md` for installation and usage details.
+
+**Schema-Aware Queries (Using LinkML Schema):**
+
+Query with full understanding of the data model, relationships, and semantics:
+
+```bash
+# Using the skill
+/schema-query
+
+# Using just commands
+just cdm-schema-query "Find samples with their location information"
+just cdm-schema-query "Show assemblies with their read data"
+just cdm-schema-query "Trace sample → reads → assembly pipeline"
+
+# Explore the schema
+just cdm-schema-info              # Show all classes and relationships
+just cdm-schema-explore Sample    # Explore Sample class in detail
+just cdm-schema-suggest           # Get query suggestions
+
+# JSON output
+just cdm-schema-query-json "Find samples from Location0000001"
+```
+
+**Advantages of Schema-Aware Queries:**
+- Understands relationships defined in LinkML schema
+- Knows class descriptions and purposes
+- Recognizes required vs optional fields
+- Leverages semantic annotations (ontology terms)
+- Auto-generates proper JOINs based on data model
+- Provides query suggestions based on schema structure
+
 **CDM Database Structure:**
 - **44 parquet tables** from KBase CDM (157 MB total)
 - **Static entities (sdt_*)**: Location, Sample, Reads, Assembly, Genome, Gene, etc. (17 tables, 273K rows)

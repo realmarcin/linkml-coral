@@ -434,6 +434,60 @@ cdm-lineage entity_type entity_id db='cdm_store.db':
   @echo "🔗 Tracing lineage for {{entity_type}}:{{entity_id}}..."
   uv run python scripts/cdm_analysis/query_cdm_store.py --db {{db}} lineage {{entity_type}} {{entity_id}}
 
+# Natural language SQL query (AI-powered)
+[group('CDM data management')]
+cdm-nl-query query db='cdm_store.db':
+  @echo "🤖 Natural language query: {{query}}"
+  uv run python scripts/cdm_analysis/nl_sql_query.py --db {{db}} "{{query}}"
+
+# Natural language SQL query with JSON output
+[group('CDM data management')]
+cdm-nl-query-json query db='cdm_store.db':
+  @echo "🤖 Natural language query (JSON output): {{query}}"
+  uv run python scripts/cdm_analysis/nl_sql_query.py --db {{db}} "{{query}}" --json
+
+# Natural language SQL query with verbose output
+[group('CDM data management')]
+cdm-nl-query-verbose query db='cdm_store.db':
+  @echo "🤖 Natural language query (verbose): {{query}}"
+  uv run python scripts/cdm_analysis/nl_sql_query.py --db {{db}} "{{query}}" --verbose
+
+# Schema-aware query using LinkML schema
+[group('CDM data management')]
+cdm-schema-query query db='cdm_store.db':
+  @echo "🧠 Schema-aware query: {{query}}"
+  uv run python scripts/cdm_analysis/schema_aware_query.py --db {{db}} "{{query}}"
+
+# Schema-aware query with JSON output
+[group('CDM data management')]
+cdm-schema-query-json query db='cdm_store.db':
+  @echo "🧠 Schema-aware query (JSON): {{query}}"
+  uv run python scripts/cdm_analysis/schema_aware_query.py --db {{db}} "{{query}}" --json
+
+# Schema-aware query with verbose output
+[group('CDM data management')]
+cdm-schema-query-verbose query db='cdm_store.db':
+  @echo "🧠 Schema-aware query (verbose): {{query}}"
+  uv run python scripts/cdm_analysis/schema_aware_query.py --db {{db}} "{{query}}" --verbose
+
+# Show LinkML schema information
+[group('CDM data management')]
+cdm-schema-info db='cdm_store.db':
+  @echo "📋 Displaying LinkML schema information..."
+  uv run python scripts/cdm_analysis/schema_aware_query.py --db {{db}} --show-schema
+
+# Explore a specific LinkML class
+[group('CDM data management')]
+cdm-schema-explore class db='cdm_store.db':
+  @echo "🔍 Exploring LinkML class: {{class}}"
+  uv run python scripts/cdm_analysis/schema_aware_query.py --db {{db}} --explore-class {{class}}
+
+# Get schema-based query suggestions
+[group('CDM data management')]
+cdm-schema-suggest db='cdm_store.db':
+  @echo "💡 Generating query suggestions from schema..."
+  uv run python scripts/cdm_analysis/schema_aware_query.py --db {{db}} --suggest-queries
+
 # Demo: Complex query - Location → Samples → Molecular Measurements (brick data)
 [group('CDM data management')]
 cdm-demo-location-molecules db='cdm_store_sample.db' limit='3':

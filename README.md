@@ -372,7 +372,64 @@ This section shows how to query the loaded DuckDB database using different inter
 
 **Table Naming:** All tables use CDM conventions matching BERDL (sdt_*, sys_*, ddt_*)
 
-### Query Interface 1: Just Commands (Easiest)
+### Query Interface 1: Natural Language Queries (AI-Powered) 🤖 NEW!
+
+**Ask questions in plain English** - Claude API translates them to SQL and executes them:
+
+```bash
+# Using the skill (with Claude Code)
+/nl-sql-query
+# Then: "How many samples are there?"
+
+# Using just commands
+just cdm-nl-query "Show me the top 10 locations by sample count"
+just cdm-nl-query "Find samples with depth greater than 100"
+just cdm-nl-query "List reads with read_count over 50000"
+
+# JSON output for programmatic use
+just cdm-nl-query-json "Count assemblies by type"
+
+# Verbose mode (see generated SQL)
+just cdm-nl-query-verbose "What are the most common sample materials?"
+```
+
+**Requirements:**
+- Set `ANTHROPIC_API_KEY` environment variable
+- Database must be loaded (see options above)
+
+**Example Queries:**
+- "How many samples are in the database?"
+- "Show me reads with more than 100,000 read count"
+- "Find assemblies with their corresponding samples"
+- "List locations with the most samples"
+
+**More examples**: See `skills/nl-sql-query/EXAMPLES.md` for 50+ example queries
+
+**Schema-Aware Queries** (recommended for complex queries):
+```bash
+# Using the skill (with Claude Code)
+/schema-query
+
+# Using just commands - leverages LinkML schema
+just cdm-schema-query "Find samples with their location information"
+just cdm-schema-query "Show assemblies with their read data"
+
+# Explore the data model
+just cdm-schema-info              # Show all classes
+just cdm-schema-explore Sample    # Explore specific class
+just cdm-schema-suggest           # Get query ideas
+```
+
+**Advantages of schema-aware queries:**
+- Understands relationships from LinkML schema
+- Auto-generates proper JOINs
+- Knows required vs optional fields
+- Leverages semantic annotations
+- Provides intelligent query suggestions
+
+---
+
+### Query Interface 2: Just Commands (Pre-defined Queries)
 
 **Database Statistics:**
 ```bash
@@ -416,7 +473,7 @@ just cdm-demo-asv-taxonomy
 just cdm-demo-all
 ```
 
-### Query Interface 2: DuckDB CLI (Direct SQL)
+### Query Interface 3: DuckDB CLI (Direct SQL)
 
 **Launch DuckDB CLI:**
 ```bash
@@ -517,7 +574,7 @@ WHERE dimension_oterm_name LIKE '%Environmental Sample%'
 ORDER BY ddt_ndarray_id;
 ```
 
-### Query Interface 3: Python Scripts
+### Query Interface 4: Python Scripts
 
 **Pre-built query scripts:**
 ```bash

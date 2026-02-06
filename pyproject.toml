@@ -29,6 +29,7 @@ dev = [
     "mkdocs-mermaid2-plugin>=1.1.1",
     "jupyter>=1.0.0",
     "mknotebooks>= 0.8.0",
+    "anthropic>=0.39.0",
 ]
 
 # See https://hatch.pypa.io/latest/config/build/#file-selection for how to
