@@ -103,15 +103,15 @@ types:
         value: ME:0000211
       microtype_data_type:
         tag: microtype_data_type
-        value: float
+        value: double
       units_term:
         tag: units_term
         value: UO:0000185
     description: Geographic latitude in decimal degrees
     from_schema: https://w3id.org/enigma/enigma-cdm
-    typeof: float
+    typeof: double
     base: float
-    uri: xsd:float
+    uri: xsd:double
     minimum_value: -90
     maximum_value: 90
   Longitude:
@@ -123,15 +123,15 @@ types:
         value: ME:0000212
       microtype_data_type:
         tag: microtype_data_type
-        value: float
+        value: double
       units_term:
         tag: units_term
         value: UO:0000185
     description: Geographic longitude in decimal degrees
     from_schema: https://w3id.org/enigma/enigma-cdm
-    typeof: float
+    typeof: double
     base: float
-    uri: xsd:float
+    uri: xsd:double
     minimum_value: -180
     maximum_value: 180
   Count:
@@ -162,12 +162,12 @@ types:
         value: ME:0000128
       microtype_data_type:
         tag: microtype_data_type
-        value: float
+        value: double
     description: Size measurement (non-negative)
     from_schema: https://w3id.org/enigma/enigma-cdm
-    typeof: float
+    typeof: double
     base: float
-    uri: xsd:float
+    uri: xsd:double
     minimum_value: 0
   Depth:
     name: Depth
@@ -178,15 +178,15 @@ types:
         value: ME:0000219
       microtype_data_type:
         tag: microtype_data_type
-        value: float
+        value: double
       units_term:
         tag: units_term
         value: UO:0000008
     description: Depth measurement
     from_schema: https://w3id.org/enigma/enigma-cdm
-    typeof: float
+    typeof: double
     base: float
-    uri: xsd:float
+    uri: xsd:double
   Elevation:
     name: Elevation
     definition_uri: https://w3id.org/enigma/Elevation
@@ -196,15 +196,15 @@ types:
         value: ME:0000220
       microtype_data_type:
         tag: microtype_data_type
-        value: float
+        value: double
       units_term:
         tag: units_term
         value: UO:0000008
     description: Elevation measurement
     from_schema: https://w3id.org/enigma/enigma-cdm
-    typeof: float
+    typeof: double
     base: float
-    uri: xsd:float
+    uri: xsd:double
   Rate:
     name: Rate
     definition_uri: https://w3id.org/enigma/Rate
@@ -214,12 +214,12 @@ types:
         value: ME:0000264
       microtype_data_type:
         tag: microtype_data_type
-        value: float
+        value: double
     description: Rate as a fraction between 0 and 1
     from_schema: https://w3id.org/enigma/enigma-cdm
-    typeof: float
+    typeof: double
     base: float
-    uri: xsd:float
+    uri: xsd:double
     minimum_value: 0
     maximum_value: 1
   string:
@@ -5561,7 +5561,7 @@ classes:
     class_uri: enigma:DubSeqLibrary
 metamodel_version: 1.7.0
 source_file: linkml_coral.yaml
-source_file_date: '2026-02-06T03:50:36'
-source_file_size: 100438
-generation_date: '2026-02-06T03:50:47'
+source_file_date: '2026-02-10T18:37:32'
+source_file_size: 100450
+generation_date: '2026-02-10T18:37:42'
 
