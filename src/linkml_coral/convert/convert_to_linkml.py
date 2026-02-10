@@ -55,7 +55,7 @@ class TypedefToLinkMLConverter:
         type_mapping = {
             "text": "string",
             "int": "integer", 
-            "float": "float",
+            "float": "double",
             "term": "string",  # Terms will be validated with enums
             "[text]": "string",  # Array types handled with multivalued
             "[ref]": "string"   # References handled with ranges

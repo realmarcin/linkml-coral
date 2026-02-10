@@ -299,7 +299,7 @@ load-cdm-store-bricks db='data/enigma_coral.db' output='cdm_store_bricks.db' num
 
 # Load CDM parquet with ALL brick tables - optimized for 64GB RAM (RECOMMENDED)
 [group('CDM data management')]
-load-cdm-store-bricks-64gb db='data/enigma_coral.db' output='cdm_store_bricks_full.db' num_bricks='20':
+load-cdm-store-bricks-64gb db='data/enigma_coral.db' output='cdm_store_bricks_full.db' num_bricks='999':
   @echo "📦 Loading {{num_bricks}} brick tables (64GB RAM optimized)"
   @echo ""
   @echo "Optimizations for 64GB RAM:"
@@ -329,7 +329,7 @@ load-cdm-store-bricks-64gb db='data/enigma_coral.db' output='cdm_store_bricks_fu
 
 # Load CDM parquet with ALL brick tables (FULL: optional sampling, default no limit)
 [group('CDM data management')]
-load-cdm-store-bricks-full db='data/enigma_coral.db' output='cdm_store_bricks_full.db' num_bricks='20' max_rows='0':
+load-cdm-store-bricks-full db='data/enigma_coral.db' output='cdm_store_bricks_full.db' num_bricks='999' max_rows='0':
   @echo "⚠️  ============================================"
   @echo "⚠️  WARNING: Full brick load may require 128+ GB RAM"
   @echo "⚠️  ============================================"

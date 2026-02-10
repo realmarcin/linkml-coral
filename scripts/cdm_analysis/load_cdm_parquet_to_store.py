@@ -180,6 +180,106 @@ def load_schema(schema_path: Path) -> SchemaView:
     return SchemaView(str(schema_path))
 
 
+def get_duckdb_connection(database):
+    """Return the underlying DuckDB connection from a linkml-store database."""
+    if hasattr(database, 'engine'):
+        raw_conn = database.engine.raw_connection()
+        wrapper = raw_conn.driver_connection
+        return wrapper._ConnectionWrapper__c
+    if hasattr(database, '_connection'):
+        return database._connection
+    if hasattr(database, 'connection'):
+        return database.connection
+    if hasattr(database, 'get_connection'):
+        return database.get_connection()
+    raise AttributeError("Cannot access DuckDB connection from linkml-store")
+
+
+def add_static_computed_fields_duckdb(conn, table_name: str) -> None:
+    """Add computed fields for static tables when loaded via direct DuckDB import."""
+    if table_name == "sdt_reads":
+        conn.execute(
+            "ALTER TABLE sdt_reads ADD COLUMN IF NOT EXISTS read_count_category VARCHAR"
+        )
+        conn.execute(
+            """
+            UPDATE sdt_reads
+            SET read_count_category = CASE
+                WHEN sdt_reads_read_count >= 100000 THEN 'very_high'
+                WHEN sdt_reads_read_count >= 50000 THEN 'high'
+                WHEN sdt_reads_read_count >= 10000 THEN 'medium'
+                ELSE 'low'
+            END
+            """
+        )
+    elif table_name == "sdt_assembly":
+        conn.execute(
+            "ALTER TABLE sdt_assembly ADD COLUMN IF NOT EXISTS contig_count_category VARCHAR"
+        )
+        conn.execute(
+            """
+            UPDATE sdt_assembly
+            SET contig_count_category = CASE
+                WHEN sdt_assembly_n_contigs >= 1000 THEN 'high'
+                WHEN sdt_assembly_n_contigs >= 100 THEN 'medium'
+                ELSE 'low'
+            END
+            """
+        )
+
+
+def rebuild_table_with_double_casts_from_parquet(
+    conn,
+    table_name: str,
+    parquet_pattern: str,
+    verbose: bool = False
+) -> None:
+    """
+    Rebuild table from parquet, casting DOUBLE columns explicitly when current table has FLOAT/REAL.
+    This avoids ALTER failures on some DuckDB versions and ensures deterministic types.
+    """
+    def _quote_ident(name: str) -> str:
+        return f'"{name.replace("\"", "\"\"")}"'
+
+    try:
+        parquet_rows = conn.execute(
+            f"DESCRIBE SELECT * FROM read_parquet('{parquet_pattern}', union_by_name=true)"
+        ).fetchall()
+        table_rows = conn.execute(f"DESCRIBE {table_name}").fetchall()
+    except Exception as e:
+        if verbose:
+            print(f"  ⚠️  Could not compare schemas for {table_name}: {e}")
+        return
+
+    parquet_types = {row[0]: str(row[1]).upper() for row in parquet_rows}
+    table_types = {row[0]: str(row[1]).upper() for row in table_rows}
+
+    needs_rebuild = False
+    select_cols = []
+    for col_name, parquet_type in parquet_types.items():
+        table_type = table_types.get(col_name)
+        quoted = _quote_ident(col_name)
+        if parquet_type == "DOUBLE" and table_type in {"FLOAT", "REAL"}:
+            select_cols.append(f"CAST({quoted} AS DOUBLE) AS {quoted}")
+            needs_rebuild = True
+        else:
+            select_cols.append(f"{quoted}")
+
+    if not needs_rebuild:
+        return
+
+    select_list = ", ".join(select_cols)
+    if verbose:
+        print(f"  🔧 Rebuilding {table_name} to preserve DOUBLE precision")
+
+    conn.execute(
+        f"""
+        CREATE OR REPLACE TABLE {table_name} AS
+        SELECT {select_list} FROM read_parquet('{parquet_pattern}', union_by_name=true)
+        """
+    )
+
+
 def create_store(db_path: str = None, schema_path: Path = None) -> tuple:
     """
     Create or connect to a linkml-store database.
@@ -197,6 +297,7 @@ def create_store(db_path: str = None, schema_path: Path = None) -> tuple:
     if db_path:
         print(f"📦 Connecting to database: {db_path}")
         db = client.attach_database(f"duckdb:///{db_path}", alias="cdm")
+        db._duckdb_path = db_path
     else:
         print(f"📦 Creating in-memory database")
         db = client.attach_database("duckdb", alias="cdm")
@@ -472,30 +573,54 @@ def load_parquet_to_duckdb_direct(
         # Get DuckDB connection from linkml-store
         # Path: db.engine (SQLAlchemy) → raw_connection() (ConnectionFairy)
         #       → driver_connection (ConnectionWrapper) → _ConnectionWrapper__c (DuckDB)
-        if hasattr(db, 'engine'):
-            # Access through SQLAlchemy Engine (used by linkml-store)
-            raw_conn = db.engine.raw_connection()
-            wrapper = raw_conn.driver_connection
-            # Access the actual DuckDB connection (name-mangled private attribute)
-            conn = wrapper._ConnectionWrapper__c
-            if verbose:
-                print(f"  ✓ Accessed DuckDB connection via SQLAlchemy engine")
-        else:
-            # Fallback: Try direct attributes (for other database types)
-            if hasattr(db, '_connection'):
-                conn = db._connection
-            elif hasattr(db, 'connection'):
-                conn = db.connection
-            elif hasattr(db, 'get_connection'):
-                conn = db.get_connection()
+        conn = get_duckdb_connection(db)
+        should_close_conn = False
+        try:
+            conn.execute("SELECT 1")
+        except Exception as e:
+            if "closed" in str(e).lower() and hasattr(db, "_duckdb_path"):
+                conn = duckdb.connect(db._duckdb_path)
+                should_close_conn = True
+                if verbose:
+                    print("  ℹ️  Reopened DuckDB connection for direct import")
             else:
-                raise AttributeError("Cannot access DuckDB connection from linkml-store")
+                raise
+        if verbose and hasattr(db, 'engine'):
+            print(f"  ✓ Accessed DuckDB connection via SQLAlchemy engine")
 
         # Build parquet path pattern
         if parquet_path.is_dir():
             parquet_pattern = f"{parquet_path}/*.parquet"
         else:
             parquet_pattern = str(parquet_path)
+
+        def _quote_ident(name: str) -> str:
+            return f'"{name.replace("\"", "\"\"")}"'
+
+        def _build_select_list_with_double_casts() -> str:
+            """
+            Build SELECT list that upcasts FLOAT/REAL columns to DOUBLE to avoid precision loss.
+            Returns "*" if we cannot determine schema.
+            """
+            try:
+                describe_rows = conn.execute(
+                    f"DESCRIBE SELECT * FROM read_parquet('{parquet_pattern}', union_by_name=true)"
+                ).fetchall()
+                # DESCRIBE returns: column_name, column_type, null, key, default, extra
+                select_cols = []
+                for row in describe_rows:
+                    col_name = row[0]
+                    col_type = str(row[1]).upper()
+                    quoted = _quote_ident(col_name)
+                    if col_type in {"FLOAT", "REAL"}:
+                        select_cols.append(f"CAST({quoted} AS DOUBLE) AS {quoted}")
+                    else:
+                        select_cols.append(f"{quoted}")
+                return ", ".join(select_cols) if select_cols else "*"
+            except Exception:
+                return "*"
+
+        select_list = _build_select_list_with_double_casts()
 
         # Decide loading strategy based on size
         use_chunked_insert = (
@@ -510,7 +635,7 @@ def load_parquet_to_duckdb_direct(
             # Create table schema from first batch
             schema_query = f"""
                 CREATE OR REPLACE TABLE {table_name} AS
-                SELECT * FROM read_parquet('{parquet_pattern}', union_by_name=true)
+                SELECT {select_list} FROM read_parquet('{parquet_pattern}', union_by_name=true)
                 LIMIT 0
             """
             conn.execute(schema_query)
@@ -530,7 +655,7 @@ def load_parquet_to_duckdb_direct(
 
                 insert_query = f"""
                     INSERT INTO {table_name}
-                    SELECT * FROM read_parquet('{parquet_pattern}', union_by_name=true)
+                    SELECT {select_list} FROM read_parquet('{parquet_pattern}', union_by_name=true)
                     LIMIT {limit} OFFSET {offset}
                 """
 
@@ -554,13 +679,13 @@ def load_parquet_to_duckdb_direct(
             if max_rows:
                 query = f"""
                     CREATE OR REPLACE TABLE {table_name} AS
-                    SELECT * FROM read_parquet('{parquet_pattern}', union_by_name=true)
+                    SELECT {select_list} FROM read_parquet('{parquet_pattern}', union_by_name=true)
                     LIMIT {max_rows}
                 """
             else:
                 query = f"""
                     CREATE OR REPLACE TABLE {table_name} AS
-                    SELECT * FROM read_parquet('{parquet_pattern}', union_by_name=true)
+                    SELECT {select_list} FROM read_parquet('{parquet_pattern}', union_by_name=true)
                 """
 
             if verbose:
@@ -576,12 +701,16 @@ def load_parquet_to_duckdb_direct(
         elapsed = time.time() - start_time
         print(f"  ✅ Loaded {count:,} records in {elapsed:.1f}s ({count/elapsed:.0f} records/sec)")
 
+        if should_close_conn:
+            conn.close()
         return count
 
     except AttributeError as e:
         # Could not access DuckDB connection - fall back to pandas
         if verbose:
             print(f"  ℹ️  Note: Could not access DuckDB connection ({e}), falling back to chunked pandas")
+        if 'should_close_conn' in locals() and should_close_conn:
+            conn.close()
         return 0
     except Exception as e:
         # Other error during direct import - fall back to pandas
@@ -983,11 +1112,44 @@ def load_all_cdm_parquet(
                 continue
 
             class_name = TABLE_TO_CLASS[cdm_table_name]
-            count = load_parquet_collection(
-                table_path, cdm_table_name, class_name, db, schema_view,
-                max_rows=None,  # Full load for static tables
-                verbose=verbose
-            )
+            loaded_via_direct = False
+            if use_direct_import:
+                count = load_parquet_to_duckdb_direct(
+                    table_path, cdm_table_name, class_name, db,
+                    max_rows=None,
+                    verbose=verbose
+                )
+                if count == 0:
+                    count = load_parquet_collection(
+                        table_path, cdm_table_name, class_name, db, schema_view,
+                        max_rows=None,  # Full load for static tables
+                        verbose=verbose
+                    )
+                else:
+                    loaded_via_direct = True
+            else:
+                count = load_parquet_collection(
+                    table_path, cdm_table_name, class_name, db, schema_view,
+                    max_rows=None,  # Full load for static tables
+                    verbose=verbose
+                )
+
+            if loaded_via_direct:
+                try:
+                    conn = get_duckdb_connection(db)
+                    parquet_pattern = f"{table_path}/*.parquet"
+                    rebuild_table_with_double_casts_from_parquet(
+                        conn, cdm_table_name, parquet_pattern, verbose=verbose
+                    )
+                except Exception as e:
+                    if verbose:
+                        print(f"  ⚠️  Could not coerce types for {cdm_table_name}: {e}")
+                try:
+                    conn = get_duckdb_connection(db)
+                    add_static_computed_fields_duckdb(conn, cdm_table_name)
+                except Exception as e:
+                    if verbose:
+                        print(f"  ⚠️  Could not add computed fields for {cdm_table_name}: {e}")
             results[cdm_table_name] = count
             total_records += count
 
@@ -1005,11 +1167,37 @@ def load_all_cdm_parquet(
                 continue
 
             class_name = TABLE_TO_CLASS[cdm_table_name]
-            count = load_parquet_collection(
-                table_path, cdm_table_name, class_name, db, schema_view,
-                max_rows=None,  # Full load for system tables
-                verbose=verbose
-            )
+            loaded_via_direct = False
+            if use_direct_import:
+                count = load_parquet_to_duckdb_direct(
+                    table_path, cdm_table_name, class_name, db,
+                    max_rows=None,
+                    verbose=verbose
+                )
+                if count == 0:
+                    count = load_parquet_collection(
+                        table_path, cdm_table_name, class_name, db, schema_view,
+                        max_rows=None,  # Full load for system tables
+                        verbose=verbose
+                    )
+                else:
+                    loaded_via_direct = True
+            else:
+                count = load_parquet_collection(
+                    table_path, cdm_table_name, class_name, db, schema_view,
+                    max_rows=None,  # Full load for system tables
+                    verbose=verbose
+                )
+            if loaded_via_direct:
+                try:
+                    conn = get_duckdb_connection(db)
+                    parquet_pattern = f"{table_path}/*.parquet"
+                    rebuild_table_with_double_casts_from_parquet(
+                        conn, cdm_table_name, parquet_pattern, verbose=verbose
+                    )
+                except Exception as e:
+                    if verbose:
+                        print(f"  ⚠️  Could not coerce types for {cdm_table_name}: {e}")
             results[cdm_table_name] = count
             total_records += count
 

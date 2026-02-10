@@ -79,7 +79,7 @@ types:
         value: string
 
   Latitude:
-    typeof: float
+    typeof: double
     minimum_value: -90.0
     maximum_value: 90.0
     description: Latitude in decimal degrees
@@ -89,10 +89,10 @@ types:
         value: ME:0000043
       microtype_data_type:
         tag: microtype_data_type
-        value: float
+        value: double
 
   Longitude:
-    typeof: float
+    typeof: double
     minimum_value: -180.0
     maximum_value: 180.0
     description: Longitude in decimal degrees
@@ -102,7 +102,7 @@ types:
         value: ME:0000044
       microtype_data_type:
         tag: microtype_data_type
-        value: float
+        value: double
 
   Count:
     typeof: integer
@@ -129,7 +129,7 @@ types:
         value: int
 
   Rate:
-    typeof: float
+    typeof: double
     minimum_value: 0.0
     description: Rate or frequency measurement
     annotations:
@@ -138,10 +138,10 @@ types:
         value: ME:0000047
       microtype_data_type:
         tag: microtype_data_type
-        value: float
+        value: double
 
   Depth:
-    typeof: float
+    typeof: double
     description: Depth measurement (meters)
     annotations:
       microtype:
@@ -149,10 +149,10 @@ types:
         value: ME:0000048
       microtype_data_type:
         tag: microtype_data_type
-        value: float
+        value: double
 
   Elevation:
-    typeof: float
+    typeof: double
     description: Elevation measurement (meters)
     annotations:
       microtype:
@@ -160,7 +160,7 @@ types:
         value: ME:0000049
       microtype_data_type:
         tag: microtype_data_type
-        value: float
+        value: double
 
   OntologyTermID:
     typeof: string
