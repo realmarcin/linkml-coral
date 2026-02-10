@@ -1,5 +1,5 @@
 # Auto generated from linkml_coral.yaml by pythongen.py version: 0.0.1
-# Generation date: 2026-01-23T18:52:21
+# Generation date: 2026-02-10T10:37:53
 # Schema: enigma-cdm
 #
 # id: https://w3id.org/enigma/enigma-cdm
@@ -56,7 +56,7 @@ from rdflib import (
     URIRef
 )
 
-from linkml_runtime.linkml_model.types import Float, Integer, String
+from linkml_runtime.linkml_model.types import Double, Integer, String
 
 metamodel_version = "1.7.0"
 version = "1.0.0"
@@ -102,18 +102,18 @@ class Link(String):
     type_model_uri = ENIGMA.Link
 
 
-class Latitude(Float):
+class Latitude(Double):
     """ Geographic latitude in decimal degrees """
-    type_class_uri = XSD["float"]
-    type_class_curie = "xsd:float"
+    type_class_uri = XSD["double"]
+    type_class_curie = "xsd:double"
     type_name = "Latitude"
     type_model_uri = ENIGMA.Latitude
 
 
-class Longitude(Float):
+class Longitude(Double):
     """ Geographic longitude in decimal degrees """
-    type_class_uri = XSD["float"]
-    type_class_curie = "xsd:float"
+    type_class_uri = XSD["double"]
+    type_class_curie = "xsd:double"
     type_name = "Longitude"
     type_model_uri = ENIGMA.Longitude
 
@@ -126,34 +126,34 @@ class Count(Integer):
     type_model_uri = ENIGMA.Count
 
 
-class Size(Float):
+class Size(Double):
     """ Size measurement (non-negative) """
-    type_class_uri = XSD["float"]
-    type_class_curie = "xsd:float"
+    type_class_uri = XSD["double"]
+    type_class_curie = "xsd:double"
     type_name = "Size"
     type_model_uri = ENIGMA.Size
 
 
-class Depth(Float):
+class Depth(Double):
     """ Depth measurement """
-    type_class_uri = XSD["float"]
-    type_class_curie = "xsd:float"
+    type_class_uri = XSD["double"]
+    type_class_curie = "xsd:double"
     type_name = "Depth"
     type_model_uri = ENIGMA.Depth
 
 
-class Elevation(Float):
+class Elevation(Double):
     """ Elevation measurement """
-    type_class_uri = XSD["float"]
-    type_class_curie = "xsd:float"
+    type_class_uri = XSD["double"]
+    type_class_curie = "xsd:double"
     type_name = "Elevation"
     type_model_uri = ENIGMA.Elevation
 
 
-class Rate(Float):
+class Rate(Double):
     """ Rate as a fraction between 0 and 1 """
-    type_class_uri = XSD["float"]
-    type_class_curie = "xsd:float"
+    type_class_uri = XSD["double"]
+    type_class_curie = "xsd:double"
     type_name = "Rate"
     type_model_uri = ENIGMA.Rate
 
