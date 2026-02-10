@@ -239,7 +239,8 @@ def rebuild_table_with_double_casts_from_parquet(
     This avoids ALTER failures on some DuckDB versions and ensures deterministic types.
     """
     def _quote_ident(name: str) -> str:
-        return f'"{name.replace("\"", "\"\"")}"'
+        escaped = name.replace('"', '""')
+        return f'"{escaped}"'
 
     try:
         parquet_rows = conn.execute(
@@ -595,7 +596,8 @@ def load_parquet_to_duckdb_direct(
             parquet_pattern = str(parquet_path)
 
         def _quote_ident(name: str) -> str:
-            return f'"{name.replace("\"", "\"\"")}"'
+            escaped = name.replace('"', '""')
+            return f'"{escaped}"'
 
         def _build_select_list_with_double_casts() -> str:
             """
