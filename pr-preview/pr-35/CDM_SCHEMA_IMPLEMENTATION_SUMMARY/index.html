@@ -1,0 +1,1451 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://realmarcin.github.io/linkml-coral/CDM_SCHEMA_IMPLEMENTATION_SUMMARY/">
+      
+      
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.19">
+    
+    
+      
+        <title>KBase CDM LinkML Schema Implementation Summary - linkml-coral</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.7e37652d.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../css/ansi-colours.css">
+    
+      <link rel="stylesheet" href="../css/jupyter-cells.css">
+    
+      <link rel="stylesheet" href="../css/pandas-dataframe.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#kbase-cdm-linkml-schema-implementation-summary" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="linkml-coral" class="md-header__button md-logo" aria-label="linkml-coral" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            linkml-coral
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              KBase CDM LinkML Schema Implementation Summary
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/realmarcin/linkml-coral" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="linkml-coral" class="md-nav__button md-logo" aria-label="linkml-coral" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    linkml-coral
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/realmarcin/linkml-coral" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../elements/index.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Schema
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cdm_store_quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    CDM Store Quick Start
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    About
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#executive-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Executive Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-1-analysis-foundation-complete" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 1: Analysis &amp; Foundation (COMPLETE)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phase 1: Analysis &amp; Foundation (COMPLETE)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#analysis-scripts-created" class="md-nav__link">
+    <span class="md-ellipsis">
+      Analysis Scripts Created
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#documentation-generated" class="md-nav__link">
+    <span class="md-ellipsis">
+      Documentation Generated
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#justfile-targets-added" class="md-nav__link">
+    <span class="md-ellipsis">
+      Justfile Targets Added
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key-findings-from-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Findings from Analysis
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-2-modular-schema-creation-complete-needs-minor-fixes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 2: Modular Schema Creation (COMPLETE - needs minor fixes)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phase 2: Modular Schema Creation (COMPLETE - needs minor fixes)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#schema-module-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      Schema Module Structure
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1-cdm_baseyaml-complete" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. cdm_base.yaml (✅ COMPLETE)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-cdm_static_entitiesyaml-needs-fk-slot-fixes" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. cdm_static_entities.yaml (⚠️ NEEDS FK SLOT FIXES)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-cdm_system_tablesyaml-complete" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. cdm_system_tables.yaml (✅ COMPLETE)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-cdm_dynamic_datayaml-complete" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. cdm_dynamic_data.yaml (✅ COMPLETE)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-linkml_coral_cdmyaml-complete" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. linkml_coral_cdm.yaml (✅ COMPLETE)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#schema-statistics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Schema Statistics
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Schema Statistics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#classes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Classes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#types" class="md-nav__link">
+    <span class="md-ellipsis">
+      Types
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#slots" class="md-nav__link">
+    <span class="md-ellipsis">
+      Slots
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enums" class="md-nav__link">
+    <span class="md-ellipsis">
+      Enums
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-transformations-from-coral-to-cdm" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Transformations from CORAL to CDM
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Key Transformations from CORAL to CDM">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-ontology-term-splitting" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Ontology Term Splitting
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-naming-convention-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Naming Convention Changes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-new-fields-added" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. New Fields Added
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-entity-renames" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Entity Renames
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#issues-resolved" class="md-nav__link">
+    <span class="md-ellipsis">
+      Issues Resolved
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Issues Resolved">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fixed-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fixed Issues
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#next-steps-optional-enhancements" class="md-nav__link">
+    <span class="md-ellipsis">
+      Next Steps (Optional Enhancements)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#file-inventory" class="md-nav__link">
+    <span class="md-ellipsis">
+      File Inventory
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="File Inventory">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#analysis-scripts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Analysis Scripts
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Documentation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#schema-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      Schema Files
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usage-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Usage Examples
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Usage Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#analyze-cdm-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      Analyze CDM Database
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#generate-cdm-schema" class="md-nav__link">
+    <span class="md-ellipsis">
+      Generate CDM Schema
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#compare-schemas" class="md-nav__link">
+    <span class="md-ellipsis">
+      Compare Schemas
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#migration-path" class="md-nav__link">
+    <span class="md-ellipsis">
+      Migration Path
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Migration Path">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#from-original-coral-data-kbase-cdm-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      From Original CORAL Data → KBase CDM Format
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#provenance-tracking-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Provenance Tracking Example
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Provenance Tracking Example">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sample-reads-assembly-genome-lineage" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sample → Reads → Assembly → Genome Lineage
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#contact-contribution" class="md-nav__link">
+    <span class="md-ellipsis">
+      Contact &amp; Contribution
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="kbase-cdm-linkml-schema-implementation-summary">KBase CDM LinkML Schema Implementation Summary</h1>
+<p><strong>Date:</strong> 2025-12-01
+<strong>Status:</strong> ✅ COMPLETE - All phases finished
+<strong>Schema Validation:</strong> ✅ PASSING</p>
+<hr />
+<h2 id="executive-summary">Executive Summary</h2>
+<p>Successfully created and validated a modular LinkML schema for the KBase Common Data Model (CDM) based on comprehensive analysis of 44 parquet tables containing 83M+ rows of ENIGMA CORAL data.</p>
+<p><strong>Key Achievements:</strong>
+- ✅ Analyzed KBase CDM parquet database structure
+- ✅ Created reproducible analysis scripts and documentation
+- ✅ Implemented modular schema with 4 sub-modules + main schema
+- ✅ Defined 17 static entity classes with CDM transformations
+- ✅ Defined 6 system table classes for provenance and ontology
+- ✅ Defined dynamic data infrastructure for measurement bricks
+- ✅ Fixed all slot naming conflicts (FK references use <code>{entity}_ref</code> pattern)
+- ✅ Fixed duplicate identifier issue (CDMEntity mixin simplified)
+- ✅ Schema validation passing (<code>gen-yaml</code> successful)
+- ✅ Project files generated (Python, JSON Schema, OWL, etc.)</p>
+<hr />
+<h2 id="phase-1-analysis-foundation-complete">Phase 1: Analysis &amp; Foundation (COMPLETE)</h2>
+<h3 id="analysis-scripts-created">Analysis Scripts Created</h3>
+<p><strong>Location:</strong> <code>scripts/cdm_analysis/</code></p>
+<ol>
+<li><strong>analyze_cdm_parquet.py</strong> (14KB)</li>
+<li>Reads all 44 parquet tables</li>
+<li>Generates row counts, column metadata, data types</li>
+<li>Identifies ontology term patterns</li>
+<li>
+<p>Outputs comprehensive statistics</p>
+</li>
+<li>
+<p><strong>generate_cdm_schema_report.py</strong> (11KB)</p>
+</li>
+<li>Exports machine-readable JSON schema report</li>
+<li>Includes type definitions from sys_typedef</li>
+<li>Documents dynamic data structure</li>
+<li>
+<p>Output: <code>docs/cdm_analysis/cdm_schema_report.json</code> (238KB)</p>
+</li>
+<li>
+<p><strong>examine_typedef_details.py</strong> (5.3KB)</p>
+</li>
+<li>Extracts field-by-field typedef analysis</li>
+<li>Documents constraints and FK relationships</li>
+<li>Shows ontology mappings</li>
+</ol>
+<h3 id="documentation-generated">Documentation Generated</h3>
+<p><strong>Location:</strong> <code>docs/cdm_analysis/</code></p>
+<ol>
+<li><strong>CDM_PARQUET_ANALYSIS_REPORT.md</strong> (22KB)</li>
+<li>Comprehensive analysis of all 44 tables</li>
+<li>Ontology term splitting pattern documentation</li>
+<li>Schema differences from original CORAL</li>
+<li>Naming conventions and FK relationships</li>
+<li>
+<p>Recommendations for Link ML schema</p>
+</li>
+<li>
+<p><strong>cdm_schema_report.json</strong> (238KB)</p>
+</li>
+<li>Machine-readable schema metadata</li>
+<li>Complete column details for all tables</li>
+<li>Type definitions and constraints</li>
+<li>Ready for automated schema generation</li>
+</ol>
+<h3 id="justfile-targets-added">Justfile Targets Added</h3>
+<p><strong>Location:</strong> <code>project.justfile</code></p>
+<pre><code class="language-bash">just analyze-cdm              # Analyze KBase CDM parquet tables
+just cdm-report               # Generate CDM schema reports
+just cdm-compare-schemas      # Compare CORAL vs CDM
+just clean-cdm                # Clean CDM outputs
+</code></pre>
+<h3 id="key-findings-from-analysis">Key Findings from Analysis</h3>
+<p><strong>Database Scale:</strong>
+- 44 total tables (6 system, 17 static, 21 dynamic)
+- 272,934 static entity rows
+- 82.6M dynamic data rows (measurements)
+- 142,958 provenance records
+- 10,594 ontology terms</p>
+<p><strong>Critical Patterns Discovered:</strong></p>
+<ol>
+<li><strong>Ontology Term Splitting</strong> (15 fields across 5 entities)
+   <code>CORAL:  material (enum with ontology constraint)
+   CDM:    material_sys_oterm_id + material_sys_oterm_name</code></li>
+<li>Location: 4 fields (continent, country, biome, feature)</li>
+<li>Sample: 2 fields (material, env_package)</li>
+<li>Reads: 2 fields (read_type, sequencing_technology)</li>
+<li>Community: 1 field (community_type)</li>
+<li>
+<p>Process: 6 fields (process_type, person, campaign, etc.)</p>
+</li>
+<li>
+<p><strong>CDM Naming Conventions</strong></p>
+</li>
+<li>Tables: <code>sdt_&lt;entity&gt;</code>, <code>ddt_&lt;entity&gt;</code>, <code>sys_&lt;entity&gt;</code></li>
+<li>Primary keys: <code>sdt_&lt;entity&gt;_id</code> (pattern: <code>EntityName\d{7}</code>)</li>
+<li>Names: <code>sdt_&lt;entity&gt;_name</code> (unique, used for FK)</li>
+<li>
+<p>All columns: snake_case with entity prefix</p>
+</li>
+<li>
+<p><strong>FK References Use Names, Not IDs</strong>
+   <code>Sample.sdt_location_name → Location.sdt_location_name</code>
+   Not: <code>Sample.location_id → Location.sdt_location_id</code></p>
+</li>
+<li>
+<p><strong>Centralized Ontology Catalog</strong></p>
+</li>
+<li>sys_oterm table with 10,594 terms</li>
+<li>Supports multiple ontologies (ME, ENVO, UO, etc.)</li>
+<li>
+<p>Hierarchical structure via parent_sys_oterm_id</p>
+</li>
+<li>
+<p><strong>Denormalized Provenance</strong></p>
+</li>
+<li>sys_process (142K records)</li>
+<li>sys_process_input (90K records)</li>
+<li>sys_process_output (38K records)</li>
+<li>Complete lineage tracking</li>
+</ol>
+<hr />
+<h2 id="phase-2-modular-schema-creation-complete-needs-minor-fixes">Phase 2: Modular Schema Creation (COMPLETE - needs minor fixes)</h2>
+<h3 id="schema-module-structure">Schema Module Structure</h3>
+<p><strong>Location:</strong> <code>src/linkml_coral/schema/cdm/</code></p>
+<pre><code>cdm/
+├── cdm_base.yaml              # Common types, mixins, patterns (✅ Complete)
+├── cdm_static_entities.yaml   # 17 entity classes (⚠️  Needs FK slot fixes)
+├── cdm_system_tables.yaml     # 6 system classes (✅ Complete)
+├── cdm_dynamic_data.yaml      # Brick infrastructure (✅ Complete)
+└── linkml_coral_cdm.yaml      # Main schema entry point (✅ Complete)
+</code></pre>
+<h3 id="1-cdm_baseyaml-complete">1. cdm_base.yaml (✅ COMPLETE)</h3>
+<p><strong>Purpose:</strong> Foundation types, mixins, and patterns</p>
+<p><strong>Contents:</strong>
+- 10 semantic types (Date, Time, Link, Latitude, Longitude, Count, Size, Rate, Depth, Elevation)
+- 2 new types (OntologyTermID, EntityName)
+- 3 mixins:
+  - <code>OntologyTermPair</code> - Pattern for ontology term splitting
+  - <code>CDMEntity</code> - Base for all sdt_<em> entities
+  - <code>SystemEntity</code> - Base for all sys_</em> tables
+- Common slots (sys_oterm_id, sys_oterm_name, link)</p>
+<p><strong>Key Pattern - OntologyTermPair Mixin:</strong></p>
+<pre><code class="language-yaml">OntologyTermPair:
+  mixin: true
+  description: |
+    Mixin for ontology-constrained fields in KBase CDM.
+
+    The CDM splits each ontology-controlled field into two columns:
+    - {field}_sys_oterm_id: CURIE identifier (FK to sys_oterm)
+    - {field}_sys_oterm_name: Human-readable term name
+</code></pre>
+<p><strong>Key Pattern - CDMEntity Mixin:</strong></p>
+<pre><code class="language-yaml">CDMEntity:
+  mixin: true
+  attributes:
+    id:
+      identifier: true
+      required: true
+      comments:
+        - Format: EntityName followed by 7 digits
+        - Corresponds to sdt_{entity}_id column
+    name:
+      range: EntityName
+      required: true
+      comments:
+        - Corresponds to sdt_{entity}_name column
+        - Used for FK references instead of ID
+</code></pre>
+<h3 id="2-cdm_static_entitiesyaml-needs-fk-slot-fixes">2. cdm_static_entities.yaml (⚠️ NEEDS FK SLOT FIXES)</h3>
+<p><strong>Purpose:</strong> 17 core scientific entity classes</p>
+<p><strong>Classes Defined:</strong>
+1. Location - Sampling locations with geography
+2. Sample - Environmental samples
+3. Community - Microbial communities
+4. Reads - Sequencing reads datasets
+5. Assembly - Genome assemblies
+6. Bin - Metagenomic bins
+7. Genome - Assembled genomes
+8. Gene - Annotated genes
+9. Strain - Microbial strains
+10. Taxon - Taxonomic classifications
+11. ASV - Amplicon Sequence Variants (renamed from OTU)
+12. Protocol - Experimental protocols
+13. Image - Microscopy images
+14. Condition - Growth conditions
+15. DubSeqLibrary - DubSeq libraries
+16. TnSeqLibrary - TnSeq libraries
+17. ENIGMA - Root entity (singleton)</p>
+<p><strong>Transformation Example - Location:</strong></p>
+<pre><code class="language-yaml">Location:
+  mixins:
+    - CDMEntity
+  slots:
+    - sdt_location_id
+    - sdt_location_name
+    - latitude
+    - longitude
+    - continent_sys_oterm_id      # Split ontology term
+    - continent_sys_oterm_name
+    - country_sys_oterm_id        # Split ontology term
+    - country_sys_oterm_name
+    - biome_sys_oterm_id          # Split ontology term
+    - biome_sys_oterm_name
+    - feature_sys_oterm_id        # Split ontology term
+    - feature_sys_oterm_name
+</code></pre>
+<p><strong>Known Issue:</strong>
+- Duplicate slot names between entity's own <code>sdt_{entity}_name</code> and FK references
+- <strong>Solution:</strong> Rename FK reference slots to use <code>{entity}_ref</code> pattern
+  - Example: <code>Sample.location_ref</code> instead of <code>Sample.sdt_location_name</code>
+- Status: Partially implemented, needs completion</p>
+<h3 id="3-cdm_system_tablesyaml-complete">3. cdm_system_tables.yaml (✅ COMPLETE)</h3>
+<p><strong>Purpose:</strong> System tables for metadata, provenance, and ontology</p>
+<p><strong>Classes Defined:</strong>
+1. <strong>SystemTypedef</strong> - Type definitions (equivalent to typedef.json)
+   - Maps CORAL entity types to CDM table/column names
+   - 118 rows defining static entity schema</p>
+<ol>
+<li><strong>SystemDDTTypedef</strong> - Dynamic data type definitions</li>
+<li>Defines brick schemas (dimensions, variables, units)</li>
+<li>
+<p>101 rows defining 20 brick types</p>
+</li>
+<li>
+<p><strong>SystemOntologyTerm</strong> - Centralized ontology catalog</p>
+</li>
+<li>10,594 ontology terms from multiple sources</li>
+<li>
+<p>Hierarchical structure with parent references</p>
+</li>
+<li>
+<p><strong>SystemProcess</strong> - Provenance tracking</p>
+</li>
+<li>142,958 process records</li>
+<li>Links inputs → process → outputs</li>
+<li>
+<p>Temporal metadata and protocol references</p>
+</li>
+<li>
+<p><strong>SystemProcessInput</strong> - Normalized inputs</p>
+</li>
+<li>90,395 rows</li>
+<li>
+<p>Denormalizes input_objects array for queries</p>
+</li>
+<li>
+<p><strong>SystemProcessOutput</strong> - Normalized outputs</p>
+</li>
+<li>38,228 rows</li>
+<li>Denormalizes output_objects array for queries</li>
+</ol>
+<h3 id="4-cdm_dynamic_datayaml-complete">4. cdm_dynamic_data.yaml (✅ COMPLETE)</h3>
+<p><strong>Purpose:</strong> Brick infrastructure for N-dimensional measurement arrays</p>
+<p><strong>Classes Defined:</strong>
+1. <strong>DynamicDataArray</strong> - Brick index (ddt_ndarray)
+   - Catalogs 20 available bricks
+   - Stores shape metadata and entity associations</p>
+<ol>
+<li><strong>BrickDimension</strong> (abstract)</li>
+<li>Template for dimension metadata</li>
+<li>
+<p>Semantic meaning via ontology terms</p>
+</li>
+<li>
+<p><strong>BrickVariable</strong> (abstract)</p>
+</li>
+<li>Template for variable metadata</li>
+<li>
+<p>Data types, units, constraints</p>
+</li>
+<li>
+<p><strong>Brick</strong> (abstract)</p>
+</li>
+<li>Base for all ddt_brick* tables</li>
+<li>Heterogeneous schemas defined in sys_ddt_typedef</li>
+</ol>
+<p><strong>Example Brick Structure:</strong></p>
+<pre><code>Brick0000010:
+  Dimensions: [Environmental Sample (209), Molecule (52), State (3), Statistic (3)]
+  Total rows: 209 × 52 × 3 × 3 = 52,884
+  Variables: Concentration, Molecular Weight
+  Units: Tracked via sys_oterm
+</code></pre>
+<p><strong>Enums Defined:</strong>
+- BrickDataType: float, int, bool, text, oterm_ref, object_ref
+- DimensionSemantics: 8 common dimension types
+- VariableSemantics: 8 common variable types</p>
+<h3 id="5-linkml_coral_cdmyaml-complete">5. linkml_coral_cdm.yaml (✅ COMPLETE)</h3>
+<p><strong>Purpose:</strong> Main schema entry point with imports</p>
+<p><strong>Features:</strong>
+- Imports all 4 sub-modules
+- Redefines key enums from original CORAL
+- Comprehensive documentation and annotations
+- Schema-level metadata (data volumes, dates, etc.)</p>
+<p><strong>Enums Included:</strong>
+- StrandEnum (forward, reverse_complement)
+- ReadTypeEnum (paired_end, single_end)
+- SequencingTechnologyEnum (illumina, pacbio, nanopore, sanger)
+- CommunityTypeEnum (isolate, enrichment, assemblage, environmental, active_fraction)
+- MaterialEnum, BiomeEnum</p>
+<hr />
+<h2 id="schema-statistics">Schema Statistics</h2>
+<h3 id="classes">Classes</h3>
+<ul>
+<li><strong>Base/Mixins:</strong> 3 (OntologyTermPair, CDMEntity, SystemEntity)</li>
+<li><strong>Static Entities:</strong> 17 (Location, Sample, Gene, etc.)</li>
+<li><strong>System Tables:</strong> 6 (SystemTypedef, SystemOntologyTerm, SystemProcess, etc.)</li>
+<li><strong>Dynamic Data:</strong> 3 abstract (DynamicDataArray, BrickDimension, BrickVariable)</li>
+<li><strong>Total:</strong> 29 classes</li>
+</ul>
+<h3 id="types">Types</h3>
+<ul>
+<li><strong>From CORAL:</strong> 10 (Date, Time, Link, Latitude, Longitude, Count, Size, Rate, Depth, Elevation)</li>
+<li><strong>CDM-specific:</strong> 2 (OntologyTermID, EntityName)</li>
+<li><strong>Total:</strong> 12 types</li>
+</ul>
+<h3 id="slots">Slots</h3>
+<ul>
+<li><strong>Base slots:</strong> 3 (sys_oterm_id, sys_oterm_name, link)</li>
+<li><strong>Static entity slots:</strong> ~100 (includes all entity-specific fields)</li>
+<li><strong>System table slots:</strong> ~40</li>
+<li><strong>Dynamic data slots:</strong> ~15</li>
+<li><strong>Total:</strong> ~158 slots</li>
+</ul>
+<h3 id="enums">Enums</h3>
+<ul>
+<li><strong>From CORAL:</strong> 5 main enums</li>
+<li><strong>CDM-specific:</strong> 2 (BrickDataType, DimensionSemantics, VariableSemantics)</li>
+<li><strong>Total:</strong> ~8 enums</li>
+</ul>
+<hr />
+<h2 id="key-transformations-from-coral-to-cdm">Key Transformations from CORAL to CDM</h2>
+<h3 id="1-ontology-term-splitting">1. Ontology Term Splitting</h3>
+<p><strong>Impact:</strong> 15 fields across 5 entity types</p>
+<table>
+<thead>
+<tr>
+<th>Entity</th>
+<th>Fields Split</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Location</td>
+<td>4</td>
+<td><code>biome</code> → <code>biome_sys_oterm_id</code> + <code>biome_sys_oterm_name</code></td>
+</tr>
+<tr>
+<td>Sample</td>
+<td>2</td>
+<td><code>material</code> → <code>material_sys_oterm_id</code> + <code>material_sys_oterm_name</code></td>
+</tr>
+<tr>
+<td>Reads</td>
+<td>2</td>
+<td><code>read_type</code> → <code>read_type_sys_oterm_id</code> + <code>read_type_sys_oterm_name</code></td>
+</tr>
+<tr>
+<td>Community</td>
+<td>1</td>
+<td><code>community_type</code> → <code>community_type_sys_oterm_id</code> + <code>community_type_sys_oterm_name</code></td>
+</tr>
+<tr>
+<td>Process</td>
+<td>6</td>
+<td><code>process_type</code>, <code>person</code>, <code>campaign</code>, etc.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="2-naming-convention-changes">2. Naming Convention Changes</h3>
+<table>
+<thead>
+<tr>
+<th>Original CORAL</th>
+<th>KBase CDM</th>
+<th>Pattern</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td><code>sdt_{entity}_id</code></td>
+<td>EntityName\d{7}</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td><code>sdt_{entity}_name</code></td>
+<td>Unique, used for FK</td>
+</tr>
+<tr>
+<td><code>location</code> (FK)</td>
+<td><code>sdt_location_name</code> (FK)</td>
+<td>References name, not ID</td>
+</tr>
+</tbody>
+</table>
+<h3 id="3-new-fields-added">3. New Fields Added</h3>
+<table>
+<thead>
+<tr>
+<th>Entity</th>
+<th>New Field</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Assembly, Genome, Reads, Image, Protocol</td>
+<td><code>link</code></td>
+<td>External data references</td>
+</tr>
+<tr>
+<td>All ontology fields</td>
+<td><code>*_sys_oterm_id</code>, <code>*_sys_oterm_name</code></td>
+<td>Ontology term pairs</td>
+</tr>
+</tbody>
+</table>
+<h3 id="4-entity-renames">4. Entity Renames</h3>
+<table>
+<thead>
+<tr>
+<th>Original</th>
+<th>CDM</th>
+<th>Reason</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OTU</td>
+<td>ASV</td>
+<td>Preferred terminology (Amplicon Sequence Variant)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="issues-resolved">Issues Resolved</h2>
+<h3 id="fixed-issues">Fixed Issues</h3>
+<ol>
+<li><strong>Duplicate Slot Names</strong> (✅ RESOLVED)</li>
+<li>Problem: Entity's own <code>sdt_{entity}_name</code> conflicted with FK reference slots</li>
+<li>Solution: Renamed all FK slots to <code>{entity}_ref</code> pattern</li>
+<li>Fixed slots:<ul>
+<li><code>location_ref</code> (Sample → Location)</li>
+<li><code>sample_ref</code> (Community → Sample)</li>
+<li><code>parent_community_ref</code> (Community → Community, self-referential)</li>
+<li><code>defined_strains_ref</code> (Community → Strain, multivalued)</li>
+<li><code>strain_ref</code> (Assembly, Genome → Strain)</li>
+<li><code>assembly_ref</code> (Bin → Assembly)</li>
+<li><code>genome_ref</code> (Gene, Strain, DubSeqLibrary, TnSeqLibrary → Genome)</li>
+<li><code>derived_from_strain_ref</code> (Strain → Strain, self-referential)</li>
+</ul>
+</li>
+<li>
+<p>Status: ✅ Complete, all conflicts resolved</p>
+</li>
+<li>
+<p><strong>Duplicate Identifier Issue</strong> (✅ RESOLVED)</p>
+</li>
+<li>Problem: CDMEntity mixin defined <code>id</code> attribute with <code>identifier: true</code>, conflicting with entity-specific ID slots</li>
+<li>Error: <code>ValueError: Class "Location" - multiple keys/identifiers not allowed</code></li>
+<li>Solution: Simplified CDMEntity mixin to not define slots, only used for documentation/grouping</li>
+<li>
+<p>Status: ✅ Complete, schema validates successfully</p>
+</li>
+<li>
+<p><strong>Schema Validation</strong> (✅ PASSING)</p>
+</li>
+<li><code>gen-yaml</code> runs successfully with only minor warnings (date/time type overlap)</li>
+<li><code>gen-project</code> generates all output formats (Python, JSON Schema, OWL, GraphQL, etc.)</li>
+<li>Python dataclasses generated correctly (112KB file)</li>
+<li>Status: ✅ Complete</li>
+</ol>
+<h3 id="next-steps-optional-enhancements">Next Steps (Optional Enhancements)</h3>
+<ol>
+<li><strong>Create Additional Documentation</strong> (2-3 hours)</li>
+<li>docs/CORAL_TO_CDM_MAPPING.md - Detailed field transformation guide</li>
+<li>docs/CDM_VALIDATION_GUIDE.md - How to validate data against CDM schema</li>
+<li>
+<p>Update CLAUDE.md with CDM schema usage instructions</p>
+</li>
+<li>
+<p><strong>Create Validation Examples</strong> (1 hour)</p>
+</li>
+<li>tests/data/cdm/valid/ - Valid examples for each entity</li>
+<li>tests/data/cdm/invalid/ - Negative test cases</li>
+<li>
+<p>Demonstrate ontology term splitting, FK references, etc.</p>
+</li>
+<li>
+<p><strong>Generate Visualizations</strong> (1 hour)</p>
+</li>
+<li>CDM ER diagrams</li>
+<li>Relationship graphs</li>
+<li>
+<p>HTML viewer for CDM schema</p>
+</li>
+<li>
+<p><strong>Commit and Document</strong> (30 min)</p>
+</li>
+<li>Git commit with comprehensive message</li>
+<li>Update project documentation</li>
+<li>Create migration guide</li>
+</ol>
+<hr />
+<h2 id="file-inventory">File Inventory</h2>
+<h3 id="analysis-scripts">Analysis Scripts</h3>
+<pre><code>scripts/cdm_analysis/
+├── analyze_cdm_parquet.py           (14KB)
+├── generate_cdm_schema_report.py    (11KB)
+└── examine_typedef_details.py       (5.3KB)
+</code></pre>
+<h3 id="documentation">Documentation</h3>
+<pre><code>docs/
+├── cdm_analysis/
+│   ├── CDM_PARQUET_ANALYSIS_REPORT.md  (22KB)
+│   └── cdm_schema_report.json          (238KB)
+└── CDM_SCHEMA_IMPLEMENTATION_SUMMARY.md (this file)
+</code></pre>
+<h3 id="schema-files">Schema Files</h3>
+<pre><code>src/linkml_coral/schema/cdm/
+├── cdm_base.yaml                    (✅ Complete)
+├── cdm_static_entities.yaml         (⚠️  Needs FK fixes)
+├── cdm_system_tables.yaml           (✅ Complete)
+├── cdm_dynamic_data.yaml            (✅ Complete)
+└── linkml_coral_cdm.yaml            (✅ Complete)
+</code></pre>
+<h3 id="configuration">Configuration</h3>
+<pre><code>project.justfile                     (Updated with CDM targets)
+</code></pre>
+<hr />
+<h2 id="usage-examples">Usage Examples</h2>
+<h3 id="analyze-cdm-database">Analyze CDM Database</h3>
+<pre><code class="language-bash">just analyze-cdm
+just cdm-report
+</code></pre>
+<h3 id="generate-cdm-schema">Generate CDM Schema</h3>
+<pre><code class="language-bash"># After fixing duplicate slots:
+uv run gen-yaml src/linkml_coral/schema/cdm/linkml_coral_cdm.yaml
+uv run gen-project -d project/cdm src/linkml_coral/schema/cdm/linkml_coral_cdm.yaml
+</code></pre>
+<h3 id="compare-schemas">Compare Schemas</h3>
+<pre><code class="language-bash">just cdm-compare-schemas
+# Outputs comparison of CORAL vs CDM
+</code></pre>
+<hr />
+<h2 id="migration-path">Migration Path</h2>
+<h3 id="from-original-coral-data-kbase-cdm-format">From Original CORAL Data → KBase CDM Format</h3>
+<ol>
+<li><strong>Split Ontology Fields</strong>
+   ```python
+   # CORAL format:
+   {"biome": "terrestrial biome"}</li>
+</ol>
+<p># CDM format:
+   {
+     "biome_sys_oterm_id": "ENVO:00000446",
+     "biome_sys_oterm_name": "terrestrial biome"
+   }
+   ```</p>
+<ol>
+<li><strong>Rename ID/Name Fields</strong>
+   ```python
+   # CORAL format:
+   {"id": "Location001", "name": "Site A"}</li>
+</ol>
+<p># CDM format:
+   {
+     "sdt_location_id": "Location0000001",
+     "sdt_location_name": "Site A"
+   }
+   ```</p>
+<ol>
+<li><strong>Convert FK References</strong>
+   ```python
+   # CORAL format:
+   {"location": "Location001"}  # References ID</li>
+</ol>
+<p># CDM format:
+   {"location_ref": "Site A"}  # References name
+   ```</p>
+<ol>
+<li><strong>Add External Links</strong>
+   <code>python
+   # CDM adds link fields where applicable:
+   {
+     "sdt_assembly_id": "Assembly0000001",
+     "link": "https://data.kbase.us/assemblies/ASM001"
+   }</code></li>
+</ol>
+<hr />
+<h2 id="provenance-tracking-example">Provenance Tracking Example</h2>
+<h3 id="sample-reads-assembly-genome-lineage">Sample → Reads → Assembly → Genome Lineage</h3>
+<pre><code class="language-yaml"># sys_process record:
+sys_process_id: Process0001234
+process_type_sys_oterm_id: ME:0000113  # Sequencing
+process_type_sys_oterm_name: &quot;Illumina Sequencing&quot;
+input_objects: [&quot;Sample:Sample0000042&quot;]
+output_objects: [&quot;Reads:Reads0000123&quot;]
+sdt_protocol_name: &quot;Illumina HiSeq Protocol v2.1&quot;
+date_start: &quot;2023-05-15&quot;
+
+# Normalized in sys_process_input:
+sys_process_id: Process0001234
+input_object_type: &quot;Sample&quot;
+input_object_name: &quot;Sample0000042&quot;
+input_index: 0
+
+# Normalized in sys_process_output:
+sys_process_id: Process0001234
+output_object_type: &quot;Reads&quot;
+output_object_name: &quot;Reads0000123&quot;
+output_index: 0
+</code></pre>
+<hr />
+<h2 id="contact-contribution">Contact &amp; Contribution</h2>
+<p><strong>Implementation Date:</strong> 2025-12-01
+<strong>LinkML Version:</strong> 1.8.x
+<strong>Python Version:</strong> 3.13</p>
+<p><strong>Key Resources:</strong>
+- Original CORAL Schema: <code>src/linkml_coral/schema/linkml_coral.yaml</code>
+- KBase CDM Parquet DB: <code>data/enigma_coral.db</code>
+- Analysis Scripts: <code>scripts/cdm_analysis/</code>
+- Documentation: <code>docs/cdm_analysis/</code></p>
+<p><strong>Generated with:</strong> Claude Code (Anthropic)
+<strong>Project:</strong> ENIGMA linkml-coral
+<strong>Repository:</strong> https://github.com/realmarcin/linkml-coral</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": ["content.tabs.link"], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.92b07e13.min.js"></script>
+      
+    
+  </body>
+</html>
