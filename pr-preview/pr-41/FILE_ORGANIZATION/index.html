@@ -1,0 +1,673 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://realmarcin.github.io/linkml-coral/FILE_ORGANIZATION/">
+      
+      
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.19">
+    
+    
+      
+        <title>File Organization Summary - linkml-coral</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.7e37652d.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../css/ansi-colours.css">
+    
+      <link rel="stylesheet" href="../css/jupyter-cells.css">
+    
+      <link rel="stylesheet" href="../css/pandas-dataframe.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#file-organization-summary" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="linkml-coral" class="md-header__button md-logo" aria-label="linkml-coral" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            linkml-coral
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              File Organization Summary
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/realmarcin/linkml-coral" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="linkml-coral" class="md-nav__button md-logo" aria-label="linkml-coral" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    linkml-coral
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/realmarcin/linkml-coral" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../elements/index.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Schema
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cdm_store_quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    CDM Store Quick Start
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    About
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#changes-made" class="md-nav__link">
+    <span class="md-ellipsis">
+      Changes Made
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Changes Made">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-removed-output-files-from-git-33-files-79m" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Removed Output Files from Git (33 files, ~7.9M)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-reorganized-documentation-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Reorganized Documentation Files
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-root-directory-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Root Directory Structure
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-documentation-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Documentation Structure
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-updated-gitignore" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Updated .gitignore
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#benefits" class="md-nav__link">
+    <span class="md-ellipsis">
+      Benefits
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#documentation-locations-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      Documentation Locations Reference
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#finding-moved-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      Finding Moved Files
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#temporary-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      Temporary Files
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="file-organization-summary">File Organization Summary</h1>
+<p><strong>Date</strong>: 2026-01-21<br />
+<strong>Commit</strong>: 121d55a</p>
+<h2 id="changes-made">Changes Made</h2>
+<h3 id="1-removed-output-files-from-git-33-files-79m">1. Removed Output Files from Git (33 files, ~7.9M)</h3>
+<p><strong>Removed .out files:</strong>
+- <code>validate_large_files.out</code>
+- <code>validate_small_files.out</code>
+- <code>just_validate.out</code>
+- <code>validat.out</code>
+- <code>validate.out</code></p>
+<p><strong>Removed .txt analysis files:</strong>
+- <code>QUERY_COMMANDS_SUMMARY.txt</code>
+- <code>cdm_parquet_analysis.txt</code>
+- <code>cdm_report.txt</code>
+- <code>detailed_validation_report.txt</code>
+- <code>linkml_validation_results.txt</code>
+- <code>typedef_detailed_analysis.txt</code>
+- <code>validation_output.txt</code>
+- <code>debug_after_fix/Strain_validation_output.txt</code>
+- <code>debug_linkml_validate/Strain_validation_output.txt</code>
+- <code>relationship_diagrams/relationships.txt</code>
+- <code>src/linkml_coral/schema/schema_issues_round1.txt</code></p>
+<p><strong>Removed .json output files:</strong>
+- <code>analysis_output/schema_analysis.json</code>
+- <code>docs/cdm_analysis/cdm_schema_report.json</code>
+- 12 old validation reports from batch_<em> and validation_summary</em> directories</p>
+<h3 id="2-reorganized-documentation-files">2. Reorganized Documentation Files</h3>
+<p><strong>Moved to <code>docs/</code>:</strong>
+- <code>CDM_DATA_QUALITY_ISSUES.md</code> → <code>docs/CDM_DATA_QUALITY_ISSUES.md</code>
+- <code>CDM_METADATA_INTEGRATION_SUMMARY.md</code> → <code>docs/CDM_METADATA_INTEGRATION_SUMMARY.md</code>
+- <code>CDM_PARQUET_METADATA_ANALYSIS.md</code> → <code>docs/CDM_PARQUET_METADATA_ANALYSIS.md</code></p>
+<p><strong>Moved to <code>docs/validation/</code>:</strong>
+- <code>VALIDATION_ANALYSIS_20260121.md</code> → <code>docs/validation/VALIDATION_ANALYSIS_20260121.md</code></p>
+<h3 id="3-root-directory-structure">3. Root Directory Structure</h3>
+<p><strong>Project root now contains only standard files:</strong></p>
+<pre><code>linkml-coral/
+├── README.md                    # Project overview and quick start
+├── CODE_OF_CONDUCT.md           # Community guidelines
+├── CONTRIBUTING.md              # Contribution guidelines
+├── CLAUDE.md                    # AI assistant instructions
+├── pyproject.toml              # Python project config
+├── project.justfile            # Just command definitions
+└── .gitignore                  # Updated with new patterns
+</code></pre>
+<h3 id="4-documentation-structure">4. Documentation Structure</h3>
+<pre><code>docs/
+├── CDM_DATA_QUALITY_ISSUES.md              # Validation findings
+├── CDM_METADATA_INTEGRATION_SUMMARY.md     # Metadata system overview
+├── CDM_PARQUET_METADATA_ANALYSIS.md        # Parquet analysis
+├── CDM_ENIGMA_MIGRATION_SUMMARY.md         # Migration documentation
+├── validation/
+│   └── VALIDATION_ANALYSIS_20260121.md     # Latest validation analysis
+├── cdm_analysis/
+│   └── CDM_PARQUET_ANALYSIS_REPORT.md      # Parquet analysis report
+└── [Other CDM guides and documentation]
+</code></pre>
+<h3 id="5-updated-gitignore">5. Updated .gitignore</h3>
+<p>Added patterns to prevent future additions of output files:</p>
+<pre><code class="language-gitignore"># Output files
+*.out
+*.log
+load-*.out
+validate-*.out
+just_*.out
+validat.out
+
+# Temporary analysis files
+*_analysis.txt
+*_output.txt
+*_results.txt
+*_report.txt
+cdm_report.txt
+typedef_detailed_analysis.txt
+
+# Validation reports (keep latest only)
+validation_reports/*/*.json
+validation_summary*/
+
+# Analysis output
+analysis_output/*.json
+docs/cdm_analysis/*_report.json
+</code></pre>
+<h2 id="benefits">Benefits</h2>
+<ol>
+<li><strong>Cleaner Repository</strong>: Removed 7.9MB of output files</li>
+<li><strong>Better Organization</strong>: Documentation in standard locations</li>
+<li><strong>Easier Navigation</strong>: Root directory only has essential project files</li>
+<li><strong>Automatic Cleanup</strong>: Updated .gitignore prevents future clutter</li>
+<li><strong>Standard Structure</strong>: Follows common open-source project conventions</li>
+</ol>
+<h2 id="documentation-locations-reference">Documentation Locations Reference</h2>
+<table>
+<thead>
+<tr>
+<th>Document Type</th>
+<th>Location</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Project Overview</strong></td>
+<td><code>README.md</code> (root)</td>
+</tr>
+<tr>
+<td><strong>AI Instructions</strong></td>
+<td><code>CLAUDE.md</code> (root)</td>
+</tr>
+<tr>
+<td><strong>CDM Documentation</strong></td>
+<td><code>docs/CDM_*.md</code></td>
+</tr>
+<tr>
+<td><strong>Validation Reports</strong></td>
+<td><code>docs/validation/</code></td>
+</tr>
+<tr>
+<td><strong>Query Guides</strong></td>
+<td><code>docs/QUERY_*.md</code></td>
+</tr>
+<tr>
+<td><strong>Store Guides</strong></td>
+<td><code>docs/*_STORE_*.md</code></td>
+</tr>
+<tr>
+<td><strong>Analysis Reports</strong></td>
+<td><code>docs/cdm_analysis/</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="finding-moved-files">Finding Moved Files</h2>
+<p>If you had links to old locations, here are the new paths:</p>
+<table>
+<thead>
+<tr>
+<th>Old Location</th>
+<th>New Location</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CDM_DATA_QUALITY_ISSUES.md</code></td>
+<td><code>docs/CDM_DATA_QUALITY_ISSUES.md</code></td>
+</tr>
+<tr>
+<td><code>CDM_METADATA_INTEGRATION_SUMMARY.md</code></td>
+<td><code>docs/CDM_METADATA_INTEGRATION_SUMMARY.md</code></td>
+</tr>
+<tr>
+<td><code>CDM_PARQUET_METADATA_ANALYSIS.md</code></td>
+<td><code>docs/CDM_PARQUET_METADATA_ANALYSIS.md</code></td>
+</tr>
+<tr>
+<td><code>VALIDATION_ANALYSIS_20260121.md</code></td>
+<td><code>docs/validation/VALIDATION_ANALYSIS_20260121.md</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="temporary-files">Temporary Files</h2>
+<p>The following file types are now automatically ignored and won't be committed:
+- <code>.out</code> files (command output)
+- <code>.log</code> files (logs)
+- <code>*_analysis.txt</code> (analysis text files)
+- <code>*_output.txt</code> (output text files)
+- <code>*_report.txt</code> (report text files)
+- Validation JSON reports (keep latest manually)</p>
+<hr />
+<p><strong>Generated</strong>: 2026-01-21<br />
+<strong>Status</strong>: ✅ Complete - Repository cleaned and organized</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": ["content.tabs.link"], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.92b07e13.min.js"></script>
+      
+    
+  </body>
+</html>
